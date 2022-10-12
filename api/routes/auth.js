@@ -61,18 +61,18 @@ router.post("/login", async(req, res) => {
     pool.getConnection(async (err, connection) => {
         connection.query(`select * from login where user_name = "${email}"`, async (err, rows) => {
             connection.release();
+            //console.log(rows);            
             if (err) {
                 console.log('matigatteiru');
             }
-
             //ユーザの存在確認
-            if (!rows[0]['user_name']) {
+            if ( rows == 0 && rows == false ) {
                 return res.status(400).json([
                     {
                         message: "そのユーザは存在しません"
                     }
                 ]);
-            } else { 
+            } else {
 
                 //ハッシュ値の解読
                 const isMatch = await bcrypt.compare(password, rows[0]['passward']);

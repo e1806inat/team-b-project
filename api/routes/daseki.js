@@ -80,7 +80,7 @@ router.post("/daseki_transmission", (req, res) => {
 router.post("/player_data_change", async (req, res) => {
     const { player_id, game_id, school_id, player_name_kanji, player_name_hira, position, uniform_number, grade, handed_hit, handed_throw, batting_order } = req.body;
     pool.getConnection(async (err, connection) => {
-        connection.query('update t_standby set  position = ?, batting_order = ? where player_id = ? and game_id = ? and school_id = ?', [position, batting_order, player_id, game_id, school_id], async (err, rows) => {
+        connection.query('update t_starting set  position = ?, batting_order = ? where player_id = ? and game_id = ? and school_id = ?', [position, batting_order, player_id, game_id, school_id], async (err, rows) => {
             connection.release();
 
             if (err) {

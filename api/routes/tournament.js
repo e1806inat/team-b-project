@@ -7,7 +7,7 @@ const pool = mysql.createPool(config.serverConf);
 
 //大会情報登録
 router.post("/tournament_register", (req, res) => {
-    const { tournament_name, opening, closing } = req.body;
+    const { tournament_name, opening} = req.body;
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -23,7 +23,7 @@ router.post("/tournament_register", (req, res) => {
                     }
                 ]); 
             }else{
-                connection.query("insert into t_tournament values (0, ?, ?, ?)", [tournament_name, opening, closing], (err, rows) => {
+                connection.query("insert into t_tournament values (0, ?, ?)", [tournament_name, opening], (err, rows) => {
                     connection.release();
                     if (err) {
                         return res.status(400).json([
@@ -54,7 +54,7 @@ router.post("/tournament_register", (req, res) => {
 
 //登録されている大会のテーブルを最新のもの１０件呼び出してクライアント側に渡す
 router.post("/tournament_call", (req, res) => {
-    const { tournament_name, opening, closing } = req.body;
+    //const { tournament_name, opening} = req.body;
     pool.getConnection((err, connection) => {
         if (err) throw err;
 

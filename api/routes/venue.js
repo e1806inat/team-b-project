@@ -11,9 +11,7 @@ router.post("/venue_register", (req, res) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
-        //const date = new Date().toLocaleString('sv').replace(/\D/g, '');
-        //console.log(date);
-        //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
+        //select文とlimitで同じ名前の会場がすでに登録されていないかを判定
         connection.query("select * from t_venue where venue_name = ? LIMIT 1", [venue_name], (err, rows) => {
             connection.release();
             //console.log(rows.length);
@@ -29,7 +27,7 @@ router.post("/venue_register", (req, res) => {
                     if (err) {
                         return res.status(400).json([
                             {
-                                message: "会場情報を登録できません"
+                                message: "会場情報を登録できませんでした"
                             }
                         ]); 
                     }
@@ -39,29 +37,47 @@ router.post("/venue_register", (req, res) => {
     });
 });
 
-//登録されている大会を呼び出し
+//登録されている会場を呼び出し
 router.post("/venue_call", (req, res) => {
-    const { tournament_name, opening, closing } = req.body;
     pool.getConnection((err, connection) => {
         if (err) throw err;
-
         console.log("MYSQLと接続中です");
-        //const date = new Date().toLocaleString('sv').replace(/\D/g, '');
-        //console.log(date);
-        //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
+        //登録されている全ての会場のテーブルを読み出し
         connection.query("select * from t_venue",(err, rows) => {
             connection.release();
             if(err){
                 return res.status(400).json([
                     {
-                        message: "会場情報を読みだせません"
+                        message: "会場情報を読みだせませんでした"
                     }
                 ]); 
             }else{
                 return res.json(rows);
             }
-        })
+        });
     });
 });
+
+//登録されている会場の削除
+router.post("/venue_delete", (req, res) => {
+    const { venue_id } = req.body;
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        console.log("MYSQLと接続中です");
+        //登録されている全ての会場のテーブルを読み出し
+        connection.query("delete from t_venue where venue_id = ?", [venue_id], (err, rows) => {
+            connection.release();
+            if(err){
+                return res.status(400).json([
+                    {
+                        message: "会場情報を消去できませんでした"
+                    }
+                ]); 
+            }
+        });
+    });
+});
+
 
 module.exports = router;

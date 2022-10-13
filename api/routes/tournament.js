@@ -5,15 +5,13 @@ const config = require("../mysqlConnection/config");
 
 const pool = mysql.createPool(config.serverConf);
 
-//試合情報登録
+//大会情報登録
 router.post("/tournament_register", (req, res) => {
     const { tournament_name, opening, closing } = req.body;
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
-        //const date = new Date().toLocaleString('sv').replace(/\D/g, '');
-        //console.log(date);
         //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
         connection.query("select * from t_tournament where tournament_name = ? and opening = ? LIMIT 1", [tournament_name, opening], (err, rows) => {
             connection.release();
@@ -33,6 +31,20 @@ router.post("/tournament_register", (req, res) => {
                                 message: "大会情報を登録できません"
                             }
                         ]); 
+                    } else {
+                        //大会IDを取得しているなくてもいいかも
+                        connection.query("select last_insert_id()", (err, rows) => {
+                            connection.release();
+                            if (err){
+                                return res.status(400).json([
+                                    {
+                                        message: "IDを取得できませんでした"
+                                    }
+                                ]);
+                            } else {
+                                return res.json(rows);
+                            }
+                        });
                     }
                 });
             }
@@ -40,22 +52,21 @@ router.post("/tournament_register", (req, res) => {
     });
 });
 
-//登録されている大会を呼び出し
+//登録されている大会のテーブルを最新のもの１０件呼び出してクライアント側に渡す
 router.post("/tournament_call", (req, res) => {
     const { tournament_name, opening, closing } = req.body;
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
-        //const date = new Date().toLocaleString('sv').replace(/\D/g, '');
-        //console.log(date);
         //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
         connection.query("select * from t_tournament order by opening desc limit 10",(err, rows) => {
             connection.release();
+          
             if(err){
                 return res.status(400).json([
                     {
-                        message: "大会情報を読みだせません"
+                        message: "大会情報を読みだせませんでした"
                     }
                 ]); 
             }else{

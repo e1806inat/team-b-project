@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import "./App.css";
-// import offset from 'jquery';
 
 function App() {
   const result = [
@@ -94,28 +93,28 @@ function App() {
 
     if (max === u) {
       direction = "u";
-      $(".key_u").addClass("gray_for_touch");
-      $(".key_d").removeClass("gray_for_touch");
-      $(".key_l").removeClass("gray_for_touch");
-      $(".key_r").removeClass("gray_for_touch");
+      $(".key_u").css('background-color','rgba(255,255,255,0.8)');
+      $(".key_d").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_l").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_r").css('background-color','rgba(255,255,255,0.3)');
     } else if (max === d) {
       direction = "d";
-      $(".key_d").addClass("gray_for_touch");
-      $(".key_u").removeClass("gray_for_touch");
-      $(".key_l").removeClass("gray_for_touch");
-      $(".key_r").removeClass("gray_for_touch");
+      $(".key_d").css('background-color','rgba(255,255,255,0.8)');
+      $(".key_u").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_l").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_r").css('background-color','rgba(255,255,255,0.3)');
     } else if (max === l) {
       direction = "l";
-      $(".key_l").addClass("gray_for_touch");
-      $(".key_u").removeClass("gray_for_touch");
-      $(".key_d").removeClass("gray_for_touch");
-      $(".key_r").removeClass("gray_for_touch");
+      $(".key_l").css('background-color','rgba(255,255,255,0.8)');
+      $(".key_u").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_d").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_r").css('background-color','rgba(255,255,255,0.3)');
     } else if (max === r) {
       direction = "r";
-      $(".key_r").addClass("gray_for_touch");
-      $(".key_u").removeClass("gray_for_touch");
-      $(".key_d").removeClass("gray_for_touch");
-      $(".key_l").removeClass("gray_for_touch");
+      $(".key_r").css('background-color','rgba(255,255,255,0.8)');
+      $(".key_u").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_d").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_l").css('background-color','rgba(255,255,255,0.3)');
     }
   }
 
@@ -148,13 +147,13 @@ function App() {
     if (l[index] === "") {
       return;
     }
-
-    $("#text").val(text + l[index]);
+    console.log(l[index]);
+    $("#text").val(l[index]);
   }
 
   return (
     <div>
-      <input type="text" id="text"></input>
+      <input type="text" id="text" readOnly></input>
       <div className="key_shadow">
         <div className="key_u key_flick transparent"></div>
       </div>

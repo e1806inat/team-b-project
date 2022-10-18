@@ -1,12 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Hyoji } from './comInputSchool/Hyoji';
-import { CheckBoxList } from './comInputSchool/CheckBoxList';
+import { CheckBoxList } from './comInputSchool/CheckBoxList1';
+import { Link } from "react-router-dom";
 
 
 
 
 export const InputSchool = () => {
   const { Schools } = require("../DB/Schools"); //分割代入
+  const [isCheckBoxMode, setIsCheckBoxMode] = useState(!true)
   const ref = useRef()
 
 
@@ -26,8 +28,30 @@ export const InputSchool = () => {
 
   const handleCheckBox = () => {
     console.log("a")
-    //linkしてやる必要があるかも,handleCheckの中でフックスを呼び出してはいけない,return以外全部消してみる
-    CheckBoxList(useSchools, setUseSchools)
+    setIsCheckBoxMode(!isCheckBoxMode)
+    return (
+      <button>aa</button>
+    )
+  }
+
+  const handleResister = () => {
+    let copySchools = [];
+    useSchools.map(school => {
+      copySchools = [...copySchools, school.school]
+    })
+
+    console.log(copySchools)
+
+    fetch("http://localhost:5000/auth/user_register", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
   }
 
   return (
@@ -41,8 +65,11 @@ export const InputSchool = () => {
       <br />
       <button onClick={handleCheckBox}>チェックボックス入力</button>
       <hr></hr>
-      {Hyoji(useSchools, setUseSchools)}
+      {!isCheckBoxMode && Hyoji(useSchools, setUseSchools)}
+      {isCheckBoxMode && CheckBoxList(useSchools, setUseSchools)}<br />
+      <button onClick={handleResister}>高校名登録</button>
       <hr></hr>
+      <button><Link to={'/home/input_mode/'}>戻る</Link> </button>
     </div>
   )
 

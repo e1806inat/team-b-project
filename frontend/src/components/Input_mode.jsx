@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 
+
 const Input_mode = () => {
     return (
         <div>
@@ -11,7 +12,7 @@ const Input_mode = () => {
                     <Link to={'pre_input'}>事前入力</Link>
                 </button>
                 <button>
-                    <Link to={'/'}>速報入力</Link>
+                    <Link to={'Sokuho_Input_Makegame'}>速報入力</Link>
                 </button>
             </p>
 

@@ -13,7 +13,7 @@ const Pre_Input = () => {
                     <Link to={'InputSchool'}>学校情報入力入力</Link>
                 </button>
                 <button>
-                    <Link to={'/'}>メンバー情報入力</Link>
+                    <Link to={'InputMember'}>メンバー情報入力</Link>
                 </button>
             </p>
             <button><Link to={'/home/input_mode/'}>戻る</Link> </button>

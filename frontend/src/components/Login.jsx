@@ -17,6 +17,9 @@ const Login = () => {
     }
   }
 
+
+  
+
   const handleLogin = () => {
 
     fetch("http://localhost:5000/auth/login", {
@@ -25,6 +28,7 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
+      //body: JSON.stringify({ email:login_id , password:login_ps }),
       body: JSON.stringify({ email:login_id , password:login_ps }),
     })
       .then((response) => response.json())
@@ -33,7 +37,7 @@ const Login = () => {
 
   const handleRegister = () => {
 
-    fetch("http://localhost:5000/auth/register", {
+    fetch("http://localhost:5000/auth/user_register", {
       method: "POST",
       mode: "cors",
       headers: {

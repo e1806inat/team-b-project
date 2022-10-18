@@ -24,10 +24,10 @@ export const Input_Tournament = () => {
   const setYear = () => {
     for (let i = InitialYear; i <= new Date().getFullYear() + 10; i++) {
       const option = document.createElement('option');
-      const date = new Date(Date.UTC(i));
-      const jc = new Intl.DateTimeFormat('ja-JP-u-ca-japanese', { year: 'numeric' }).format(date);
-      option.value = `${i}（${jc}）`;
-      option.text = `${i}（${jc}）`;
+      //const date = new Date(Date.UTC(i));
+      //const jc = new Intl.DateTimeFormat('ja-JP-u-ca-japanese', { year: 'numeric' }).format(date);
+      option.value = i;
+      option.text = i;
       birthYearRef.current.appendChild(option);
     }
   }
@@ -44,15 +44,25 @@ export const Input_Tournament = () => {
 
 
   const handleTournament = () => {
-    console.log(birthYear)
-    console.log(birthMonth)
-    console.log(NameTournamentRef.current.value)
     let aTournament = [...TournamentData, [birthYear, birthMonth, NameTournamentRef.current.value]]
     aTournament.sort();
     aTournament.reverse();
     setTournamentData(aTournament);
-    console.log(TournamentData)
+    console.log({ "tournament_name": NameTournamentRef.current.value, "opening":birthYear+"-"+birthMonth+"-01" })
+    
+
+    fetch("http://localhost:5000/tournament/tournament_register", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      //body: JSON.stringify({ email:login_id , password:login_ps }),
+      body: JSON.stringify({ "tournament_name": NameTournamentRef.current.value, "opening":birthYear+"-"+birthMonth+"-01" }),
+    })
   }
+
+  
 
   const selectBirthYear = (e) => {
     setBirthYear(e.target.value);

@@ -14,7 +14,7 @@ router.post("/game_register", (req, res) => {
         console.log("MYSQLと接続中です");
         //select文とlimitで同じ大会で同じ日に同じ学校同士の試合がすでに登録されていないかを判定
         connection.query("select * from t_game where tournament_id = ? and school_id_1 = ? and school_id_2 = ? and game_ymd = ? LIMIT 1", [tournament_id, school_id_1, school_id_2, game_ymd], (err, rows) => {
-            connection.release();
+            //connection.release();
             //console.log(rows.length);
             if (rows.length != 0){
                 return res.status(400).json([
@@ -25,15 +25,17 @@ router.post("/game_register", (req, res) => {
             } else {
                 //登録されていない場合、試合テーブルを作成
                 connection.query("insert into t_game values (0, ?, ?, ?, ?, ?, ?, ?, ?)", [tournament_id, school_id_1, school_id_2, venue_id, match_num, first_rear_1, first_rear_2, game_ymd], (err, rows) => {
-                    connection.release();
+                    //connection.release();
                     if (err) {
+                        connection.release();
+                        console.log(err);
                         return res.status(400).json([
                             {
                                 message: "試合情報を登録できません"
                             }
                         ]);
                     } else {
-                        //作成した試合テーブルの試合ID(game_id)をクライアントに送信
+                        //作成した試合テーブルの試合ID(game_id)をクライアントに送信(いらないかも)
                         connection.query("select last_insert_id()", (err, rows) => {
                             connection.release();
                             if (err){
@@ -73,6 +75,7 @@ router.post("/game_edit", (req, res) => {
                 ]); 
             }else{
                 console.log(rows);
+                //return;
             }
         });
     });

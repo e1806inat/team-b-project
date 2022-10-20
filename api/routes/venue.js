@@ -13,9 +13,10 @@ router.post("/venue_register", (req, res) => {
         console.log("MYSQLと接続中です");
         //select文とlimitで同じ名前の会場がすでに登録されていないかを判定
         connection.query("select * from t_venue where venue_name = ? LIMIT 1", [venue_name], (err, rows) => {
-            connection.release();
+            //connection.release();
             //console.log(rows.length);
             if(rows.length != 0){
+                connection.release();
                 return res.status(400).json([
                     {
                         message: "すでにその会場は登録しています。"

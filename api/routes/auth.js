@@ -28,11 +28,12 @@ router.post("/user_register", body("email").isEmail(), body("password").isLength
 
         //DBにユーザが存在しているか確認
         connection.query(`select count(*) from login where user_name = "${email}"`, async (err, rows) => {
-            connection.release();
+            //connection.release();
             if (err) {
                 console.log('matigatteiru');
             }
             if (rows[0]['count(*)'] >= 1) {
+                connection.release();
                 return res.status(400).json([
                     {
                         message: "すでにそのユーザは存在しています。"
@@ -48,6 +49,7 @@ router.post("/user_register", body("email").isEmail(), body("password").isLength
                     connection.release();
                     if (err) {
                         console.log('登録失敗');
+                        //return;
                     }
                 });
             }

@@ -14,9 +14,10 @@ router.post("/tournament_register", (req, res) => {
         console.log("MYSQLと接続中です");
         //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
         connection.query("select * from t_tournament where tournament_name = ? and opening = ? LIMIT 1", [tournament_name, opening], (err, rows) => {
-            connection.release();
+            //connection.release();
             //console.log(rows.length);
             if(rows.length != 0){
+                connection.release();
                 return res.status(400).json([
                     {
                         message: "すでにその大会は存在しています。"
@@ -24,8 +25,9 @@ router.post("/tournament_register", (req, res) => {
                 ]); 
             }else{
                 connection.query("insert into t_tournament values (0, ?, ?)", [tournament_name, opening], (err, rows) => {
-                    connection.release();
+                    //connection.release();
                     if (err) {
+                        connection.release();
                         return res.status(400).json([
                             {
                                 message: "大会情報を登録できません"

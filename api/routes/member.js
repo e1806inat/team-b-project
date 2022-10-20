@@ -23,7 +23,8 @@ router.post("/member_register", (req, res) => {
                     console.log('読み取り失敗');
                 }
             });
-        }); 
+        });
+        //return; 
     });
 });
 
@@ -38,7 +39,7 @@ router.post("/starting_member_register", (req, res) => {
         req.body.forEach( function(value) {
             //次はデータ取得から
             connection.query('update t_player set  batting_order = ?, s_member = ? where player_id = ?', [value.batting_order, value.s_member, value.player_id], (err, rows) => {
-                connection.release();
+                //connection.release();
                 if (err) {
                     console.log('読み取り失敗');
                 } 
@@ -46,12 +47,15 @@ router.post("/starting_member_register", (req, res) => {
         }); 
 
         connection.query("select * from t_player where s_member is not null", (err, rows) => {
+            connection.release();
             if (err) {
                 console.log('読み取り失敗');
+                //return;
             }else{
                 return res.json(rows);
             }  
         });
+       
     });
 });
 
@@ -99,6 +103,7 @@ router.post("/member_edit", (req, res) => {
                 ]); 
             }else{
                 console.log(rows);
+                //return;
             }
         });
     });

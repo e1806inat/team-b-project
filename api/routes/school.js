@@ -15,12 +15,13 @@ router.post("/school_register", (req, res) => {
 
         //学校名のかぶりがあるか判定
         connection.query("select * from t_school where school_name = ? LIMIT 1", [school_name], (err, rows) => {
-            connection.release();
+            //connection.release();
 
             if (rows.length != 0) {
+                connection.release();
                 return res.status(400).json([
                     {
-                        message: "すでにその試合は存在しています。"
+                        message: "すでにその学校は存在しています。"
                     }
                 ]);
             } else {
@@ -84,13 +85,14 @@ router.post("/participants_register", (req, res) => {
         req.body.forEach(function (value) {
             //次はデータ取得から
             connection.query('insert into t_participants values (?, ?)', [value.tournament_id, value.school_id], (err, rows) => {
-                connection.release();
+                //connection.release();
                 //console.log(err);
                 if (err) {
                     console.log('読み取り失敗');
                 }
             });
         });
+        connection.release();
     });
 });
 
@@ -120,7 +122,7 @@ router.post("/school_call", (req, res) => {
     });
 });
 
-//選手情報編集、選手情報を消すこともできる
+//参加学校情報を消すことができる
 router.post("/participants_delete", (req, res) => {
     const { tournament_id, school_id } = req.body;
     pool.getConnection((err, connection) => {
@@ -140,6 +142,7 @@ router.post("/participants_delete", (req, res) => {
                 ]);
             } else {
                 console.log(rows);
+                //return;
             }
         });
     });

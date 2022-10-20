@@ -112,6 +112,9 @@ router.post("/daseki_transmission", (req, res) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
+        console.log(at_bat_id);
+        console.log(inning);
+        console.log(game_id);
         
         //一時打席情報テーブルから情報をデータ取得
         connection.query(`select * from ${table_name} where at_bat_id = ? and inning = ? and game_id = ?`, [at_bat_id, inning, game_id], (err, rows) => {
@@ -163,14 +166,14 @@ router.post("/player_data_change", async (req, res) => {
 
 //試合情報更新（編集）
 router.post("/daseki_update", (req, res) => {
-    const { table_name, at_bat_id, game_id, school_id, player_id, score, outcount, base, text_inf, pass, touched_coordinate, ball_kind } = req.body;
+    const { table_name, at_bat_id, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind } = req.body;
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
 
         //次はデータ取得から
-        connection.query(`update ${table_name} set school_id = ?, player_id = ?, score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, at_bat_id, game_id], (err, rows) => {
+        connection.query(`update ${table_name} set school_id = ?, player_id = ?, score = ?, total_score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, at_bat_id, game_id], (err, rows) => {
             connection.release();
 
             console.log(rows);

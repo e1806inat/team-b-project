@@ -48,7 +48,8 @@ router.post("/school_register", (req, res) => {
     });
 });
 
-//選手情報編集、選手情報を消すこともできる
+/*
+//学校情報編集、学校情報を消すこともできる
 router.post("/school_edit", (req, res) => {
     const { school_id, school_name } = req.body;
     pool.getConnection((err, connection) => {
@@ -71,7 +72,7 @@ router.post("/school_edit", (req, res) => {
             }
         });
     });
-});
+});*/
 
 //大会ごとの参加校を登録
 router.post("/participants_register", (req, res) => {
@@ -122,6 +123,7 @@ router.post("/school_call", (req, res) => {
     });
 });
 
+/*
 //参加学校情報を消すことができる
 router.post("/participants_delete", (req, res) => {
     const { tournament_id, school_id } = req.body;
@@ -146,6 +148,6 @@ router.post("/participants_delete", (req, res) => {
             }
         });
     });
-});
+});*/
 
 module.exports = router;

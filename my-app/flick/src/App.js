@@ -52,7 +52,6 @@ function App() {
   });
 
   function onTouchStart(event) {
-    $(event.currentTarget).addClass("gray_for_touch");
     position = event.touches[0];
     direction = "c";
 

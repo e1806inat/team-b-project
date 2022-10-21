@@ -154,16 +154,16 @@ function App() {
     <div>
       <input type="text" id="text" readOnly></input>
       <div className="key_shadow">
-        <div className="key_u key_flick transparent"></div>
+        <div className="key_u key_flick1 transparent"></div>
       </div>
       <div className="key_shadow">
-        <div className="key_d key_flick transparent"></div>
+        <div className="key_d key_flick2 transparent"></div>
       </div>
       <div className="key_shadow">
-        <div className="key_l key_flick transparent"></div>
+        <div className="key_l key_flick3 transparent"></div>
       </div>
       <div className="key_shadow">
-        <div className="key_r key_flick transparent"></div>
+        <div className="key_r key_flick4 transparent"></div>
       </div>
       <div align="center">
         <div id="content1">弾道</div>

@@ -68,7 +68,43 @@ body {
   filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
   pointer-events: none;
 }
-.key_flick {
+.key_flick1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 2px;
+  font-size: 5px;
+  border-width: 50px 50px 0 0;
+  border-top-left-radius: 50px;
+  
+}
+.key_flick2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 2px;
+  font-size: 5px;
+}
+.key_flick3 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 2px;
+  font-size: 5px;
+}
+.key_flick4 {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;

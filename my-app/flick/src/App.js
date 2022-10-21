@@ -8,7 +8,7 @@ function App() {
     ["得点", "4", "3", "2", "1"],
   ];
 
-  var direction = "";
+  var direction = ""; 
   var position = "";
   window.addEventListener("load", function () {
     //スワイプ/フリック

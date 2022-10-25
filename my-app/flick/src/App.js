@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 import "./App.css";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     ["得点", "4", "3", "2", "1"],
   ];
 
-  var direction = ""; 
+  var direction = "";
   var position = "";
   window.addEventListener("load", function () {
     //スワイプ/フリック
@@ -53,13 +53,19 @@ function App() {
 
   function onTouchStart(event) {
     position = event.touches[0];
+    // console.log(position);
     direction = "c";
 
     var offset = $(event.currentTarget).offset();
-    $(".key_u").offset({ top: offset.top - 48, left: offset.left });
-    $(".key_d").offset({ top: offset.top + 48, left: offset.left });
-    $(".key_l").offset({ top: offset.top, left: offset.left - 48 });
-    $(".key_r").offset({ top: offset.top, left: offset.left + 48 });
+    // console.log(offset);
+    $(".key_u").offset({ top: offset.top-60, left: offset.left});
+    $(".key_d").offset({ top: offset.top+60, left: offset.left});
+    $(".key_l").offset({ top: offset.top, left: offset.left-60});
+    $(".key_r").offset({ top: offset.top, left: offset.left+60});
+    $(".key_u_back").offset({ top: offset.top, left: offset.left});
+    $(".key_d_back").offset({ top: offset.top, left: offset.left});
+    $(".key_l_back").offset({ top: offset.top, left: offset.left});
+    $(".key_r_back").offset({ top: offset.top, left: offset.left});
 
     let l = result.find((x) => x.includes($(event.currentTarget).text()));
     $(".key_u").text(l[1]);
@@ -74,7 +80,10 @@ function App() {
     $(".key_d").removeClass("transparent");
     $(".key_l").removeClass("transparent");
     $(".key_r").removeClass("transparent");
-    //addClassで要素に指定したclass属性を付与できる removeは逆
+    $(".key_u_back").removeClass("transparent");
+    $(".key_d_back").removeClass("transparent");
+    $(".key_l_back").removeClass("transparent");
+    $(".key_r_back").removeClass("transparent");
 
     var new_position = event.touches[0];
 
@@ -84,36 +93,38 @@ function App() {
     var r = new_position.screenX - position.screenX;
 
     var max = Math.max(u, d, r, l);
-    if (max < 20) {
+    if (max < 30) {
+      $(".key_r_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_u_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_d_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_l_back").css("background-color", "rgba(255,255,255,0.3)");
       return;
     }
 
-    // var input_key = $(event.currentTarget).text();
-
     if (max === u) {
       direction = "u";
-      $(".key_u").css('background-color','rgba(255,255,255,0.8)');
-      $(".key_d").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_l").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_r").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_u_back").css("background-color", "rgba(255,255,255,0.8)");
+      $(".key_d_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_l_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_r_back").css("background-color", "rgba(255,255,255,0.3)");
     } else if (max === d) {
       direction = "d";
-      $(".key_d").css('background-color','rgba(255,255,255,0.8)');
-      $(".key_u").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_l").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_r").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_d_back").css("background-color", "rgba(255,255,255,0.8)");
+      $(".key_u_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_l_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_r_back").css("background-color", "rgba(255,255,255,0.3)");
     } else if (max === l) {
       direction = "l";
-      $(".key_l").css('background-color','rgba(255,255,255,0.8)');
-      $(".key_u").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_d").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_r").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_l_back").css("background-color", "rgba(255,255,255,0.8)");
+      $(".key_u_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_d_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_r_back").css("background-color", "rgba(255,255,255,0.3)");
     } else if (max === r) {
       direction = "r";
-      $(".key_r").css('background-color','rgba(255,255,255,0.8)');
-      $(".key_u").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_d").css('background-color','rgba(255,255,255,0.3)');
-      $(".key_l").css('background-color','rgba(255,255,255,0.3)');
+      $(".key_r_back").css("background-color", "rgba(255,255,255,0.8)");
+      $(".key_u_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_d_back").css("background-color", "rgba(255,255,255,0.3)");
+      $(".key_l_back").css("background-color", "rgba(255,255,255,0.3)");
     }
   }
 
@@ -122,10 +133,11 @@ function App() {
     $(".key_d").addClass("transparent");
     $(".key_l").addClass("transparent");
     $(".key_r").addClass("transparent");
+    $(".key_u_back").addClass("transparent");
+    $(".key_d_back").addClass("transparent");
+    $(".key_l_back").addClass("transparent");
+    $(".key_r_back").addClass("transparent");
     $(event.currentTarget).removeClass("transparent");
-
-    // var input_key = "";
-    // var key = $(event.currentTarget).text();
 
     var l = result.find((x) => x.includes($(event.currentTarget).text()));
     var index = 0;
@@ -142,11 +154,10 @@ function App() {
       index = 4;
     }
 
-    var text = $("#text").val();
+    // var text = $("#text").val();
     if (l[index] === "") {
       return;
     }
-    console.log(l[index]);
     $("#text").val(l[index]);
   }
 
@@ -154,21 +165,28 @@ function App() {
     <div>
       <input type="text" id="text" readOnly></input>
       <div className="key_shadow">
-        <div className="key_u key_flick1 transparent"></div>
+        <div className="key_u_back transparent"></div>
+        <div className="key_u transparent"></div>
       </div>
       <div className="key_shadow">
-        <div className="key_d key_flick2 transparent"></div>
+        <div className="key_d_back transparent"></div>
+        <div className="key_d  transparent"></div>
       </div>
       <div className="key_shadow">
-        <div className="key_l key_flick3 transparent"></div>
+        <div className="key_l_back transparent"></div>
+        <div className="key_l  transparent"></div>
       </div>
       <div className="key_shadow">
-        <div className="key_r key_flick4 transparent"></div>
+        <div className="key_r_back transparent"></div>
+        <div className="key_r transparent"></div>
       </div>
       <div align="center">
         <div id="content1">弾道</div>
+        <br></br>
         <div id="content2">センター</div>
+        <br></br>
         <div id="content3">得点</div>
+        {/* <div className="box">回転</div> */}
       </div>
     </div>
   );

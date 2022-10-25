@@ -5,55 +5,47 @@ body {
   -moz-user-select: none;
   -khtml-user-select: none;
   touch-action: none;
+  background-color: red;
 }
 .key_u {
   font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
 }
 
 .key_d {
   font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
 }
 
 .key_l {
   font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
 }
 
 .key_r {
   font-size: 10px;
-}
-.key_u_back {
-  width: 0;
-  height: 0;
-  border: 50px solid transparent;
-  border-top: 50px solid #f00;
-  border-radius: 50%;
-}
-
-.key_d_back {
-  width: 0;
-  height: 0;
-  border: 50px solid transparent;
-  border-top: 50px solid #f00;
-  border-radius: 50%;
-  transform: rotate(180deg);
-}
-
-.key_l_back {
-  width: 0;
-  height: 0;
-  border: 50px solid transparent;
-  border-top: 50px solid #f00;
-  border-radius: 50%;
-  transform: rotate(-90deg);
-}
-
-.key_r_back {
-  width: 0;
-  height: 0;
-  border: 50px solid transparent;
-  border-top: 50px solid #f00;
-  border-radius: 50%;
-  transform: rotate(90deg);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  background-color: white;
 }
 
 .transparent {
@@ -62,77 +54,76 @@ body {
 }
 
 .key_shadow {
-  font-size: 10px;
-  font-weight: 700;
   position: absolute;
-  filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.3));
   pointer-events: none;
 }
-.key_flick1 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
+
+.key_u_back{
+  background-color: rgba(255,255,255,0.5);
   height: 50px;
   width: 50px;
+  border-radius: 2px;
+  border-width: 50px 50px 0 0;
+  border-top-left-radius: 50px;
+  transform: rotate(45deg);
+}
+.key_d_back{
   background-color: rgba(255,255,255,0.5);
+  height: 50px;
+  width: 50px;
+  border-radius: 2px;
+  border-width: 50px 50px 0 0;
+  border-top-left-radius: 50px;
+  transform: rotate(-135deg);
+}
+.key_l_back{
+  background-color: rgba(255,255,255,0.5);
+  height: 50px;
+  width: 50px;
+  border-radius: 2px;
+  border-width: 50px 50px 0 0;
+  border-top-left-radius: 50px;
+  transform: rotate(-45deg);
+}
+.key_r_back{
+  background-color: rgba(255,255,255,0.5);
+  height: 50px;
+  width: 50px;
   border-radius: 2px;
   font-size: 5px;
   border-width: 50px 50px 0 0;
   border-top-left-radius: 50px;
-  
-}
-.key_flick2 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  height: 50px;
-  width: 50px;
-  background-color: rgba(255,255,255,0.5);
-  border-radius: 2px;
-  font-size: 5px;
-}
-.key_flick3 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  height: 50px;
-  width: 50px;
-  background-color: rgba(255,255,255,0.5);
-  border-radius: 2px;
-  font-size: 5px;
-}
-.key_flick4 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  height: 50px;
-  width: 50px;
-  background-color: rgba(255,255,255,0.5);
-  border-radius: 2px;
-  font-size: 5px;
+  transform: rotate(135deg);
 }
 #content1 {
-  padding: 20px;
-  height: 20px;
-  width: 20px;
+  padding: 50px;
+  height: 50px;
+  width: 50px;
   background-color: red;
   font-size:5px;
 }
 #content2 {
-  padding: 20px;
-  height: 20px;
-  width: 20px;
+  padding: 10px;
+  height: 50px;
+  width: 50px;
   background-color: blue;
   font-size:5px;
 }
 #content3 {
-  padding: 20px;
-  height: 20px;
-  width: 20px;
+  height: 50px;
+  width: 50px;
   background-color: yellow;
   font-size:5px;
+}
+
+.box {
+  text-align: center;
+  width: 50px;
+  line-height: 50px;
+  background-color: aquamarine;
+  transition: 1.0s;
+}
+ 
+.box:hover {
+  transform: rotate(45deg);
 }

@@ -48,7 +48,7 @@ router.post("/school_register", (req, res) => {
     });
 });
 
-/*
+
 //学校情報編集、学校情報を消すこともできる
 router.post("/school_edit", (req, res) => {
     const { school_id, school_name } = req.body;
@@ -72,8 +72,9 @@ router.post("/school_edit", (req, res) => {
             }
         });
     });
-});*/
+});
 
+/*
 //大会ごとの参加校を登録
 router.post("/participants_register", (req, res) => {
     //const { tournament_id, school_name } = req.body;
@@ -95,7 +96,7 @@ router.post("/participants_register", (req, res) => {
         });
         connection.release();
     });
-});
+});*/
 
 //対象の大会の学校情報呼び出し
 router.post("/school_call", (req, res) => {

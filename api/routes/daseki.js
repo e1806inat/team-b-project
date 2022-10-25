@@ -18,14 +18,14 @@ router.get("/", (req, res) => {
 
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
 router.post("/daseki_register", (req, res) => {
-    const { table_name, at_bat_id, inning, game_id, school_id, player_id, score, outcount, base, text_inf, pass, touched_coordinate, ball_kind } = req.body;
+    const { table_name, at_bat_id, inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind } = req.body;
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
 
         //次はデータ取得から
-        connection.query(`insert into ${table_name} values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [at_bat_id, inning, game_id, school_id, player_id, score, outcount, base, text_inf, pass, touched_coordinate, ball_kind], (err, rows) => {
+        connection.query(`insert into ${table_name} values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [at_bat_id, inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind], (err, rows) => {
             connection.release();
 
             if (err) {
@@ -46,7 +46,7 @@ router.post("/tmp_table_create", (req, res) => {
         console.log("MYSQLと接続中です");
         
         //一時的にデータを保存するためのテーブル作成
-        connection.query(`create table ${table_name}(at_bat_id int not null, inning varchar(5), game_id int not null,  school_id int not null, player_id int not null, score int, outcount int, base char(3), text_inf varchar(300), pass bool, touched_coordinate varchar(100), ball_kind varchar(10), primary key(at_bat_id, inning, game_id))`,(err, rows) => {
+        connection.query(`create table ${table_name}(at_bat_id int not null, inning varchar(5), game_id int not null,  school_id int not null, player_id int not null, score int, total_score int, outcount int, base char(3), text_inf varchar(300), pass bool, touched_coordinate varchar(100), ball_kind varchar(10), primary key(at_bat_id, inning, game_id))`,(err, rows) => {
             connection.release();
 
             console.log(err);
@@ -60,23 +60,38 @@ router.post("/tmp_table_create", (req, res) => {
 
 //一時打席情報登録用のテーブル削除
 router.post("/tmp_table_delete", (req, res) => {
-    //create table のための名前作成
-    const {table_name} = req.body;
+    
+    const {table_name, game_id} = req.body;
 
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
         
-        //一時的にデータを保存するためのテーブル作成
-        connection.query(`drop table ${table_name}`,(err, rows) => {
-            connection.release();
+        //蓄積テーブルに試合データが保存されていることを確認
+        connection.query(`select exists(select * from t_at_bat where game_id = ?)`, [game_id], (err, rows) => {
 
-            console.log(err);
+            console.log(rows);
+            
             if (err) {
                 console.log('試合テーブルを削除できません');
             }
-    
+            //保存されていれば一時テーブルを削除
+            if (rows>=0){
+                connection.query(`drop table ${table_name}`,(err, rows) => {
+                    connection.release();
+        
+                    console.log(err);
+                    if (err) {
+                        console.log('試合テーブルを削除できません');
+                    }
+                });
+            }
+            else{
+                //保存されていないときの処理
+                connection.release();
+                console.log('試合が保存されてません');
+            }
         });
     });
 });
@@ -172,7 +187,7 @@ router.post("/daseki_update", (req, res) => {
 
         console.log("MYSQLと接続中です");
 
-        //次はデータ取得から
+        //試合情報の更新
         connection.query(`update ${table_name} set school_id = ?, player_id = ?, score = ?, total_score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, at_bat_id, game_id], (err, rows) => {
             connection.release();
 

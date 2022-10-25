@@ -34,7 +34,7 @@ router.post("/tournament_register", (req, res) => {
                             }
                         ]); 
                     } else {
-                        //大会IDを取得しているなくてもいいかも
+                        //大会IDを取得している.なくてもいいかも
                         connection.query("select last_insert_id()", (err, rows) => {
                             connection.release();
                             if (err){

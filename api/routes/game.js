@@ -55,7 +55,7 @@ router.post("/game_register", (req, res) => {
     });
 });
 
-//選手情報編集、選手情報を消すこともできる
+//試合中の選手情報編集
 router.post("/game_edit", (req, res) => {
     const {player_id, tournament_id, school_id_1, school_id_2, venue_id, match_num, first_rear_1, first_rear_2, game_ymd} = req.body;
     pool.getConnection((err, connection) => {

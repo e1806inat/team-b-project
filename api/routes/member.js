@@ -73,7 +73,7 @@ router.post("/member_change_call", (req, res) => {
             if(err){
                 return res.status(400).json([
                     {
-                        message: "会場情報を読みだせません"
+                        message: "選手情報を読みだせません"
                     }
                 ]); 
             }else{

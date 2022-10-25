@@ -58,14 +58,14 @@ function App() {
 
     var offset = $(event.currentTarget).offset();
     // console.log(offset);
-    $(".key_u").offset({ top: offset.top-60, left: offset.left});
-    $(".key_d").offset({ top: offset.top+60, left: offset.left});
-    $(".key_l").offset({ top: offset.top, left: offset.left-60});
-    $(".key_r").offset({ top: offset.top, left: offset.left+60});
-    $(".key_u_back").offset({ top: offset.top, left: offset.left});
-    $(".key_d_back").offset({ top: offset.top, left: offset.left});
-    $(".key_l_back").offset({ top: offset.top, left: offset.left});
-    $(".key_r_back").offset({ top: offset.top, left: offset.left});
+    $(".key_u").offset({ top: offset.top - 40, left: offset.left });
+    $(".key_d").offset({ top: offset.top + 40, left: offset.left });
+    $(".key_l").offset({ top: offset.top, left: offset.left - 40 });
+    $(".key_r").offset({ top: offset.top, left: offset.left + 40 });
+    $(".key_u_back").offset({ top: offset.top - 40, left: offset.left });
+    $(".key_d_back").offset({ top: offset.top + 40, left: offset.left });
+    $(".key_l_back").offset({ top: offset.top, left: offset.left - 40 });
+    $(".key_r_back").offset({ top: offset.top, left: offset.left + 40 });
 
     let l = result.find((x) => x.includes($(event.currentTarget).text()));
     $(".key_u").text(l[1]);
@@ -93,7 +93,7 @@ function App() {
     var r = new_position.screenX - position.screenX;
 
     var max = Math.max(u, d, r, l);
-    if (max < 30) {
+    if (max < 20) {
       $(".key_r_back").css("background-color", "rgba(255,255,255,0.3)");
       $(".key_u_back").css("background-color", "rgba(255,255,255,0.3)");
       $(".key_d_back").css("background-color", "rgba(255,255,255,0.3)");

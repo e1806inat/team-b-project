@@ -98,7 +98,7 @@ router.post("/tmp_table_delete", (req, res) => {
 
 //一時打席情報登録テーブルの情報を打席情報蓄積テーブルへ送信
 router.post("/data_register", (req, res) => {
-    //create table のための名前作成
+    //一時テーブルの名前受け取り
     const {tmp_table_name} = req.body;
 
     pool.getConnection((err, connection) => {

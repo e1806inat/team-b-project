@@ -49,7 +49,7 @@ router.post("/school_register", (req, res) => {
 });
 
 
-//学校情報編集、学校情報を消すこともできる
+//学校情報編集
 router.post("/school_edit", (req, res) => {
     const { school_id, school_name } = req.body;
     pool.getConnection((err, connection) => {

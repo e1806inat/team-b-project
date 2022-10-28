@@ -1,16 +1,16 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
 
 //メインのDOMの中で配置するサブ部品のような要素
 class Popup extends React.Component {
   render() {
     return (
-      <div className="popup">
-        <div className="popup_inner">
-          <h1>{this.props.text}</h1>
-          <h2></h2>
-          <button onClick={this.props.closePopup}>いいえ</button>
-          <button onClick={this.props.closePopup}>はい</button>
+      <div className="popup_field">
+        <div className="popup_inner_field">
+          <div className="title">{this.props.text}</div>
+          <p>情報が更新されますがよろしいでしょうか？</p>
+          <button className="button_style" onClick={this.props.closePopup}>いいえ</button>
+          <nbsp></nbsp>
+          <button className="button_style" onClick={this.props.closePopup}>はい</button>
         </div>
       </div>
     );
@@ -35,7 +35,7 @@ class Popup_field extends React.Component {
   //renderの中に設置したいメインのDOM(部品）を記述していく
   render() {
     return (
-      <div className="app">
+      <div>
         <h1>test</h1>
         <button onClick={this.togglePopup}>更新</button>
         {/* this.state.PopupがtrueであればPopupウィンドウを開く */}
@@ -49,6 +49,3 @@ class Popup_field extends React.Component {
 
 //配置する部品の決まり文句
 export default Popup_field;
-//以下、使い方がよくわからない
-// const root = ReactDOM.createRoot(document.getElementById("content"));
-// root.render(<Popup_field/>);

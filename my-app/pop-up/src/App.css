@@ -2,13 +2,7 @@ h1 {
   margin: auto;
   padding: 0;
 }
-/* html, body, .app {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  width: 100%;
-  height: 100vh;
-} */
+
 .popup_field {
   position: fixed;
   width: 100%;

@@ -54,7 +54,7 @@ router.post("/tournament_register", (req, res) => {
     });
 });
 
-//登録されている大会のテーブルを最新のもの１０件呼び出してクライアント側に渡す
+//登録されている大会のテーブルを最新のものかつnotnullな１０件呼び出してクライアント側に渡す
 router.post("/tournament_call", (req, res) => {
     //const { tournament_name, opening} = req.body;
     pool.getConnection((err, connection) => {
@@ -62,13 +62,61 @@ router.post("/tournament_call", (req, res) => {
 
         console.log("MYSQLと接続中です");
         //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
-        connection.query("select * from t_tournament order by opening desc limit 10",(err, rows) => {
+        connection.query("select * from t_tournament where tournament_name != NULL and opening != NULL order by opening desc limit 10",(err, rows) => {
             connection.release();
           
             if(err){
                 return res.status(400).json([
                     {
                         message: "大会情報を読みだせませんでした"
+                    }
+                ]); 
+            }else{
+                return res.json(rows);
+            }
+        })
+    });
+});
+
+//大会テーブルの編集
+router.post("/tournament_edit", (req, res) => {
+    const { tournament_id, tournament_name, opening} = req.body;
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        console.log("MYSQLと接続中です");
+        //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
+        connection.query('update t_tournament set tournament_name = ?, opening = ? where tournament_id = ?', [tournament_id, opening, tournament_name], (err, rows) => {
+            connection.release();
+          
+            if(err){
+                return res.status(400).json([
+                    {
+                        message: "大会情報を編集できませんでした"
+                    }
+                ]); 
+            }else{
+                return res.json(rows);
+            }
+        })
+    });
+});
+
+//大会テーブルの編集
+router.post("/tournament_delete", (req, res) => {
+    const { tournament_id} = req.body;
+    pool.getConnection((err, connection) => {
+        if (err) throw err;
+
+        console.log("MYSQLと接続中です");
+        //大会情報の削除
+        connection.query('delete from t_tournament where tournament_id = ?', [tournament_id], (err, rows) => {
+            connection.release();
+          
+            if(err){
+                return res.status(400).json([
+                    {
+                        message: "大会情報を削除できませんでした"
                     }
                 ]); 
             }else{

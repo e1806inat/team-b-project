@@ -64,7 +64,7 @@ router.post("/school_edit", (req, res) => {
             if (err) {
                 return res.status(400).json([
                     {
-                        message: "選手情報を更新できません"
+                        message: "学校情報を更新できません"
                     }
                 ]);
             } else {

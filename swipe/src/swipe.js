@@ -5,16 +5,16 @@ const styles = {
     slide: {
       padding: 50,
       minHeight: 300,
-      color: '#000',
+      color: '#fff',
     },
     slide1: {
-      background: '#FEA900',
+      background: '#Bce2e8',
     },
     slide2: {
       background: '#B3DC4A',
     },
     slide3: {
-      background: '#6AC0FF',
+      background: '#797979',
     },
 };
 

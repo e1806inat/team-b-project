@@ -13,7 +13,7 @@ router.post("/member_register", (req, res) => {
 
         console.log(req.body)
         console.log("MYSQLと接続中です");
-        
+        //選手情報をforeachで処理。ただし、途中で読み込みに失敗したら処理をなかったことにするエラー処理が必要な気がする。
         req.body.forEach( function(value) {
             //次はデータ取得から
             connection.query('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)', [value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw], (err, rows) => {

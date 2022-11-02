@@ -74,29 +74,37 @@ router.post("/school_edit", (req, res) => {
     });
 });
 
-/*
+
 //大会ごとの参加校を登録
 router.post("/participants_register", (req, res) => {
-    //const { tournament_id, school_name } = req.body;
+    const { tournament_id, school_id } = req.body;
     console.log(req.body);
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
         console.log("MYSQLと接続中です");
-
+        
+        /*
         req.body.forEach(function (value) {
             //次はデータ取得から
-            connection.query('insert into t_participants values (?, ?)', [value.tournament_id, value.school_id], (err, rows) => {
+            connection.query('insert into t_participants values (?, ?)', [tournament_id, school_id], (err, rows) => {
                 //connection.release();
                 //console.log(err);
                 if (err) {
                     console.log('読み取り失敗');
                 }
             });
+        });*/
+        connection.query('insert into t_participants values (?, ?)', [tournament_id, school_id], (err, rows) => {
+            connection.release();
+            console.log(err);
+            if (err) {
+                console.log('読み取り失敗');
+            }
         });
-        connection.release();
+    //connection.release();
     });
-});*/
+});
 
 //対象の大会の学校情報呼び出し
 router.post("/school_call", (req, res) => {
@@ -124,7 +132,7 @@ router.post("/school_call", (req, res) => {
     });
 });
 
-/*
+
 //参加学校情報を消すことができる
 router.post("/participants_delete", (req, res) => {
     const { tournament_id, school_id } = req.body;
@@ -134,7 +142,7 @@ router.post("/participants_delete", (req, res) => {
         console.log(req.body)
         console.log("MYSQLと接続中です");
 
-        connection.query('delete from participants where tournament_id = ? and school_id = ?', [tournament_id, school_id], (err, rows) => {
+        connection.query('delete from t_participants where tournament_id = ? and school_id = ?', [tournament_id, school_id], (err, rows) => {
             connection.release();
             console.log(rows);
             if (err) {
@@ -149,6 +157,6 @@ router.post("/participants_delete", (req, res) => {
             }
         });
     });
-});*/
+});
 
 module.exports = router;

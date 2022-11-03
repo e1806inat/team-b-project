@@ -1,0 +1,63 @@
+.Frame {
+    display:flex;
+    flex-wrap: wrap;
+    position: relative;
+    width: 850px;
+    height: 140px;
+    
+    font-family: monospace;
+    font-size: 20px;
+    background: #0d571b;
+}
+.item1{
+    color: white;
+    width: 20px;
+    margin: 7px 5px 5px;
+    padding: 7px;
+    text-align: center;
+}
+.item2{
+    background-color: black;
+    color: white;
+    width: 20px;
+    margin: 0px 5px 5px;
+    padding: 7px;
+    text-align: center;
+}
+.item3{
+    background-color: black;
+    color: white;
+    width: 20px;
+    margin: 3px 5px 10px;
+    padding: 7px;
+    text-align: center;
+}
+.name-item1{
+    color: white;
+    width: 90px;
+    margin: 7px 5px 5px;
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 7px;
+}
+.name-item2{
+    background-color: black;
+    color: white;
+    width: 90px;
+    margin: 0px 5px 5px;
+    margin-left: 20px;
+    padding: 7px;
+}
+.name-item3{
+    background-color: black;
+    color: white;
+    width: 90px;
+    margin: 3px 5px 10px;
+    margin-left: 20px;
+    padding: 7px;
+}
+.spacer {
+    width: 100%;
+}
+
+

@@ -1,0 +1,208 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
+
+*{
+    font-family: 'M PLUS 1p', sans-serif;
+}
+
+:root{
+    --color-main: #006fae;
+}
+
+div{
+    display: block;
+}
+
+.date{
+    font-size: 30px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: normal;
+    justify-content: center;
+    align-items: normal;
+    -webkit-box-pack: justify;
+    justify-content: center;
+}
+
+a{
+    text-decoration: none;
+    color: #333;
+}
+
+input[type="date"] {
+    position: relative;
+    padding: 0 10px;
+    width: 200px;
+    height: 36px;
+    border: 0;
+    background: transparent;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: #999;
+  }
+
+.targetModules{
+    margin-bottom: 30px;
+}
+
+.gameName{
+    background-color: var(--color-main);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 10px;
+    text-align: center;
+}
+
+
+.gameDetaile{
+    margin: 30px 0;
+    border-bottom: solid 1px #e0e0e0;
+    display: flex;
+    flex-direction: column;
+}
+
+.gameDetaile a{
+    display: block;
+}
+
+
+
+.gameRound, .gamePlace{
+    font-size: 13px;
+    color: rgb(129, 124, 124);
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: normal;
+    justify-content: center;
+    align-items: normal;
+    -webkit-box-pack: justify;
+    justify-content: center;
+}
+
+
+.gameCard{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    -webkit-box-align: center;
+    
+}
+
+.firstAttackTeam{
+    width: 35%;
+    text-align: center;
+}
+
+.gameScore{
+    width: 35%;
+    text-align: center;
+    display: -webkit-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: normal;
+    justify-content: center;
+    align-items: normal;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.gameStartTime{
+    font-size: 30px;
+    font-weight: bold;
+    width: 35%;
+    /*display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;*/
+    justify-content: center;
+    text-align: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    /*flex-direction: column;*/
+    -webkit-box-pack: center;
+    margin: auto;
+}
+
+.endGame{
+    width: 40%;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: normal;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.firstAttackTeamScore{
+    font-size: 30px;
+    font-weight: bold;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    text-align: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-pack: center;
+}
+
+.gameState{
+    color: var(--color-main);
+    width: 40%;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: normal;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.secondAttackTeamScore{
+    font-size: 30px;
+    font-weight: bold;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    text-align: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    -webkit-box-pack: center;
+}
+
+.secondAttackTeam{
+    width: 35%;
+    text-align: center;
+}
+
+.teamName{
+    margin: 0 auto;
+    padding: 0 10px;
+    color: #333;
+    font-weight: bold;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 25px;
+    flex-basis: 30%;
+    text-align: center;
+}

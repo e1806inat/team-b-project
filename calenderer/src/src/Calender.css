@@ -1,0 +1,15 @@
+.CalenderButton{
+  background-color: transparent;
+  border: transparent;
+  padding: 10px;
+  font-size: 30px;
+}
+
+.changeDate{
+  margin: 10px;
+  text-align: center;
+}
+
+.react-datepicker__month-view__days__day--neighboringMonth .react-datepicker__month-view__days__day--neighboringMonth {
+  color: white !important;
+}

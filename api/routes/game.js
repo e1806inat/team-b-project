@@ -1,13 +1,72 @@
 const router = require("express").Router();
-const mysql = require("mysql2");
-const async = require('async');
-const config = require("../mysqlConnection/config");
+//const mysql = require("mysql2");
+//const async = require('async');
+//const config = require("../mysqlConnection/config");
+const { beginTran, executeQuery } = require("../mysql_client.js");
 
-const pool = mysql.createPool(config.serverConf);
+//const pool = mysql.createPool(config.serverConf);
 
 //試合情報登録
-router.post("/game_register", (req, res) => {
+router.post("/game_register", async (req, res) => {
     const { tournament_id, school_id_1, school_id_2, venue_id, match_num, first_rear_1, first_rear_2, game_ymd } = req.body;
+
+    const tran = await beginTran();
+
+    try{
+        rows = await tran.query("select count(*) from t_game where tournament_id = ? and school_id_1 = ? and school_id_2 = ? and game_ymd = ?", [tournament_id, school_id_1, school_id_2, game_ymd]);
+        if (rows[0]['count(*)'] >= 1){
+            return res.status(400).json([
+                {
+                    message: "すでにその試合は存在しています。"
+                }
+            ]);
+        } else {
+            //登録されていない場合、試合テーブルを作成
+            try{
+                await tran.query("insert into t_game values (0, ?, ?, ?, ?, ?, ?, ?, ?)", [tournament_id, school_id_1, school_id_2, venue_id, match_num, first_rear_1, first_rear_2, game_ymd]);
+                await tran.commit();
+                res.end("OK");
+            }
+            catch(err){
+                console.log("試合情報を登録できない");
+                console.log(err);
+                await tran.rollback();
+                next(err);
+            }
+            /*
+            connection.query("insert into t_game values (0, ?, ?, ?, ?, ?, ?, ?, ?)", [tournament_id, school_id_1, school_id_2, venue_id, match_num, first_rear_1, first_rear_2, game_ymd], (err, rows) => {
+                //connection.release();
+                if (err) {
+                    connection.release();
+                    console.log(err);
+                    return res.status(400).json([
+                        {
+                            message: "試合情報を登録できません"
+                        }
+                    ]);
+                } else {
+                    //作成した試合テーブルの試合ID(game_id)をクライアントに送信(いらないかも)
+                    connection.query("select last_insert_id()", (err, rows) => {
+                        connection.release();
+                        if (err){
+                            return res.status(400).json([
+                                {
+                                    message: "IDを取得できませんでした"
+                                }
+                            ]);
+                        } else {
+                            return res.json(rows);
+                        }
+                    });
+                }
+            });*/
+        }
+    }
+    catch(err){
+        console.log(err);
+        await tran.rollback();
+    }
+    /*
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -52,12 +111,24 @@ router.post("/game_register", (req, res) => {
                 });
             }
         });
-    });
+    });*/
 });
 
 //試合情報編集・削除・参照のための読み出し
-router.post("/game_call", (req, res) => {
+router.post("/game_call", async (req, res) => {
     const {tournament_id} = req.body;
+
+    //const tran = await beginTran();
+
+    try{
+        const rows = await executeQuery('select * from t_game where tournament_id = ? order by match_num', [tournament_id]);
+        return res.json(rows);
+    }
+    catch(err){
+        console.log("試合情報を読みだせない");
+        res.end("No good");
+    }
+    /*
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -78,7 +149,7 @@ router.post("/game_call", (req, res) => {
                 return res.json(rows);
             }
         });
-    });
+    });*/
 });
 
 //試合情報の編集

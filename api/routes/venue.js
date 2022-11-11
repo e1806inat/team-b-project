@@ -2,7 +2,7 @@ const router = require("express").Router();
 const mysql = require("mysql2");
 const config = require("../mysqlConnection/config");
 
-const pool = mysql.createPool(config.serverConf);
+//const pool = mysql.createPool(config.serverConf);
 
 //会場情報登録
 router.post("/venue_register", (req, res) => {

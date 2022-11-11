@@ -3,7 +3,7 @@ const mysql = require("mysql2");
 //const async = require('async');
 const config = require("../mysqlConnection/config");
 
-const pool = mysql.createPool(config.serverConf);
+//const pool = mysql.createPool(config.serverConf);
 
 //大会情報登録
 router.post("/tournament_register", (req, res) => {

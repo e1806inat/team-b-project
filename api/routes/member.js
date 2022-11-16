@@ -268,7 +268,7 @@ router.post("/cal_BA", async (req, res, next) => {
 
     try {
         //試合で選手が安打を打った打席のplayer_idとhitフラグを取得
-        rows = await tran.query('select player_id, hit from t_at_bat2 where game_id = ?', [game_id]);
+        rows = await tran.query('select player_id, hit from t_at_bat where game_id = ?', [game_id]);
 
         //for文を使って各選手毎の打席数とヒット数を計算
         for await (var values of rows) {

@@ -1,3 +1,5 @@
+const boom = require("boom");
+
 var errorHandler = (err, req, res, next) => {
     console.log('エラーハンドリング')
     if (res.headersSent) return next(err)

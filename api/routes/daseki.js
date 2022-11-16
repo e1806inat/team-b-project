@@ -103,15 +103,6 @@ router.post("/tmp_table_delete", async (req, res) => {
                 console.log("sakujodekinai")
                 await tran.rollback();
             }
-            /*
-            connection.query(`drop table ${table_name}`,(err, rows) => {
-                connection.release();
-    
-                console.log(err);
-                if (err) {
-                    console.log('試合テーブルを削除できません');
-                }
-            });*/
         }
         else {
             //保存されていないときの処理

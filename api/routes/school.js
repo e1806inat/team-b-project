@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const mysql = require("mysql2");
-const async = require('async');
-const config = require("../mysqlConnection/config");
+//const mysql = require("mysql2");
+//const async = require('async');
+//const config = require("../mysqlConnection/config");
 const { beginTran, executeQuery } = require("../mysql_client.js");
 
     
@@ -79,7 +79,7 @@ router.post("/school_register", async (req, res, next) => {
             res.end("Ok");
         }
     } catch (err) {
-        //await tran.rollback();
+        await tran.rollback();
         next(err);
     }
     /*
@@ -105,15 +105,14 @@ router.post("/school_register", async (req, res, next) => {
 });
 
 //学校情報編集
-router.post("/school_edit", async (req, res) => {
-    const tran = await beginTran();
+router.post("/school_edit", async (req, res, next) => {
+    //const tran = await beginTran();
     const { school_id, school_name } = req.body;
     try{
-        await tran.query('update t_school2 set school_name = ? where school_id = ?', [school_name, school_id]);
-        await tran.commit();
+        await executeQuery('update t_school2 set school_name = ? where school_id = ?', [school_name, school_id]);
+        //console.log(err);
         res.end("OK");
     } catch (err) {
-        await tran.rollback();
         next(err);
     }
     /*
@@ -141,9 +140,19 @@ router.post("/school_edit", async (req, res) => {
 
 
 //大会ごとの参加校を登録
-router.post("/participants_register", (req, res) => {
+router.post("/participants_register", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
     console.log(req.body);
+
+    try{
+        await executeQuery('insert into t_participants values (?, ?)', [tournament_id, school_id]);
+        res.end('OK');
+    }
+    catch(err){
+        console.log('失敗');
+        next(err)
+    }
+    /*
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -159,7 +168,7 @@ router.post("/participants_register", (req, res) => {
                     console.log('読み取り失敗');
                 }
             });
-        });*/
+        });
         connection.query('insert into t_participants values (?, ?)', [tournament_id, school_id], (err, rows) => {
             connection.release();
             console.log(err);
@@ -168,12 +177,22 @@ router.post("/participants_register", (req, res) => {
             }
         });
     //connection.release();
-    });
+    });*/
 });
 
 //対象の大会の学校情報呼び出し
-router.post("/school_call_p", (req, res) => {
+router.post("/school_call_p", async (req, res, next) => {
     const { tournament_id } = req.body;
+
+    try{
+        await executeQuery("select * from t_school where school_id in (select school_id from t_participants where tournament_id = ?)", [tournament_id]);
+        res.end('OK');
+    }
+    catch(err){
+        console.log('sippai');
+        next(err);
+    }
+    /*
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -194,12 +213,21 @@ router.post("/school_call_p", (req, res) => {
             }
 
         });
-    });
+    });*/
 });
 
 //学校情報呼び出し
-router.post("/school_call", (req, res) => {
-    const { tournament_id } = req.body;
+router.post("/school_call", async (req, res, next) => {
+    //const { tournament_id } = req.body;
+
+    try{
+        rows = await executeQuery("select * from t_school");
+        return res.json(rows);
+    }
+    catch(err){
+        next(err);
+    }
+    /*
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -220,12 +248,21 @@ router.post("/school_call", (req, res) => {
             }
 
         });
-    });
+    });*/
 });
 
 //参加学校情報を消すことができる
-router.post("/participants_delete", (req, res) => {
+router.post("/participants_delete", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
+
+    try{
+        await executeQuery('delete from t_participants where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        res.end('OK');
+    }
+    catch(err){
+        next(err);
+    }
+    /*
     pool.getConnection((err, connection) => {
         if (err) throw err;
 
@@ -246,7 +283,7 @@ router.post("/participants_delete", (req, res) => {
                 //return;
             }
         });
-    });
+    });*/
 });
 
 module.exports = router;

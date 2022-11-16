@@ -1,0 +1,46 @@
+export const scoreBoard = (scoreState, nowIningState) => {
+    console.log(scoreState)
+
+    let teamAscore = 0
+    let teamBscore = 0
+
+
+
+
+    return (
+        <div>
+            <table className="scoreBoardTable" border="1">
+                <tr className="scoreBoardTr" >
+                    <th className="scoreBoardSchoolName"></th>
+                    {scoreState[0].map((a, ind) =>
+                        <th className="scoreBoardTh">{ind + 1}</th>
+                    )}
+                    <th className="scoreBoardSchoolName">計</th>
+                </tr>
+                <tr>
+                    <td>今治西</td>
+                    {scoreState[0].map((a, ind) => {
+                        teamAscore = teamAscore + a;
+                        if (nowIningState === ind * 2 + 1) { return (<td className="nowIningScore">{a}</td>) }
+                        else { return (<td>{a}</td>) }
+                    }
+
+                    )}
+                    <td>{teamAscore}</td>
+                </tr>
+                <tr>
+                    <td>西条</td>
+                    {scoreState[1].map((a, ind) => {
+                        teamBscore = teamBscore + a;
+                        if (nowIningState === (ind + 1) * 2) { return (<td className="nowIningScore">{a}</td>) }
+                        else { return (<td>{a}</td>) }
+                    }
+
+                    )}
+                    <td>{teamBscore}</td>
+                </tr>
+            </table>
+        </div>
+
+    )
+}

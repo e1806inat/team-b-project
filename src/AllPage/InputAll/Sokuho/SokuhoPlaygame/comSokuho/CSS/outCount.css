@@ -1,0 +1,93 @@
+/*アウトカウント*/
+.outCount {
+    font-size:1.5em;
+}
+.outCountOff {
+    color: rgb(0, 0, 0);
+}
+.outCountOn {
+    color: rgb(255, 0, 0);
+}
+
+.out-result {
+    width: 240px;
+    height: 80px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #213435;
+    border-radius: 40px;
+  }
+  
+  /* 信号機の光（緑） */
+  #red1 {
+    background:black;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* color: red; */
+  }
+  
+  /* 信号機の光（黄色） */
+  #red2 {
+    background-color:black;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* color: red; */
+    /* animation-delay: 3s; */
+  }
+  
+  .light.red2::after {
+    /* animation-delay: 3s; */
+  }
+  
+  /* 信号機の光（赤） */
+  #red3 {
+    background:black;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* color:red; */
+    /* animation-delay: 6s; */
+  }
+  
+  .light.red3::after {
+    /* animation-delay: 6s; */
+  }
+  
+  /* 信号機の光の影の部分のアニメーション */
+  /* @keyframes shadow {
+    0% {
+      box-shadow: 0 0 20px 4px;
+    }
+    32% {
+      box-shadow: 0 0 20px 4px;
+    }
+    33% {
+      box-shadow: none;
+    }
+    100% {
+      box-shadow: none;
+    }
+  } */
+  
+  /* 信号機の光のアニメーション */
+  /* @keyframes light {
+    0% {
+      background-color: transparent;
+    }
+    32% {
+      background-color: transparent;
+    }
+    33% {
+      background-color: #0f1616;
+    }
+    100% {
+      background-color: #0f1616;
+    }
+  } */

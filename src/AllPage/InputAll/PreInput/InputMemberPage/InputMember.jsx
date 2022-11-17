@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react"
 import { myIndexOf } from "./functions/myIndexOf";
 import "./InputMember.css"
 const { Schools } = require("../../../../DB/Schools"); //分割代入
-const { Position } = require("../../../../DB/Position")
-const { Member } = require("../../../../DB/Member")
+//const { Member } = require("../../../../DB/Member")
+const Member = [{}]
 
 
 const selectHitted = (handedHitState, handleHandedHit) => {
@@ -73,25 +73,29 @@ export const InputMember = () => {
 
     const iningRef = useRef(null)
     const schoolRef = useRef(null)
-    const positionRef = useRef(null)
     const numberRef = useRef(null)
     const nameKanjiRef = useRef(null)
     const nameHiraRef = useRef(null)
 
     const [iningState, setIningState] = useState(ining)
     const [schoolState, setSchoolState] = useState(1)
-    const [positionState, setPositionState] = useState(1)
     const [numberState, setNumberState] = useState(1)
 
     const [handedHitState, setHandedHitState] = useState("左")
     const [handedThrowState, setHandedThrowState] = useState("左")
 
+
     //メンバーを選択しているかどうかのフラグをつくる
     let copyArray = [false]
-    for (let i = 0; i < Member.length - 1; i++) {
-        copyArray = [...copyArray, false]
-    }
     const [selectedMember, setSelectedMember] = useState(copyArray)
+
+    const setCheck = () => {
+        for (let i = 0; i < copyArray.length - 1; i++) {
+            copyArray = [...copyArray, false]
+        }
+    }
+
+
 
     //クリック時メンバー選択
     const handleSelected = (ind) => {
@@ -121,14 +125,7 @@ export const InputMember = () => {
         }
     }
 
-    const initialSetPosition = () => {
-        for (let i = 1; i <= 9; i++) {
-            const option = document.createElement('option')
-            option.value = Position[i - 1].kata
-            option.text = Position[i - 1].kata
-            positionRef.current.appendChild(option)
-        }
-    }
+
 
     const initialSetSchool = () => {
         for (let i = 1; i <= Schools.length; i++) {
@@ -143,10 +140,31 @@ export const InputMember = () => {
     useEffect(() => {
         initialSetIning();
         initialSetNumber();
-        initialSetPosition()
         initialSetSchool();
+        loadMember();
     }, [])
 
+
+
+    const loadMember = () => {
+
+        fetch("http://localhost:5000/member/member_call", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ school_id: 1 }),
+        })
+            .then((response) => response.json())
+            .then((data) => handleSendedMember(data))
+    }
+
+    const handleSendedMember = (data) => {
+        console.log(data)
+        setCopyMember(data)
+        setCheck()
+    }
 
 
 
@@ -155,9 +173,6 @@ export const InputMember = () => {
     }
     const selectNumber = (e) => {
         setNumberState(e.target.value)
-    }
-    const selectPosition = (e) => {
-        setPositionState(e.target.value)
     }
     const selectSchool = (e) => {
         setSchoolState(e.target.value)
@@ -190,7 +205,6 @@ export const InputMember = () => {
             "school_id": 1,
             "player_name_kanji": nameKanjiRef.current.value,
             "player_name_hira": nameHiraRef.current.value,
-            "position": Position[myIndexOf(Position, "kata", positionRef.current.value)].eng,
             "uniform_number": numberRef.current.value,
             "grade": iningRef.current.value,
             "handed_hit": handedHitState,
@@ -209,7 +223,6 @@ export const InputMember = () => {
                     <select ref={schoolRef} value={schoolState} onChange={selectSchool} ></select>
                     <br />
                     学年<select ref={iningRef} value={iningState} onChange={selectIning} ></select>&nbsp;
-                    位置<select ref={positionRef} value={positionState} onChange={selectPosition} ></select>&nbsp;
                     背番号<select ref={numberRef} value={numberState} onChange={selectNumber} ></select>&nbsp;&nbsp;
 
                     {selectHitted(handedHitState, handleHandedHit)}
@@ -220,7 +233,7 @@ export const InputMember = () => {
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     {selectThrowed(handedThrowState, handleHandedThrow)}
-                    
+
                     <br />
 
                     名前（ひらがな）　<input ref={nameHiraRef}></input> &nbsp; &nbsp; <button onClick={handleMembers}>追加</button>
@@ -232,8 +245,9 @@ export const InputMember = () => {
                     {copyMember.map((member, ind) => (
                         <div className="school">
                             <button onClick={() => handleSelected(ind)} className={"InputMember" + selectedMember[ind]}>
-                                {member.player_name_hira} &nbsp; {member.grade}年 &nbsp; {member.position}
-                                &nbsp; 背番号{member.uniform_number} &nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投
+                                {member.player_name_hira} &nbsp; {member.grade}年 &nbsp;
+                                {/* &nbsp; 背番号{member.uniform_number}  */}
+                                &nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投
                                 <hr></hr>{member.player_name_kanji}
                             </button><br /><br />
                         </div>

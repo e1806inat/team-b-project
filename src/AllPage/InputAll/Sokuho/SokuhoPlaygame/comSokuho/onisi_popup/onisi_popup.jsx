@@ -42,7 +42,12 @@ class Popup_field extends React.Component {
         <i class="fa-solid fa-rotate-right updatebutton" onClick={this.togglePopup}></i>
         {/* this.state.PopupがtrueであればPopupウィンドウを開く */}
         {this.state.showPopup ? (
-          <Popup text="確認画面" closePopup={this.togglePopup} />
+          <Popup
+            text="確認画面${this.props.nowIningState}"
+            closePopup={this.togglePopup}
+            nowIningState={this.props.nowIningState}
+            setNowIningState={this.props.setNowIningState}
+          />
         ) : null}
       </div>
     );

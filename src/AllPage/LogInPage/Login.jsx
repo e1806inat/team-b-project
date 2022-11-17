@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Login = () => {
 
 
-  const initialValues = { loginID: "j846029b@mails.cc.ehime-u.ac.jp", password: "123456789" };
+  const initialValues = { loginID: "test", password: "123456789" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -64,7 +64,7 @@ const Login = () => {
       },
       //body: JSON.stringify({ email:login_id , password:login_ps }),
       //body: JSON.stringify({ email:login_id , password:login_ps }),
-      body: JSON.stringify({ email: formValues.loginID, password: formValues.password }),
+      body: JSON.stringify({ user_name: formValues.loginID, password: formValues.password }),
     })
       .then((response) => response.json())
       .then((data) => syougou(data))

@@ -74,6 +74,8 @@ const InputPlayGame = () => {
 
     }, [])
 
+
+
     // 状態にコンテキストが登録されたらそれに対して操作できる
     useEffect(() => {
         if (context !== null) {
@@ -227,7 +229,7 @@ const InputPlayGame = () => {
                 </div> */}
                 <div className="updateButton">
                     {/* {updateButton()} */}
-                    <Popup_field />
+                    <Popup_field nowIningState={nowIningState} setNowIningState={setNowIningState}/>
                 </div>
             </div>
         </div>

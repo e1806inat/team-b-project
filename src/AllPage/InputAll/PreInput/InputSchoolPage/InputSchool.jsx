@@ -4,8 +4,24 @@ import { CheckBoxList } from './comInputSchool/CheckBoxList1';
 import { Link, useNavigate } from "react-router-dom";
 
 
+//データベースとのやり取り
+const sendSchool = (useSchools) => {
+  let toSendSchool = []
+  useSchools.map((school, ind) => {
+    toSendSchool = [...toSendSchool, { tournament_id: 2, school_id: ind+1 }]
+  })
+  console.log(toSendSchool)
 
-
+  fetch("http://localhost:5000/school/participants_register", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    //body: JSON.stringify({ email:login_id , password:login_ps }),
+    body: JSON.stringify(toSendSchool),
+  })
+}
 
 export const InputSchool = () => {
 
@@ -42,25 +58,7 @@ export const InputSchool = () => {
     )
   }
 
-  const handleResister = () => {
-    let copySchools = [];
-    useSchools.map(school => {
-      copySchools = [...copySchools, school.school]
-    })
 
-    console.log(copySchools)
-
-    fetch("http://localhost:5000/auth/user_register", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-  }
 
   return (
     <div className="main">
@@ -75,7 +73,7 @@ export const InputSchool = () => {
       <hr></hr>
       {!isCheckBoxMode && Hyoji(useSchools, setUseSchools, navigate)}
       {isCheckBoxMode && CheckBoxList(useSchools, setUseSchools)}<br />
-      <button onClick={handleResister}>高校名登録</button>
+      <button onClick={() => sendSchool(useSchools)}>高校名登録</button>
       <hr></hr>
       <button><Link to={'/home/input_mode/'}>戻る</Link> </button>
     </div>

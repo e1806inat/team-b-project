@@ -1,10 +1,10 @@
 import "./App.css";
-import Popup_field from "./popup";
+import Tournament from "./tournament";
 
 function App() {
   return (
     <div>
-      <Popup_field/>
+      <Tournament/>
       <div id="content"></div>
     </div>
   );

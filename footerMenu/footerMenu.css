@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
+
+:root{
+    --color-main: #00afcc;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'M PLUS 1p', sans-serif;
+}
+
+.wrapper{
+    height: 100vh;
+    width: 100%;
+   /* padding-bottom: 120px;*/
+    box-sizing: border-box;
+}
+
+
+
+footer{
+    width: 100%;
+    padding: 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    border-top: 1px solid rgba(2, 1, 1, 0.3);
+}
+
+footer ul{
+    background: rgb(248, 246, 246);
+    display: flex;
+    flex-direction: row;
+    padding: 15px 0;
+}
+
+footer ul li{
+    list-style: none;
+    flex: 1;
+    opacity: 0.6;
+}
+
+footer ul li.active {
+    opacity: 1;
+}
+
+footer ul li button{
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+    border: none;
+    background: transparent;
+}
+
+footer ul li:hover{
+    opacity: 1;
+}
+
+footer ul li button i{
+    font-size: 20px;
+}
+
+.selectedPage{
+    display: block;
+    width: 100%;
+    height: 100vh;
+    padding-bottom: 70px;
+    border: 0;
+}

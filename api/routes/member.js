@@ -13,14 +13,6 @@ router.post("/member_register", async (req, res, next) => {
         for (const value of req.body) {
             await executeQuery('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.school_id, value.player_name_kanji, value.player_name_hira, value.grade, value.handed_hit, value.handed_throw, value.hit_num, value.bat_num, value.BA]);
         }
-        /*
-        connection.query('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)', [value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw], (err, rows) => {
-            connection.release();
-            console.log(rows);
-            if (err) {
-                console.log('読み取り失敗');
-            }
-        });*/
         res.end("OK");
     } catch (err) {
         next(err);
@@ -33,48 +25,11 @@ router.post("/tournament_member_register", async (req, res, next) => {
         for (const value of req.body) {
             await executeQuery('insert into t_registered_player values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.tournament_id, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
         }
-        /*
-        connection.query('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)', [value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw], (err, rows) => {
-            connection.release();
-            console.log(rows);
-            if (err) {
-                console.log('読み取り失敗');
-            }
-        });*/
         res.end("OK");
     } catch (err) {
         next(err);
     }
 });
-/*
-pool.getConnection((err, connection) => {
-    if (err) throw err;
-
-    console.log(req.body)
-    console.log("MYSQLと接続中です");
-    //選手情報をforeachで処理。ただし、途中で読み込みに失敗したら処理をなかったことにするエラー処理が必要な気がする。
-    /*
-    const sql = 'insert into t_player2 ("", game_id, school_id, player_name_kanji, player_name_hira, position, uniform_number, grade, handed_hit, handed_throw, batting_order, s_member) values (?)';
-    const values = req.body;
-
-    connection.query(sql, values, function(err){
-        if (err) throw err;
-        connection.release();
-    });
-    
-    req.body.forEach( function(value) {
-        //次はデータ取得から
-        connection.query('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)', [value.game_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw], (err, rows) => {
-            connection.release();
-            console.log(rows);
-            if (err) {
-                console.log('読み取り失敗');
-            }
-        });
-    });
-    //return; 
-});*/
-
 
 //スタメン登録(このままでは途中で終了した場合に途中までinsertされたやつが残る。そこでupsertにすればもう一回入れなおした時にいい感じになりそう)
 router.post("/starting_member_register", async (req, res, next) => {
@@ -87,33 +42,6 @@ router.post("/starting_member_register", async (req, res, next) => {
     catch (err) {
         next(err);
     }
-    /*
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        console.log(req.body)
-        console.log("MYSQLと接続中です");
-
-        req.body.forEach(function (value) {
-            //次はデータ取得から
-            connection.query('update t_player set  batting_order = ?, s_member = ? where player_id = ?', [value.batting_order, value.s_member, value.player_id], (err, rows) => {
-                //connection.release();
-                if (err) {
-                    console.log('読み取り失敗');
-                }
-            });
-        });
-
-        connection.query("select * from t_player where s_member is not null", (err, rows) => {
-            connection.release();
-            if (err) {
-                console.log('読み取り失敗');
-                //return;
-            } else {
-                return res.json(rows);
-            }
-        });
-    });*/
 });
 
 
@@ -128,26 +56,6 @@ router.post("/member_call", async (req, res, next) => {
     catch (err) {
         next(err);
     }
-    /*
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        console.log(req.body)
-        console.log("MYSQLと接続中です");
-
-        connection.query('select * from t_player where game_id = ? and school_id = ?', [game_id, school_id], (err, rows) => {
-            connection.release();
-            if (err) {
-                return res.status(400).json([
-                    {
-                        message: "選手情報を読みだせません"
-                    }
-                ]);
-            } else {
-                return res.json(rows);
-            }
-        });
-    });*/
 });
 
 //３年生以下の学校毎の選手呼び出し。大会に出場する選手登録画面で使用。
@@ -204,28 +112,6 @@ router.post("/member_edit", async (req, res, next) => {
     catch (err) {
         next(err);
     }
-    /*
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        console.log(req.body)
-        console.log("MYSQLと接続中です");
-
-        connection.query('update t_player set  player_name_kanji = ?, player_name_hira = ?, position = ?, uniform_number = ?, grade = ?, handed_hit = ?, handed_throw = ? where player_id = ? and game_id = ? and school_id = ?', [player_name_kanji, player_name_hira, position, uniform_number, grade, handed_hit, handed_throw, player_id, game_id, school_id], (err, rows) => {
-            connection.release();
-            console.log(rows);
-            if (err) {
-                return res.status(400).json([
-                    {
-                        message: "選手情報を更新できません"
-                    }
-                ]);
-            } else {
-                console.log(rows);
-                //return;
-            }
-        });
-    });*/
 });
 
 //選手情報編集、選手情報を消すこともできる

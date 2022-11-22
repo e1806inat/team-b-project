@@ -106,12 +106,17 @@ router.post("/data_register", async (req, res) => {
 });
 
 //試合情報送信
-router.post("/daseki_transmission", async (req, res) => {
+router.post("/daseki_transmission", async (req, res, next) => {
     const { table_name, at_bat_id, inning, game_id } = req.body;
+    
 
     try {
         //試合情報の取得と送信
-        const rows = await executeQuery(`select * from ${table_name} where at_bat_id = ? and inning = ? and game_id = ?`, [at_bat_id, inning, game_id]);
+        //const rows = await executeQuery(`select * from ${table_name} as a join t_starting_player as b on  b.game_id = a.game_id and b.player_id = a.player_id where at_bat_id = ? and inning = ? and game_id = ?`, [at_bat_id, inning, game_id]);
+        //テスト用
+        const rows = await executeQuery(`select * from t_at_bat as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ?`, [game_id, at_bat_id]);
+        //const rows1 = await executeQuery('select * from t_game as a join t_school as b on b.school_id = a.school_id_1 where tournament_id = ? order by match_num', [tournament_id]);
+        /*
         return res.json(
             {
                 at_bat_id: rows[0]['at_bat_id'],
@@ -128,11 +133,12 @@ router.post("/daseki_transmission", async (req, res) => {
                 touched_coordinate: rows[0]['touched_coordinate'],
                 ball_kind: rows[0]['ball_kind']
             }
-        );
+        );*/
+        return res.json(rows);
     }
     catch (err) { 
-        console.log('試合情報を読み込めません');
-        await tran.rollback();
+        console.log(err);
+        //await tran.rollback();
         next(err);
     }
 });

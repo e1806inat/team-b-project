@@ -15,6 +15,7 @@ router.post("/member_register", async (req, res, next) => {
         }
         res.end("OK");
     } catch (err) {
+        console.log(err);
         next(err);
     }
 });
@@ -23,10 +24,11 @@ router.post("/member_register", async (req, res, next) => {
 router.post("/tournament_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_registered_player values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.tournament_id, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
+            await executeQuery('insert into t_registered_player values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.tournament_id, value.school_id, value.player_name_kanji, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
         }
         res.end("OK");
     } catch (err) {
+        console.log(err);
         next(err);
     }
 });
@@ -35,11 +37,12 @@ router.post("/tournament_member_register", async (req, res, next) => {
 router.post("/starting_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_starting_player values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.game_id, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
+            await executeQuery('insert into t_starting_player values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.game_id, value.school_id, value.player_name_kanji, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
         }
         res.end("OK");
     }
     catch (err) {
+        console.log(err);
         next(err);
     }
 });
@@ -97,7 +100,55 @@ router.post("/starting_member_call", async (req, res, next) => {
     }
 });
 
+/*
+//一時スタメン情報保持のためのテーブル作成
+router.post("/tmp_starting_create", async (req, res) => {
+    //create table のための名前作成
+    const table_name = `test_pbl.` + req.body['table_name']
 
+    console.log(table_name);
+
+    try {
+        //一時打席情報登録用テーブル作成
+        await executeQuery(`create table ${table_name} (
+            player_id int not null, 
+            game_id int not null, 
+            school_id int,
+            player_name_kanji varchar(300) not null,
+            position varchar(20), 
+            uniform_number int, 
+            grade int, 
+            handed_hit char(1), 
+            handed_throw char(1), 
+            batting_order int, 
+            BA double,
+            primary key(player_id, game_id),
+            foreign key(school_id) references t_school(school_id))`);
+    }
+    catch (err) {
+        //next(err);
+        console.log("hehehe")
+    }
+    res.end("OK");
+});*/
+
+/*
+//一時スタメン情報保持のためのテーブル作成
+router.post("/tmp_starting_register", async (req, res) => {
+    //create table のための名前作成
+    const table_name = `test_pbl.` + req.body['table_name']
+
+    console.log(table_name);
+
+    try {
+        await executeQuery(`insert into ${table_name} select * from t_starting_player as a join t_player (school_id, player_name_kanji) as b on a.player_id = b.player_id`);
+    }
+    catch (err) {
+        //next(err);
+        console.log("hehe")
+    }
+    res.end("OK");
+});*/
 
 //選手情報編集、選手情報を消すこともできる
 router.post("/member_edit", async (req, res, next) => {

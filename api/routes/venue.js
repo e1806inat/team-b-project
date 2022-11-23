@@ -3,6 +3,12 @@ const mysql = require("mysql2");
 const config = require("../mysqlConnection/config");
 
 //const pool = mysql.createPool(config.serverConf);
+const pool = mysql.createPool({
+    host: "133.71.101.108",
+    user: "test_user",
+    password: "v2V!%Nwc",
+    database: "test_pbl",
+});
 
 //会場情報登録
 router.post("/venue_register", (req, res) => {
@@ -32,6 +38,7 @@ router.post("/venue_register", (req, res) => {
                             }
                         ]); 
                     }
+                    res.end('OK');
                 });
             }
         });

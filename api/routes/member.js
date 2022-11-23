@@ -60,7 +60,7 @@ router.post("/member_call", async (req, res, next) => {
         next(err);
     }
 });
-
+/*
 //３年生以下の学校毎の選手呼び出し。大会に出場する選手登録画面で使用。
 router.post("/member_call", async (req, res, next) => {
     const { school_id } = req.body;
@@ -72,7 +72,7 @@ router.post("/member_call", async (req, res, next) => {
     catch (err) {
         next(err);
     }
-});
+});*/
 
 //大会に登録されている選手の呼び出し。スタメン登録画面で使用
 router.post("/tournament_member_call", async (req, res, next) => {

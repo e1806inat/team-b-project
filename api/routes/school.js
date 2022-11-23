@@ -78,7 +78,7 @@ router.post("/school_call_p", async (req, res, next) => {
     const { tournament_id } = req.body;
 
     try{
-        const rows = await executeQuery('select * from t_participants as a join t_school as b on b.school_id = a.school_id where tournament_id = ?', [tournament_id]);
+        const rows = await executeQuery('select * from t_participants as a join t_school as b using(school_id) where tournament_id = ?', [tournament_id]);
         return res.json(rows);
     }
     catch(err){
@@ -105,6 +105,19 @@ router.post("/participants_delete", async (req, res, next) => {
 
     try{
         await executeQuery('delete from t_participants where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        res.end('OK');
+    }
+    catch(err){
+        next(err);
+    }
+});
+
+//学校情報を消すことができる
+router.post("/school_delete", async (req, res, next) => {
+    const { school_id,school_name } = req.body;
+
+    try{
+        await executeQuery('delete from t_school where school_name = ? and school_id = ?', [school_name, school_id]);
         res.end('OK');
     }
     catch(err){

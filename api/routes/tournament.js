@@ -62,7 +62,7 @@ router.post("/tournament_call", (req, res) => {
 
         console.log("MYSQLと接続中です");
         //select文とlimitで同じ大会名と開会日の大会がすでに登録されていないかを判定
-        connection.query("select * from t_tournament where tournament_name != NULL and opening != NULL order by opening desc limit 10",(err, rows) => {
+        connection.query("select * from t_tournament order by opening desc limit 10",(err, rows) => {
             connection.release();
           
             if(err){

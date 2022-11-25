@@ -1,4 +1,4 @@
-import '../../Option.css'
+import './Option.css'
 
 export const Option = () => {
 

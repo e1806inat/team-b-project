@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom";
-const { Schools } = require("../../../../DB/Schools"); //分割代入
+import { Schools } from "../../../../DB/Schools";
+//const { Schools } = require("../../../../DB/Schools"); //分割代入
 const { Venues } = require("../../../../DB/Venues"); //分割代入
 
 
@@ -23,9 +24,10 @@ const handleSentGame = (data, setGameInfoState) => {
     setGameInfoState(data)
 }
 
+//大会に所属する高校を読み出す
+const loadSchool = (setSchools) => {
 
-const resisterGame = () => {
-    fetch("http://localhost:5000/game/game_register", {
+   return fetch("http://localhost:5000/school/school_call_p", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -34,8 +36,27 @@ const resisterGame = () => {
         body: JSON.stringify({ tournament_id: 1 }),
     })
         .then((response) => response.json())
+        .then((data) => setSchools(data))
+    // .then((data) => handleSentGame(data, setGameInfoState))
+
+}
+
+
+
+const resisterGame = (gameData) => {
+    fetch("http://localhost:5000/game/game_register", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(gameData),
+    })
+        .then((response) => response.json())
         .then((data) => handleSentGame(data))
 }
+
+
 
 
 export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
@@ -58,6 +79,8 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     const [venueState, setVenueState] = useState(1)
     const [gameInfoState, setGameInfoState] = useState([])
 
+    const [Schools, setSchools] = useState([])
+
     const initialSetIning = () => {
         for (let i = 1; i <= 4; i++) {
             const option = document.createElement('option')
@@ -68,10 +91,11 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     }
 
     const initialSetTeamA = () => {
+        console.log(Schools)
         for (let i = 1; i <= Schools.length; i++) {
             const option = document.createElement('option')
-            option.value = Schools[i - 1].school
-            option.text = Schools[i - 1].school
+            option.value = Schools[i - 1].school_name
+            option.text = Schools[i - 1].school_name
             teamARef.current.appendChild(option)
         }
     }
@@ -79,8 +103,8 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     const initialSetTeamB = () => {
         for (let i = 1; i <= Schools.length; i++) {
             const option = document.createElement('option')
-            option.value = Schools[i - 1].school
-            option.text = Schools[i - 1].school
+            option.value = Schools[i - 1].school_name
+            option.text = Schools[i - 1].school_name
             teamBRef.current.appendChild(option)
         }
     }
@@ -110,6 +134,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     }
 
     useEffect(() => {
+        loadSchool(setSchools)
         initialSetIning();
         initialSetTeamA();
         initialSetTeamB();
@@ -117,17 +142,26 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
         loadGame(setGameInfoState);
     }, [])
 
-    const handleAddGame = () => {
-        setGameInfoState([
-            ...gameInfoState, {
-                ining: iningRef.current.value,
-                school_name: teamARef.current.value,
-                school_name_2: teamBRef.current.value,
-                venue: venueRef.current.value
-            }
-        ])
+    const handleAddGame = (gameInfoState) => {
+        // setGameInfoState([
+        //     ...gameInfoState, {
+        //         ining: iningRef.current.value,
+        //         school_name: teamARef.current.value,
+        //         school_name_2: teamBRef.current.value,
+        //         venue: venueRef.current.value
+        //     }
+        // ])
 
         console.log(gameInfoState)
+        //console.log(obj.findIndex(({name}) => name === 'DDD');)
+        resisterGame([{
+            tournament_id: "1",
+            ining: iningRef.current.value,
+            school_name: teamARef.current.value,
+            school_name_2: teamBRef.current.value,
+            venue: venueRef.current.value
+        }
+        ])
     }
 
     const handleGoPage = (TeamA, TeamB) => {

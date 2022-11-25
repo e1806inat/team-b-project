@@ -37,12 +37,12 @@ export const CheckBoxList = (useSchools, setUseSchools) => {
                             <CheckBox
                                 //出力の警告文は多分ここからきてる
                                 id={ind}
-                                value={school.school}
+                                value={school.school_name}
                                 onChange={() => handleChange(ind)}
                                 checked={school.IsCheck}
                             />
  
-                            {school.school}
+                            {school.school_name}
                         </div>
                     )
                 })}

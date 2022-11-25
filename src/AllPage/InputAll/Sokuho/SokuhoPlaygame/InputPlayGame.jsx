@@ -6,7 +6,7 @@ import { updateButton } from './comSokuho/updateButton'
 import "./comSokuho/CSS/scoreBoard.css"
 import pic from "../../../../DB/diamond.png"
 import { useEffect, useRef, useState } from 'react';
-import Popup_field from "./comSokuho/onisi_popup/onisi_popup";
+import Popupfield from "./comSokuho/onisi_popup/onisi_popup";
 
 //プルダウン
 import { PullDown } from './comSokuho/PullDown/PullDown'
@@ -16,11 +16,12 @@ const InputPlayGame = () => {
     //Score記録
     const { Score } = require("../../../../DB/Score")
     const [scoreState, setScoreState] = useState(Score)
+    //Scoreの加算値の監視
+    const [addScoreState, setAddScoreState] = useState(0)
 
     //今のイニング
-    const [ nowIningState, setNowIningState ] = useState(1)
+    const [nowIningState, setNowIningState] = useState([0, 1])
 
-    const [outCountState, setOutCountState] = useState(0)
     const [freeWriteState, setFreeWriteState] = useState("")//いらんかも
     const freeWriteRef = useRef()
     const [flag, setFlag] = useState(2);
@@ -28,6 +29,8 @@ const InputPlayGame = () => {
     //緑プルダウン用
     const [nowPosition, setNowPosition] = useState(15)
 
+    //アウトカウント
+    const [nowOutCountState, setNowOutCountState] = useState(0)
 
 
     // contextを状態として持つ
@@ -201,7 +204,7 @@ const InputPlayGame = () => {
 
                 </div>
                 <div className="outCounts">
-                    {outCount(outCountState, setOutCountState)}
+                    {outCount(nowOutCountState, setNowOutCountState)}
                 </div>
                 <div className="BatterAndPitcher">
 
@@ -223,14 +226,25 @@ const InputPlayGame = () => {
 
                     <canvas width="800" height="800" id="canvas" className='diamondPng'></canvas>
                 </div>
-                {/* <div className="baseballButtons">
-                    {BaseballButton()}
-                    
-                </div> */}
-                <div className="updateButton">
-                    {/* {updateButton()} */}
-                    <Popup_field nowIningState={nowIningState} setNowIningState={setNowIningState}/>
+                <div className="Buttons">
+                    <div className="baseballButtons">
+                        {BaseballButton(addScoreState, setAddScoreState)}
+                    </div>
+                    <div className="updateButton">
+                        {/* {updateButton()} */}
+                        <Popupfield
+                            nowIningState={nowIningState} //今が何回なのか
+                            setNowIningState={setNowIningState} //今が何回なのかの変更関数
+                            addScoreState={addScoreState}
+                            setAddScoreState={setAddScoreState}
+                            scoreState={scoreState}
+                            setScoreState={setScoreState}
+                            nowOutCountState={nowOutCountState} 
+                            setNowOutCountState={setNowOutCountState}
+                        />
+                    </div>
                 </div>
+
             </div>
         </div>
 

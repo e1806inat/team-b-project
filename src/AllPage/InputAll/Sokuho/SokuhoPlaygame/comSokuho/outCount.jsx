@@ -61,24 +61,32 @@
 // }
 
 import "./CSS/outCount.css"
-export const outCount = (outCountState, setOutCountState) => {
+export const outCount = (nowOutCountState, setNowOutCountState) => {
 var cnt = 0;
 function change_out_count(){
-  cnt +=1;
+  nowOutCountState += 1
+  setNowOutCountState(nowOutCountState)
 
-  if(cnt === 1){
+  if(nowOutCountState === 0){
+    console.log(0);
+    console.log(document.getElementById("red1").backgroundColor);
+    document.getElementById("red1").style.backgroundColor = "black";
+    document.getElementById("red2").style.backgroundColor = "black";
+    document.getElementById("red3").style.backgroundColor = "black";
+  }
+  else if(nowOutCountState === 1){
     console.log(1);
     console.log(document.getElementById("red1").backgroundColor);
     document.getElementById("red1").style.backgroundColor = "red";
   }
-  else if(cnt === 2){
+  else if(nowOutCountState === 2){
     console.log(2);
     document.getElementById("red2").style.backgroundColor = "red";
   }
-  else{
+  else {
     console.log(3);
     document.getElementById("red3").style.backgroundColor = "red";
-    cnt = 0;
+    setNowOutCountState(0)
   }
 }
 

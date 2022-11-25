@@ -46,7 +46,6 @@ export const CheckBoxList = (UseSchools, setUseSchools) => {
       ...checkedItems,
       [e.target.id]: e.target.checked
     })
-    console.log('checkedItems:', checkedItems)
   }
 
   const dataSendBtn = e => {
@@ -57,7 +56,6 @@ export const CheckBoxList = (UseSchools, setUseSchools) => {
       value && pre.push(key)
       return pre
     }, [])
-    console.log("dataPushArray:", dataPushArray)
   }
 
   return (
@@ -75,7 +73,8 @@ export const CheckBoxList = (UseSchools, setUseSchools) => {
                 onChange={handleChange}
                 checked={checkedItems[school.IsCheck]}
               />
-              {school.school}
+              {console.log(school.school_name)}
+              {school.school_name}
             </div>
           )
         })}

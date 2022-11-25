@@ -72,7 +72,6 @@ export const InputMember = () => {
     const number = 1;
 
     const iningRef = useRef(null)
-    const schoolRef = useRef(null)
     const numberRef = useRef(null)
     const nameKanjiRef = useRef(null)
     const nameHiraRef = useRef(null)
@@ -127,24 +126,31 @@ export const InputMember = () => {
 
 
 
-    const initialSetSchool = () => {
-        for (let i = 1; i <= Schools.length; i++) {
-            const option = document.createElement('option')
-            option.value = Schools[i - 1].school
-            option.text = Schools[i - 1].school
-            schoolRef.current.appendChild(option)
-        }
-    }
+
 
 
     useEffect(() => {
         initialSetIning();
         initialSetNumber();
-        initialSetSchool();
         loadMember();
     }, [])
 
+    useEffect(() => {
 
+    },[])
+
+
+    const handleSousin = () => {
+        fetch("http://localhost:5000/member/member_register", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            //body: JSON.stringify({ email:login_id , password:login_ps }),
+            body: JSON.stringify(Member),
+        })
+    }
 
     const loadMember = () => {
 
@@ -186,21 +192,10 @@ export const InputMember = () => {
     }
 
 
-    const handleSousin = () => {
-        fetch("http://localhost:5000/member/member_register", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            //body: JSON.stringify({ email:login_id , password:login_ps }),
-            body: JSON.stringify(Member),
-        })
-    }
+
 
     const handleMembers = () => {
-
-        setCopyMember([{
+        let Array = [{
             "game_id": 1,
             "school_id": 1,
             "player_name_kanji": nameKanjiRef.current.value,
@@ -209,8 +204,20 @@ export const InputMember = () => {
             "grade": iningRef.current.value,
             "handed_hit": handedHitState,
             "handed_throw": handedThrowState
-        }, ...copyMember])
-        console.log(copyMember)
+        }]
+
+        console.log(Array)
+
+        fetch("http://localhost:5000/member/member_register", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            //body: JSON.stringify({ email:login_id , password:login_ps }),
+            body: JSON.stringify(Array),
+        })
+        .then(loadMember)
     }
 
 
@@ -220,7 +227,6 @@ export const InputMember = () => {
 
             <div className="toroku">
                 <div className="MakeGame">
-                    <select ref={schoolRef} value={schoolState} onChange={selectSchool} ></select>
                     <br />
                     学年<select ref={iningRef} value={iningState} onChange={selectIning} ></select>&nbsp;
                     背番号<select ref={numberRef} value={numberState} onChange={selectNumber} ></select>&nbsp;&nbsp;

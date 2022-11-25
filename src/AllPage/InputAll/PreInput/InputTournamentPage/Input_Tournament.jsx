@@ -1,6 +1,33 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
-import {Option} from '../../../OtherPage/Option'
+import { Option } from '../../../OtherPage/Option'
+
+
+const readTournament = (setTournamentData) => {
+  fetch("http://localhost:5000/tournament/tournament_call", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => setTournamentInfo(setTournamentData, data))
+}
+
+const setTournamentInfo = (setTournamentData, data) => {
+  console.log(data)
+  setTournamentData(data)
+}
+
+//文字分割
+const dateSplit = (nowdate) => {
+  let dateArray = nowdate.split('-');
+  console.log(nowdate)
+  dateArray = {"year":dateArray[0], "month":dateArray[1], "day":dateArray[2]}
+  return dateArray
+}
+
 
 export const Input_Tournament = () => {
   const birthYearRef = useRef(null);
@@ -12,25 +39,25 @@ export const Input_Tournament = () => {
 
   const [birthYear, setBirthYear] = useState(InitialYear);
   const [birthMonth, setBirthMonth] = useState(InitialMonth);
+  //文字分割のための箱を用意
+  let dateArray = {"year":"", "month":"", "day":""}
 
   let [TournamentData, setTournamentData] = useState([
-    [2022, 3, '第31回春大会'],
-    [2022, 2, '第9回松山大会'],
-    [2022, 1, '第5回伊予大会'],
-    [2021, 8, '第22回秋大会']
+    { "tournament_name": '第31回春大会', "tournament_id": '55', "opening": "2022-03-01" },
+    { "tournament_name": '第9回松山大会', "tournament_id": '56', "opening": "2022-02-01" },
+    { "tournament_name": '第5回伊予大会', "tournament_id": '57', "opening": "2022-01-01" },
+    { "tournament_name": '第22回秋大会', "tournament_id": '58', "opening": "2021-08-01" }
   ])
 
   //ページ遷移用
   const navigate = useNavigate()
   const PageTransition = (url) => {
-      navigate(url)
+    navigate(url)
   }
 
   const setYear = () => {
     for (let i = InitialYear; i <= new Date().getFullYear() + 10; i++) {
       const option = document.createElement('option');
-      //const date = new Date(Date.UTC(i));
-      //const jc = new Intl.DateTimeFormat('ja-JP-u-ca-japanese', { year: 'numeric' }).format(date);
       option.value = i;
       option.text = i;
       birthYearRef.current.appendChild(option);
@@ -46,14 +73,12 @@ export const Input_Tournament = () => {
     }
   }
 
-
+  //追加ボタン押したとき
   const handleTournament = () => {
     let aTournament = [...TournamentData, [birthYear, birthMonth, NameTournamentRef.current.value]]
-    aTournament.sort();
-    aTournament.reverse();
     setTournamentData(aTournament);
-    console.log({ "tournament_name": NameTournamentRef.current.value, "opening":birthYear+"-"+birthMonth+"-01" })
-    
+    console.log({ "tournament_name": NameTournamentRef.current.value, "opening": birthYear + "-" + birthMonth + "-01" })
+
 
     fetch("http://localhost:5000/tournament/tournament_register", {
       method: "POST",
@@ -62,11 +87,15 @@ export const Input_Tournament = () => {
         "Content-Type": "application/json",
       },
       //body: JSON.stringify({ email:login_id , password:login_ps }),
-      body: JSON.stringify({ "tournament_name": NameTournamentRef.current.value, "opening":birthYear+"-"+birthMonth+"-01" }),
+      body: JSON.stringify({
+        "tournament_name": NameTournamentRef.current.value,
+        "opening": birthYear + "-" + birthMonth + "-01"
+      }),
     })
+      .then(() => readTournament())
   }
 
-  
+
 
   const selectBirthYear = (e) => {
     setBirthYear(e.target.value);
@@ -81,6 +110,7 @@ export const Input_Tournament = () => {
   useEffect(() => {
     setYear();
     setMonth();
+    readTournament(setTournamentData);
   }, []);
 
   return (
@@ -106,25 +136,30 @@ export const Input_Tournament = () => {
       <div className="tournamentList">
         <div className="tournaments">
 
-          {TournamentData.map(Tournament => (
-            <div className="tournament">
-              <div className="days">
-                <span>{Tournament[0]}年{Tournament[1]}月</span>
+          {TournamentData.map((Tournament, ind) => {
+            //文字分割
+           //dateArray = dateSplit(Tournament.opening)
+
+            return (
+              <div className="tournament">
+                <div className="days">
+                  <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
+                </div>
+                <div className="tournamentName">
+                  <button onClick={() => PageTransition(Tournament[2] + "/inputschool")}>
+                    {Tournament.tournament_name}
+                  </button>
+                  <br />
+                  <br />
+                </div>
               </div>
-              <div className="tournamentName">
-                <button onClick={()=>PageTransition(Tournament[2] + "/inputschool")}>
-                    {Tournament[2]}
-                </button>
-                <br />
-                <br />
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
       <hr></hr>
       <button><Link to={'/home/input_mode/pre_input'}>戻る</Link> </button>
-      
+
     </div>
   )
 }

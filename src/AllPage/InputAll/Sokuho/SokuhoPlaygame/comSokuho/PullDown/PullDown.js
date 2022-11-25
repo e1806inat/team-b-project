@@ -82,7 +82,13 @@ export const PullDown = (props) => {
                 <li><a href="#" onClick={() => handleOut(1)}>ライナー</a></li>
               </ul>
             </li>
-            <li><a href="#">エラー</a></li>
+            <li><a href="#">エラー</a>
+            <ul>
+                <li><a href="#" onClick={() => handleOut(3)}>ゴロ</a></li>
+                <li><a href="#" onClick={() => handleOut(2)}>フライ</a></li>
+                <li><a href="#" onClick={() => handleOut(1)}>ライナー</a></li>
+              </ul>
+            </li>
             <li><a href="#">ホームラン</a>
               <ul>
                 <li><a href="#">レフト側</a></li>
@@ -91,35 +97,27 @@ export const PullDown = (props) => {
                 <li><a href="#">ランニングホームラン</a></li>
               </ul>
             </li>
+            <li><a href="#">バント</a>
+              <ul>
+                <li><a href="#">犠牲バント</a></li>
+                <li><a href="#">バント失敗</a></li>
+                <li><a href="#">セーフティバント</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
-        <li><a href="#">メニュー5</a>
+        <li><a href="#">結果2</a>
           <ul>
-            <li><a href="#">サブメニュー</a>
+            <li><a href="#">三振</a>
               <ul>
-                <li><a href="#">サブサブメニュー</a></li>
-                <li><a href="#">サブサブメニュー</a></li>
-                <li><a href="#">サブサブメニュー</a></li>
-                <li><a href="#">サブサブメニュー</a></li>
-                <li><a href="#">サブサブメニュー</a></li>
+              <li><a href="#">三振</a></li>
+                <li><a href="#">見逃し三振</a></li>
+                <li><a href="#">空振り三振</a></li>
+                <li><a href="#">振り逃げ</a></li>
               </ul>
             </li>
-            <li><a href="#">サブメニュー</a></li>
-            <li><a href="#">サブメニュー</a>
-              <ul>
-                <li><a href="#">サブサブメニュー</a></li>
-                <li><a href="#">サブサブメニュー</a></li>
-                <li><a href="#">サブサブメニュー</a>
-                  <ul>
-                    <li><a href="#">サブサブサブメニュー</a></li>
-                    <li><a href="#">サブサブサブメニュー</a></li>
-                    <li><a href="#">サブサブサブメニュー</a></li>
-                    <li><a href="#">サブサブサブメニュー</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">サブサブメニュー</a></li>
-              </ul>
-            </li>
+            <li><a href="#">死球</a></li>
+            <li><a href="#">四球</a></li>
           </ul>
         </li>
       </ul>

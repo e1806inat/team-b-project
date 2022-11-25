@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.InputPlayGame {
+    text-align: center;
+}
+
+/*スコアボード*/
+.scoreBoardTable {
+    text-align: center;
+    width: 80%;
+    table-layout: fixed;
+    border: 1.5px #7e7e7e solid;
+    margin:auto
+}
+
+.scoreBoardSchoolName {
+    width: 150%;
+    table-layout: fixed;
+    border: 1.5px #7e7e7e solid;
+}
+
+td,
+th {
+    width: 80%;
+    table-layout: fixed;
+    border: 1.5px #7e7e7e solid;
+}
+
+th {
+    background: #c6c6c6;
+}
+
+.diamondPng {
+    width: 80%;
+    text-align: center;
+    margin:auto
+}
+
+
+.size{
+    color:#1da1f2; /*青色にする*/
+  }
+
+  /*キャンバスに関する*/
+  canvas { border: 1px solid black; }

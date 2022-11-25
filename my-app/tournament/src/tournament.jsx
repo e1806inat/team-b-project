@@ -3,7 +3,7 @@ import PrintTournament from './print_tournament'
 
 
 const Tournament = () =>{
-    const list1 = ['A高校','B高校','C高校','D高校','E高校','F高校',0,'G高校','A高校','B高校','C高校','D高校','E高校','F高校',0,'G高校']
+    const list1 = [0,'B高校',0,'D高校','E高校','F高校',0,'G高校','A高校','B高校','C高校','D高校','E高校','F高校',0,'G高校']
     return (
       <div>
         <PrintTournament list1 = {list1}/>

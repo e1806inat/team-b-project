@@ -1,0 +1,11 @@
+.freeWrite {
+  width: auto;
+  height: auto;
+}
+
+.freewriteInput {
+  width: 70%;
+  height: 80px;
+  font-size: 2em;
+  color: rgb(236, 22, 22);
+}

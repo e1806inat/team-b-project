@@ -1,0 +1,31 @@
+const Schools = [
+    { school_id: 1, school_name: '川之江高等学校' },
+    { school_id: 2, school_name: '三島高等学校' },
+    { school_id: 3, school_name: '土居高等学校' },
+    { school_id: 4, school_name: '新居浜東高等学校' },
+    { school_id: 5, school_name: '新居浜西高等学校' },
+    { school_id: 6, school_name: '西条高等学校' },
+    { school_id: 7, school_name: '小松高等学校' },
+    { school_id: 8, school_name: '丹原高等学校' },
+    { school_id: 9, school_name: '今治西高等学校' },
+    { school_id: 10, school_name: '今治西高等学校伯方分校' },
+    { school_id: 11, school_name: '今治南高等学校' },
+    { school_id: 12, school_name: '今治北高等学校' },
+    { school_id: 13, school_name: '今治北高等学校大三島分校' },
+    { school_id: 14, school_name: '弓削高等学校' },
+    { school_id: 15, school_name: '今治東中等教育学校' },
+    { school_id: 16, school_name: '松山東高等学校' },
+    { school_id: 17, school_name: '松山南高等学校' },
+    { school_id: 18, school_name: '松山北高等学校' },
+    { school_id: 19, school_name: '松山北高等学校中島分校' },
+    { school_id: 20, school_name: '松山中央高等学校' },
+    { school_id: 21, school_name: '東温高等学校' },
+    { school_id: 22, school_name: '上浮穴高等学校' },
+    { school_id: 23, school_name: '伊予高等学校' },
+    { school_id: 24, school_name: '大洲高等学校' },
+    { school_id: 25, school_name: '長浜高等学校' },
+    { school_id: 26, school_name: '内子高等学校' },
+    { school_id: 27, school_name: '+++稲月高校+++'}
+];
+
+module.exports = { Schools };

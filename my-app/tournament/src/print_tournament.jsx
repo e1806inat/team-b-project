@@ -109,7 +109,6 @@ const PrintTournament = (props) => {
       list4[0] = new Array(2);
       list4[0][0] = list3[0][0];
       list4[0][1] = list3[0][1];
-
       var count2 = 1;
       for(var i=1; i < list3.length; i++){
         for(var j=0; j < list4.length; j++){

@@ -4,6 +4,7 @@ const mysql = require("mysql2");
 const async = require('async');
 const config = require("../mysqlConnection/config");
 const { beginTran, executeQuery } = require("../mysql_client.js");
+const cron = require("node-cron");
 
 //const pool = mysql.createPool(config.serverConf);
 
@@ -11,7 +12,7 @@ const { beginTran, executeQuery } = require("../mysql_client.js");
 router.post("/member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.school_id, value.player_name_kanji, value.player_name_hira, value.grade, value.handed_hit, value.handed_throw, value.hit_num, value.bat_num, value.BA]);
+            await executeQuery('insert into t_player3 values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.school_id, value.player_name_kanji, value.player_name_hira, value.grade, value.handed_hit, value.handed_throw, value.hit_num, value.bat_num, value.BA]);
         }
         res.end("OK");
     } catch (err) {
@@ -236,6 +237,24 @@ router.post("/cal_BA", async (req, res, next) => {
     catch (err) {
         console.log(err);
         tran.rollback();
+        next(err);
+    }
+});
+
+//一年に一度学年更新
+cron.schedule('* * * 1 4 *',async () => {
+    //console.log("森口正太郎");
+    //4月1日に学年を更新
+    const tran = await beginTran();
+    try{
+        await tran.query('update t_player set grade = replace(grade, 3, 4) where grade = 3');
+        await tran.query('update t_player set grade = replace(grade, 2, 3) where grade = 2');
+        await tran.query('update t_player set grade = replace(grade, 1, 2) where grade = 1');
+        tran.commit();
+    }
+    catch(err){
+        tran.rollback();
+        console.log(err);
         next(err);
     }
 });

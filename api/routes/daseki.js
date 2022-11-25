@@ -17,11 +17,11 @@ router.get("/", (req, res) => {
 
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
 router.post("/daseki_register", async (req, res) => {
-    const { table_name, at_bat_id, inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind } = req.body;
+    const { table_name, inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind } = req.body;
 
     try {
         //打席情報登録
-        await executeQuery(`insert into ${table_name} values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [at_bat_id, inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind]);
+        await executeQuery(`insert into ${table_name} values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind]);
         res.end("OK");
     }
     catch (err) {

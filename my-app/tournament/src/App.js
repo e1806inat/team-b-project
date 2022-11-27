@@ -1,11 +1,10 @@
 import "./App.css";
-import Tournament from "./tournament";
+import TournamentApp from "./tournamentapp";
 
 function App() {
   return (
     <div>
-      <Tournament/>
-      <div id="content"></div>
+      <TournamentApp/>
     </div>
   );
 }

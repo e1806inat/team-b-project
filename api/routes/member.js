@@ -12,7 +12,7 @@ const cron = require("node-cron");
 router.post("/member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_player3 values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.school_id, value.player_name_kanji, value.player_name_hira, value.grade, value.handed_hit, value.handed_throw, value.hit_num, value.bat_num, value.BA]);
+            await executeQuery('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.school_id, value.player_name_kanji, value.player_name_hira, value.grade, value.handed_hit, value.handed_throw, value.hit_num, value.bat_num, value.BA]);
         }
         res.end("OK");
     } catch (err) {

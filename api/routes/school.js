@@ -63,7 +63,7 @@ router.post("/participants_register", async (req, res, next) => {
     try{
         //on duplicate key update文で組み合わせがなければ挿入あればアップデート
         for(var values of req.body){
-            await executeQuery('insert into t_participants (tournament_id, school_id, seed) values (?, ?, ?) on duplicate key update tournament_id = values(tournament_id), school_id = values(school_id), seed = values(seed)', [values.tournament_id, values.school_id, values.seed]);
+            await executeQuery('insert into t_participants (tournament_id, school_id, school_order, seed) values (?, ?, ?, ?) on duplicate key update tournament_id = values(tournament_id), school_id = values(school_id), seed = values(seed)', [values.tournament_id, values.school_id, values.school_order, values.seed]);
         }
         res.end('OK');
     }
@@ -108,6 +108,20 @@ router.post("/participants_delete", async (req, res, next) => {
         res.end('OK');
     }
     catch(err){
+        next(err);
+    }
+});
+
+//参加学校情報を編集できる(シード値と学校順の変更)
+router.post("/participants_edit", async (req, res, next) => {
+    const { tournament_id, school_id, school_order, seed } = req.body;
+
+    try{
+        await executeQuery('update t_participants set school_order = ?, seed = ? where tournamnet_id = ? and school_id = ?', [school_order, seed, tournament_id, school_id]);
+        res.end('OK');
+    }
+    catch(err){
+        console.log(err);
         next(err);
     }
 });

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const mysql = require("mysql2");
 //const async = require('async');
 const config = require("../mysqlConnection/config");
+const { beginTran, executeQuery } = require("../mysql_client.js");
 
 //const pool = mysql.createPool(config.serverConf);
 
@@ -125,5 +126,50 @@ router.post("/tournament_delete", (req, res) => {
         })
     });
 });
+
+//トーナメント表作成した場合の登録
+router.post("/tournament_table_register", async (req, res, next) => {
+    const { tournament_id } = req.body;
+
+    try{
+        await executeQuery('insert into t_tournament_table values ("0", ?)', [tournament_id]);
+        res.end("OK");
+    }
+    catch(err){
+        console.log('sippai');
+        console.log(err);
+        next(err);
+    }
+});
+
+//トーナメント表一覧呼び出し
+router.post("/tournament_table_call", async (req, res, next) => {
+    try{
+        //const rows = await executeQuery('select * from t_participants as a join t_school as b using(school_id) where tournament_id = ?', [tournament_id]);
+        const rows = await executeQuery('select * from t_tournament_table join t_tournament using(tournament_id)');
+        return res.json(rows);
+    }
+    catch(err){
+        console.log('sippai');
+        console.log(err);
+        next(err);
+    }
+});
+
+//トーナメント表情報呼び出し
+router.post("/tournament_table_inf_call", async (req, res, next) => {
+    const { tournament_id } = req.body;
+    try{
+        //const rows = await executeQuery(`select * from t_at_bat as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ?`, [game_id, at_bat_id]);
+        const rows = await executeQuery('select * from t_participants as parti join (select * from t_tournament where tournament_id = ?)  as tour using(tournament_id) join t_school as school using(school_id) order by school_order',[tournament_id]);
+        return res.json(rows);
+    }
+    catch(err){
+        console.log('sippai');
+        console.log(err);
+        next(err);
+    }
+});
+
 
 module.exports = router;

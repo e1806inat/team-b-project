@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Tournament = (list) =>{
+const Tournament = ({value}) =>{
   return(
     <div>
-      <button>{list.name}</button>
+      <button>{value.name}</button>
     </div>
   );
 }

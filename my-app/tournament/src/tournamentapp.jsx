@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState, useRef} from "react";
-// import TournamentList from './tournamentlist';
+import TournamentList from './tournamentlist';
 import { v4 as uuidv4 } from "uuid";
 
 const TournamentApp = () => {
@@ -12,11 +12,11 @@ const TournamentApp = () => {
   const datelist = nowdate.split('/');
 
   const handleAddTournament = () =>{
-    const number = numberRef.current.value;
+    const number = '第'+ numberRef.current.value + '回';
     const tournament = tournamentRef.current.value;
-    const tournamentname = datelist[0] + '年第' + number +'回' +tournament;
-    console.log(tournamentname);
-    if(number === "" && tournament === ""){
+    const era = datelist[0] + '年'
+    const tournamentname = era + number + tournament;
+    if(number === "" || tournament === ""){
       return;
     }
     setList((prevlist)=>{
@@ -26,10 +26,10 @@ const TournamentApp = () => {
 
   return (
     <div>
-      <input type='number' min='0' ref={numberRef}/>
+      第<input type='number' min='0' ref={numberRef}/>回
       <input type="text" ref={tournamentRef} />
       <button onClick={handleAddTournament}>大会を追加</button>
-      {/* <TournamentList list1={list1}/> */}
+      <TournamentList list1={list1}/>
     </div>
   );
 };

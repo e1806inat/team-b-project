@@ -44,7 +44,7 @@ router.post("/game_call", async (req, res, next) => {
 
     try{
 
-        const rows1 = await executeQuery('select * from t_game as a join t_school as b on b.school_id = a.school_id_1 where tournament_id = ? order by match_num', [tournament_id]);
+        const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join t_school as b on b.school_id = a.school_id_1 where tournament_id = ? order by match_num', [tournament_id]);
         const rows2 = await executeQuery('select * from t_game as a join t_school as b on b.school_id = a.school_id_2 where tournament_id = ? order by match_num', [tournament_id]);
         
         for(var key in rows1){

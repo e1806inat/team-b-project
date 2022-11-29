@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 });
 
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
-router.post("/daseki_register", async (req, res) => {
+router.post("/daseki_register", async (req, res, next) => {
     const { table_name, inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, pinch } = req.body;
 
     try {
@@ -27,11 +27,12 @@ router.post("/daseki_register", async (req, res) => {
     catch (err) {
         //next(err);
         console.log(err);
+        next(err);
     }
 });
 
 //一時打席情報登録用のテーブル作成
-router.post("/tmp_table_create", async (req, res) => {
+router.post("/tmp_table_create", async (req, res, next) => {
     //create table のための名前作成
     const table_name = `test_pbl.` + req.body['table_name']
 
@@ -40,16 +41,17 @@ router.post("/tmp_table_create", async (req, res) => {
     try {
         //一時打席情報登録用テーブル作成
         await executeQuery(`create table ${table_name} (at_bat_id int not null, inning varchar(5), game_id int not null,  school_id int not null, player_id int not null, score int, total_score int, outcount int, base char(3), text_inf varchar(300), pass bool, touched_coordinate varchar(100), hit bool, pinch varchar(300), varchar(10), primary key(at_bat_id, inning, game_id))`);
+        res.end('OK');   
     }
     catch (err) {
         //next(err);
         console.log("hehehe")
+        next(err);
     }
-    res.end("OK");
-});
+});  
 
 //一時打席情報登録用のテーブル削除
-router.post("/tmp_table_delete", async (req, res) => {
+router.post("/tmp_table_delete", async (req, res, next) => {
 
     const { table_name, game_id } = req.body;
 
@@ -144,7 +146,7 @@ router.post("/daseki_transmission", async (req, res, next) => {
 });
 
 //試合中選手情報更新
-router.post("/player_data_change", async (req, res) => {
+router.post("/player_data_change", async (req, res, next) => {
    
     const { player_id, game_id, school_id, position, batting_order } = req.body;
 
@@ -164,7 +166,7 @@ router.post("/player_data_change", async (req, res) => {
 });
 
 //試合情報更新（編集）
-router.post("/daseki_update", async (req, res) => {
+router.post("/daseki_update", async (req, res, next) => {
     const { table_name, at_bat_id, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, pinch } = req.body;
 
     const tran = await beginTran();

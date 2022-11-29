@@ -21,7 +21,7 @@ router.post("/school_register", async (req, res, next) => {
     const { school_name } = req.body;
     
     try{
-        rows = await tran.query("select * from t_school2 where school_name = ? LIMIT 1", [school_name]);
+        rows = await tran.query("select * from t_school where school_name = ? LIMIT 1", [school_name]);
         //await tran.commit();
         //res.end("Ok");
         if (rows.length != 0){
@@ -32,7 +32,7 @@ router.post("/school_register", async (req, res, next) => {
             ]);
         } else {
             console.log("bakamorimori");
-            await tran.query("insert into t_school2 values (0, ?)", [school_name]);
+            await tran.query("insert into t_school values (0, ?)", [school_name]);
             await tran.commit();
             console.log("bakasyouta");
             res.end("Ok");
@@ -48,7 +48,7 @@ router.post("/school_edit", async (req, res, next) => {
     //const tran = await beginTran();
     const { school_id, school_name } = req.body;
     try{
-        await executeQuery('update t_school2 set school_name = ? where school_id = ?', [school_name, school_id]);
+        await executeQuery('update t_school set school_name = ? where school_id = ?', [school_name, school_id]);
         //console.log(err);
         res.end("OK");
     } catch (err) {

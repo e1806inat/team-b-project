@@ -1,8 +1,8 @@
 //選手情報関連のAPIたち
 const router = require("express").Router();
-const mysql = require("mysql2");
-const async = require('async');
-const config = require("../mysqlConnection/config");
+//const mysql = require("mysql2");
+//const async = require('async');
+//const config = require("../mysqlConnection/config");
 const { beginTran, executeQuery } = require("../mysql_client.js");
 const cron = require("node-cron");
 
@@ -80,7 +80,7 @@ router.post("/tournament_member_call", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
 
     try {
-        rows = await executeQuery('select * from t_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
         return res.json(rows);
     }
     catch (err) {
@@ -93,7 +93,7 @@ router.post("/starting_member_call", async (req, res, next) => {
     const { game_id, school_id } = req.body;
 
     try {
-        rows = await executeQuery('select * from t_player where game_id = ? and school_id = ?', [game_id, school_id]);
+        rows = await executeQuery('select * from t_starting_player where game_id = ? and school_id = ?', [game_id, school_id]);
         return res.json(rows);
     }
     catch (err) {
@@ -237,6 +237,22 @@ router.post("/cal_BA", async (req, res, next) => {
     catch (err) {
         console.log(err);
         tran.rollback();
+        next(err);
+    }
+});
+
+//大会選手の打率を更新
+router.post("/tournament_member_BA_update", async (req, res, next) => {
+    const { player_id, tournamnet_id, BA } = req.body;
+
+    //const tran = await beginTran();
+
+    try {
+        await executeQuery('update t_registered_player set BA = ? where player_id = ? and tournament_id = ?', [BA, player_id, tournamnet_id]);
+        res.end('OK');
+    }
+    catch (err) {
+        console.log(err);
         next(err);
     }
 });

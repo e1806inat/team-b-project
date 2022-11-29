@@ -196,6 +196,30 @@ router.post("/starting_member_edit", async (req, res, next) => {
     }
 });
 
+//大会毎の選手情報削除
+router.post("/tournament_member_delete", async (req, res, next) => {
+    const { tournament_id, player_id } = req.body;
+    try {    
+        await executeQuery('delete from t_registered_player where tournament_id = ? and player_id = ?', [tournament_id, player_id]);   
+        res.end("OK");
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
+//スタメンの選手情報削除
+router.post("/starting_member_delete", async (req, res, next) => {
+    const { game_id, player_id } = req.body;
+    try {    
+        await executeQuery('delete from t_starting_player where game_id = ? and player_id = ?', [game_id, player_id]);   
+        res.end("OK");
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
 //打率計算＆更新
 router.post("/cal_BA", async (req, res, next) => {
     //試合結果から打率を計算する。

@@ -98,10 +98,10 @@ label #cancelBtn{
     margin-right: 250px;
 }
 
-/*.bg{
+.bg{
     height: 100vh;
     background-image: url("./04LimitedSazabys.jpeg");
     background-size: cover;
     background-position: center;
     transition: all 0.5s;
-}*/
+}

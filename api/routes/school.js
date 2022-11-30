@@ -139,4 +139,17 @@ router.post("/school_delete", async (req, res, next) => {
     }
 });
 
+//ロックテスト
+router.post("/lock_test", async (req, res, next) => {
+    const { school_id,school_name } = req.body;
+
+    try{
+        await executeQuery('delete from t_school where school_name = ? and school_id = ?', [school_name, school_id]);
+        res.end('OK');
+    }
+    catch(err){
+        next(err);
+    }
+});
+
 module.exports = router;

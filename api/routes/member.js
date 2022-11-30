@@ -25,7 +25,7 @@ router.post("/member_register", async (req, res, next) => {
 router.post("/tournament_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_registered_player values (?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.tournament_id, value.school_id, value.player_name_kanji, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
+            await executeQuery('insert into t_registered_player values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
         }
         res.end("OK");
     } catch (err) {
@@ -38,7 +38,7 @@ router.post("/tournament_member_register", async (req, res, next) => {
 router.post("/starting_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_starting_player values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.game_id, value.school_id, value.player_name_kanji, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
+            await executeQuery('insert into t_starting_player values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.game_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
         }
         res.end("OK");
     }
@@ -54,7 +54,7 @@ router.post("/member_call", async (req, res, next) => {
     const { school_id } = req.body;
 
     try {
-        rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ?', [school_id]);
+        const rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ?', [school_id]);
         return res.json(rows);
     }
     catch (err) {
@@ -80,10 +80,14 @@ router.post("/tournament_member_call", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
 
     try {
-        rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        const rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        //const rows = await executeQuery(`select * from ${table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id, inning]);
+        //const rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ? join (select player_id, player_name_kanji, playername_hira, grade, handed_hit, handed_throw, BA from t_player where grade <= 3 and school_id = ?) using(plaer_id)', [tournament_id, school_id, school_id]);
+        //const rows = await executeQuery('select * from t_player as a join (select player_id, player_name_kanji from t_registered_player where tournament_id = ? and school_id = ?) as b using(player_id) where grade <= 3', [tournament_id, school_id]);
         return res.json(rows);
     }
     catch (err) {
+        console.log(err);
         next(err);
     }
 });
@@ -93,7 +97,7 @@ router.post("/starting_member_call", async (req, res, next) => {
     const { game_id, school_id } = req.body;
 
     try {
-        rows = await executeQuery('select * from t_starting_player where game_id = ? and school_id = ?', [game_id, school_id]);
+        const rows = await executeQuery('select * from t_starting_player where game_id = ? and school_id = ?', [game_id, school_id]);
         return res.json(rows);
     }
     catch (err) {

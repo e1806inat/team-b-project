@@ -25,7 +25,8 @@ router.post("/member_register", async (req, res, next) => {
 router.post("/tournament_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_registered_player values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
+            //await executeQuery('insert into t_participants (tournament_id, school_id, school_order, seed) values (?, ?, ?, ?) on duplicate key update tournament_id = values(tournament_id), school_id = values(school_id), seed = values(seed)', [values.tournament_id, values.school_id, values.school_order, values.seed]);
+            await executeQuery('insert into t_registered_player (player_id, tournament_id, school_id, player_name_kanji, player_name_hira, uniform_number, grade, handed_hit, handed_throw, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update player_name_kanji = values(player_name_kanji), player_name_hira = values(player_name_hira), grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), BA = values(BA)', [value.player_id, value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
         }
         res.end("OK");
     } catch (err) {
@@ -38,7 +39,7 @@ router.post("/tournament_member_register", async (req, res, next) => {
 router.post("/starting_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            await executeQuery('insert into t_starting_player values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.player_id, value.game_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
+            await executeQuery('insert into t_starting_player (player_id, game_id, school_id, player_name_kanji, player_name_hira, position, uniform_number, grade, handed_hit, handed_throw, batting_order, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update position = values(position), uniform_number = values(uniform_number), grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), batting_order = values(batting_order), BA = values(BA)', [value.player_id, value.game_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
         }
         res.end("OK");
     }
@@ -234,7 +235,7 @@ router.post("/cal_BA", async (req, res, next) => {
 
     try {
         //試合で選手が安打を打った打席のplayer_idとhitフラグを取得
-        rows = await tran.query('select player_id, hit from t_at_bat where game_id = ?', [game_id]);
+        rows = await tran.query('select player_id, hit, foreball, deadball from t_at_bat where game_id = ?', [game_id]);
 
         //for文を使って各選手毎の打席数とヒット数を計算
         for await (var values of rows) {
@@ -244,17 +245,22 @@ router.post("/cal_BA", async (req, res, next) => {
             } else {
                 count_hit[key] = (count_hit[key] || 0);
             }
-            count_bat[key] = (count_bat[key] || 0) + 1;
+            if (values['foreball']!=1 && values['deadball']!=1){
+                count_bat[key] = (count_bat[key] || 0) + 1;
+            } else {
+                count_bat[key] = (count_bat[key] || 0);
+            }
         }
-
+        //console.log(count_hit);
+        //console.log(count_bat);
         //打率の計算と選手テーブルへの打率挿入
         for (var key in count_bat) {
             //選手テーブルから過去の打席数、安打数を取得
             rows = await tran.query('select hit_num, bat_num from t_player where player_id = ?', [key]);
-            //打率の計算(計算式は打率(BA)＝総安打数(tmp_hit)/総打席数(tmp_bat))
+            //打率の計算(計算式は打率(BA)＝総安打数(tmp_hit)/{総打席数(tmp_bat)-四死球合計数(foreball&deadball)})
             var tmp_hit = await rows[0]['hit_num'] + count_hit[key];
             var tmp_bat = await rows[0]['bat_num'] + count_bat[key];
-            console.log(tmp_bat);
+            //console.log(tmp_bat);
             var BA = await Number((tmp_hit / tmp_bat).toFixed(3));
             //選手テーブルに新たな安打数、打席数、打率を挿入
             await tran.query('update t_player set hit_num = ?, bat_num = ?, BA = ? where player_id = ?', [tmp_hit, tmp_bat, BA, key]);

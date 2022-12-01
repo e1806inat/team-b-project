@@ -63,7 +63,7 @@ router.post("/participants_register", async (req, res, next) => {
     try{
         //on duplicate key update文で組み合わせがなければ挿入あればアップデート
         for(var values of req.body){
-            await executeQuery('insert into t_participants (tournament_id, school_id, school_order, seed) values (?, ?, ?, ?) on duplicate key update tournament_id = values(tournament_id), school_id = values(school_id), seed = values(seed)', [values.tournament_id, values.school_id, values.school_order, values.seed]);
+            await executeQuery('insert into t_participants (tournament_id, school_id, school_order, seed) values (?, ?, ?, ?) on duplicate key update tournament_id = values(tournament_id), school_id = values(school_id), school_order = values(school_order), seed = values(seed)', [values.tournament_id, values.school_id, values.school_order, values.seed]);
         }
         res.end('OK');
     }

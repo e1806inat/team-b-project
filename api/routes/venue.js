@@ -71,6 +71,7 @@ router.post("/venue_register", (req, res) => {
 //登録されている会場を呼び出し
 router.post("/venue_call", async (req, res, next) => {
     try{
+        //会場呼び出し
         const rows = await executeQuery('select * from t_venue');
         return res.json(rows);
     }

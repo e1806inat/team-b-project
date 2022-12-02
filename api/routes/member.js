@@ -11,6 +11,7 @@ const cron = require("node-cron");
 //選手情報登録
 router.post("/member_register", async (req, res, next) => {
     try {
+        //for文で選手登録
         for (const value of req.body) {
             await executeQuery('insert into t_player values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [value.school_id, value.player_name_kanji, value.player_name_hira, value.grade, value.handed_hit, value.handed_throw, value.hit_num, value.bat_num, value.BA]);
         }
@@ -25,7 +26,7 @@ router.post("/member_register", async (req, res, next) => {
 router.post("/tournament_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
-            //await executeQuery('insert into t_participants (tournament_id, school_id, school_order, seed) values (?, ?, ?, ?) on duplicate key update tournament_id = values(tournament_id), school_id = values(school_id), seed = values(seed)', [values.tournament_id, values.school_id, values.school_order, values.seed]);
+            //upsertで大会毎に出場する選手を登録
             await executeQuery('insert into t_registered_player (player_id, tournament_id, school_id, player_name_kanji, player_name_hira, uniform_number, grade, handed_hit, handed_throw, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update player_name_kanji = values(player_name_kanji), player_name_hira = values(player_name_hira), grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), BA = values(BA)', [value.player_id, value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
         }
         res.end("OK");
@@ -39,6 +40,7 @@ router.post("/tournament_member_register", async (req, res, next) => {
 router.post("/starting_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
+            //upsertでスタメンを登録
             await executeQuery('insert into t_starting_player (player_id, game_id, school_id, player_name_kanji, player_name_hira, position, uniform_number, grade, handed_hit, handed_throw, batting_order, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update position = values(position), uniform_number = values(uniform_number), grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), batting_order = values(batting_order), BA = values(BA)', [value.player_id, value.game_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
         }
         res.end("OK");
@@ -55,6 +57,8 @@ router.post("/member_call", async (req, res, next) => {
     const { school_id } = req.body;
 
     try {
+        //３年生以下の選手を呼び出す。
+        //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
         const rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ?', [school_id]);
         return res.json(rows);
     }
@@ -81,7 +85,9 @@ router.post("/tournament_member_call", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
 
     try {
+        //大会毎に登録されている選手の呼び出し
         const rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        //const rows = await executeQuery('select * from t__player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
         //const rows = await executeQuery(`select * from ${table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id, inning]);
         //const rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ? join (select player_id, player_name_kanji, playername_hira, grade, handed_hit, handed_throw, BA from t_player where grade <= 3 and school_id = ?) using(plaer_id)', [tournament_id, school_id, school_id]);
         //const rows = await executeQuery('select * from t_player as a join (select player_id, player_name_kanji from t_registered_player where tournament_id = ? and school_id = ?) as b using(player_id) where grade <= 3', [tournament_id, school_id]);
@@ -98,6 +104,7 @@ router.post("/starting_member_call", async (req, res, next) => {
     const { game_id, school_id } = req.body;
 
     try {
+        //試合ごとのスタメンの呼び出し
         const rows = await executeQuery('select * from t_starting_player where game_id = ? and school_id = ?', [game_id, school_id]);
         return res.json(rows);
     }
@@ -163,6 +170,7 @@ router.post("/member_edit", async (req, res, next) => {
     //const tran = await beginTran();
 
     try {
+        //選手情報の編集
         await executeQuery('update t_player set player_name_kanji = ?, player_name_hira = ?, grade = ?, handed_hit = ?, handed_throw = ?, BA = ? where player_id = ? and school_id = ?', [player_name_kanji, player_name_hira, grade, handed_hit, handed_throw, BA, player_id, school_id]);
         res.end('OK');
     }
@@ -178,6 +186,7 @@ router.post("/tournament_member_edit", async (req, res, next) => {
     //const tran = await beginTran();
 
     try {
+        //大会登録選手情報の編集
         await executeQuery('update t_registered_player set uniform_number = ?, grade = ?, handed_hit = ?, handed_throw = ?, BA = ? where player_id = ? and tournament_id = ?', [uniform_number, grade, handed_hit, handed_throw, BA, player_id, tournamnet_id]);
         res.end('OK');
     }
@@ -193,6 +202,7 @@ router.post("/starting_member_edit", async (req, res, next) => {
     //const tran = await beginTran();
 
     try {
+        //試合ごとのスタメン情報の編集
         await executeQuery('update t_starting_player set position = ?,uniform_number = ?, grade = ?, handed_hit = ?, handed_throw = ?, batting_order = ?, BA = ? where player_id = ? and game_id = ?', [position, uniform_number, grade, handed_hit, handed_throw, batting_order, BA, player_id, game_id]);
         res.end('OK');
     }
@@ -204,7 +214,8 @@ router.post("/starting_member_edit", async (req, res, next) => {
 //大会毎の選手情報削除
 router.post("/tournament_member_delete", async (req, res, next) => {
     const { tournament_id, player_id } = req.body;
-    try {    
+    try {
+        //大会登録選手の削除    
         await executeQuery('delete from t_registered_player where tournament_id = ? and player_id = ?', [tournament_id, player_id]);   
         res.end("OK");
     } catch (err) {
@@ -216,7 +227,8 @@ router.post("/tournament_member_delete", async (req, res, next) => {
 //スタメンの選手情報削除
 router.post("/starting_member_delete", async (req, res, next) => {
     const { game_id, player_id } = req.body;
-    try {    
+    try {
+        //試合ごとの選手情報の削除    
         await executeQuery('delete from t_starting_player where game_id = ? and player_id = ?', [game_id, player_id]);   
         res.end("OK");
     } catch (err) {
@@ -282,6 +294,7 @@ router.post("/tournament_member_BA_update", async (req, res, next) => {
     //const tran = await beginTran();
 
     try {
+        //大会登録選手情報の更新
         await executeQuery('update t_registered_player set BA = ? where player_id = ? and tournament_id = ?', [BA, player_id, tournamnet_id]);
         res.end('OK');
     }
@@ -291,9 +304,27 @@ router.post("/tournament_member_BA_update", async (req, res, next) => {
     }
 });
 
+//学校ID、選手名、学年が同じ選手がいないか確認
+router.post("/check_member", async (req, res, next) => {
+    const { school_id, player_name_kanji, grade } = req.body;
+
+    try {
+        //同じ選手が登録されていないかを確認
+        const rows = await executeQuery('select count(*) from t_player where school_id = ? and grade = ? and player_name_kanji = ?', [school_id, grade, player_name_kanji]);
+        if (rows[0]['count(*)']>=1){
+            res.end('すでに登録されています');
+        } else {
+            res.end('登録されていません');
+        }
+    }
+    catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
 //一年に一度学年更新
 cron.schedule('* * * 1 4 *',async () => {
-    //console.log("森口正太郎");
     //4月1日に学年を更新
     const tran = await beginTran();
     try{

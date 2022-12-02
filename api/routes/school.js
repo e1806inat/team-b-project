@@ -21,6 +21,7 @@ router.post("/school_register", async (req, res, next) => {
     const { school_name } = req.body;
     
     try{
+        //同じ学校が登録されていないかを確認
         rows = await tran.query("select * from t_school where school_name = ? LIMIT 1", [school_name]);
         //await tran.commit();
         //res.end("Ok");
@@ -32,6 +33,7 @@ router.post("/school_register", async (req, res, next) => {
             ]);
         } else {
             console.log("bakamorimori");
+            //学校情報の登録
             await tran.query("insert into t_school values (0, ?)", [school_name]);
             await tran.commit();
             console.log("bakasyouta");
@@ -48,6 +50,7 @@ router.post("/school_edit", async (req, res, next) => {
     //const tran = await beginTran();
     const { school_id, school_name } = req.body;
     try{
+        //学校情報編集
         await executeQuery('update t_school set school_name = ? where school_id = ?', [school_name, school_id]);
         //console.log(err);
         res.end("OK");
@@ -78,6 +81,7 @@ router.post("/school_call_p", async (req, res, next) => {
     const { tournament_id } = req.body;
 
     try{
+        //大会毎の参加学校呼び出し
         const rows = await executeQuery('select * from t_participants as a join t_school as b using(school_id) where tournament_id = ?', [tournament_id]);
         return res.json(rows);
     }
@@ -128,19 +132,6 @@ router.post("/participants_edit", async (req, res, next) => {
 
 //学校情報を消すことができる
 router.post("/school_delete", async (req, res, next) => {
-    const { school_id,school_name } = req.body;
-
-    try{
-        await executeQuery('delete from t_school where school_name = ? and school_id = ?', [school_name, school_id]);
-        res.end('OK');
-    }
-    catch(err){
-        next(err);
-    }
-});
-
-//ロックテスト
-router.post("/lock_test", async (req, res, next) => {
     const { school_id,school_name } = req.body;
 
     try{

@@ -206,6 +206,7 @@ router.post("/tournament_table_call", async (req, res, next) => {
 router.post("/tournament_table_inf_call", async (req, res, next) => {
     const { tournament_id } = req.body;
     try{
+        //トーナメント表情報
         //const rows = await executeQuery(`select * from t_at_bat as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ?`, [game_id, at_bat_id]);
         const rows = await executeQuery('select * from t_participants as parti join (select * from t_tournament where tournament_id = ?)  as tour using(tournament_id) join t_school as school using(school_id) order by school_order',[tournament_id]);
         return res.json(rows);

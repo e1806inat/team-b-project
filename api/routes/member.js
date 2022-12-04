@@ -27,7 +27,7 @@ router.post("/tournament_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
             //upsertで大会毎に出場する選手を登録
-            await executeQuery('insert into t_registered_player (player_id, tournament_id, school_id, player_name_kanji, player_name_hira, uniform_number, grade, handed_hit, handed_throw, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update player_name_kanji = values(player_name_kanji), player_name_hira = values(player_name_hira), grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), BA = values(BA)', [value.player_id, value.tournament_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
+            await executeQuery('insert into t_registered_player (player_id, tournament_id, school_id, uniform_number, grade, handed_hit, handed_throw, BA) values (?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), BA = values(BA)', [value.player_id, value.tournament_id, value.school_id, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
         }
         res.end("OK");
     } catch (err) {
@@ -41,7 +41,7 @@ router.post("/starting_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
             //upsertでスタメンを登録
-            await executeQuery('insert into t_starting_player (player_id, game_id, school_id, player_name_kanji, player_name_hira, position, uniform_number, grade, handed_hit, handed_throw, batting_order, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update position = values(position), uniform_number = values(uniform_number), grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), batting_order = values(batting_order), BA = values(BA)', [value.player_id, value.game_id, value.school_id, value.player_name_kanji, value.player_name_hira, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
+            await executeQuery('insert into t_starting_player (player_id, game_id, school_id, position, uniform_number, grade, handed_hit, handed_throw, batting_order, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update position = values(position), uniform_number = values(uniform_number), grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), batting_order = values(batting_order), BA = values(BA)', [value.player_id, value.game_id, value.school_id, value.position, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.batting_order, value.BA]);
         }
         res.end("OK");
     }
@@ -86,7 +86,7 @@ router.post("/tournament_member_call", async (req, res, next) => {
 
     try {
         //大会毎に登録されている選手の呼び出し
-        const rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        const rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ?', [school_id, tournament_id]);
         //const rows = await executeQuery('select * from t__player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
         //const rows = await executeQuery(`select * from ${table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id, inning]);
         //const rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ? join (select player_id, player_name_kanji, playername_hira, grade, handed_hit, handed_throw, BA from t_player where grade <= 3 and school_id = ?) using(plaer_id)', [tournament_id, school_id, school_id]);
@@ -105,10 +105,11 @@ router.post("/starting_member_call", async (req, res, next) => {
 
     try {
         //試合ごとのスタメンの呼び出し
-        const rows = await executeQuery('select * from t_starting_player where game_id = ? and school_id = ?', [game_id, school_id]);
+        const rows = await executeQuery('select * from t_starting_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id)  where game_id = ? ', [school_id, game_id]);
         return res.json(rows);
     }
     catch (err) {
+        console.log(err);
         next(err);
     }
 });

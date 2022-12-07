@@ -1,5 +1,6 @@
 import { scoreBoard } from './comSokuho/scoreBoard';
 import { outCount } from './comSokuho/outCount'
+import { runnerCount } from './comSokuho/runnerCount';
 import { freeWrite } from './comSokuho/freeWrite'
 import { BaseballButton } from './comSokuho/baseballButton'
 import { updateButton } from './comSokuho/updateButton'
@@ -10,9 +11,39 @@ import Popupfield from "./comSokuho/onisi_popup/onisi_popup";
 
 //プルダウン
 import { PullDown } from './comSokuho/PullDown/PullDown'
+import { PullDownMember } from './comSokuho/PullDown/PullDownMember'
+import { useSearchParams } from 'react-router-dom';
 
+
+
+const setBatter = (battingOrder, setBattingOrder, urlSchoolId, urlGameId) => {
+    fetch("http://localhost:5000/member/starting_member_call", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId }),
+    })
+        .then((response) => response.json())
+        .then((data) => { console.log(data); setBattingOrder([data,battingOrder[1]])})
+}
+
+
+const canvasSize = 1000;
+const homebase = 500;
 
 const InputPlayGame = () => {
+    //urlから値を読み出す
+    const [searchParams] = useSearchParams();
+    const urlTournamentId = searchParams.get("urlTournamentId")
+    const urlTournamentName = searchParams.get("urlTournamentName")
+    const urlSchoolId = searchParams.get("urlSchoolId")
+    const urlSchoolName = searchParams.get("urlSchoolName")
+    const urlSchoolId2 = searchParams.get("urlSchoolId2")
+    const urlSchoolName2 = searchParams.get("urlSchoolName2")
+    const urlGameId = searchParams.get("urlGameId")
+
     //Score記録
     const { Score } = require("../../../../DB/Score")
     const [scoreState, setScoreState] = useState(Score)
@@ -32,10 +63,16 @@ const InputPlayGame = () => {
     //アウトカウント
     const [nowOutCountState, setNowOutCountState] = useState(0)
 
+    //ランナーカウント
+    const [runnerCountState, setRunnerCountState] = useState([false, false, false])
 
+    //打順と今の打者
+    const [battingOrder, setBattingOrder] = useState([[{ player_name_kanji: '丹羽 長秀' }, { player_name_kanji: '柴田 勝家' }], 0])
+    const [battingOrder2, setBattingOrder2] = useState([[{ player_name_kanji: '丹羽 長秀' }, { player_name_kanji: '柴田 勝家' }], 0])
+
+    
     // contextを状態として持つ
     const [context, setContext] = useState(null)
-    const [canvasCopy, setCanvasCopy] = useState(null)
 
 
     const [canvasX1, setcanvasX1] = useState(0)
@@ -47,7 +84,6 @@ const InputPlayGame = () => {
 
     useEffect(() => {
         const canvas = document.getElementById("canvas")
-        setCanvasCopy(canvas)
         const canvasContext = canvas.getContext("2d")
         setContext(canvasContext)
 
@@ -72,9 +108,6 @@ const InputPlayGame = () => {
             setcanvasX1(canvasX);
             setcanvasY1(canvasY);
         });
-
-
-
     }, [])
 
 
@@ -82,53 +115,140 @@ const InputPlayGame = () => {
     // 状態にコンテキストが登録されたらそれに対して操作できる
     useEffect(() => {
         if (context !== null) {
-            console.log(context)
-            const img = new Image()
-            img.src = pic // 描画する画像など
+            //const img = new Image()
+            //img.src = "img.jpg" // 描画する画像など
 
-            context.drawImage(img, 0, 0)
+
+            //img.onload = () => {
+
+            //context.drawImage(img, 0, 0)
             // 更にこれに続いて何か処理をしたい場合
 
             //削除
-            context.clearRect(0, 0, 1000, 1000);
+            context.clearRect(0, 0, canvasSize, canvasSize);
 
-            // パスをリセット
+            //緑グラウンド
             context.beginPath();
+            context.fillStyle = "green";
+            context.moveTo(homebase, homebase);
+            context.arc(homebase, homebase, homebase, -Math.PI / 4, 5 * Math.PI / 4, true);
+            context.closePath();
+            context.fill();
 
-            // 線を引くスタート地点に移動
-            context.moveTo(400, 650);
+            //茶グラウンド
+            context.beginPath();
+            context.fillStyle = "sienna";
+            context.moveTo(homebase, homebase);
+            context.arc(homebase, homebase, 3.5 * homebase / 5, -Math.PI / 4, 5 * Math.PI / 4, true);
+            context.closePath();
+            context.fill();
 
-            //let flag = 2;   //１が直線、２がフライ、3がゴロ
+            //白線
+            context.beginPath();
+            context.moveTo(homebase, homebase);
+            context.lineTo(homebase * 5 / 4, homebase * 3 / 4);
+            context.lineTo(homebase, homebase / 2);
+            context.lineTo(homebase * 3 / 4, homebase * 3 / 4);
+            context.strokeStyle = "white";
+            context.lineWidth = 2;
+            context.closePath();
+            context.stroke();
 
-            // スタート地点から(200,200)まで線を引く
+
+            const w = 0.03 * homebase;  //ベースの幅
+            const margin = 10;    //ベース位置調整用
+
+            //ベースの色
+            let baseColor2 = [];
+            for (let i = 0; i < 3; i++) {
+                if (runnerCountState[i]) {
+                    baseColor2[i] = "blue";
+                    console.log(baseColor2[i]);
+                }
+                else {
+                    baseColor2[i] = "white";
+                }
+            }
+
+
+            context.strokeStyle = "black";
+
+            //３塁ベース
+            context.fillStyle = baseColor2[2];
+            context.beginPath();
+            context.moveTo(homebase * 3 / 4, homebase * 3 / 4 - margin);
+            context.lineTo(homebase * 3 / 4 - w, homebase * 3 / 4 + w - margin);
+            context.lineTo(homebase * 3 / 4, homebase * 3 / 4 + w * 2 - margin);
+            context.lineTo(homebase * 3 / 4 + w, homebase * 3 / 4 + w - margin);
+            context.closePath();
+            context.fill();
+            context.lineWidth = 1;
+            context.stroke();
+
+            //2塁ベース
+            context.fillStyle = baseColor2[1];
+            context.beginPath();
+            context.moveTo(homebase, homebase / 2 - margin);
+            context.lineTo(homebase - w, homebase / 2 + w - margin);
+            context.lineTo(homebase, homebase / 2 + w * 2 - margin);
+            context.lineTo(homebase + w, homebase / 2 + w - margin);
+            context.closePath();
+            context.fill();
+            context.stroke();
+
+            //1塁ベース
+            context.fillStyle = baseColor2[0];
+            context.beginPath();
+            context.moveTo(homebase * 5 / 4, homebase * 3 / 4 - margin);
+            context.lineTo(homebase * 5 / 4 - w, homebase * 3 / 4 + w - margin);
+            context.lineTo(homebase * 5 / 4, homebase * 3 / 4 + w * 2 - margin);
+            context.lineTo(homebase * 5 / 4 + w, homebase * 3 / 4 + w - margin);
+            context.closePath();
+            context.fill();
+            context.stroke();
+
+            context.fillStyle = "white";
+            //ホームベース
+            context.beginPath();
+            context.moveTo(homebase + w * 2 / 3, homebase - w * 2 / 3);
+            context.lineTo(homebase - w * 2 / 3, homebase - w * 2 / 3);
+            context.lineTo(homebase - w * 2 / 3, homebase + w / 3);
+            context.lineTo(homebase, homebase + w);
+            context.lineTo(homebase + w * 2 / 3, homebase + w / 3);
+            context.closePath();
+            context.fill();
+            context.stroke();
+
+
+            //打球
+            context.beginPath();
+            context.moveTo(homebase, homebase);
+
+            // let flag = 2;   //１が直線、２がフライ、3がゴロ
+
             if (flag === 1) {
                 console.log("flag1")
-                //context.lineTo(200, 200)
                 context.lineTo(canvasX1, canvasY1)
             }
             if (flag === 2) {
                 let start = { x: 500, y: 500 };
-                let cp = { x: 500, y: start.y / 3 * 2 };    //ここで曲がり具合調整
+                let cp = { x: 500, y: start.y / 5 * 3 };    //ここで曲がり具合調整
                 console.log("flag2")
                 context.quadraticCurveTo(cp.x, cp.y, canvasX1, canvasY1);
             }
             if (flag === 3) {
                 console.log("flag3")
-                drawWaveLine(400, 650, canvasX1, canvasY1, 20, 20, "red", context);
+                drawWaveLine(500, 500, canvasX1, canvasY1, 20, 20, "red", context);
             }
 
-
-            // 線の色
             context.strokeStyle = "red";
-
-            // 線の太さ
             context.lineWidth = 5;
-
-            // 線を描画する
             context.stroke();
 
             //setLoaded(true)
             //}
+
+
 
 
             // 波線描画
@@ -149,7 +269,7 @@ const InputPlayGame = () => {
                 ctx.moveTo(ps[BEGIN][x1], ps[BEGIN][y1]);
 
                 var rad = calcRadian(x, y, mx, my);
-                if (0 != rad) {
+                if (0 !== rad) {
                     ctx.translate(x, y);
                     ctx.rotate(rad);
                     ctx.translate(-x, -y);
@@ -158,7 +278,7 @@ const InputPlayGame = () => {
                 for (var i = 0; i < cycle; i++) {
                     ps[END][x1] += waveLen;
                     ps[CTRL][x1] = ps[BEGIN][x1] + ((ps[END][x1] - ps[BEGIN][x1]) * 0.5);
-                    ps[CTRL][y1] = ps[BEGIN][y1] + ((i % 2 != 0) ? -amplitude : amplitude);
+                    ps[CTRL][y1] = ps[BEGIN][y1] + ((i % 2 !== 0) ? -amplitude : amplitude);
 
                     ctx.quadraticCurveTo(ps[CTRL][x1], ps[CTRL][y1], ps[END][x1], ps[END][y1]);
 
@@ -168,7 +288,7 @@ const InputPlayGame = () => {
 
                 ps[END][x1] += distance - calcDistance(x, y, ps[END][x1], ps[END][y1]);
                 ps[CTRL][x1] = ps[BEGIN][x1] + ((ps[END][x1] - ps[BEGIN][x1]) * 0.5);
-                ps[CTRL][y1] = ps[BEGIN][y1] + (((cycle) % 2 != 0) ? -amplitude : amplitude);
+                ps[CTRL][y1] = ps[BEGIN][y1] + (((cycle) % 2 !== 0) ? -amplitude : amplitude);
 
                 ctx.quadraticCurveTo(ps[CTRL][x1], ps[CTRL][y1], ps[END][x1], ps[END][y1]);
 
@@ -186,9 +306,13 @@ const InputPlayGame = () => {
                 return Math.hypot(my - y, mx - x);
             }
         }
-    }, [canvasX1, canvasY1, flag])
+    }, [canvasX1, canvasY1, flag, runnerCountState])
 
+    useEffect(() => {
+        //データベースからデータをもらうために呼び出す
+        setBatter(battingOrder, setBattingOrder, urlSchoolId, urlGameId)
 
+    },[])
 
 
 
@@ -198,16 +322,23 @@ const InputPlayGame = () => {
             <h1>速報入力画面</h1>
             <div className="parts">
                 <div className="scoreBoard">
-                    {scoreBoard(scoreState, nowIningState)}
+                    {scoreBoard(scoreState, nowIningState, urlSchoolName, urlSchoolName2)}
                 </div>
                 <div className="optionButtons">
-
                 </div>
-                <div className="outCounts">
+                <div className="outCountsAndRunnerCounts">
                     {outCount(nowOutCountState, setNowOutCountState)}
+                    {runnerCount(runnerCountState, setRunnerCountState)}
                 </div>
                 <div className="BatterAndPitcher">
 
+                </div>
+                <div className="BatterPitcher">
+                    <PullDownMember
+                        battingOrder={battingOrder}
+                        battingOrder2={battingOrder2}
+                        setBattingOrder={setBattingOrder}
+                    />
                 </div>
                 <div className="freeWrite">
                     {freeWrite(freeWriteRef, freeWriteState)}
@@ -239,7 +370,7 @@ const InputPlayGame = () => {
                             setAddScoreState={setAddScoreState}
                             scoreState={scoreState}
                             setScoreState={setScoreState}
-                            nowOutCountState={nowOutCountState} 
+                            nowOutCountState={nowOutCountState}
                             setNowOutCountState={setNowOutCountState}
                         />
                     </div>

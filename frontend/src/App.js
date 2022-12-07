@@ -4,6 +4,7 @@ import {
   Top, Login, Home, Input_mode, Pre_Input,
   InputSchool, Input_Tournament, InputMember, Sokuho_Input_Makegame,
   InputPlayGame, NotFound, TournamentNamber, Register, StartingMember,
+  SokuhoSelectTournament,
 } from './AllPage/PageIndex';
 
 import { OutPutGame } from './AllPage/OutPutGame/OutPutGame'
@@ -24,12 +25,14 @@ const App = () => {
 
           {/* 事前入力 */}
           <Route path={'/home/pre_input/input_tournament/'} element={<Input_Tournament />} />
-          <Route path={'/home/pre_input/input_tournament/:tournament/inputschool/'} element={<InputSchool />} />
-          <Route path={'/home/pre_input/input_tournament/:tournament/inputschool/:school/InputMember/'} element={<InputMember />} />
+          <Route path={'/home/pre_input/input_tournament/inputschool/'} element={<InputSchool />} />
+          <Route path={'/home/pre_input/input_tournament/inputschool/:school/InputMember/'} element={<InputMember />} />
 
           {/* 速報入力 */}
-          <Route path={'/home/sokuho/sokuho_input_makegame/'} element={<Sokuho_Input_Makegame />} />
-          <Route path={'/home/sokuho/sokuho_input_makegame/:vs/starting_member'} element={<StartingMember />} />
+          <Route path={'/home/sokuho/sokuho_select_tournament/'} element={< SokuhoSelectTournament />} />
+          <Route path={'/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/'} element={<Sokuho_Input_Makegame />} />
+          <Route path={'/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member'} element={<StartingMember />} />
+          <Route path={'/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member/InputPlayGame/'} element={<InputPlayGame />} />
           <Route path={'/home/InputPlayGame/'} element={<InputPlayGame />} />
 
           {/* アカウント登録 */}

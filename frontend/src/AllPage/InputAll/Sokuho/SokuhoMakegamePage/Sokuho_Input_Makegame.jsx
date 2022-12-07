@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react"
-import { useNavigate } from "react-router-dom";
-import { Schools } from "../../../../DB/Schools";
+import { useNavigate, useSearchParams } from "react-router-dom";
+//import { Schools } from "../../../../DB/Schools";
 //const { Schools } = require("../../../../DB/Schools"); //分割代入
-const { Venues } = require("../../../../DB/Venues"); //分割代入
+//const { Venues } = require("../../../../DB/Venues"); //分割代入
 
 
 //データベースとのやりとり
-const loadGame = (setGameInfoState) => {
+const loadGame = (setGameInfoState, urlTournamentId) => {
 
     fetch("http://localhost:5000/game/game_call", {
         method: "POST",
@@ -14,7 +14,7 @@ const loadGame = (setGameInfoState) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ tournament_id: 1 }),
+        body: JSON.stringify({ tournament_id: urlTournamentId }),
     })
         .then((response) => response.json())
         .then((data) => handleSentGame(data, setGameInfoState))
@@ -25,9 +25,26 @@ const handleSentGame = (data, setGameInfoState) => {
 }
 
 //大会に所属する高校を読み出す
-const loadSchool = (setSchools) => {
+const loadSchool = (setSchools, urlTournamentId) => {
 
-   return fetch("http://localhost:5000/school/school_call_p", {
+    return fetch("http://localhost:5000/school/school_call_p", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tournament_id: urlTournamentId }),
+    })
+        .then((response) => response.json())
+        .then((data) => setSchools(data))
+    // .then((data) => handleSentGame(data, setGameInfoState))
+
+}
+
+//会場を読み出す
+const loadVenue = (setVenues) => {
+
+    return fetch("http://localhost:5000/venue/venue_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -36,14 +53,24 @@ const loadSchool = (setSchools) => {
         body: JSON.stringify({ tournament_id: 1 }),
     })
         .then((response) => response.json())
-        .then((data) => setSchools(data))
-    // .then((data) => handleSentGame(data, setGameInfoState))
-
+        .then((data) => { setVenues(data); console.log(data) })
 }
 
+const handleAddGame = (urlTournamentId, nowSelected, iningList, Schools, Venues, nowSelectedYmd, YearList, MonthList, DayList, setGameInfoState) => {
 
+    let gameData = {
+        tournament_id: urlTournamentId,
+        match_num: iningList[nowSelected[0]].ining,
+        school_id_1: Schools[nowSelected[1]].school_id,
+        school_id_2: Schools[nowSelected[2]].school_id,
+        venue_id: Venues[nowSelected[3]].venue_id,
+        first_rear_1: "先行",
+        first_rear_2: "後攻",
+        game_ymd: YearList[nowSelectedYmd[0]].year + "-" + MonthList[nowSelectedYmd[1]].month + "-" + DayList[nowSelectedYmd[2]].day,
+        match_resuts: null
+    }
+    console.log(gameData)
 
-const resisterGame = (gameData) => {
     fetch("http://localhost:5000/game/game_register", {
         method: "POST",
         mode: "cors",
@@ -52,8 +79,63 @@ const resisterGame = (gameData) => {
         },
         body: JSON.stringify(gameData),
     })
-        .then((response) => response.json())
-        .then((data) => handleSentGame(data))
+        .then((response) => response.text())
+        .then((data) => {
+            if (data === "OK") {
+                loadGame(setGameInfoState)
+            }
+        })
+}
+
+
+
+
+//自作プルダウン
+const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected) => {
+
+
+    return (
+        <>
+            <select id="tekitouni"
+                onChange={(e) => {
+                    nowSelected[pulldownId] = e.target.value
+                    setNowSelected(nowSelected)
+                    console.log(nowSelected)
+                }}>
+                {ArrayList.map((component, ind) => (
+                    <option value={ind}>{component[idText]}</option>
+                ))
+                }
+            </select>
+        </>
+
+    )
+}
+
+//リスト作成関数
+const makeYear = () => {
+
+    let yearArray = []
+    for (let i = 2010; i < 2050 + 1; i++) {
+        yearArray = [...yearArray, { year: i }]
+    }
+    return yearArray
+}
+const makeMonth = () => {
+
+    let monthArray = []
+    for (let i = 1; i < 12 + 1; i++) {
+        monthArray = [...monthArray, { month: i }]
+    }
+    return monthArray
+}
+const makeDay = () => {
+
+    let dayArray = []
+    for (let i = 1; i < 31 + 1; i++) {
+        dayArray = [...dayArray, { day: i }]
+    }
+    return dayArray
 }
 
 
@@ -66,132 +148,96 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
         navigate(url)
     }
 
-    const ining = 1;
-
-    const iningRef = useRef(null)
-    const teamARef = useRef(null)
-    const teamBRef = useRef(null)
-    const venueRef = useRef(null)
-
-    const [iningState, setIningState] = useState(ining)
-    const [teamAState, setTeamAState] = useState(1)
-    const [teamBState, setTeamBState] = useState(1)
-    const [venueState, setVenueState] = useState(1)
     const [gameInfoState, setGameInfoState] = useState([])
 
+    //DBからデータを読み出したことを監視する
     const [Schools, setSchools] = useState([])
+    const [Venues, setVenues] = useState([])
 
-    const initialSetIning = () => {
-        for (let i = 1; i <= 4; i++) {
-            const option = document.createElement('option')
-            option.value = i
-            option.text = i
-            iningRef.current.appendChild(option)
-        }
-    }
+    //リスト作り
+    const YearList = makeYear()
+    const MonthList = makeMonth()
+    const DayList = makeDay()
 
-    const initialSetTeamA = () => {
-        console.log(Schools)
-        for (let i = 1; i <= Schools.length; i++) {
-            const option = document.createElement('option')
-            option.value = Schools[i - 1].school_name
-            option.text = Schools[i - 1].school_name
-            teamARef.current.appendChild(option)
-        }
-    }
+    //回戦の値を適当に定義
+    const iningList = [{ ining: 1 }, { ining: 2 }, { ining: 3 }, { ining: 4 }, { ining: 5 }]
 
-    const initialSetTeamB = () => {
-        for (let i = 1; i <= Schools.length; i++) {
-            const option = document.createElement('option')
-            option.value = Schools[i - 1].school_name
-            option.text = Schools[i - 1].school_name
-            teamBRef.current.appendChild(option)
-        }
-    }
+    //urlから値を読み出す
+    const [searchParams] = useSearchParams();
+    const urlTournamentId = searchParams.get("urlTournamentId")
+    const urlTournamentName = searchParams.get("urlTournamentName")
 
-    const initialSetVenue = () => {
-        for (let i = 1; i <= Venues.length; i++) {
-            const option = document.createElement('option')
-            option.value = Venues[i - 1].venue_name
-            option.text = Venues[i - 1].venue_name
-            venueRef.current.appendChild(option)
-        }
-    }
+    //今選択しているものの内容を監視
+    const [nowSelected, setNowSelected] = useState([0, 0, 0, 0])
+    const [nowSelectedYmd, setNowSelectedYmd] = useState([0, 0, 0])
 
-    const selectIning = (e) => {
-        setIningState(e.target.value)
-    }
 
-    const selectTeamA = (e) => {
-        setTeamAState(e.target.value)
-    }
 
-    const selectTeamB = (e) => {
-        setTeamBState(e.target.value)
-    }
-    const selectVenue = (e) => {
-        setVenueState(e.target.value)
-    }
 
     useEffect(() => {
-        loadSchool(setSchools)
-        initialSetIning();
-        initialSetTeamA();
-        initialSetTeamB();
-        initialSetVenue();
-        loadGame(setGameInfoState);
+        loadSchool(setSchools, urlTournamentId)
+        loadVenue(setVenues)
     }, [])
 
-    const handleAddGame = (gameInfoState) => {
-        // setGameInfoState([
-        //     ...gameInfoState, {
-        //         ining: iningRef.current.value,
-        //         school_name: teamARef.current.value,
-        //         school_name_2: teamBRef.current.value,
-        //         venue: venueRef.current.value
-        //     }
-        // ])
+    useEffect(() => {
 
-        console.log(gameInfoState)
-        //console.log(obj.findIndex(({name}) => name === 'DDD');)
-        resisterGame([{
-            tournament_id: "1",
-            ining: iningRef.current.value,
-            school_name: teamARef.current.value,
-            school_name_2: teamBRef.current.value,
-            venue: venueRef.current.value
-        }
-        ])
-    }
-
-    const handleGoPage = (TeamA, TeamB) => {
-        window.location.href = 'http://localhost:3000/home/input_mode/Sokuho_Input_Makegame/InputPlayGame/' + TeamA + TeamB;
-    }
-
+        loadGame(setGameInfoState, urlTournamentId);
+    }, [Schools, Venues])
 
     return (
         <>
             <h1>試合作成画面</h1>
+            <h3>編集中：{urlTournamentName}</h3>
             <div className="MakeGame">
-                回戦　<select ref={iningRef} value={iningState} onChange={selectIning} ></select><br />
-                チームA <select ref={teamARef} value={teamAState} onChange={selectTeamA} ></select><br />
-                チームB <select ref={teamBRef} value={teamBState} onChange={selectTeamB} ></select><br />
-                会場 <select ref={venueRef} value={venueState} onChange={selectVenue} ></select><br />
-                <select></select><br />
-                <button onClick={handleAddGame}>追加</button>
+                年{makePulldown(0, YearList, "year", nowSelectedYmd, setNowSelectedYmd)}
+                月{makePulldown(1, MonthList, "month", nowSelectedYmd, setNowSelectedYmd)}
+                日{makePulldown(2, DayList, "day", nowSelectedYmd, setNowSelectedYmd)}<br />
+
+                回戦{makePulldown(0, iningList, "ining", nowSelected, setNowSelected)}<br />
+                先行チーム{makePulldown(1, Schools, "school_name", nowSelected, setNowSelected)}<br />
+                後攻チーム{makePulldown(2, Schools, "school_name", nowSelected, setNowSelected)}<br />
+                会場{makePulldown(3, Venues, "venue_name", nowSelected, setNowSelected)}<br />
+                <button onClick={() => handleAddGame(
+                    urlTournamentId,
+                    nowSelected,
+                    iningList,
+                    Schools,
+                    Venues,
+                    nowSelectedYmd,
+                    YearList,
+                    MonthList,
+                    DayList,
+                    setGameInfoState
+                )}>追加</button>
             </div>
 
             <hr></hr>
 
             <div className="dispGames">
+                {console.log(gameInfoState)}
                 {gameInfoState.map(gameInfo => (
                     <div className="game">
                         <button
-                            onClick={() => PageTransition(gameInfo.TeamA + "vs" + gameInfo.TeamB + "/starting_member")}>
-                            {gameInfo.ining}回戦<br />
+                            onClick={() => PageTransition(
+                                "starting_member?urlTournamentId="+
+                                urlTournamentId +
+                                "&urlTournamentName=" +
+                                urlTournamentName +
+                                "&urlSchoolId="+
+                                gameInfo.school_id_1 +
+                                "&urlSchoolName=" +
+                                gameInfo.school_name +
+                                "&urlSchoolId2="+
+                                gameInfo.school_id_2 +
+                                "&urlSchoolName2=" +
+                                gameInfo.school_name_2 +
+                                "&urlGameId=" +
+                                gameInfo.game_id
+                            )}>
+                            {gameInfo.match_num}回戦<br />
                             {gameInfo.school_name}<br />
                             {gameInfo.school_name_2}<br />
-                            {gameInfo.venue}
+                            {Venues[gameInfo.venue_id].venue_name}
                         </button><br /><br />
                     </div>
                 ))}

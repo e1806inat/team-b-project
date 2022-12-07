@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Hyoji = (UseSchools, setUseSchools2, navigate) => {
+export const Hyoji = (UseSchools, navigate, urlTournamentName, urlTournamentId) => {
 
     const PageTransition = (url) => {
         navigate(url)
@@ -13,10 +13,13 @@ export const Hyoji = (UseSchools, setUseSchools2, navigate) => {
                     if (school.IsCheck) {
                         return (
                             <div className="school">
-                                {console.log(school.school_name)}
                                 <br />
                                 <button
-                                    onClick={() => PageTransition(school.school_name + "/InputMember")} >
+                                    onClick={() => {
+                                        PageTransition(school.school_name + "/InputMember" +
+                                        "?urlTournamentId="+urlTournamentId+"&urlTournamentName="+urlTournamentName+
+                                        "&urlSchoolId="+school.school_id+"&urlSchoolName="+school.school_name); 
+                                    }} >
                                     {school.school_name}
                                 </button>
                                 <br />

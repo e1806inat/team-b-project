@@ -28,7 +28,7 @@ const Home = () => {
 
             <div class="whole">
                 <button class="btn" onClick={() => PageTransition('pre_input/input_tournament')}>事前入力</button>
-                <button class="btn" onClick={() => PageTransition('sokuho/sokuho_input_makegame')}>速報入力</button>
+                <button class="btn" onClick={() => PageTransition('sokuho/sokuho_select_tournament')}>速報入力</button>
                 <button class="btn" onClick={() => PageTransition('acount_register')}>アカウント登録</button>
                 <button class="btn" onClick={() => PageTransition("input_mode")}>過去データ参照</button>
                 <button class="btn" onClick={() => PageTransition("InputPlayGame")}>速報入力直遷移画面</button>

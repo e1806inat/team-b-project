@@ -1,0 +1,9 @@
+.diamondtrue {
+    color: rgb(17, 0, 255);
+    font-size: 5em;
+}
+
+.diamondfalse {
+    color: rgb(0, 0, 0);
+    font-size: 5em;
+}

@@ -24,7 +24,7 @@ const setTournamentInfo = (setTournamentData, data) => {
 const dateSplit = (nowdate) => {
   let dateArray = nowdate.split('-');
   console.log(nowdate)
-  dateArray = {"year":dateArray[0], "month":dateArray[1], "day":dateArray[2]}
+  dateArray = { "year": dateArray[0], "month": dateArray[1], "day": dateArray[2] }
   return dateArray
 }
 
@@ -40,7 +40,7 @@ export const Input_Tournament = () => {
   const [birthYear, setBirthYear] = useState(InitialYear);
   const [birthMonth, setBirthMonth] = useState(InitialMonth);
   //文字分割のための箱を用意
-  let dateArray = {"year":"", "month":"", "day":""}
+  let dateArray = { "year": "", "month": "", "day": "" }
 
   let [TournamentData, setTournamentData] = useState([
     { "tournament_name": '第31回春大会', "tournament_id": '55', "opening": "2022-03-01" },
@@ -138,7 +138,7 @@ export const Input_Tournament = () => {
           {TournamentData.map((Tournament, ind) => {
             //文字分割
             console.log(Tournament.opening)
-           dateArray = dateSplit(Tournament.opening)
+            dateArray = dateSplit(Tournament.opening)
 
             return (
               <div className="tournament">
@@ -146,7 +146,15 @@ export const Input_Tournament = () => {
                   <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
                 </div>
                 <div className="tournamentName">
-                  <button onClick={() => PageTransition(Tournament[2] + "/inputschool")}>
+                  <button
+                    onClick={() =>
+                      PageTransition(
+                        "inputschool?urlTournamentId=" +
+                        Tournament.tournament_id +
+                        "&urlTournamentName=" +
+                        Tournament.tournament_name
+                      )
+                    }>
                     {Tournament.tournament_name}
                   </button>
                   <br />

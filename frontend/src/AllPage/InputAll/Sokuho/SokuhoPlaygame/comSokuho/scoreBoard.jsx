@@ -1,4 +1,4 @@
-export const scoreBoard = (scoreState, nowIningState) => {
+export const scoreBoard = (scoreState, nowIningState, urlSchoolName, urlSchoolName2) => {
     console.log(scoreState)
 
     let teamAscore = 0
@@ -18,7 +18,7 @@ export const scoreBoard = (scoreState, nowIningState) => {
                     <th className="scoreBoardSchoolName">計</th>
                 </tr>
                 <tr>
-                    <td>今治西</td>
+                    <td>{urlSchoolName}</td>
                     {scoreState[0].map((a, ind) => {
                         teamAscore = teamAscore + a;
                         if (nowIningState[1] === ind * 2 + 1) { return (<td className="nowIningScore">{a}</td>) }
@@ -29,7 +29,7 @@ export const scoreBoard = (scoreState, nowIningState) => {
                     <td>{teamAscore}</td>
                 </tr>
                 <tr>
-                    <td>西条</td>
+                    <td>{urlSchoolName2}</td>
                     {scoreState[1].map((a, ind) => {
                         teamBscore = teamBscore + a;
                         if (nowIningState[1] === (ind + 1) * 2) { return (<td className="nowIningScore">{a}</td>) }

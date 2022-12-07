@@ -7,6 +7,7 @@ export {default as InputSchool} from './InputAll/PreInput/InputSchoolPage/InputS
 export {default as Input_Tournament} from './InputAll/PreInput/InputTournamentPage/Input_Tournament'
 export {default as InputMember} from './InputAll/PreInput/InputMemberPage/InputMember'
 export {default as Sokuho_Input_Makegame} from './InputAll/Sokuho/SokuhoMakegamePage/Sokuho_Input_Makegame'
+export {default as SokuhoSelectTournament} from './InputAll/Sokuho/SokuhoSelectTournament/SokuhoSelectTournament'
 export {default as StartingMember} from './InputAll/Sokuho/SokuhoStartingMember/StartingMember'
 export {default as InputPlayGame} from './InputAll/Sokuho/SokuhoPlaygame/InputPlayGame'
 export {default as TournamentNamber} from './InputAll/Sokuho/SokuhoTournamentNamber/TournamentNamber'

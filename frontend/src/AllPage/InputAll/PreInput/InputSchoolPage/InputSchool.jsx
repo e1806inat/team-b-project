@@ -1,22 +1,23 @@
 import React, { useState, useRef } from "react";
 import { Hyoji } from './comInputSchool/Hyoji';
 import { CheckBoxList } from './comInputSchool/CheckBoxList1';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 
+//次回追加ボタン押した後に、高校再表示させるのをやる
 
-//データベースとのやり取り
-const sendSchool = (useSchools) => {
+//データを送る
+const sendSchool = (useSchools, urlTournamentId, Schools, setUseSchools) => {
   let toSendSchool = []
   useSchools.map((school) => {
-    if (school.IsCheck){
+    if (school.IsCheck) {
       toSendSchool = [...toSendSchool,
-        {
-          tournament_id: 1,
-          school_name: school.school_name,
-          school_id: school.school_id,
-          seed: school.seed
-        }]
+      {
+        tournament_id: urlTournamentId,
+        school_name: school.school_name,
+        school_id: school.school_id,
+        seed: school.seed
+      }]
     }
 
   })
@@ -31,6 +32,12 @@ const sendSchool = (useSchools) => {
     //body: JSON.stringify({ email:login_id , password:login_ps }),
     body: JSON.stringify(toSendSchool),
   })
+    .then((response) => response.text())
+    .then((data) => {
+      if (data === "OK") {
+        readSchool(Schools, setUseSchools)
+      }
+    })
 }
 
 
@@ -70,7 +77,31 @@ const enchantCheck = (Schools, setUseSchools) => {
 }
 
 
+//１つの高校を追加する
+const addSchool = (Schools, setUseSchools, addSchoolName) => {
+  console.log(addSchoolName)
+  fetch("http://localhost:5000/school/school_register", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ school_name: addSchoolName }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      if (data === "OK") {
+        readSchools(Schools, setUseSchools)
+      }
+    })
+}
+
+
 export const InputSchool = () => {
+
+  const [searchParams] = useSearchParams();
+  const urlTournamentName = searchParams.get("urlTournamentName")
+  const urlTournamentId = searchParams.get("urlTournamentId")
 
   //ページ遷移用
   const navigate = useNavigate()
@@ -110,16 +141,18 @@ export const InputSchool = () => {
   return (
     <div className="main">
       <h1>学校・チーム名入力</h1>
-
+      <div className="tournamentName">
+        <h3>{urlTournamentName}</h3>
+      </div>
       <div className="InputSchool">
         <input ref={ref} ></input>
-        <button onClick={handleClick}>追加</button>
+        <button onClick={()=>addSchool(Schools, setUseSchools, ref.current.value)}>追加</button>
       </div>
       <br />
       <button onClick={handleCheckBox}>チェックボックス入力</button>
-      <button onClick={() => sendSchool(useSchools)}>高校名登録</button>
+      <button onClick={() => sendSchool(useSchools, urlTournamentId, Schools, setUseSchools)}>高校名登録</button>
       <hr></hr>
-      {!isCheckBoxMode && Hyoji(useSchools, setUseSchools, navigate)}
+      {!isCheckBoxMode && Hyoji(useSchools, navigate, urlTournamentName, urlTournamentId)}
       {isCheckBoxMode && CheckBoxList(useSchools, setUseSchools)}<br />
       <hr></hr>
       <button><Link to={'/home/input_mode/'}>戻る</Link> </button>

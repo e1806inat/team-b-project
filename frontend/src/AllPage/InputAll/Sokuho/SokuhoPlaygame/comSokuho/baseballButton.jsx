@@ -1,3 +1,5 @@
+import "./CSS/baseballButton.css"
+
 const pushPlus = (addScoreState, setAddScoreState) => {
   if(addScoreState<4) setAddScoreState(addScoreState + 1)
 }

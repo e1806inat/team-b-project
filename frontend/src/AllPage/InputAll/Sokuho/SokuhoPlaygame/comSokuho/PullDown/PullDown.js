@@ -2,12 +2,8 @@ import './PullDown.css';
 const { Position } = require("../../../../../../DB/Position")
 const { ballPositionDB } = require("../../../../../../DB/ballPositionDB")
 
+
 export const PullDown = (props) => {
-
-  const handleClick1 = (text) => {
-    console.log(text)
-  }
-
 
 
   const setPosition = (text) => {

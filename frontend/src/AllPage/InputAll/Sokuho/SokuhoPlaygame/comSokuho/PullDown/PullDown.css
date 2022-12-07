@@ -19,11 +19,31 @@
   padding: 0;
   text-align: center;
 }
+#dropmenu li.cannotTouchLi {
+  position: relative;
+  width: 10%;
+  float: left;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background: #2e301e;
+}
 #dropmenu li a {
   display: block;
   margin: 0;
   padding: 16px 0;
   background: #8a9b0f;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  text-decoration: none;
+}
+#dropmenu li a.cannotTouchA {
+  display: block;
+  margin: 0;
+  padding: 16px 0;
+  background: #414621;
   color: #fff;
   font-size: 14px;
   font-weight: bold;
@@ -55,6 +75,7 @@
   font-weight: normal;
 }
 #dropmenu > li:hover > a {  background: #7c8c0e }
+#dropmenu > li.cannotTouchLi:hover > a {  background: #41442b }
 #dropmenu > li:hover li:hover > a {  background: #6e7c0c }
 #dropmenu > li:hover > ul > li {
   overflow: visible;

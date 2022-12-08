@@ -83,7 +83,6 @@ router.post("/member_call", async (req, res, next) => {
 //大会に登録されている選手の呼び出し。スタメン登録画面で使用
 router.post("/tournament_member_call", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
-
     try {
         //大会毎に登録されている選手の呼び出し
         const rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ?', [school_id, tournament_id]);

@@ -16,7 +16,18 @@ import { useSearchParams } from 'react-router-dom';
 
 
 
-const setBatter = (battingOrder, setBattingOrder, urlSchoolId, urlGameId) => {
+const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2, urlGameId, nowPlayingMember, setNowPlayingMember) => {
+    const ditectPitcher = (data) => {
+        let result = 0
+        data.map((data, ind) => {
+            if (data.position === "ピッチャー") {
+               result = ind
+            }
+        })
+        return result
+    }
+
+
     fetch("http://localhost:5000/member/starting_member_call", {
         method: "POST",
         mode: "cors",
@@ -26,9 +37,45 @@ const setBatter = (battingOrder, setBattingOrder, urlSchoolId, urlGameId) => {
         body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId }),
     })
         .then((response) => response.json())
-        .then((data) => { console.log(data); setBattingOrder([data,battingOrder[1]])})
+        .then((data1) => {
+            console.log(data1);
+            setBattingOrder(data1)
+
+            fetch("http://localhost:5000/member/starting_member_call", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId2 }),
+            })
+                .then((response) => response.json())
+                .then((data2) => {
+                    console.log(data2);
+                    setBattingOrder2(data2)
+                    nowPlayingMember[0].pitcher = ditectPitcher(data2)
+                    nowPlayingMember[1].pitcher = ditectPitcher(data1)
+                    setNowPlayingMember(nowPlayingMember)
+                })
+
+        })
+
+
 }
 
+const loadRegisteredMember = (setRegisteredMember, urlTournamentId, urlSchoolId) => {
+
+    fetch("http://localhost:5000/member/tournament_member_call", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
+    })
+        .then((response) => response.json())
+        .then((data) => { console.log(data); setRegisteredMember(data) })
+}
 
 const canvasSize = 1000;
 const homebase = 500;
@@ -51,7 +98,7 @@ const InputPlayGame = () => {
     const [addScoreState, setAddScoreState] = useState(0)
 
     //今のイニング
-    const [nowIningState, setNowIningState] = useState([0, 1])
+    const [nowIningState, setNowIningState] = useState([0, 0])
 
     const [freeWriteState, setFreeWriteState] = useState("")//いらんかも
     const freeWriteRef = useRef()
@@ -66,11 +113,17 @@ const InputPlayGame = () => {
     //ランナーカウント
     const [runnerCountState, setRunnerCountState] = useState([false, false, false])
 
-    //打順と今の打者
+    //選手登録情報を読み込む
+    const [registeredMember1, setRegisteredMember1] = useState([])
+    const [registeredMember2, setRegisteredMember2] = useState([])
+
+    //打順と打者のリスト
     const [battingOrder, setBattingOrder] = useState([[{ player_name_kanji: '丹羽 長秀' }, { player_name_kanji: '柴田 勝家' }], 0])
     const [battingOrder2, setBattingOrder2] = useState([[{ player_name_kanji: '丹羽 長秀' }, { player_name_kanji: '柴田 勝家' }], 0])
 
-    
+    //今の打順と今のピッチャーが誰なのかを2チーム文記録する
+    const [nowPlayingMember, setNowPlayingMember] = useState([{ batter: 0, pitcher: 0 }, { batter: 0, pitcher: 0 }])
+
     // contextを状態として持つ
     const [context, setContext] = useState(null)
 
@@ -310,9 +363,10 @@ const InputPlayGame = () => {
 
     useEffect(() => {
         //データベースからデータをもらうために呼び出す
-        setBatter(battingOrder, setBattingOrder, urlSchoolId, urlGameId)
-
-    },[])
+        setBatter(setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2, urlGameId, nowPlayingMember, setNowPlayingMember)
+        loadRegisteredMember(setRegisteredMember1, urlTournamentId, urlSchoolId)
+        loadRegisteredMember(setRegisteredMember2, urlTournamentId, urlSchoolId2)
+    }, [])
 
 
 
@@ -338,6 +392,11 @@ const InputPlayGame = () => {
                         battingOrder={battingOrder}
                         battingOrder2={battingOrder2}
                         setBattingOrder={setBattingOrder}
+                        registeredMember1={registeredMember1}
+                        registeredMember2={registeredMember2}
+                        nowIningState={nowIningState}
+                        nowPlayingMember={nowPlayingMember}
+                        setNowPlayingMember={setNowPlayingMember}
                     />
                 </div>
                 <div className="freeWrite">

@@ -237,7 +237,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                             {gameInfo.match_num}回戦<br />
                             {gameInfo.school_name}<br />
                             {gameInfo.school_name_2}<br />
-                            {Venues[gameInfo.venue_id].venue_name}
+                            {Venues.length!==0 && Venues[gameInfo.venue_id].venue_name}
                         </button><br /><br />
                     </div>
                 ))}

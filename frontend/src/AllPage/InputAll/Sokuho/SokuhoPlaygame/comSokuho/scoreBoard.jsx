@@ -21,7 +21,7 @@ export const scoreBoard = (scoreState, nowIningState, urlSchoolName, urlSchoolNa
                     <td>{urlSchoolName}</td>
                     {scoreState[0].map((a, ind) => {
                         teamAscore = teamAscore + a;
-                        if (nowIningState[1] === ind * 2 + 1) { return (<td className="nowIningScore">{a}</td>) }
+                        if (nowIningState[1] === 0 && nowIningState[0] === ind) { return (<td className="nowIningScore">{a}</td>) }
                         else { return (<td>{a}</td>) }
                     }
 
@@ -32,7 +32,7 @@ export const scoreBoard = (scoreState, nowIningState, urlSchoolName, urlSchoolNa
                     <td>{urlSchoolName2}</td>
                     {scoreState[1].map((a, ind) => {
                         teamBscore = teamBscore + a;
-                        if (nowIningState[1] === (ind + 1) * 2) { return (<td className="nowIningScore">{a}</td>) }
+                        if (nowIningState[1] === 1 && nowIningState[0] === ind) { return (<td className="nowIningScore">{a}</td>) }
                         else { return (<td>{a}</td>) }
                     }
 

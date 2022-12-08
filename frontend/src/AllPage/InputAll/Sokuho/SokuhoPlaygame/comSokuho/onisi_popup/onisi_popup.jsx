@@ -27,7 +27,9 @@ const handleKakutei = (
   if (nowOutCountState === 3) {
 
     setNowOutCountState(0)
-    setNowIningState(nowOutCountState[0]+1*!nowOutCountState[0],nowOutCountState[1]+1*nowOutCountState[0])
+    if(nowIningState[1]%2===0){setNowIningState([nowIningState[0],1])}
+    else if (nowIningState[1]%2===1){setNowIningState([nowIningState[0]+1,0])}
+    
  
   }
 }

@@ -1,0 +1,2621 @@
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"1",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"2",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"3",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"001",  
+
+   "text_inf":"ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"4",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"三振", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+/////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"1",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"0",  
+
+   "base":"001",  
+
+   "text_inf":"ライト　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"21",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"22",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"ライト　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"1回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"22",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト　ダブルプレー",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ライナー", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+//////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"5",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"6",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"001",  
+
+   "text_inf":"センター ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"7",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"001",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"三振", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"8",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+//////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"24",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"0",  
+
+   "base":"001",  
+
+   "text_inf":"ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"25",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"26",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"2回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"27",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+//////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"9",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"1",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"2",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"001",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"三振", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"3",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"101",  
+
+   "text_inf":"ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"4",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+/////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"28",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"29",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"三振", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"3回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"21",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+///////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"4回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"5",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"4回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"6",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"4回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"6",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+/////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"4回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"22",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"4回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"23",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"4回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"24",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"001",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"4回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"25",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+//////////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"8",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"9",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"ライト ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"1",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"011",  
+
+   "text_inf":"センター ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"10",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"111",  
+
+   "text_inf":"フォアボール ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:1”, 
+
+   “pinch”:”交代” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"3",  
+
+   "score":"2",  
+
+   "total_score":"2", 
+
+   "outcount":"1",  
+
+   "base":"101",  
+
+   "text_inf":"センター ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"4",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"1",  
+
+   "base":"111",  
+
+   "text_inf":"フォアボール ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:1”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"5",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"2",  
+
+   "base":"111",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:0”, 
+
+   “pinch”:”” 
+
+}]  
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"6",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"3",  
+
+   "base":"111",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:0”, 
+
+   “pinch”:”” 
+
+}] 
+
+//////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"26",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"0",  
+
+   "base":"001",  
+
+   "text_inf":"ファースト　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"27",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"三振", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"28",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"010",  
+
+   "text_inf":"バント成功 アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"バント", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"5回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"29",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+/////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"6回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"7",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"6回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"8",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"6回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"9",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+////////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"6回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"21",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"6回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"22",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"フォアボール　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"6回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"23",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"001",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"6回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"24",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+
+///////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"7回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"1",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"0",  
+
+   "base":"001",  
+
+   "text_inf":"ライト　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"7回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"2",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"ダブルプレー　アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"7回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"3",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+///////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"7回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"25",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"7回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"26",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"7回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"31",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"010",  
+
+   "text_inf":"2ベースヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”交代” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"7回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"28",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+//////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"4",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"0",  
+
+   "base":"001",  
+
+   "text_inf":"フォアボール　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"5",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"1",  
+
+   "base":"010",  
+
+   "text_inf":"バント成功　アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"6",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"2",  
+
+   "base":"010",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"7",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"2",  
+
+   "base":"101",  
+
+   "text_inf":"フォアボール　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"8",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"3",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+///////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"29",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"21",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"悪送球　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"22",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"011",  
+
+   "text_inf":"フォアボール ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"23",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"011",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]  
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"8回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"24",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"011",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"三振", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]  
+
+///////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"9",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"1",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"1",  
+
+   "base":"001",  
+
+   "text_inf":"ライト　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"2",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"2",  
+
+   "base":"010",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"三振", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"3",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"2",  
+
+   "base":"011",  
+
+   "text_inf":"フォアボール　ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}]
+
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回表", 
+
+   "game_id":"1", 
+
+   "school_id":"1", 
+
+   "player_id":"4",  
+
+   "score":"0",  
+
+   "total_score":"2", 
+
+   "outcount":"3",  
+
+   "base":"011",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}]
+
+/////////////////////
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"25",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"1",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"フライ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"26",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"000",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"27",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"2",  
+
+   "base":"001",  
+
+   "text_inf":"ヒット",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"NULL", 
+
+   “hit”:”1”, 
+
+   “pinch”:”” 
+
+}] 
+
+[{ 
+
+   "table_name":"test_game", 
+
+   "inning":"9回裏", 
+
+   "game_id":"1", 
+
+   "school_id":"2", 
+
+   "player_id":"32",  
+
+   "score":"0",  
+
+   "total_score":"0", 
+
+   "outcount":"3",  
+
+   "base":"001",  
+
+   "text_inf":"アウト",  
+
+   "pass":"0",  
+
+   "touched_coordinate":"000-000",  
+
+   "ball_kind":"ゴロ", 
+
+   “hit”:”0”, 
+
+   “pinch”:”” 
+
+}] 
+/////////////////////

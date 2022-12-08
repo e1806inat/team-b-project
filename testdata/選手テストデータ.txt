@@ -1,0 +1,3636 @@
+[{ 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 1, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+/////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "柴丸 錬磨", 
+
+        "player_name_hira": "しばまる　れんま", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "受湯　札", 
+
+        "player_name_hira": "じゅとう　さつ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "岩弘　健司", 
+
+        "player_name_hira": "いわひろ　けんじ", 
+
+        "grade": 4, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "回丘　恵三", 
+
+        "player_name_hira": "かいおか　けいぞう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "皆葉　恒武", 
+
+        "player_name_hira": "みなば　つねたけ", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "土井元　恵三", 
+
+        "player_name_hira": "どいもと　けいぞう", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "毛井　浪市", 
+
+        "player_name_hira": "もい　なみいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "宮本　晴信", 
+
+        "player_name_hira": "みやもと　はるのぶ", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "大石　文則", 
+
+        "player_name_hira": "おおいし　ふみのり", 
+
+        "grade": 4, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "五条　国太郎", 
+
+        "player_name_hira": "ごじょう　こくたろう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "文田　睦夫", 
+
+        "player_name_hira": "ふみた　むつお", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "貞太　雷太", 
+
+        "player_name_hira": "さだた　らいた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "勢津　幸太郎", 
+
+        "player_name_hira": "せつ　こうたろう", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "浦田　表多", 
+
+        "player_name_hira": "うらた　ひょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "田中　頴田", 
+
+        "player_name_hira": "たなか　かいた", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "北川 大輔", 
+
+        "player_name_hira": "きたがわ だいすけ", 
+
+        "grade": 4, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "大西 淳一", 
+
+        "player_name_hira": "おおにし じゅんいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "藤田 貴大", 
+
+        "player_name_hira": "ふじた たかひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 2, 
+
+        "player_name_kanji": "石田 和宏", 
+
+        "player_name_hira": "いしだ かずひろ", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 3, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 4, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 5, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+///////////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 6, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+////////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 7, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+//////////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+       
+        "school_id": 8, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 8, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+///////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 9, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 
+
+/////////////////////////////////////////////////////////////////////////////////
+
+[{ 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "佐藤 祐一", 
+
+        "player_name_hira": "さとう ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "井上 剛", 
+
+        "player_name_hira": "いのうえ ごう", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "福田 進", 
+
+        "player_name_hira": "ふくだ すすむ", 
+
+        "grade": 3, 
+
+        "handed_hit": "左", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "宮内 大輔", 
+
+        "player_name_hira": "みやうち だいすけ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "吉村 洋平", 
+
+        "player_name_hira": "よしむら ようへい", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "藤井 修平", 
+
+        "player_name_hira": "ふじい しゅうへい", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "伊藤 敬一", 
+
+        "player_name_hira": "いとう けいいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "小林 芳樹", 
+
+        "player_name_hira": "こばやし よしき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "阿部 俊", 
+
+        "player_name_hira": "あべ しゅん", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "田中 隼", 
+
+        "player_name_hira": "たなか じゅん", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "松岡 裕一", 
+
+        "player_name_hira": "まつおか ゆういち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "伊東 大地", 
+
+        "player_name_hira": "いとう だいち", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "安田 弘樹", 
+
+        "player_name_hira": "	やすだ ひろき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "伊藤 雅大", 
+
+        "player_name_hira": "いとう まさひろ", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "近藤 和義", 
+
+        "player_name_hira": "こんどう かずよし", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "池田 雅博", 
+
+        "player_name_hira": "いけだ まさひろ", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "佐野 明", 
+
+        "player_name_hira": "さの あきら", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "土田 翔太", 
+
+        "player_name_hira": "つちだ しょうた", 
+
+        "grade": 2, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "雨宮 直樹", 
+
+        "player_name_hira": "あめみや なおき", 
+
+        "grade": 3, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    }, 
+
+    { 
+
+         
+
+        "school_id": 10, 
+
+        "player_name_kanji": "本村 直樹", 
+
+        "player_name_hira": "もとむら なおき", 
+
+        "grade": 1, 
+
+        "handed_hit": "右", 
+
+        "handed_throw": "右", "hit_num":0, "bat_num":0, "BA":0 
+
+    } 
+
+] 

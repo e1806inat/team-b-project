@@ -1,43 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=tdice-width, initial-scale=1.0">
+    <title>Backscreen</title>
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <script type="text/javascript">
+    window.onload = function(){
+        var score_input1 = [0,0,0,0,0,0,0,1,1,1];
+        var score_input2 = [0,0,0,0,1,1,0,0,0];
+        var totalScore1 = 0;
+        var totalScore2 = 0; 
+        for ( var i = 1; i <= 2 ; i++) {
+            for ( var j = 0; j < 14; j++) {
+                inning = "score" + i + j;
+                total =  "total" + i;  
+                if(i==1){ //表の得点表示 
+                    if(j > 8 && score_input1[j] != null ){　//延長時の列追加
+                        // テーブル取得
+                        id = "scoreboard";
+                        var table = document.getElementById(id);
+                        // 行数取得
+                        var rows = table.rows.length;                        
+                        // 列を追加
+                        for ( var k = 0; k < rows; k++) {
+                            var cell = table.rows[k].insertCell(-1);
+                            if(k == 0){
+                                var cols = table.rows[k].cells.length;
+                                cell.innerHTML = (cols - 1);
+                                cell.classList.add('item1');
+                            }
+                            else if(k == 1){
+                                cell.setAttribute("id","score1" + j);
+                                cell.classList.add('item2');
+                            }
+                           else{
+                                cell.setAttribute("id","score2" + j);
+                                cell.classList.add('item3');
+                            }
+                        }  
+                    }
+                    if(score_input1[j] == null){//配列に値が入ってないときに強制終了
+                        break;
+                    }
+                    totalScore1 += score_input1[j];
+                    document.getElementById(inning).textContent = score_input1[j];
+                    document.getElementById(total).textContent = totalScore1;
+                }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+                if(i==2){ //裏の得点表示
+                    if(score_input2[j] == null){ //配列に値が入ってないときに強制終了
+                        break;
+                    }
+                    totalScore2 += score_input2[j];
+                    document.getElementById(inning).textContent = score_input2[j];
+                    document.getElementById(total).textContent = totalScore2;
+                }
+            }
+        }
+    }   
+    </script>
+</head>
+<body>
+    <div class="flex_table">
+    <table class="Frame" id="scoreboard">
+        <tr>
+        <td class="name-item1">team</td>
+        <td class="item1">1</td>
+        <td class="item1">2</td>
+        <td class="item1">3</td>
+        <td class="item1">4</td>
+        <td class="item1">5</td>
+        <td class="item1">6</td>
+        <td class="item1">7</td>
+        <td class="item1">8</td>
+        <td class="item1">9</td>
+        </tr>
+        <div class="spacer"></div>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+        <tr>
+        <td class="name-item2">青葉城西</td>
+        <td class="item2" id = "score10"></td>
+        <td class="item2" id = "score11"></td>
+        <td class="item2" id = "score12"></td>
+        <td class="item2" id = "score13"></td>
+        <td class="item2" id = "score14"></td>
+        <td class="item2" id = "score15"></td>
+        <td class="item2" id = "score16"></td>
+        <td class="item2" id = "score17"></td>
+        <td class="item2" id = "score18"></td>
+        </tr>
+        <div class="spacer"></div>
+            
+        <tr>
+        <td class="name-item3">烏野</td>
+        <td class="item3" id = "score20"></td>
+        <td class="item3" id = "score21"></td>
+        <td class="item3" id = "score22"></td>
+        <td class="item3" id = "score23"></td>
+        <td class="item3" id = "score24"></td>
+        <td class="item3" id = "score25"></td>
+        <td class="item3" id = "score26"></td>
+        <td class="item3" id = "score27"></td>
+        <td class="item3" id = "score28"></td>
+        </tr>
+        <div class="spacer"></div>
+        </table>
+        
+        <table class="Frame2">
+        <tr>
+        <td class="item1">R</td>
+        <td class="item1">H</td>
+        <td class="item1">E</td>
+        <div class="spacer"></div>
+        </tr>
+
+        <tr>
+        <td class="item2" id ="total1"></td>
+        <td class="item2">0</td>
+        <td class="item2">0</td>
+        </tr>
+        <div class="spacer"></div>
+
+        <tr>
+        <td class="item3" id="total2"></td>
+        <td class="item3">0</td>
+        <td class="item3">0</td>
+        </tr>
+        <div class="spacer"></div>
+        </table>
+        </div>
+</body>
 </html>

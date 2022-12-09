@@ -1,10 +1,10 @@
 import "./App.css";
-import TournamentApp from "./tournamentapp";
+import EditPoint from "./EditPoint";
 
 function App() {
   return (
     <div>
-      <TournamentApp/>
+      <EditPoint/>
     </div>
   );
 }

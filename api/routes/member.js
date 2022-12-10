@@ -52,13 +52,13 @@ router.post("/starting_member_register", async (req, res, next) => {
 });
 
 
-//３年生以下の学校毎の選手呼び出し
+//過去データ参照のための呼び出し
 router.post("/member_call", async (req, res, next) => {
     const { school_id } = req.body;
 
     try {
-        //３年生以下の選手を呼び出す。
-        //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
+        
+        //選手の学年は毎年４月１日に更新され、３年生は４年生と設定されている（grade:4）。
         const rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ?', [school_id]);
         return res.json(rows);
     }
@@ -66,6 +66,22 @@ router.post("/member_call", async (req, res, next) => {
         next(err);
     }
 });
+
+//選手データ参照用のAPI
+router.post("/ref_member_call", async (req, res, next) => {
+    const { school_id, grade, option } = req.body;
+
+    try {
+        //３年生以下の選手を呼び出す。
+        //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
+        const rows = await executeQuery(`select * from t_player where grade <= ? and school_id = ? order by ${option} asc`, [grade, school_id, option]);
+        return res.json(rows);
+    }
+    catch (err) {
+        next(err);
+    }
+});
+
 /*
 //３年生以下の学校毎の選手呼び出し。大会に出場する選手登録画面で使用。
 router.post("/member_call", async (req, res, next) => {

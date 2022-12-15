@@ -1,17 +1,14 @@
 .Frame {
   position: relative;
   width: 800px;
-  height: 140px;
-  
-  font-family: monospace;
+  height: 140px; 
   font-size: 3vmin;
   background: #000;
 }
 .Frame2 {
   width: 170px;
   height: 140px;
-  
-  font-family: monospace;
+  font-family: 'Times New Roman';
   font-size: 3vmin;
   background: #000;
 }
@@ -24,6 +21,7 @@
   margin: 7px 5px 5px;
   padding: 7px;
   text-align: center;
+  font-family: 'Times New Roman';
 }
 .item2{
   background-color: #34312E;
@@ -32,6 +30,7 @@
   margin: 0px 5px 5px;
   padding: 7px;
   text-align: center;
+  font-family: 'Times New Roman';
 }
 .item3{
   background-color: #34312E;
@@ -40,6 +39,7 @@
   margin: 3px 5px 10px;
   padding: 7px;
   text-align: center;
+  font-family: 'Times New Roman';
 }
 .name-item1{
   color: white;
@@ -48,6 +48,7 @@
   margin-top: 10px;
   margin-left: 20px;
   padding: 7px;
+  font-family: 'Times New Roman';
 }
 .name-item2{
   background-color: black;
@@ -56,6 +57,7 @@
   margin: 0px 5px 5px;
   margin-left: 20px;
   padding: 7px;
+  font-family: monospace;
 }
 .name-item3{
   background-color: black;
@@ -64,4 +66,5 @@
   margin: 3px 5px 10px;
   margin-left: 20px;
   padding: 7px;
+  font-family: monospace;
 }

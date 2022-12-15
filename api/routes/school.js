@@ -132,7 +132,7 @@ router.post("/participants_edit", async (req, res, next) => {
 
 //学校情報を消すことができる
 router.post("/school_delete", async (req, res, next) => {
-    const { school_id,school_name } = req.body;
+    const { school_id, school_name } = req.body;
 
     try{
         await executeQuery('delete from t_school where school_name = ? and school_id = ?', [school_name, school_id]);

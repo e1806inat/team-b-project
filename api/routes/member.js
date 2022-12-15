@@ -69,15 +69,18 @@ router.post("/member_call", async (req, res, next) => {
 
 //選手データ参照用のAPI
 router.post("/ref_member_call", async (req, res, next) => {
-    const { school_id, grade, option } = req.body;
+    const { school_id, grades, option } = req.body;
 
     try {
         //３年生以下の選手を呼び出す。
         //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
-        const rows = await executeQuery(`select * from t_player where grade <= ? and school_id = ? order by ${option} asc`, [grade, school_id, option]);
+        //const rows = await executeQuery(`select * from t_player where grade <= ? and school_id = ? order by ${option} asc`, [grade, school_id, option]);
+        const rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by ? desc`, [grades, school_id, option]);
+       
         return res.json(rows);
     }
     catch (err) {
+        console.log(err);
         next(err);
     }
 });
@@ -257,14 +260,18 @@ router.post("/starting_member_delete", async (req, res, next) => {
 //打率計算＆更新
 router.post("/cal_BA", async (req, res, next) => {
     //試合結果から打率を計算する。
-    const { game_id } = req.body;
+    const { game_id, table_name } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
+    
     count_hit = {};
     count_bat = {};
     const tran = await beginTran();
 
     try {
         //試合で選手が安打を打った打席のplayer_idとhitフラグを取得
-        rows = await tran.query('select player_id, hit, foreball, deadball from t_at_bat where game_id = ?', [game_id]);
+        //rows = await tran.query(`select player_id, hit, foreball, deadball from ${tmp_table_name} where game_id = ? and pass <> 1`, [game_id]);
+        rows = await tran.query(`select player_id, hit, foreball, deadball from ${tmp_table_name} pass <> 1`);
+
 
         //for文を使って各選手毎の打席数とヒット数を計算
         for await (var values of rows) {

@@ -18,10 +18,11 @@ router.get("/", (req, res) => {
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
 router.post("/daseki_register", async (req, res, next) => {
     const { table_name, inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
 
     try {
         //打席情報登録
-        await executeQuery(`insert into ${table_name} values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch]);
+        await executeQuery(`insert into ${tmp_table_name} values ("0", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [inning, game_id, school_id, player_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch]);
         res.end("OK");
     }
     catch (err) {
@@ -40,7 +41,8 @@ router.post("/tmp_table_create", async (req, res, next) => {
 
     try {
         //一時打席情報登録用テーブル作成
-        await executeQuery(`create table ${table_name} (at_bat_id int not null, inning varchar(5), game_id int not null,  school_id int not null, player_id int not null, score int, total_score int, outcount int, base char(3), text_inf varchar(300), pass bool, touched_coordinate varchar(100), hit bool, foreball bool, deadball bool, pinch varchar(300), varchar(10), primary key(at_bat_id, inning, game_id))`);
+        await executeQuery(`create table ${table_name} (at_bat_id int not null auto_increment, inning int, game_id int not null,  school_id int not null, player_id int not null, score int, total_score int, outcount int, base char(3), text_inf varchar(300), pass bool, touched_coordinate varchar(100), ball_kind varchar(10), hit bool, foreball bool, deadball bool, pinch varchar(300), primary key(at_bat_id, game_id), foreign key(school_id) references t_school(school_id),
+        foreign key(player_id) references t_player(player_id))`);
         res.end('OK');   
     }
     catch (err) {
@@ -54,6 +56,7 @@ router.post("/tmp_table_create", async (req, res, next) => {
 router.post("/tmp_table_delete", async (req, res, next) => {
 
     const { table_name, game_id } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
 
     const tran = await beginTran();
 
@@ -63,7 +66,7 @@ router.post("/tmp_table_delete", async (req, res, next) => {
         console.log(rows);
         if (rows[0]['count(*)'] >= 1) {
             try {
-                await tran.query(`drop table ${table_name}`);
+                await tran.query(`drop table ${tmp_table_name}`);
                 await tran.commit();
                 res.end("OK");
             }
@@ -91,8 +94,8 @@ router.post("/tmp_table_delete", async (req, res, next) => {
 //一時打席情報登録テーブルの情報を打席情報蓄積テーブルへ送信
 router.post("/data_register", async (req, res) => {
     //一時テーブルの名前受け取り
-    const { table_name } = req.body;
-
+    //const { table_name } = req.body;
+    const table_name = `test_pbl.` + req.body;
     const tran = await beginTran();
 
     try {
@@ -110,11 +113,12 @@ router.post("/data_register", async (req, res) => {
 //試合情報送信（速報用）
 router.post("/tmp_daseki_transmission", async (req, res, next) => {
     const { table_name, at_bat_id, inning, game_id } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
 
     try {
         //試合情報の取得と送信(速報用)
         //const rows = await executeQuery(`select * from ${table_name} as a join t_starting_player as b on  b.game_id = a.game_id and b.player_id = a.player_id where at_bat_id = ? and inning = ? and game_id = ?`, [at_bat_id, inning, game_id]);
-        const rows = await executeQuery(`select * from ${table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id, inning]);
+        const rows = await executeQuery(`select * from ${tmp_table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id, inning]);
         /*
         return res.json(
             {
@@ -134,6 +138,54 @@ router.post("/tmp_daseki_transmission", async (req, res, next) => {
             }
         );*/
         return res.json(rows);
+    }
+    catch (err) { 
+        console.log(err);
+        //await tran.rollback();
+        next(err);
+    }
+});
+
+//試合情報送信（速報用）
+router.post("/tmp_daseki_call", async (req, res, next) => {
+    //const {table_name} = req.body;
+    const table_name = `test_pbl.` + req.body['table_name'];
+
+    try {
+        //試合情報の取得と送信(速報用)
+        //const rows = await executeQuery(`select * from ${table_name} as a join t_starting_player as b on  b.game_id = a.game_id and b.player_id = a.player_id where at_bat_id = ? and inning = ? and game_id = ?`, [at_bat_id, inning, game_id]);
+        const rows = await executeQuery(`select * from ${table_name}`);
+        return res.json(rows);
+    }
+    catch (err) { 
+        console.log(err);
+        //await tran.rollback();
+        next(err);
+    }
+});
+
+//テーブル存在確認
+router.post("/tmp_table_check", async (req, res, next) => {
+    //const {table_name} = req.body;
+    //const table_name = `test_pbl.` + req.body;
+    //const table_name = `test_pbl.` + req.body['table_name'];
+    const table_name = req.body['table_name'];
+
+
+    console.log(table_name);
+
+    try {
+        //試合情報の取得と送信(速報用)
+        //const rows = await executeQuery(`select * from ${table_name} as a join t_starting_player as b on  b.game_id = a.game_id and b.player_id = a.player_id where at_bat_id = ? and inning = ? and game_id = ?`, [at_bat_id, inning, game_id]);
+        //const rows = await executeQuery(`select * from ${table_name}`);
+        //const rows = await executeQuery(`show tables like '`${table_name}`'`);
+        const rows = await executeQuery(`show tables like '${table_name}'`);
+        //console.log(`show tables like '${table_name}'`);
+        if(rows == 0 && rows == false){
+            res.end("not exist");
+        }else{
+            res.end("exist");
+        }
     }
     catch (err) { 
         console.log(err);
@@ -179,6 +231,8 @@ router.post("/daseki_transmission", async (req, res, next) => {
         next(err);
     }
 });
+
+
 
 //試合中選手情報更新
 router.post("/player_data_change", async (req, res, next) => {

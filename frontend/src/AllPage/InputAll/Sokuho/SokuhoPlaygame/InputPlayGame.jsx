@@ -6,8 +6,9 @@ import { BaseballButton } from './comSokuho/baseballButton'
 import { updateButton } from './comSokuho/updateButton'
 import "./comSokuho/CSS/scoreBoard.css"
 import pic from "../../../../DB/diamond.png"
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Popupfield from "./comSokuho/onisi_popup/onisi_popup";
+import GameEndPopup from "./comSokuho/GameEndPopup/GameEndPopup"
 
 //プルダウン
 import { PullDown } from './comSokuho/PullDown/PullDown'
@@ -15,13 +16,13 @@ import { PullDownMember } from './comSokuho/PullDown/PullDownMember'
 import { useSearchParams } from 'react-router-dom';
 
 
-
+//選手読み込み
 const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2, urlGameId, nowPlayingMember, setNowPlayingMember) => {
     const ditectPitcher = (data) => {
         let result = 0
         data.map((data, ind) => {
             if (data.position === "ピッチャー") {
-               result = ind
+                result = ind
             }
         })
         return result
@@ -57,28 +58,176 @@ const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2,
                     nowPlayingMember[1].pitcher = ditectPitcher(data1)
                     setNowPlayingMember(nowPlayingMember)
                 })
-
         })
-
-
 }
 
-const loadRegisteredMember = (setRegisteredMember, urlTournamentId, urlSchoolId) => {
+//一時打席情報登録用のテーブル作成
+const TmpTableCreate = (urlGameId) => {
 
-    fetch("http://localhost:5000/member/tournament_member_call", {
+    fetch("http://localhost:5000/daseki/tmp_table_create", {
         method: "POST",
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
         },
+        body: JSON.stringify({ table_name: urlGameId }),
+    })
+        .then((response) => response.text())
+        .then((data) => { console.log(data) })
+}
+
+//テーブル存在確認
+const TmpTableCheck = (urlGameId, TmpTableCreate, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
+    setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
+    setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState
+) => {
+
+    fetch("http://localhost:5000/daseki/tmp_table_check", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ table_name: urlGameId }),
+    })
+        .then((response) => response.text())
+        .then((data) => {
+            console.log(data)
+            if (data === "not exist") { TmpTableCreate(urlGameId) }
+            else if (data === "exist") {
+                console.log(data);
+                TmpDasekiCall(urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
+                    setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
+                    setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState
+                )
+            }
+        })
+}
+
+////試合情報受け取り（速報用）
+const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
+    setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
+    setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState) => {
+
+    fetch("http://localhost:5000/daseki/tmp_daseki_call", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ table_name: urlGameId }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+
+            let latestDasaki = data[data.length - 1]
+
+            //イニング取得
+            if (Math.floor(latestDasaki.inning / 100) >= 1) {
+                setNowIningState([latestDasaki.inning % 100 - 1, Math.floor(latestDasaki.inning / 100) - 1])
+            }
+            else {
+                setNowIningState([latestDasaki.inning % 10 - 1, Math.floor(latestDasaki.inning / 10) - 1])
+            }
+
+            //アウトカウント取得
+            setNowOutCountState(latestDasaki.outcount)
+
+            //ランナー取得
+            setRunnerCountState([latestDasaki.base[0] === "1", latestDasaki.base[1] === "1", latestDasaki.base[2] === "1"])
+
+            //スコアの取得
+            let initialSchoolId = data[0].school_id;
+            const { Score } = require("../../../../DB/Score")
+            let SolveScore = Score
+            let inningCount = 0
+            let leastSchoolId = data[0].school_id
+            data.map((u) => {
+                if (initialSchoolId === u.school_id) {
+                    if (SolveScore[0][inningCount] === null) SolveScore[0][inningCount] = 0
+                    if (leastSchoolId !== u.school_id) inningCount = inningCount + 1
+                    console.log(SolveScore[0][inningCount])
+                    SolveScore[0][inningCount] = SolveScore[0][inningCount] + u.score
+                    leastSchoolId = u.school_id
+                }
+                else {
+                    if (SolveScore[1][inningCount] === null) SolveScore[1][inningCount] = 0
+                    SolveScore[1][inningCount] = SolveScore[1][inningCount] + u.score
+                    leastSchoolId = u.school_id
+                }
+            })
+
+            console.log(SolveScore)
+            setScoreState(SolveScore)
+
+
+            //今現在のプレイヤー取得
+            if ((latestDasaki.inning / 100 >= 2) || (Math.floor(latestDasaki.inning / 10) === 2)) {
+                fetch("http://localhost:5000/member/tournament_member_call", {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId2 }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => { })
+            }
+            else if ((Math.floor(latestDasaki.inning / 100) === 1) || (Math.floor(latestDasaki.inning / 10) === 1)) {
+                fetch("http://localhost:5000/member/tournament_member_call", {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => { return data })
+
+                console.log(latestDasaki.player_id)
+                console.log(registeredMember1.filter((u) => u.player_id === 6))
+            }
+        })
+}
+
+//一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
+const DasekiRegister = (sendInfo) => {
+
+    fetch("http://localhost:5000/daseki/daseki_register", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sendInfo),
+    })
+        .then((response) => response.text())
+        .then((data) => {
+            console.log(data)
+        })
+}
+
+
+//選手登録された選手読み込む
+const loadRegisteredMember = (setRegisteredMember, urlTournamentId, urlSchoolId) => {
+
+    fetch("http://localhost:5000/member/tournament_member_call", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
     })
         .then((response) => response.json())
         .then((data) => { console.log(data); setRegisteredMember(data) })
 }
 
+
+
 const canvasSize = 1000;
-const homebase = 500;
+const homebase = 400;
 
 const InputPlayGame = () => {
     //urlから値を読み出す
@@ -94,15 +243,25 @@ const InputPlayGame = () => {
     //Score記録
     const { Score } = require("../../../../DB/Score")
     const [scoreState, setScoreState] = useState(Score)
+
     //Scoreの加算値の監視
     const [addScoreState, setAddScoreState] = useState(0)
 
     //今のイニング
     const [nowIningState, setNowIningState] = useState([0, 0])
 
+    //自由記述内容を監視
     const [freeWriteState, setFreeWriteState] = useState("")//いらんかも
-    const freeWriteRef = useRef()
+
+    //自由記述編集モードのフラグ
+    const [freeWriteModeFlag, setFreeWriteModeFlag] = useState(false)
+
+    //多分打球の種類だと思われる
     const [flag, setFlag] = useState(2);
+
+    //打者の結果を記録する(0:何もなし, 1:ヒット,2:四球, 3:死球)
+    const [batterResult, setBatterResult] = useState(0)
+
 
     //緑プルダウン用
     const [nowPosition, setNowPosition] = useState(15)
@@ -123,6 +282,14 @@ const InputPlayGame = () => {
 
     //今の打順と今のピッチャーが誰なのかを2チーム文記録する
     const [nowPlayingMember, setNowPlayingMember] = useState([{ batter: 0, pitcher: 0 }, { batter: 0, pitcher: 0 }])
+
+    //代打フラグ 0なら代打でない 1なら代打
+    const [isPinch, setIsPinch] = useState(0)
+
+    //画面解像度取得
+    var sw = document.documentElement.clientWidth; // 画面の横幅
+    var sh = document.documentElement.clientHeight; // 画面の高さ
+    console.log(sw + "+" + sh)
 
     // contextを状態として持つ
     const [context, setContext] = useState(null)
@@ -366,6 +533,14 @@ const InputPlayGame = () => {
         setBatter(setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2, urlGameId, nowPlayingMember, setNowPlayingMember)
         loadRegisteredMember(setRegisteredMember1, urlTournamentId, urlSchoolId)
         loadRegisteredMember(setRegisteredMember2, urlTournamentId, urlSchoolId2)
+
+        //テーブル存在確認
+        TmpTableCheck(urlGameId, TmpTableCreate, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
+            setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
+            setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState,
+        )
+        //一時打席情報登録用のテーブル作成
+
     }, [])
 
 
@@ -388,6 +563,7 @@ const InputPlayGame = () => {
 
                 </div>
                 <div className="BatterPitcher">
+                    {/* プルダウン1  選手を表示するためのプルダウン */}
                     <PullDownMember
                         battingOrder={battingOrder}
                         battingOrder2={battingOrder2}
@@ -397,12 +573,14 @@ const InputPlayGame = () => {
                         nowIningState={nowIningState}
                         nowPlayingMember={nowPlayingMember}
                         setNowPlayingMember={setNowPlayingMember}
+                        setIsPinch={setIsPinch}
                     />
                 </div>
                 <div className="freeWrite">
-                    {freeWrite(freeWriteRef, freeWriteState)}
+                    {freeWrite(freeWriteState, setFreeWriteState, freeWriteModeFlag, setFreeWriteModeFlag)}
                 </div>
 
+                {/* プルダウン2 */}
                 <PullDown
                     nowPosition={nowPosition}
                     setNowPosition={setNowPosition}
@@ -410,6 +588,9 @@ const InputPlayGame = () => {
                     setcanvasY1={setcanvasY1}
                     setFlag={setFlag}
                     setFreeWriteState={setFreeWriteState}
+                    setBatterResult={setBatterResult}
+                    addScoreState={addScoreState}
+                    GameEndPopup_field={GameEndPopup}
                 />
 
                 <div className="diamond">
@@ -421,7 +602,7 @@ const InputPlayGame = () => {
                         {BaseballButton(addScoreState, setAddScoreState)}
                     </div>
                     <div className="updateButton">
-                        {/* {updateButton()} */}
+                        {/* ポップアップ*/}
                         <Popupfield
                             nowIningState={nowIningState} //今が何回なのか
                             setNowIningState={setNowIningState} //今が何回なのかの変更関数
@@ -431,12 +612,32 @@ const InputPlayGame = () => {
                             setScoreState={setScoreState}
                             nowOutCountState={nowOutCountState}
                             setNowOutCountState={setNowOutCountState}
+                            DasekiRegister={DasekiRegister}
+                            urlGameId={urlGameId}
+                            urlSchoolId={urlSchoolId}
+                            urlSchoolId2={urlSchoolId2}
+                            nowPlayingMember={nowPlayingMember}
+                            setNowPlayingMember={setNowPlayingMember}
+                            battingOrder={battingOrder}
+                            battingOrder2={battingOrder2}
+                            runnerCountState={runnerCountState}
+                            freeWriteState={freeWriteState}
+                            setFreeWriteState={setFreeWriteState}
+                            canvasX1={canvasX1}
+                            setcanvasX1={setcanvasX1}
+                            canvasY1={canvasY1}
+                            setcanvasY1={setcanvasY1}
+                            flag={flag}
+                            batterResult={batterResult}
+                            setBatterResult={setBatterResult}
+                            isPinch={isPinch}
+                            setIsPinch={setIsPinch}
                         />
                     </div>
                 </div>
 
             </div>
-        </div>
+        </div >
 
     )
 }

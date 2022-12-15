@@ -17,10 +17,15 @@ export const PullDownMember = (props) => {
                             <ul>
                                 <li><a href="#">{"代打"}</a>
                                     <ul>
-                                        {props.registeredMember1.map((registeredMember1) => {
+                                        {props.registeredMember1.map((registeredMember1, ind) => {
                                             return (
                                                 <>
-                                                    <li><a href="#">{registeredMember1.player_name_kanji}</a></li>
+                                                    <li
+                                                        onClick={() => {
+                                                            props.battingOrder[props.nowPlayingMember[0].batter] = props.registeredMember1[ind]
+                                                            props.setIsPinch(1)
+                                                        }}
+                                                    ><a href="#">{registeredMember1.player_name_kanji}</a></li>
                                                 </>
                                             )
                                         })}
@@ -40,13 +45,15 @@ export const PullDownMember = (props) => {
                             </ul>
                         </li>
                         <li className='cannotTouchLi'><a className='cannotTouchA' href="#">投手</a></li>
-                    <li><a href="#">{props.battingOrder2[props.nowPlayingMember[1].pitcher].player_name_kanji}</a>
+                        <li><a href="#">{props.battingOrder2[props.nowPlayingMember[1].pitcher].player_name_kanji}</a>
                             <ul>
-                                <li><a href="#">代打</a></li>
-                                <li><a href="#">アウト</a></li>
-                                <li><a href="#">エラー</a></li>
-                                <li><a href="#">ホームラン</a></li>
-                                <li><a href="#">バント</a></li>
+                                {props.registeredMember2.map((registeredMember2) => {
+                                    return (
+                                        <>
+                                            <li><a href="#">{registeredMember2.player_name_kanji}</a></li>
+                                        </>
+                                    )
+                                })}
                             </ul>
                         </li>
                     </>
@@ -58,10 +65,26 @@ export const PullDownMember = (props) => {
                         <li className='cannotTouchLi'><a className='cannotTouchA' href="#">打者</a></li>
                         <li><a href="#">{props.battingOrder2[props.nowPlayingMember[1].batter].player_name_kanji}</a>
                             <ul>
-                                {props.registeredMember2.map((registeredMember2) => {
+
+                                <li><a href="#">{"代打"}</a>
+                                    <ul>
+                                        {props.registeredMember2.map((registeredMember2) => {
+                                            return (
+                                                <>
+                                                    <li><a href="#">{registeredMember2.player_name_kanji}</a></li>
+                                                </>
+                                            )
+                                        })}
+                                    </ul>
+                                </li>
+                                {props.battingOrder2.map((battingOrder2, ind) => {
                                     return (
                                         <>
-                                            <li><a href="#">{registeredMember2.player_name_kanji}</a></li>
+                                            <li onClick={() => {
+                                                props.nowPlayingMember[1].batter = ind
+                                                props.setNowPlayingMember(props.nowPlayingMember)
+                                            }}
+                                            ><a href="#">{battingOrder2.player_name_kanji}</a></li>
                                         </>
                                     )
                                 })}

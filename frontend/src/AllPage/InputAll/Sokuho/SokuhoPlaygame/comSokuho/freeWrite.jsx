@@ -1,11 +1,27 @@
 import './CSS/freewrite.css'
 
-export const freeWrite = (freeWriteRef,freeWriteState) => {
+const updateFreeWrite = (e, setFreeWriteState) => {
+    let value = e.target.value
+    setFreeWriteState(value)
+}
 
+const changeFreeWriteMode = (freeWriteModeFlag, setFreeWriteModeFlag) => {
+    setFreeWriteModeFlag(!freeWriteModeFlag)
+}
+
+export const freeWrite = (freeWriteState, setFreeWriteState, freeWriteModeFlag, setFreeWriteModeFlag) => {
     return (
         <div>
             <div className="freeWrite">
-                <input ref={freeWriteRef} className='freewriteInput' value={freeWriteState}></input>
+                {!freeWriteModeFlag &&
+                    <input
+                        className='freewriteInput'
+                        value={freeWriteState}
+                        onChange={(e) => { updateFreeWrite(e, setFreeWriteState) }}>
+                    </input>
+                }
+                <button onClick={() => changeFreeWriteMode(freeWriteModeFlag, setFreeWriteModeFlag)}>自由記述<br />編集</button>
+
             </div>
         </div>
 

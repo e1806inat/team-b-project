@@ -4,11 +4,84 @@ import { myIndexOf } from "./functions/myIndexOf";
 import "./InputMember.css"
 
 
-//選択しているやつのみ送信ボタンで送れるようにする
+
+const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, isInitial) => {
+    //高校に所属する3年生以下の人間を全員呼び出す
+    fetch("http://localhost:5000/member/member_call", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ school_id: urlSchoolId }),
+    })
+        .then((response) => response.json())
+        .then((allUnder3MemberData) => {
+            setCopyMember(allUnder3MemberData);
+            console.log(allUnder3MemberData)
+
+            //初回レンダリング時のみ実行
+            if (isInitial === true) {
+                fetch("http://localhost:5000/member/tournament_member_call", {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
+                })
+                    .then((response) => response.json())
+                    .then((selectedMembersData) => {
+
+                        let tempSelectedMember = []
+                        let tempUniformNumber = []
+                        tempUniformNumber = tempUniformNumber.slice(0, tempUniformNumber.length)
+
+                        console.log(selectedMembersData)
+
+                        if (allUnder3MemberData.length !== 0) {
+                            allUnder3MemberData.map((allUnder3Member, index) => {
+
+                                tempSelectedMember = [...tempSelectedMember, false]
+                                tempUniformNumber = [...tempUniformNumber, 1]
+
+                                for (let i = 0; i < selectedMembersData.length; i++) {
+                                    if (selectedMembersData[i].player_id === allUnder3Member.player_id) {
+                                        tempSelectedMember[index] = true
+                                    }
+                                }
+                            })
+
+                            selectedMembersData.map((selectedMember, ind) => {
+                                tempUniformNumber[ind] = selectedMember.uniform_number
+                            })
+                        }
 
 
 
+                        setCheck(allUnder3MemberData, tempSelectedMember, setSelectedMember);
+                        console.log(tempUniformNumber)
+                        setUniformNumberArray(tempUniformNumber)
 
+                    })
+            }
+
+            else {
+                setCheck(allUnder3MemberData, selectedMember, setSelectedMember)
+            }
+
+            if (uniformNumberArray[0] == null) {
+                let Array = [1];
+                for (let i = 1; i < allUnder3MemberData.length; i++) {
+                    Array = [...Array, 1]
+                }
+                uniformNumberArray = Array
+                console.log("aaaaa")
+                setUniformNumberArray(uniformNumberArray)
+            }
+
+        })
+}
 
 
 
@@ -16,14 +89,24 @@ const { Schools } = require("../../../../DB/Schools"); //分割代入
 //const { Member } = require("../../../../DB/Member")
 const Member = [{}]
 
-const setCheck = (copyMember, setSelectedMember) => {
+const setCheck = (copyMember, selectedMember, setSelectedMember) => {
     let copyArray = []
+    const beforeChecked = selectedMember
+
     for (let i = 0; i < copyMember.length; i++) {
         copyArray = [...copyArray, false]
     }
+
+    if (beforeChecked.length !== 0) {
+        for (let i = 0; i < beforeChecked.length; i++) {
+            copyArray[i] = beforeChecked[i]
+        }
+    }
+
     setSelectedMember(copyArray)
 }
 
+//背番号
 const setBacknumber = (copyMember, setCopyMember) => {
     for (let i = 0; i < copyMember.length; i++) {
         copyMember[i].uniform_number = 1
@@ -34,7 +117,6 @@ const setBacknumber = (copyMember, setCopyMember) => {
 
 const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
 
-    //return文の内部ではforループできないため、map関数を使いたい。
     //そのためにループしたい数と同じ長さの配列を作る
     let nullArray = [0]
     for (let i = 1; i < 50; i++) {
@@ -45,9 +127,12 @@ const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
             <select id="fruit"
                 onChange={(e) => {
                     console.log(e.target.value + "_" + ind)
-                    uniformNumberArray[ind] = e.target.value
-                    setUniformNumberArray(uniformNumberArray)
+                    let copyUniformNumberArray = uniformNumberArray
+                    copyUniformNumberArray = copyUniformNumberArray.slice(0, copyUniformNumberArray.length)
+                    copyUniformNumberArray[ind] = e.target.value
+                    setUniformNumberArray(copyUniformNumberArray)
                 }}>
+                    <option value={0}>背番号を変更する</option>
                 {nullArray.map((component, ind) => (
                     <option value={ind + 1}>{ind + 1}</option>
                 ))
@@ -68,13 +153,13 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
         delete sendArray[i].bat_num
         sendArray[i].tournament_id = urlTournamentId
         sendArray[i].uniform_number = uniformNumberArray[i]
- 
+
     }
 
-  //選択したものだけの配列を作る
+    //選択したものだけの配列を作る
     let sendArray2 = []
-    sendArray.map((component, ind)=> {
-        if(selectedMember[ind]===true) sendArray2 = [...sendArray2, sendArray[ind]]
+    sendArray.map((component, ind) => {
+        if (selectedMember[ind] === true) sendArray2 = [...sendArray2, sendArray[ind]]
     })
     console.log(sendArray2)
 
@@ -88,6 +173,21 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
         },
         body: JSON.stringify(sendArray2),
     })
+}
+
+const lordRegisteredMember = (urlTournamentId, urlSchoolId) => {
+    fetch("http://localhost:5000/member/tournament_member_call", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+        })
 }
 
 
@@ -215,43 +315,17 @@ export const InputMember = () => {
 
         initialSetIning();
         initialSetNumber();
-        loadMember(uniformNumberArray, setUniformNumberArray)
+        loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, true)
         //明日のメモ
         //選手を追加すると、ロードしなおすため背番号が消えてしまう。
         //だから、copymemberとは別の配列を用意してそこに記録する
         //選手を追加する場合は下から出てくる
         //あと選手の送信も訂正すること
+        lordRegisteredMember(urlTournamentId, urlSchoolId)
     }, [])
 
 
-    const loadMember = (uniformNumberArray, setUniformNumberArray) => {
-        //高校に所属する3年生以下の人間を全員呼び出す
-        fetch("http://localhost:5000/member/member_call", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ school_id: urlSchoolId }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setCopyMember(data);
-                console.log(data)
-                setCheck(data, setSelectedMember);
 
-                if (uniformNumberArray[0] == null) {
-                    let Array = [1];
-                    for (let i = 1; i < data.length; i++) {
-                        Array = [...Array, 1]
-                    }
-                    uniformNumberArray = Array
-                    console.log(uniformNumberArray)
-                    setUniformNumberArray(uniformNumberArray)
-                }
-
-            })
-    }
 
 
 
@@ -302,9 +376,12 @@ export const InputMember = () => {
             .then((response) => response.text())
             .then((data) => {
                 if (data === "OK") {
-                    setUniformNumberArray([...uniformNumberArray, numberRef.current.value])
+                    let copyUniformNumberArray = uniformNumberArray
+                    copyUniformNumberArray = copyUniformNumberArray.slice(0, copyUniformNumberArray.length)
+                    console.log(numberRef.current.value)
+                    setUniformNumberArray([...copyUniformNumberArray, numberRef.current.value])
                     console.log([...uniformNumberArray, numberRef.current.value])
-                    loadMember(uniformNumberArray, setUniformNumberArray)
+                    loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, false )
                 }
             })
     }
@@ -342,6 +419,7 @@ export const InputMember = () => {
                 </div>
                 <hr></hr>
             </div>
+            {console.log(uniformNumberArray)}
             <div className="hyoji">
                 <div className="players">
                     {copyMember.map((member, ind) => (
@@ -353,6 +431,7 @@ export const InputMember = () => {
                                 {member.player_name_hira} &nbsp; {member.grade}年 &nbsp;
                                 {/* &nbsp; 背番号{member.uniform_number}  */}
                                 &nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投
+                                &nbsp; 背番号:{uniformNumberArray[ind]}
                                 <hr></hr>{member.player_name_kanji}
                             </button>
                             {makePulldownBN(ind, uniformNumberArray, setUniformNumberArray)}

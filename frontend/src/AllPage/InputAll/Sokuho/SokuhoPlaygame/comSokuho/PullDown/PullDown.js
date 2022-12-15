@@ -10,23 +10,35 @@ export const PullDown = (props) => {
     props.setNowPosition(text)
   }
 
+  //ヒット時の結果
   const setHit = (value) => {
     //座標指定
     props.setFlag(2)
     props.setcanvasX1(ballPositionDB[props.nowPosition - 1].ballPositionX)
     props.setcanvasY1(ballPositionDB[props.nowPosition - 1].ballPositionY)
 
+    //打率計算のための記録
+    props.setBatterResult(1)
+
+    //タイムリーかどうか
+    let isTimelyText = "";
+    if (props.addScoreState !== 0) isTimelyText = "タイムリー"
+
     //自由記述
-    if (value === 1) { props.setFreeWriteState(Position[props.nowPosition - 1].kata + "安打") }
-    else if (value === 2) { props.setFreeWriteState(Position[props.nowPosition - 1].kata + ":ツーベースヒット") }
-    else if (value === 3) { props.setFreeWriteState(Position[props.nowPosition - 1].kata + ":スリーベースヒット") }
+    if (value === 1) { props.setFreeWriteState(isTimelyText + Position[props.nowPosition - 1].kata + "安打") }
+    else if (value === 2) { props.setFreeWriteState(isTimelyText + Position[props.nowPosition - 1].kata + ":ツーベースヒット") }
+    else if (value === 3) { props.setFreeWriteState(isTimelyText + Position[props.nowPosition - 1].kata + ":スリーベースヒット") }
   }
 
+  //アウト時の結果
   const handleOut = (value) => {
     //座標指定
     props.setFlag(value)
     props.setcanvasX1(ballPositionDB[props.nowPosition - 1].ballPositionX)
     props.setcanvasY1(ballPositionDB[props.nowPosition - 1].ballPositionY)
+
+    //打率計算のための記録
+    props.setBatterResult(0)
 
     //自由記述
     if (value === 1) { props.setFreeWriteState("アウト:" + Position[props.nowPosition - 1].kata + "ライナー") }
@@ -34,7 +46,93 @@ export const PullDown = (props) => {
     else if (value === 3) { props.setFreeWriteState("アウト:" + Position[props.nowPosition - 1].kata + "ゴロ") }
   }
 
+  //エラー時の結果
+  const handleError = (value) => {
+    //座標指定
+    props.setFlag(value)
+    props.setcanvasX1(ballPositionDB[props.nowPosition - 1].ballPositionX)
+    props.setcanvasY1(ballPositionDB[props.nowPosition - 1].ballPositionY)
 
+    //打率計算のための記録
+    props.setBatterResult(0)
+
+    //自由記述
+    if (value === 1) { props.setFreeWriteState("エラー:" + Position[props.nowPosition - 1].kata + "ライナー") }
+    else if (value === 2) { props.setFreeWriteState("エラー:" + Position[props.nowPosition - 1].kata + "フライ") }
+    else if (value === 3) { props.setFreeWriteState("エラー:" + Position[props.nowPosition - 1].kata + "ゴロ") }
+  }
+
+  //ホームランの結果
+  const handleHomerun = (value) => {
+    //タイムリーかどうか
+    let isTimelyText = "";
+    if (props.addScoreState !== 0) isTimelyText = "タイムリー"
+
+    //座標指定
+    props.setFlag(2)
+    props.setcanvasX1(500)
+    props.setcanvasY1(0)
+
+    //打率計算のための記録
+    props.setBatterResult(1)
+
+    //自由記述
+    if (value === 1) { props.setFreeWriteState(isTimelyText + "レフト側ホームラン") }
+    else if (value === 2) { props.setFreeWriteState(isTimelyText + "センター側ホームラン") }
+    else if (value === 3) { props.setFreeWriteState(isTimelyText + "ライト側ホームラン") }
+  }
+
+  //バントの結果
+  const handleBunt = (value) => {
+    //座標指定
+    props.setFlag(2)
+    props.setcanvasX1(0)
+    props.setcanvasY1(0)
+
+    //打率計算のための記録
+    props.setBatterResult(1)
+
+    //自由記述
+    if (value === 1) { props.setFreeWriteState("犠牲バント") }
+    else if (value === 2) { props.setFreeWriteState("アウト：バント") }
+    else if (value === 3) { props.setFreeWriteState("バント失敗") }
+    else if (value === 4) { props.setFreeWriteState("セーフティバント") }
+  }
+
+
+  //三振時の結果
+  const handleSanshin = (value) => {
+    //座標指定
+    props.setFlag(0)
+    props.setcanvasX1(0)
+    props.setcanvasY1(0)
+
+    //打率計算のための記録
+    props.setBatterResult(0)
+
+    //自由記述
+    if (value === 1) { props.setFreeWriteState("三振") }
+    else if (value === 2) { props.setFreeWriteState("見逃し三振") }
+    else if (value === 3) { props.setFreeWriteState("空振り三振") }
+    else if (value === 4) { props.setFreeWriteState("三振:振り逃げ") }
+  }
+
+
+  //四死球の結果
+  const handleShishikyu = (value) => {
+    //座標指定
+    props.setFlag(0)
+    props.setcanvasX1(0)
+    props.setcanvasY1(0)
+
+    //自由記述
+    if (value === 1) { props.setFreeWriteState("フォアボール"); props.setBatterResult(2) }
+    else if (value === 2) { props.setFreeWriteState("デッドボール"); props.setBatterResult(3) }
+  }
+
+  const handleGameEnd = (GameEndPulldown) => {
+    GameEndPulldown()
+  }
 
 
 
@@ -49,8 +147,8 @@ export const PullDown = (props) => {
             <li><a href="#" onClick={() => setPosition(2)}>キャッチャー</a></li>
             <li><a href="#" onClick={() => setPosition(3)}>ファースト</a></li>
             <li><a href="#" onClick={() => setPosition(4)}>セカンド</a></li>
-            <li><a href="#" onClick={() => setPosition(5)}>ショート</a></li>
-            <li><a href="#" onClick={() => setPosition(6)}>サード</a></li>
+            <li><a href="#" onClick={() => setPosition(5)}>サード</a></li>
+            <li><a href="#" onClick={() => setPosition(6)}>ショート</a></li>
             <li><a href="#" onClick={() => setPosition(7)}>レフト</a></li>
             <li><a href="#" onClick={() => setPosition(8)}>センター</a></li>
             <li><a href="#" onClick={() => setPosition(9)}>ライト</a></li>
@@ -79,25 +177,26 @@ export const PullDown = (props) => {
               </ul>
             </li>
             <li><a href="#">エラー</a>
-            <ul>
-                <li><a href="#" onClick={() => handleOut(3)}>ゴロ</a></li>
-                <li><a href="#" onClick={() => handleOut(2)}>フライ</a></li>
-                <li><a href="#" onClick={() => handleOut(1)}>ライナー</a></li>
+              <ul>
+                <li><a href="#" onClick={() => handleError(3)}>ゴロ</a></li>
+                <li><a href="#" onClick={() => handleError(2)}>フライ</a></li>
+                <li><a href="#" onClick={() => handleError(1)}>ライナー</a></li>
               </ul>
             </li>
             <li><a href="#">ホームラン</a>
               <ul>
-                <li><a href="#">レフト側</a></li>
-                <li><a href="#">センター側</a></li>
-                <li><a href="#">ライト側</a></li>
-                <li><a href="#">ランニングホームラン</a></li>
+                <li><a href="#" onClick={() => handleHomerun(1)}>レフト側</a></li>
+                <li><a href="#" onClick={() => handleHomerun(2)}>センター側</a></li>
+                <li><a href="#" onClick={() => handleHomerun(3)}>ライト側</a></li>
+                <li><a href="#" onClick={() => handleHomerun(4)}>ランニングホームラン</a></li>
               </ul>
             </li>
             <li><a href="#">バント</a>
               <ul>
-                <li><a href="#">犠牲バント</a></li>
-                <li><a href="#">バント失敗</a></li>
-                <li><a href="#">セーフティバント</a></li>
+                <li><a href="#" onClick={() => handleBunt(1)}>犠牲バント</a></li>
+                <li><a href="#" onClick={() => handleBunt(2)}>アウト:バント</a></li>
+                <li><a href="#" onClick={() => handleBunt(3)}>バント失敗</a></li>
+                <li><a href="#" onClick={() => handleBunt(4)}>セーフティバント</a></li>
               </ul>
             </li>
           </ul>
@@ -106,14 +205,18 @@ export const PullDown = (props) => {
           <ul>
             <li><a href="#">三振</a>
               <ul>
-              <li><a href="#">三振</a></li>
-                <li><a href="#">見逃し三振</a></li>
-                <li><a href="#">空振り三振</a></li>
-                <li><a href="#">振り逃げ</a></li>
+                {/* 三振 */}
+                <li><a href="#" onClick={() => handleSanshin(1)}>三振</a></li>
+                <li><a href="#" onClick={() => handleSanshin(2)}>見逃し三振</a></li>
+                <li><a href="#" onClick={() => handleSanshin(3)}>空振り三振</a></li>
+                <li><a href="#" onClick={() => handleSanshin(4)}>振り逃げ</a></li>
               </ul>
             </li>
-            <li><a href="#">死球</a></li>
-            <li><a href="#">四球</a></li>
+            {/* 四死球 */}
+            <li><a href="#" onClick={() => handleShishikyu(1)}>四球</a></li>
+            <li><a href="#" onClick={() => handleShishikyu(2)}>死球</a></li>
+            {/* 試合終了 */}
+            <li><a href="#" onClick={() => handleGameEnd(props.GameEndPulldown)}>試合終了</a></li>
           </ul>
         </li>
       </ul>

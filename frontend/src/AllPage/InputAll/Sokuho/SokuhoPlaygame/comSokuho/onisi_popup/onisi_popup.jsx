@@ -11,7 +11,27 @@ const handleKakutei = (
   scoreState,
   setScoreState,
   nowOutCountState,
-  setNowOutCountState
+  setNowOutCountState,
+  DasekiRegister,
+  urlGameId,
+  urlSchoolId,
+  urlSchoolId2,
+  nowPlayingMember,
+  setNowPlayingMember,
+  battingOrder,
+  battingOrder2,
+  runnerCountState,
+  freeWriteState,
+  setFreeWriteState,
+  canvasX1,
+  setcanvasX1,
+  canvasY1,
+  setcanvasY1,
+  flag,
+  batterResult,
+  setBatterResult,
+  isPinch,
+  setIsPinch
 
 ) => {
   //ポップアップを消す
@@ -19,25 +39,84 @@ const handleKakutei = (
 
   //scoreの更新
   scoreState = scoreState.slice(0, scoreState.length); // stateの配列をコピー(値渡し)
-  scoreState[nowIningState[0]][nowIningState[1] - 1] = scoreState[nowIningState[0]][nowIningState[1] - 1] + addScoreState
-  setScoreState(scoreState)
+  if (scoreState[nowIningState[1]][nowIningState[0]] === null) scoreState[nowIningState[1]][nowIningState[0]] = addScoreState
+  else scoreState[nowIningState[1]][nowIningState[0]] = addScoreState + scoreState[nowIningState[1]][nowIningState[0]]
 
-  console.log(nowOutCountState)
   //イニングの更新
   if (nowOutCountState === 3) {
-
     setNowOutCountState(0)
-    if(nowIningState[1]%2===0){setNowIningState([nowIningState[0],1])}
-    else if (nowIningState[1]%2===1){setNowIningState([nowIningState[0]+1,0])}
-    
- 
+    if (nowIningState[1] % 2 === 0) { setNowIningState([nowIningState[0], 1]) }
+    else if (nowIningState[1] % 2 === 1) { setNowIningState([nowIningState[0] + 1, 0]) }
   }
+
+  //DBに送るための準備
+  const schoolIdArray = [urlSchoolId, urlSchoolId2]
+  const battingOrderArray = [battingOrder, battingOrder2]
+  let total_score = 0
+  scoreState[nowIningState[1]].map((score) => {
+    total_score = score + total_score
+  })
+  let runnerCount = ""
+  runnerCountState.map((runner) => {
+    if (runner === true) runnerCount = "1" + runnerCount
+    else if (runner === false) runnerCount = "0" + runnerCount
+  })
+  let isHit = 0; let isFourball = 0; let isDeadball = 0;
+  if (batterResult === 0) { }
+  else if (batterResult === 1) isHit = 1
+  else if (batterResult === 2) isFourball = 1
+  else if (batterResult === 3) isDeadball = 1
+
+
+  console.log(batterResult)
+
+  //DBにデータを送る
+  let sendInfo = {
+    table_name: urlGameId,
+    inning: (nowIningState[1] + 1) * 10 + (nowIningState[0] + 1),
+    game_id: urlGameId,
+    school_id: schoolIdArray[nowIningState[1]],
+    player_id: battingOrderArray[nowIningState[1]][nowPlayingMember[nowIningState[1]].batter].player_id,
+    score: addScoreState,
+    total_score: total_score,
+    outcount: nowOutCountState,
+    base: runnerCount,
+    text_inf: freeWriteState,
+    pass: 0,
+    touched_coordinate: canvasX1 + "_" + canvasY1,
+    ball_kind: flag,
+    hit: isHit,
+    foreball: isFourball,
+    deadball: isDeadball,
+    pinch: isPinch
+  }
+
+  console.log(sendInfo)
+  DasekiRegister(sendInfo)
+
+  //値の初期化
+  setAddScoreState(0)
+  setFreeWriteState("")
+  setcanvasX1(0)
+  setcanvasY1(0)
+  setBatterResult(0)
+  setIsPinch(0)
+
+  //次のバッターへ
+  let copyArray = nowPlayingMember.slice(0, nowPlayingMember.length);
+  if (copyArray[nowIningState[1]].batter >= 8) copyArray[nowIningState[1]].batter = 0
+  else if (copyArray[nowIningState[1]].batter >= 0)
+  copyArray[nowIningState[1]].batter = copyArray[nowIningState[1]].batter + 1
+  setNowPlayingMember(copyArray)
+
+  //入力メモ
+  //12回裏は212
+
 }
 
 //メインのDOMの中で配置するサブ部品のような要素
 class Popup extends React.Component {
   render() {
-    console.log(this.props.nowOutCountState)
     return (
       <div className="popup_field">
         <div className="popup_inner_field">
@@ -58,7 +137,27 @@ class Popup extends React.Component {
                 this.props.scoreState,
                 this.props.setScoreState,
                 this.props.nowOutCountState,
-                this.props.setNowOutCountState
+                this.props.setNowOutCountState,
+                this.props.DasekiRegister,
+                this.props.urlGameId,
+                this.props.urlSchoolId,
+                this.props.urlSchoolId2,
+                this.props.nowPlayingMember,
+                this.props.setNowPlayingMember,
+                this.props.battingOrder,
+                this.props.battingOrder2,
+                this.props.runnerCountState,
+                this.props.freeWriteState,
+                this.props.setFreeWriteState,
+                this.props.canvasX1,
+                this.props.setcanvasX1,
+                this.props.canvasY1,
+                this.props.setcanvasY1,
+                this.props.flag,
+                this.props.batterResult,
+                this.props.setBatterResult,
+                this.props.isPinch,
+                this.props.setIsPinch,
               )
             }>はい
           </button>
@@ -101,8 +200,28 @@ class Popupfield extends React.Component {
             setAddScoreState={this.props.setAddScoreState}
             scoreState={this.props.scoreState}
             setScoreState={this.props.setScoreState}
-            nowOutCountState={this.props.nowOutCountState} 
+            nowOutCountState={this.props.nowOutCountState}
             setNowOutCountState={this.props.setNowOutCountState}
+            DasekiRegister={this.props.DasekiRegister}
+            urlGameId={this.props.urlGameId}
+            urlSchoolId={this.props.urlSchoolId}
+            urlSchoolId2={this.props.urlSchoolId2}
+            nowPlayingMember={this.props.nowPlayingMember}
+            setNowPlayingMember={this.props.setNowPlayingMember}
+            battingOrder={this.props.battingOrder}
+            battingOrder2={this.props.battingOrder2}
+            runnerCountState={this.props.runnerCountState}
+            freeWriteState={this.props.freeWriteState}
+            setFreeWriteState={this.props.setFreeWriteState}
+            canvasX1={this.props.canvasX1}
+            setcanvasX1={this.props.setcanvasX1}
+            canvasY1={this.props.canvasY1}
+            setcanvasY1={this.props.setcanvasY1}
+            flag={this.props.flag}
+            batterResult={this.props.batterResult}
+            setBatterResult={this.props.setBatterResult}
+            isPinch={this.props.isPinch}
+            setIsPinch={this.props.setIsPinch}
           />
         ) : null}
       </div>

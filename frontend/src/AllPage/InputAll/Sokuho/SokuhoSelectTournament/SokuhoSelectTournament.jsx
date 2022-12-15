@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
-import { Option } from '../../../OtherPage/Option'
+import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
 
 
 const readTournament = (setTournamentData) => {
@@ -91,7 +91,7 @@ export const Input_Tournament = () => {
 
   return (
     <div>
-      <Option></Option>
+      <OptionButton></OptionButton>
       <p></p>
       <h1>大会選択画面</h1>
       <label>

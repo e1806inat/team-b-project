@@ -1,4 +1,4 @@
-const Outputpoint = ({ array }) => {
+const Outputpoint = ({setList, array}) => {
   // let cnt = 0;
   // let array2 = []
   // for(var i; i<9; i++){
@@ -13,7 +13,7 @@ const Outputpoint = ({ array }) => {
           <td>{index+1}</td>
           {phase.map((value) => {
           return (
-          <td><input type='text' style={{width:'50px'}} defaultValue={value}></input></td>
+          <td><input type='text' style={{width:'50px'}} defaultValue={value} onChange={(point)=>setList(point.target.value)}></input></td>
         )
         })}
         </tr>

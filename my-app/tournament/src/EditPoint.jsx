@@ -16,8 +16,14 @@ const EditPoint = ({ children }) => {
     [0, 0],
     [0, 0],
   ];
+  const [list, setList] = useState(array);
   const [xPosition, setX] = useState(-width);
 
+  // const update = (index, newData) => {
+  //   setList(
+  //     list.map((point, i) => (i === index ? newData: point))
+  //   );
+  // }
   const toggleMenu = () => {
     if (xPosition < 0) {
       setX(0);
@@ -52,7 +58,7 @@ const EditPoint = ({ children }) => {
           <td>先行</td>
           <td>後攻</td>
         </tr>
-        <Outputpoint array={array} />
+        <Outputpoint setList={()=>setList} array={array} />
       </table>
     </div>
   );

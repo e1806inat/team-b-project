@@ -269,8 +269,8 @@ router.post("/cal_BA", async (req, res, next) => {
 
     try {
         //試合で選手が安打を打った打席のplayer_idとhitフラグを取得
-        //rows = await tran.query(`select player_id, hit, foreball, deadball from ${tmp_table_name} where game_id = ? and pass <> 1`, [game_id]);
-        rows = await tran.query(`select player_id, hit, foreball, deadball from ${tmp_table_name} pass <> 1`);
+        rows = await tran.query(`select player_id, hit, foreball, deadball from ${tmp_table_name} where game_id = ? and pass <> 1`, [game_id]);
+        //rows = await tran.query(`select player_id, hit, foreball, deadball from ${tmp_table_name} pass <> 1`);
 
 
         //for文を使って各選手毎の打席数とヒット数を計算

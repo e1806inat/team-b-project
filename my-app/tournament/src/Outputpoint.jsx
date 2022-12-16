@@ -10,9 +10,9 @@ const Outputpoint = ({listup,array}) => {
               return (
                 <td>
                 <input type='number' 
-                min ={0}
+                min={0}
                 name={[index,index2]} 
-                style={{ width: '50px'}} 
+                style={{width:'50px'}} 
                 defaultValue={value} 
                 onChange={(point) => listup(point.target.name, point.target.value)}
                 >

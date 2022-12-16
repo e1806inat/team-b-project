@@ -1,12 +1,10 @@
 import "./Editpoint.css";
-import {useState,useEffect} from "react";
+import { useState, useEffect } from "react";
 import Outputpoint from "./Outputpoint";
 
 const EditPoint = ({ children }) => {
-  let height = 400;
   let width = 200;
   let array = [
-    [1, 0],
     [0, 0],
     [0, 0],
     [0, 0],
@@ -15,41 +13,18 @@ const EditPoint = ({ children }) => {
     [0, 0],
     [0, 0],
     [0, 0],
+    [0, 0],
+    [0, 0],
+    [0, 0],
+    [0, 0]
   ];
   const [list, setList] = useState(array);
-  console.log(list);
-  const [xPosition, setX] = useState(-width);
+  const [xPosition, setX] = useState(width);
 
-  // const update = (index, newData) => {
-  //   setList(
-  //     list.map((point, i) => (i === index ? newData: point))
-  //   );
-  // }
-  // const tem = list.find((value, index2)=>{
-  //   value.find((value2,index3)=>{
-  //     console.log(value2);
-  //   })
-  //   // console.log(index2);
-  // });
-
-  const listup = (index,point)=>{
-    console.log(index);
-    setList(
-      list.map((value,index2) => (index2 === index[0] ? point : value.map((value2,index3) => (index3 === index[1]))))
-    )
-    // const tem1 = index[0];
-    // const tem2 = index[1];
-    // const newList = [...list];
-    // // const tem = newList.find((value, index2)=> index2 === index);
-    // const tem1 = newList.find((value, index2)=> index2 === index[0])
-    // const tem2 = tem1.find((value,index3)=> index3 === index[1])
-    // tem2 = 
-    // const tem = newList.find((value, index2)=>{
-    //   value.find((value2,index3)=>index3 === {
-    //     console.log(value2);
-    //   })
-    // });
-    // setList(newList);
+  const listup = (index, point) => {
+    const tem = index.split(',');
+    list[tem[0]][tem[1]] = parseInt(point);
+    setList(list);
   }
 
   const toggleMenu = () => {
@@ -65,30 +40,33 @@ const EditPoint = ({ children }) => {
   }, []);
 
   return (
-    <div
-      className="side-bar"
-      style={{
-        transform: `translatex(${xPosition}px)`,
-        width: width,
-        minHeight: height,
-      }}
-    >
+    <>
       <button
         onClick={() => toggleMenu()}
         className="toggle-menu"
-        style={{
-          transform: `translate(${width}px, 20vh)`,
-        }}
       ></button>
-      <table border="1">
-        <tr>
-          <td>回</td>
-          <td>先行</td>
-          <td>後攻</td>
-        </tr>
-        <Outputpoint listup={()=>listup()} array={array} />
-      </table>
-    </div>
+      <div
+        className="side-bar"
+        style={{
+          transform: `translatex(${xPosition}px)`,
+          width: width,
+          right:-width
+        }}
+      >
+        <table border="1">
+          <tr>
+            <td>回</td>
+            <td>先行</td>
+            <td>後攻</td>
+          </tr>
+          <Outputpoint listup={listup} array={array} />
+        </table>
+        <button
+        // onClick={()=>()}
+        className="ch-points"
+        >変更</button>
+      </div>
+    </>
   );
 };
 

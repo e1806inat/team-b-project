@@ -5,7 +5,7 @@
   border-right: 1px solid;
   border-radius: 0;
   border-color: rgba(64, 194, 133, 0.693);
-  background-color: rgb(100, 255, 255);
+  /* background-color: rgb(100, 255, 255); */
   transition: 0.8s ease;
 }
 .toggle-menu {
@@ -20,4 +20,8 @@
   background-color: rgba(64, 194, 133, 0.693);
   border-color: rgba(64, 194, 133, 0.693);
   border-left: 0;
+}
+.ch-points{
+  margin:auto;
+  width:50px;
 }

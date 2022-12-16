@@ -34,14 +34,16 @@ const EditPoint = ({ children }) => {
 
   const listup = (index,point)=>{
     console.log(index);
+    setList(
+      list.map((value,index2) => (index2 === index[0] ? point : value.map((value2,index3) => (index3 === index[1]))))
+    )
     // const tem1 = index[0];
     // const tem2 = index[1];
     // const newList = [...list];
-    // const tem = newList.find((value, index2)=> index2 === index);
-    // const tem = newList.find((value, index2)=>{
-
-    //   console.log(index2,value);
-    // });
+    // // const tem = newList.find((value, index2)=> index2 === index);
+    // const tem1 = newList.find((value, index2)=> index2 === index[0])
+    // const tem2 = tem1.find((value,index3)=> index3 === index[1])
+    // tem2 = 
     // const tem = newList.find((value, index2)=>{
     //   value.find((value2,index3)=>index3 === {
     //     console.log(value2);

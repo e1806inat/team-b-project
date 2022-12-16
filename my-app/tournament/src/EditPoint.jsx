@@ -84,7 +84,7 @@ const EditPoint = ({ children }) => {
           <td>先行</td>
           <td>後攻</td>
         </tr>
-        <Outputpoint listup={()=>listup} array={array} />
+        <Outputpoint listup={()=>listup()} array={array} />
       </table>
     </div>
   );

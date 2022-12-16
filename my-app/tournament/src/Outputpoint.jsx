@@ -1,4 +1,4 @@
-const Outputpoint = ({setList, array}) => {
+const Outputpoint = ({listup, array}) => {
   // let cnt = 0;
   // let array2 = []
   // for(var i; i<9; i++){
@@ -11,9 +11,9 @@ const Outputpoint = ({setList, array}) => {
       return (
         <tr>
           <td>{index+1}</td>
-          {phase.map((value) => {
+          {phase.map((value,index2) => {
           return (
-          <td><input type='text' style={{width:'50px'}} defaultValue={value} onChange={(point)=>setList(point.target.value)}></input></td>
+          <td><input type='text' name={index} style={{width:'50px'}} defaultValue={value} onChange={(point)=>listup(this.name,point.target.value)}></input></td>
         )
         })}
         </tr>
@@ -22,5 +22,5 @@ const Outputpoint = ({setList, array}) => {
     </>
   );
 };
-
+list = [0,'A高校',0,'C高校','高校']
 export default Outputpoint;

@@ -6,7 +6,7 @@ const EditPoint = ({ children }) => {
   let height = 400;
   let width = 200;
   let array = [
-    [0, 0],
+    [1, 0],
     [0, 0],
     [0, 0],
     [0, 0],
@@ -17,6 +17,7 @@ const EditPoint = ({ children }) => {
     [0, 0],
   ];
   const [list, setList] = useState(array);
+  console.log(list);
   const [xPosition, setX] = useState(-width);
 
   // const update = (index, newData) => {
@@ -24,6 +25,31 @@ const EditPoint = ({ children }) => {
   //     list.map((point, i) => (i === index ? newData: point))
   //   );
   // }
+  // const tem = list.find((value, index2)=>{
+  //   value.find((value2,index3)=>{
+  //     console.log(value2);
+  //   })
+  //   // console.log(index2);
+  // });
+
+  const listup = (index,point)=>{
+    console.log(index);
+    // const tem1 = index[0];
+    // const tem2 = index[1];
+    // const newList = [...list];
+    // const tem = newList.find((value, index2)=> index2 === index);
+    // const tem = newList.find((value, index2)=>{
+
+    //   console.log(index2,value);
+    // });
+    // const tem = newList.find((value, index2)=>{
+    //   value.find((value2,index3)=>index3 === {
+    //     console.log(value2);
+    //   })
+    // });
+    // setList(newList);
+  }
+
   const toggleMenu = () => {
     if (xPosition < 0) {
       setX(0);
@@ -58,7 +84,7 @@ const EditPoint = ({ children }) => {
           <td>先行</td>
           <td>後攻</td>
         </tr>
-        <Outputpoint setList={()=>setList} array={array} />
+        <Outputpoint listup={()=>listup} array={array} />
       </table>
     </div>
   );

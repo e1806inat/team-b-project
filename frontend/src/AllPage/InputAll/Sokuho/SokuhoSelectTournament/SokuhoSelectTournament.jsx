@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
 import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
+import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 
 
 const readTournament = (setTournamentData) => {
@@ -91,9 +92,13 @@ export const Input_Tournament = () => {
 
   return (
     <div>
-      <OptionButton></OptionButton>
+      <TitleBar
+        TitleText={"大会選択画面"}
+        PageTransition={PageTransition}
+        valueUrl={-1}
+      />
+      <OptionButton />
       <p></p>
-      <h1>大会選択画面</h1>
       <label>
         <select ref={birthYearRef} value={birthYear} onChange={selectBirthYear}></select>年
       </label>

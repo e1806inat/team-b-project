@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
+import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 
 
 const readTournament = (setTournamentData) => {
@@ -114,9 +115,16 @@ export const Input_Tournament = () => {
 
   return (
     <div>
-      <OptionButton></OptionButton>
-      <p></p>
-      <h1>事前入力・選択画面</h1>
+      <TitleBar
+        TitleText={"大会入力選択画面"}
+        PageTransition={PageTransition}
+        valueUrl={-1}
+      />
+
+      <OptionButton/>
+
+
+      <br></br>
       <label>
         <select ref={birthYearRef} value={birthYear} onChange={selectBirthYear}></select>年
       </label>
@@ -166,8 +174,7 @@ export const Input_Tournament = () => {
         </div>
       </div>
       <hr></hr>
-      <button><Link to={'/home/input_mode/pre_input'}>戻る</Link> </button>
-
+      <button onClick={() => PageTransition(-1)}>戻る</button>
     </div>
   )
 }

@@ -4,6 +4,9 @@ import { CheckBoxList } from './comInputSchool/CheckBoxList1';
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 
+import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
+import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
+
 //次回追加ボタン押した後に、高校再表示させるのをやる
 
 //データを送る
@@ -140,13 +143,19 @@ export const InputSchool = () => {
 
   return (
     <div className="main">
-      <h1>学校・チーム名入力</h1>
+      <TitleBar
+        TitleText={"高校入力選択画面"}
+        PageTransition={PageTransition}
+        valueUrl={-1}
+      />
+      <OptionButton />
+
       <div className="tournamentName">
         <h3>{urlTournamentName}</h3>
       </div>
       <div className="InputSchool">
         <input ref={ref} ></input>
-        <button onClick={()=>addSchool(Schools, setUseSchools, ref.current.value)}>追加</button>
+        <button onClick={() => addSchool(Schools, setUseSchools, ref.current.value)}>追加</button>
       </div>
       <br />
       <button onClick={handleCheckBox}>チェックボックス入力</button>

@@ -1,7 +1,12 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+
+import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
+import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
+
 const { Member } = require("../../../../DB/Member");
 const { PositionDB } = require("../../../../DB/Position9DB")
+
 
 const tableStyle = {
     border: '1px solid black',
@@ -176,7 +181,12 @@ const StartingMember = () => {
 
     return (
         <div align='center'>
-            <h2>スタメン選択画面</h2>
+            <TitleBar
+                TitleText={"スタメン選択画面"}
+                PageTransition={PageTransition}
+                valueUrl={-1}
+            />
+            <OptionButton />
             <h3>編集中：{urlTournamentName}</h3>
             <div id="error"></div>
             <table style={tableStyle}><tr><th>{urlSchoolName}</th></tr></table>
@@ -268,21 +278,21 @@ const StartingMember = () => {
 
             }}>登録</button>
             <button onClick={() => PageTransition(
-                                "InputPlayGame?urlTournamentId="+
-                                urlTournamentId +
-                                "&urlTournamentName=" +
-                                urlTournamentName +
-                                "&urlSchoolId="+
-                                urlSchoolId +
-                                "&urlSchoolName=" +
-                                urlSchoolName +
-                                "&urlSchoolId2="+
-                                urlSchoolId2 +
-                                "&urlSchoolName2=" +
-                                urlSchoolName2 +
-                                "&urlGameId=" +
-                                urlGameId
-                            )}>速報ページに移動する</button>
+                "InputPlayGame?urlTournamentId=" +
+                urlTournamentId +
+                "&urlTournamentName=" +
+                urlTournamentName +
+                "&urlSchoolId=" +
+                urlSchoolId +
+                "&urlSchoolName=" +
+                urlSchoolName +
+                "&urlSchoolId2=" +
+                urlSchoolId2 +
+                "&urlSchoolName2=" +
+                urlSchoolName2 +
+                "&urlGameId=" +
+                urlGameId
+            )}>速報ページに移動する</button>
 
             <br /><br />
         </div>

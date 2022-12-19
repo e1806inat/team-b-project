@@ -1,9 +1,9 @@
 
 //各種ページのインポート
 import {
-  Top, Login, Home, Input_mode, Pre_Input,
+  Top, Login, Home,
   InputSchool, Input_Tournament, InputMember, Sokuho_Input_Makegame,
-  InputPlayGame, NotFound, TournamentNamber, Register, StartingMember,
+  InputPlayGame, NotFound, Register, StartingMember,
   SokuhoSelectTournament,
 } from './AllPage/PageIndex';
 
@@ -13,48 +13,43 @@ import React from 'react'
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 import './App.css';
 
+//今回の開発で使えるサーバのurlを入力してください、「https: ~~~ ac.jp/ここのルートを指定する/」
+// const routeUrl = "/j_R4_team_b/frontend"
+const routeUrl = ""
+
 
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path={'/'} element={<Top />} />
-          <Route path={'/login'} element={<Login />} />
-          <Route path={'/home/'} element={<Home />} />
+          <Route path={routeUrl + '/'} element={<Top />} />
+          <Route path={routeUrl + '/login'} element={<Login />} />
+          <Route path={routeUrl + '/home/'} element={<Home />} />
+          <Route path={routeUrl + '/j_R4_team_b/frontend/'} element={<Home />} />
 
           {/* 事前入力 */}
-          <Route path={'/home/pre_input/input_tournament/'} element={<Input_Tournament />} />
-          <Route path={'/home/pre_input/input_tournament/inputschool/'} element={<InputSchool />} />
-          <Route path={'/home/pre_input/input_tournament/inputschool/:school/InputMember/'} element={<InputMember />} />
+          <Route path={routeUrl + '/home/pre_input/input_tournament/'} element={<Input_Tournament />} />
+          <Route path={routeUrl + '/home/pre_input/input_tournament/inputschool/'} element={<InputSchool />} />
+          <Route path={routeUrl + '/home/pre_input/input_tournament/inputschool/:school/InputMember/'} element={<InputMember />} />
 
           {/* 速報入力 */}
-          <Route path={'/home/sokuho/sokuho_select_tournament/'} element={< SokuhoSelectTournament />} />
-          <Route path={'/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/'} element={<Sokuho_Input_Makegame />} />
-          <Route path={'/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member'} element={<StartingMember />} />
-          <Route path={'/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member/InputPlayGame/'} element={<InputPlayGame />} />
-          <Route path={'/home/InputPlayGame/'} element={<InputPlayGame />} />
+          <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/'} element={< SokuhoSelectTournament />} />
+          <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/'} element={<Sokuho_Input_Makegame />} />
+          <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member'} element={<StartingMember />} />
+          <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member/InputPlayGame/'} element={<InputPlayGame />} />
+          <Route path={routeUrl + '/home/InputPlayGame/'} element={<InputPlayGame />} />
 
           {/* アカウント登録 */}
-          <Route path={'/home/acount_register'} element={<Register />} />
+          <Route path={routeUrl + '/home/acount_register'} element={<Register />} />
 
           {/* 出力画面 */}
-          <Route path={'/home/output_game/'} element={<OutPutGame />} />
-
-
-          <Route path={'/home/input_mode/'} element={<Input_mode />} />
-          <Route path={'/home/input_mode/sokuho_input_makegame/'} element={<Sokuho_Input_Makegame />} />
-          <Route path={'/home/input_mode/pre_input/'} element={<Pre_Input />} />
-          <Route path={'/home/input_mode/pre_input/input_tournament/'} element={<Input_Tournament />} />
-          <Route path={'/home/input_mode/pre_input/inputschool/'} element={<InputSchool />} />
-          <Route path={'/home/input_mode/pre_input/InputMember/'} element={<InputMember />} />
-          <Route path={'/home/input_mode/pre_input/input_tournament/TournamentNamber/:id/'} element={<TournamentNamber />} />
-          <Route path={'/home/input_mode/Sokuho_Input_Makegame/InputPlayGame/:id/'} element={<InputPlayGame />} />
+          <Route path={routeUrl + '/home/output_game/'} element={<OutPutGame />} />
 
           <Route path={'*'} element={<NotFound />} />
         </Routes>
         <button>
-          <Link to={'/login'}>Back To Login</Link>
+          <Link to={routeUrl + '/login'}>Back To Login</Link>
         </button>
       </BrowserRouter>
 

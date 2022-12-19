@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom";
+
+import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
+import {OptionButton} from "../../../OtherPage/optionFunc/OptionButton"
 //import { Schools } from "../../../../DB/Schools";
 //const { Schools } = require("../../../../DB/Schools"); //分割代入
 //const { Venues } = require("../../../../DB/Venues"); //分割代入
@@ -186,7 +189,12 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
 
     return (
         <>
-            <h1>試合作成画面</h1>
+            <TitleBar
+                TitleText={"試合作成画面"}
+                PageTransition={PageTransition}
+                valueUrl={-1}
+            />
+            <OptionButton />
             <h3>編集中：{urlTournamentName}</h3>
             <div className="MakeGame">
                 年{makePulldown(0, YearList, "year", nowSelectedYmd, setNowSelectedYmd)}
@@ -219,15 +227,15 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                     <div className="game">
                         <button
                             onClick={() => PageTransition(
-                                "starting_member?urlTournamentId="+
+                                "starting_member?urlTournamentId=" +
                                 urlTournamentId +
                                 "&urlTournamentName=" +
                                 urlTournamentName +
-                                "&urlSchoolId="+
+                                "&urlSchoolId=" +
                                 gameInfo.school_id_1 +
                                 "&urlSchoolName=" +
                                 gameInfo.school_name +
-                                "&urlSchoolId2="+
+                                "&urlSchoolId2=" +
                                 gameInfo.school_id_2 +
                                 "&urlSchoolName2=" +
                                 gameInfo.school_name_2 +
@@ -237,7 +245,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                             {gameInfo.match_num}回戦<br />
                             {gameInfo.school_name}<br />
                             {gameInfo.school_name_2}<br />
-                            {Venues.length!==0 && Venues[gameInfo.venue_id].venue_name}
+                            {Venues.length !== 0 && Venues[gameInfo.venue_id].venue_name}
                         </button><br /><br />
                     </div>
                 ))}

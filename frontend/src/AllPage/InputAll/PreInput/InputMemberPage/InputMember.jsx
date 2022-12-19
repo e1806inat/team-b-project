@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react"
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { myIndexOf } from "./functions/myIndexOf";
 import "./InputMember.css"
 
+import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
+import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 
 
 const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, isInitial) => {
@@ -132,14 +134,13 @@ const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
                     copyUniformNumberArray[ind] = e.target.value
                     setUniformNumberArray(copyUniformNumberArray)
                 }}>
-                    <option value={0}>背番号を変更する</option>
+                <option value={0}>背番号を変更する</option>
                 {nullArray.map((component, ind) => (
                     <option value={ind + 1}>{ind + 1}</option>
                 ))
                 }
             </select>
         </>
-
     )
 }
 
@@ -253,6 +254,14 @@ const selectThrowed = (handedThrowState, handleHandedThrow) => {
 
 
 export const InputMember = () => {
+
+    //ページ遷移用
+    const navigate = useNavigate()
+    const PageTransition = (url) => {
+        navigate(url)
+    }
+
+
     const ining = 1;
     const number = 1;
 
@@ -381,7 +390,7 @@ export const InputMember = () => {
                     console.log(numberRef.current.value)
                     setUniformNumberArray([...copyUniformNumberArray, numberRef.current.value])
                     console.log([...uniformNumberArray, numberRef.current.value])
-                    loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, false )
+                    loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, false)
                 }
             })
     }
@@ -389,10 +398,19 @@ export const InputMember = () => {
 
     return (
         <>
-            <h1>選手登録画面{<button
+            <TitleBar
+                TitleText={"選手登録画面"}
+                PageTransition={PageTransition}
+                valueUrl={-1}
+            />
+            <OptionButton />
+
+            {<button
                 onClick={() => {
                     handleSousin(copyMember, selectedMember, urlTournamentId, uniformNumberArray)
-                }}>送信</button>}</h1>
+                }}>送信</button>
+            }
+
             <h3>{urlTournamentName}</h3>
             <h4>編集中:{urlSchoolName}</h4>
 

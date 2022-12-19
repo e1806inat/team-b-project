@@ -47,10 +47,14 @@ export const PullDownMember = (props) => {
                         <li className='cannotTouchLi'><a className='cannotTouchA' href="#">投手</a></li>
                         <li><a href="#">{props.battingOrder2[props.nowPlayingMember[1].pitcher].player_name_kanji}</a>
                             <ul>
-                                {props.registeredMember2.map((registeredMember2) => {
+                                {props.registeredMember2.map((registeredMember2, ind) => {
                                     return (
                                         <>
-                                            <li><a href="#">{registeredMember2.player_name_kanji}</a></li>
+                                            <li
+                                                onClick={() => {
+                                                    props.battingOrder[props.nowPlayingMember[0].pitcher] = props.registeredMember1[ind]
+                                                }}
+                                            ><a href="#">{registeredMember2.player_name_kanji}</a></li>
                                         </>
                                     )
                                 })}
@@ -61,7 +65,7 @@ export const PullDownMember = (props) => {
 
                 {props.nowIningState[1] === 1 &&
                     <>
-                        {/* 高校チーム */}
+                        {/* 後攻チーム */}
                         <li className='cannotTouchLi'><a className='cannotTouchA' href="#">打者</a></li>
                         <li><a href="#">{props.battingOrder2[props.nowPlayingMember[1].batter].player_name_kanji}</a>
                             <ul>

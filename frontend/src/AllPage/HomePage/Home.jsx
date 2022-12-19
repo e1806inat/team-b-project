@@ -1,6 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import { TitleBar } from '../OtherPage/TitleBar/TitleBar'
 import './home.css'
+
 
 
 
@@ -15,15 +18,16 @@ const Home = () => {
     return (
         <div>
 
-            <header>
+            <header className='homeHeader'>
                 <div class="heading">HOME</div>
                 <div class="logout">
-                    <button><i 
-                    class="fa-solid fa-arrow-right-from-bracket"
-                    onClick={() => PageTransition("./Login")}
+                    <button><i
+                        class="fa-solid fa-arrow-right-from-bracket"
+                        onClick={() => PageTransition("./Login")}
                     ></i></button>
                 </div>
             </header>
+
 
 
             <div class="whole">
@@ -31,7 +35,6 @@ const Home = () => {
                 <button class="btn" onClick={() => PageTransition('sokuho/sokuho_select_tournament')}>速報入力</button>
                 <button class="btn" onClick={() => PageTransition('acount_register')}>アカウント登録</button>
                 <button class="btn" onClick={() => PageTransition("input_mode")}>過去データ参照</button>
-                <button class="btn" onClick={() => PageTransition("InputPlayGame")}>速報入力直遷移画面</button>
                 <button class="btn" onClick={() => PageTransition("output_game")}>出力直遷移</button>
             </div>
         </div>

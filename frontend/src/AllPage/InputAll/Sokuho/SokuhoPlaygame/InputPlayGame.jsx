@@ -3,17 +3,19 @@ import { outCount } from './comSokuho/outCount'
 import { runnerCount } from './comSokuho/runnerCount';
 import { freeWrite } from './comSokuho/freeWrite'
 import { BaseballButton } from './comSokuho/baseballButton'
-import { updateButton } from './comSokuho/updateButton'
 import "./comSokuho/CSS/scoreBoard.css"
-import pic from "../../../../DB/diamond.png"
 import { useEffect, useState } from 'react';
 import Popupfield from "./comSokuho/onisi_popup/onisi_popup";
 import GameEndPopup from "./comSokuho/GameEndPopup/GameEndPopup"
+import EditPoint from "./comSokuho/scoreCorrection/EditPoint"
+import OptionButton from '../../../OtherPage/optionFunc/OptionButton';
+
+import { TitleBar } from '../../../OtherPage/TitleBar/TitleBar';
 
 //プルダウン
 import { PullDown } from './comSokuho/PullDown/PullDown'
 import { PullDownMember } from './comSokuho/PullDown/PullDownMember'
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 
 //選手読み込み
@@ -230,6 +232,13 @@ const canvasSize = 1000;
 const homebase = 400;
 
 const InputPlayGame = () => {
+
+    //ページ遷移用
+    const navigate = useNavigate()
+    const PageTransition = (url) => {
+        navigate(url)
+    }
+
     //urlから値を読み出す
     const [searchParams] = useSearchParams();
     const urlTournamentId = searchParams.get("urlTournamentId")
@@ -548,7 +557,13 @@ const InputPlayGame = () => {
 
     return (
         <div className="InputPlayGame">
-            <h1>速報入力画面</h1>
+            <TitleBar
+                TitleText={"速報入力画面"}
+                PageTransition={PageTransition}
+                valueUrl={-1}
+            />
+            <EditPoint></EditPoint>
+            <OptionButton />
             <div className="parts">
                 <div className="scoreBoard">
                     {scoreBoard(scoreState, nowIningState, urlSchoolName, urlSchoolName2)}

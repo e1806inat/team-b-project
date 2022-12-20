@@ -24,7 +24,7 @@ const mysqlOptions ={
 
 const sess = {
     secret: "otameshi",
-    cookie: {maxAge: 10 * 1000},
+    cookie: {maxAge: 10 },
     store: new MySQLStore(mysqlOptions),
     resave: false,
     saveUninitialized: false

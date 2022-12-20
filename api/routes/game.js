@@ -56,7 +56,7 @@ router.post("/game_call", async (req, res, next) => {
           //  rows1[key].school_name_2 = rows2[key]['school_name'];
         //}
 
-        const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join (select school_id as school_id_1, school_name as school_name_1 from t_school) as b using(school_id_1)  join (select school_id as school_id_2, school_name as school_name_2 from t_school) as c using(school_id_2) where tournament_id = ? order by match_num', [tournament_id]);
+        const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join (select school_id as school_id_1, school_name as school_name from t_school) as b using(school_id_1)  join (select school_id as school_id_2, school_name as school_name_2 from t_school) as c using(school_id_2) where tournament_id = ? order by match_num', [tournament_id]);
         //const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join t_school as b on b.school_id = a.school_id_1  where tournament_id = ? order by match_num', [tournament_id]);
         //const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) where tournament_id = ? order by match_num', [tournament_id]);
 

@@ -1,5 +1,4 @@
 export const scoreBoard = (scoreState, nowIningState, urlSchoolName, urlSchoolName2) => {
-    console.log(scoreState)
 
     let teamAscore = 0
     let teamBscore = 0

@@ -6,10 +6,13 @@ import "./InputMember.css"
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../DB/communication").backendUrl;
+
 
 const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, isInitial) => {
     //高校に所属する3年生以下の人間を全員呼び出す
-    fetch("http://localhost:5000/member/member_call", {
+    fetch(backendUrl + "/member/member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -24,7 +27,7 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
 
             //初回レンダリング時のみ実行
             if (isInitial === true) {
-                fetch("http://localhost:5000/member/tournament_member_call", {
+                fetch(backendUrl + "/member/tournament_member_call", {
                     method: "POST",
                     mode: "cors",
                     headers: {
@@ -166,7 +169,7 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
 
 
 
-    fetch("http://localhost:5000/member/tournament_member_register", {
+    fetch(backendUrl + "/member/tournament_member_register", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -177,7 +180,7 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
 }
 
 const lordRegisteredMember = (urlTournamentId, urlSchoolId) => {
-    fetch("http://localhost:5000/member/tournament_member_call", {
+    fetch(backendUrl + "/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -373,6 +376,8 @@ export const InputMember = () => {
 
         console.log(Array)
 
+
+const backendUrl = 
         fetch("http://localhost:5000/member/member_register", {
             method: "POST",
             mode: "cors",

@@ -17,8 +17,8 @@ export const OptionButton = () => {
                     <header>お店情報</header>
                     <ul>
                         <li>
-                            <a href="#"><i class="fas fa-qrcode"></i>ダッシュボード</a>
                             <li>
+                                <a href="#"><i class="fas fa-coffee"></i>コーヒー</a>
                                 <a href="#"><i class="fas fa-coffee"></i>コーヒー</a>
                             </li>
                         </li>

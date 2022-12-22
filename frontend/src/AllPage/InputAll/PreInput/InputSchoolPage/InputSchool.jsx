@@ -7,6 +7,9 @@ import { useEffect } from "react";
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../DB/communication").backendUrl;
+
 //次回追加ボタン押した後に、高校再表示させるのをやる
 
 //データを送る
@@ -26,7 +29,7 @@ const sendSchool = (useSchools, urlTournamentId, Schools, setUseSchools) => {
   })
   console.log(toSendSchool)
 
-  fetch("http://localhost:5000/school/participants_register", {
+  fetch(backendUrl + "/school/participants_register", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -46,7 +49,7 @@ const sendSchool = (useSchools, urlTournamentId, Schools, setUseSchools) => {
 
 //データベースから初期項目を読み出し
 const readSchool = (Schools, setUseSchools) => {
-  fetch("http://localhost:5000/school/school_call", {
+  fetch(backendUrl + "/school/school_call", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -83,7 +86,7 @@ const enchantCheck = (Schools, setUseSchools) => {
 //１つの高校を追加する
 const addSchool = (Schools, setUseSchools, addSchoolName) => {
   console.log(addSchoolName)
-  fetch("http://localhost:5000/school/school_register", {
+  fetch(backendUrl + "/school/school_register", {
     method: "POST",
     mode: "cors",
     headers: {

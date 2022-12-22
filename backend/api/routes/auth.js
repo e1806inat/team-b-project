@@ -172,7 +172,6 @@ router.get("/check_sess", (req, res, next) => {
         }
     }
     catch (err) {
-        console.log(err);
         next(err);
     }
 });

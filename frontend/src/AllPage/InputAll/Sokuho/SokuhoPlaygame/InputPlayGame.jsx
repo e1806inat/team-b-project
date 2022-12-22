@@ -17,6 +17,9 @@ import { PullDown } from './comSokuho/PullDown/PullDown'
 import { PullDownMember } from './comSokuho/PullDown/PullDownMember'
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../DB/communication").backendUrl;
+
 
 //選手読み込み
 const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2, urlGameId, nowPlayingMember, setNowPlayingMember) => {
@@ -30,8 +33,7 @@ const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2,
         return result
     }
 
-
-    fetch("http://localhost:5000/member/starting_member_call", {
+    fetch(backendUrl + "/member/starting_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -41,10 +43,9 @@ const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2,
     })
         .then((response) => response.json())
         .then((data1) => {
-            console.log(data1);
             setBattingOrder(data1)
 
-            fetch("http://localhost:5000/member/starting_member_call", {
+            fetch(backendUrl + "/member/starting_member_call", {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -54,7 +55,6 @@ const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2,
             })
                 .then((response) => response.json())
                 .then((data2) => {
-                    console.log(data2);
                     setBattingOrder2(data2)
                     nowPlayingMember[0].pitcher = ditectPitcher(data2)
                     nowPlayingMember[1].pitcher = ditectPitcher(data1)
@@ -63,10 +63,81 @@ const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2,
         })
 }
 
+//自作プルダウン
+const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected) => {
+    //pulldownIdは0でいいです。
+    //ArrayListは表示したい要素を並べた配列です、普通の配列ではなく連想配列です。
+    //idテキストは連想配列の属性を書きます。
+    //nowSelectedは今プルダウンで何が選択されているかが入ります。初期値は[0]で、これは0番目の値が選択されている状態です。
+    //setNowSelectedはnowSelecedの値をuseStateの機能で上書きする関数です。setNowSelected(更新値)とすれば、nowSelectedに更新値が入ります。
+
+    return (
+        <>
+            <select id="tekitouni"
+                onChange={(e) => {
+                    //ステイトが変化すると再描画させるための文、これがないと再描画されない
+                    //なお、消すと再描画はされないが内部は変化する
+                    nowSelected = nowSelected.slice(0, nowSelected.length);
+                    nowSelected[pulldownId] = e.target.value
+                    setNowSelected(nowSelected)
+                    console.log(nowSelected)
+                }
+                }>
+                {ArrayList.map((component, ind) => (
+                    <option value={ind}>{component[idText]}</option>
+                ))
+                }
+            </select>
+        </>
+
+    )
+}
+
+const editBattersBox = (battersBox, battersBoxAll, nowSelected,
+    setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
+    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2) => {
+
+    console.log(battersBox.inning)
+    const touchedCoordinate = battersBox.touched_coordinate.split("_")
+
+    const teamBBatter = 0;
+    const teamAPitchar = 0;
+
+    const value = battersBox.inning
+    for (let i = nowSelected; i >= 0; i--) {
+        if (value !== battersBoxAll[i].inning) {
+            teamBBatter = battersBoxAll[i].player_id
+            teamAPitchar = battersBoxAll[i].pitchar_id
+            break
+        }
+    }
+
+    setNowIningState([battersBox.inning % 10 - 1, Math.floor(battersBox.inning / 10 - 1)])
+    setNowOutCountState(battersBox.outcount)
+    setRunnerCountState([battersBox.base / 100 >= 1, battersBox.base / 10 >= 1 && battersBox.base === 0, battersBox.base === 1])
+    setFreeWriteState(battersBox.text_inf)
+    setcanvasX1(touchedCoordinate[0])
+    setcanvasY1(touchedCoordinate[1])
+    setAddScoreState(battersBox.score)
+    setNowPlayingMember(
+        [{
+            batter: battingOrder.findIndex((u) => u.player_id === battersBox.player_id),
+            pitcher: battingOrder2.findIndex((u) => u.player_id === battersBox.pitchar_id)
+        },
+        {
+            batter: teamBBatter,
+            pitcher: teamAPitchar
+        }])
+    console.log(battingOrder2.findIndex((u) => u.player_id === battersBox.pitchar_id))
+    console.log(battersBox.player_id)
+
+
+}
+
 //一時打席情報登録用のテーブル作成
 const TmpTableCreate = (urlGameId) => {
 
-    fetch("http://localhost:5000/daseki/tmp_table_create", {
+    fetch(backendUrl + "/daseki/tmp_table_create", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -81,10 +152,10 @@ const TmpTableCreate = (urlGameId) => {
 //テーブル存在確認
 const TmpTableCheck = (urlGameId, TmpTableCreate, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
     setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
-    setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState
+    setNowPlayingMember, battingOrder, setBattingOrder, battingOrder2, setBattingOrder2, setRunnerCountState, setDasekiAll
 ) => {
 
-    fetch("http://localhost:5000/daseki/tmp_table_check", {
+    fetch(backendUrl + "/daseki/tmp_table_check", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -94,13 +165,12 @@ const TmpTableCheck = (urlGameId, TmpTableCreate, TmpDasekiCall, urlTournamentId
     })
         .then((response) => response.text())
         .then((data) => {
-            console.log(data)
-            if (data === "not exist") { TmpTableCreate(urlGameId) }
+            if (data === "not exist") { TmpTableCreate(urlGameId); console.log(data)}
             else if (data === "exist") {
-                console.log(data);
+                console.log(data)
                 TmpDasekiCall(urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                     setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
-                    setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState
+                    setNowPlayingMember, battingOrder, setBattingOrder, battingOrder2, setBattingOrder2, setRunnerCountState, setDasekiAll
                 )
             }
         })
@@ -109,9 +179,9 @@ const TmpTableCheck = (urlGameId, TmpTableCreate, TmpDasekiCall, urlTournamentId
 ////試合情報受け取り（速報用）
 const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
     setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
-    setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState) => {
+    setNowPlayingMember, battingOrder, setBattingOrder, battingOrder2, setBattingOrder2, setRunnerCountState, setDasekiAll) => {
 
-    fetch("http://localhost:5000/daseki/tmp_daseki_call", {
+    fetch(backendUrl + "/daseki/tmp_daseki_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -122,83 +192,140 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
+            setDasekiAll(data)
 
-            let latestDasaki = data[data.length - 1]
+            //空っぽなら虫
+            if (data.length !== 0) {
+                let latestDasaki = data[data.length - 1]
 
-            //イニング取得
-            if (Math.floor(latestDasaki.inning / 100) >= 1) {
-                setNowIningState([latestDasaki.inning % 100 - 1, Math.floor(latestDasaki.inning / 100) - 1])
-            }
-            else {
-                setNowIningState([latestDasaki.inning % 10 - 1, Math.floor(latestDasaki.inning / 10) - 1])
-            }
-
-            //アウトカウント取得
-            setNowOutCountState(latestDasaki.outcount)
-
-            //ランナー取得
-            setRunnerCountState([latestDasaki.base[0] === "1", latestDasaki.base[1] === "1", latestDasaki.base[2] === "1"])
-
-            //スコアの取得
-            let initialSchoolId = data[0].school_id;
-            const { Score } = require("../../../../DB/Score")
-            let SolveScore = Score
-            let inningCount = 0
-            let leastSchoolId = data[0].school_id
-            data.map((u) => {
-                if (initialSchoolId === u.school_id) {
-                    if (SolveScore[0][inningCount] === null) SolveScore[0][inningCount] = 0
-                    if (leastSchoolId !== u.school_id) inningCount = inningCount + 1
-                    console.log(SolveScore[0][inningCount])
-                    SolveScore[0][inningCount] = SolveScore[0][inningCount] + u.score
-                    leastSchoolId = u.school_id
+                //イニング取得
+                if (Math.floor(latestDasaki.inning / 100) >= 1) {
+                    setNowIningState([latestDasaki.inning % 100 - 1, Math.floor(latestDasaki.inning / 100) - 1])
                 }
                 else {
-                    if (SolveScore[1][inningCount] === null) SolveScore[1][inningCount] = 0
-                    SolveScore[1][inningCount] = SolveScore[1][inningCount] + u.score
-                    leastSchoolId = u.school_id
+                    setNowIningState([latestDasaki.inning % 10 - 1, Math.floor(latestDasaki.inning / 10) - 1])
                 }
-            })
 
-            console.log(SolveScore)
-            setScoreState(SolveScore)
+                //アウトカウント取得
+                setNowOutCountState(latestDasaki.outcount)
 
+                //ランナー取得
+                setRunnerCountState([latestDasaki.base[0] === "1", latestDasaki.base[1] === "1", latestDasaki.base[2] === "1"])
 
-            //今現在のプレイヤー取得
-            if ((latestDasaki.inning / 100 >= 2) || (Math.floor(latestDasaki.inning / 10) === 2)) {
-                fetch("http://localhost:5000/member/tournament_member_call", {
+                //スコアの取得
+                let initialSchoolId = data[0].school_id;
+                const { Score } = require("../../../../DB/Score")
+                let SolveScore = Score
+                let inningCount = 0
+                let leastSchoolId = data[0].school_id
+                data.map((u) => {
+                    if (initialSchoolId === u.school_id) {
+                        if (SolveScore[0][inningCount] === null) SolveScore[0][inningCount] = 0
+                        if (leastSchoolId !== u.school_id) inningCount = inningCount + 1
+                        console.log(SolveScore[0][inningCount])
+                        SolveScore[0][inningCount] = SolveScore[0][inningCount] + u.score
+                        leastSchoolId = u.school_id
+                    }
+                    else {
+                        if (SolveScore[1][inningCount] === null) SolveScore[1][inningCount] = 0
+                        SolveScore[1][inningCount] = SolveScore[1][inningCount] + u.score
+                        leastSchoolId = u.school_id
+                    }
+                })
+
+                setScoreState(SolveScore)
+
+                //今現在のプレイヤー取得
+                fetch(backendUrl + "/member/starting_member_call", {
                     method: "POST",
                     mode: "cors",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId2 }),
+                    body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId }),
                 })
                     .then((response) => response.json())
-                    .then((data) => { })
-            }
-            else if ((Math.floor(latestDasaki.inning / 100) === 1) || (Math.floor(latestDasaki.inning / 10) === 1)) {
-                fetch("http://localhost:5000/member/tournament_member_call", {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
-                })
-                    .then((response) => response.json())
-                    .then((data) => { return data })
+                    .then((data1) => {
+                        setBattingOrder(data1)
 
-                console.log(latestDasaki.player_id)
-                console.log(registeredMember1.filter((u) => u.player_id === 6))
+                        fetch(backendUrl + "/member/starting_member_call", {
+                            method: "POST",
+                            mode: "cors",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId2 }),
+                        })
+                            .then((response) => response.json())
+                            .then((data2) => {
+
+                                let teamABatter = data1.findIndex((u) => u.player_id === latestDasaki.player_id)
+                                let teamAPitchar = data2.findIndex((u) => u.player_id === latestDasaki.pitchar_id)
+                                let teamBBatter = data2.findIndex((u) => u.player_id === latestDasaki.player_id)
+                                let teamBPitchar = data1.findIndex((u) => u.player_id === latestDasaki.pitchar_id)
+
+                                if (teamABatter === -1) teamABatter = 0
+                                if (teamAPitchar === -1) teamAPitchar = 0
+                                if (teamBBatter === -1) teamBBatter = 0
+                                if (teamBPitchar === -1) teamBPitchar = 0
+
+                                setNowPlayingMember(
+                                    [{
+                                        batter: teamABatter,
+                                        pitcher: teamAPitchar
+                                    },
+                                    {
+                                        batter: teamBBatter,
+                                        pitcher: teamBPitchar
+                                    }]
+                                )
+                            })
+                    })
+
+
+
+                // //後攻チームのメンバー取得
+                // if ((latestDasaki.inning / 100 >= 2) || (Math.floor(latestDasaki.inning / 10) === 2)) {
+                //     fetch(backendUrl + "/member/tournament_member_call", {
+                //         method: "POST",
+                //         mode: "cors",
+                //         headers: {
+                //             "Content-Type": "application/json",
+                //         },
+                //         body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId2 }),
+                //     })
+                //         .then((response) => response.json())
+                //         .then((data) => { })
+                // }
+                // //先行チームのメンバー取得
+                // else if ((Math.floor(latestDasaki.inning / 100) === 1) || (Math.floor(latestDasaki.inning / 10) === 1)) {
+                //     fetch(backendUrl + "/member/tournament_member_call", {
+                //         method: "POST",
+                //         mode: "cors",
+                //         headers: {
+                //             "Content-Type": "application/json",
+                //         },
+                //         body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
+                //     })
+                //         .then((response) => response.json())
+                //         .then((data) => {
+
+
+
+                //         })
+
+                //     console.log(latestDasaki.player_id)
+                // }
             }
+
+
         })
 }
 
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
 const DasekiRegister = (sendInfo) => {
 
-    fetch("http://localhost:5000/daseki/daseki_register", {
+    fetch(backendUrl + "/daseki/daseki_register", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -216,14 +343,14 @@ const DasekiRegister = (sendInfo) => {
 //選手登録された選手読み込む
 const loadRegisteredMember = (setRegisteredMember, urlTournamentId, urlSchoolId) => {
 
-    fetch("http://localhost:5000/member/tournament_member_call", {
+    fetch(backendUrl + "/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
         headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
     })
         .then((response) => response.json())
-        .then((data) => { console.log(data); setRegisteredMember(data) })
+        .then((data) => { setRegisteredMember(data) })
 }
 
 
@@ -256,7 +383,7 @@ const InputPlayGame = () => {
     //Scoreの加算値の監視
     const [addScoreState, setAddScoreState] = useState(0)
 
-    //今のイニング
+    //今のイニング 左が裏表、右が回
     const [nowIningState, setNowIningState] = useState([0, 0])
 
     //自由記述内容を監視
@@ -285,6 +412,12 @@ const InputPlayGame = () => {
     const [registeredMember1, setRegisteredMember1] = useState([])
     const [registeredMember2, setRegisteredMember2] = useState([])
 
+    //打席一覧情報のステイト
+    const [dasekiAll, setDasekiAll] = useState([{ at_bat_id: 0 }])
+
+    //打席一覧情報のプルダウンの選択状況を管理するステイト
+    const [nowSelected, setNowSelected] = useState([])
+
     //打順と打者のリスト
     const [battingOrder, setBattingOrder] = useState([[{ player_name_kanji: '丹羽 長秀' }, { player_name_kanji: '柴田 勝家' }], 0])
     const [battingOrder2, setBattingOrder2] = useState([[{ player_name_kanji: '丹羽 長秀' }, { player_name_kanji: '柴田 勝家' }], 0])
@@ -298,7 +431,6 @@ const InputPlayGame = () => {
     //画面解像度取得
     var sw = document.documentElement.clientWidth; // 画面の横幅
     var sh = document.documentElement.clientHeight; // 画面の高さ
-    console.log(sw + "+" + sh)
 
     // contextを状態として持つ
     const [context, setContext] = useState(null)
@@ -392,7 +524,6 @@ const InputPlayGame = () => {
             for (let i = 0; i < 3; i++) {
                 if (runnerCountState[i]) {
                     baseColor2[i] = "blue";
-                    console.log(baseColor2[i]);
                 }
                 else {
                     baseColor2[i] = "white";
@@ -462,7 +593,6 @@ const InputPlayGame = () => {
             if (flag === 2) {
                 let start = { x: 500, y: 500 };
                 let cp = { x: 500, y: start.y / 5 * 3 };    //ここで曲がり具合調整
-                console.log("flag2")
                 context.quadraticCurveTo(cp.x, cp.y, canvasX1, canvasY1);
             }
             if (flag === 3) {
@@ -486,7 +616,6 @@ const InputPlayGame = () => {
             function drawWaveLine(x, y, mx, my, amplitude, waveLen, color, ctx) {
                 const BEGIN = 0, CTRL = 1, END = 2;
                 const x1 = 0, y1 = 1;
-                console.log("関数内")
                 var distance = calcDistance(x, y, mx, my);
                 var cycle = Math.floor(distance / waveLen);
                 var ps = [[x, y], [0, 0], [x, y]];
@@ -543,15 +672,14 @@ const InputPlayGame = () => {
         loadRegisteredMember(setRegisteredMember1, urlTournamentId, urlSchoolId)
         loadRegisteredMember(setRegisteredMember2, urlTournamentId, urlSchoolId2)
 
+
         //テーブル存在確認
         TmpTableCheck(urlGameId, TmpTableCreate, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
             setNowIningState, setScoreState, setNowOutCountState, registeredMember1, registeredMember2,
-            setNowPlayingMember, battingOrder, battingOrder2, setRunnerCountState,
+            setNowPlayingMember, battingOrder, setBattingOrder, battingOrder2, setBattingOrder2, setRunnerCountState, setDasekiAll
         )
-        //一時打席情報登録用のテーブル作成
 
     }, [])
-
 
 
 
@@ -650,6 +778,13 @@ const InputPlayGame = () => {
                         />
                     </div>
                 </div>
+
+                {makePulldown(0, dasekiAll, "at_bat_id", nowSelected, setNowSelected)}
+                <button onClick={() =>
+                    editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
+                        setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
+                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2
+                    )}>修正打席選択</button>
 
             </div>
         </div >

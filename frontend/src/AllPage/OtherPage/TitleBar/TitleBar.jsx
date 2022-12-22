@@ -1,7 +1,6 @@
 import './TitleBar.css'
 
 export const TitleBar = (props) => {
-    console.log(props.valueUrl)
     return (
         <>
             <header className="headerClass">

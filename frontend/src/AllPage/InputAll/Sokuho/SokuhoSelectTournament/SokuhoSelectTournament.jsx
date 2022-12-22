@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../DB/communication").backendUrl;
 
 const readTournament = (setTournamentData) => {
-  fetch("http://localhost:5000/tournament/tournament_call", {
+  fetch(backendUrl + "/tournament/tournament_call", {
     method: "POST",
     mode: "cors",
     headers: {

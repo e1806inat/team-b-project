@@ -2,6 +2,7 @@ const router = require("express").Router();
 //const mysql = require("mysql2");
 const config = require("../mysqlConnection/config");
 const { beginTran, executeQuery } = require("../mysql_client.js");
+
 //const pool = mysql.createPool(config.serverConf);
 
 //会場情報登録
@@ -76,7 +77,7 @@ router.post("/venue_call", async (req, res, next) => {
         return res.json(rows);
     }
     catch(err){
-        console.log(err);
+        console.log("会場情報を読みだせない");
         //res.end("No good");
         next(err);
     }

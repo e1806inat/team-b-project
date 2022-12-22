@@ -7,11 +7,14 @@ import {OptionButton} from "../../../OtherPage/optionFunc/OptionButton"
 //const { Schools } = require("../../../../DB/Schools"); //分割代入
 //const { Venues } = require("../../../../DB/Venues"); //分割代入
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../DB/communication").backendUrl;
+
 
 //データベースとのやりとり
 const loadGame = (setGameInfoState, urlTournamentId) => {
 
-    fetch("http://localhost:5000/game/game_call", {
+    fetch(backendUrl + "/game/game_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -30,7 +33,7 @@ const handleSentGame = (data, setGameInfoState) => {
 //大会に所属する高校を読み出す
 const loadSchool = (setSchools, urlTournamentId) => {
 
-    return fetch("http://localhost:5000/school/school_call_p", {
+    return fetch(backendUrl + "/school/school_call_p", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -47,7 +50,7 @@ const loadSchool = (setSchools, urlTournamentId) => {
 //会場を読み出す
 const loadVenue = (setVenues) => {
 
-    return fetch("http://localhost:5000/venue/venue_call", {
+    return fetch(backendUrl + "/venue/venue_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -74,7 +77,7 @@ const handleAddGame = (urlTournamentId, nowSelected, iningList, Schools, Venues,
     }
     console.log(gameData)
 
-    fetch("http://localhost:5000/game/game_register", {
+    fetch(backendUrl + "/game/game_register", {
         method: "POST",
         mode: "cors",
         headers: {

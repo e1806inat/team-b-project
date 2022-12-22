@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 const Login = () => {
-
+//バックエンドのurlを取得
+const backendUrl = require("../../DB/communication").backendUrl;
 
   const initialValues = { loginID: "test", password: "123456789" };
   const [formValues, setFormValues] = useState(initialValues);

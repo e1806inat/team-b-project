@@ -3,7 +3,6 @@ const { Position } = require("../../../../../../DB/Position")
 
 
 export const PullDownMember = (props) => {
-    console.log(props.battingOrder)
 
     return (
         <div className="PullDown">
@@ -45,14 +44,14 @@ export const PullDownMember = (props) => {
                             </ul>
                         </li>
                         <li className='cannotTouchLi'><a className='cannotTouchA' href="#">投手</a></li>
-                        <li><a href="#">{props.battingOrder2[props.nowPlayingMember[1].pitcher].player_name_kanji}</a>
+                        <li><a href="#">{props.battingOrder2[props.nowPlayingMember[0].pitcher].player_name_kanji}</a>
                             <ul>
                                 {props.registeredMember2.map((registeredMember2, ind) => {
                                     return (
                                         <>
                                             <li
                                                 onClick={() => {
-                                                    props.battingOrder[props.nowPlayingMember[0].pitcher] = props.registeredMember1[ind]
+                                                    props.battingOrder2[props.nowPlayingMember[0].pitcher] = props.registeredMember2[ind]
                                                 }}
                                             ><a href="#">{registeredMember2.player_name_kanji}</a></li>
                                         </>

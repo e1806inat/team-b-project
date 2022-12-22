@@ -20,7 +20,6 @@ export const freeWrite = (freeWriteState, setFreeWriteState, freeWriteModeFlag, 
                         onChange={(e) => { updateFreeWrite(e, setFreeWriteState) }}>
                     </input>
                 }
-                <button onClick={() => changeFreeWriteMode(freeWriteModeFlag, setFreeWriteModeFlag)}>自由記述<br />編集</button>
 
             </div>
         </div>

@@ -47,14 +47,18 @@ router.post("/game_call", async (req, res, next) => {
 
     try{
         //試合情報の学校ID１に学校名をjoinする
-        const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join t_school as b on b.school_id = a.school_id_1 where tournament_id = ? order by match_num', [tournament_id]);
+        //const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join t_school as b on b.school_id = a.school_id_1 where tournament_id = ? order by match_num', [tournament_id]);
         //試合情報の学校ID２に学校名をjoinする
-        const rows2 = await executeQuery('select * from t_game as a join t_school as b on b.school_id = a.school_id_2 where tournament_id = ? order by match_num', [tournament_id]);
+        //const rows2 = await executeQuery('select * from t_game as a join t_school as b on b.school_id = a.school_id_2 where tournament_id = ? order by match_num', [tournament_id]);
         
         //学校ID１の学校名抱けるいているテーブルに学校ID２の学校名を追加する
-        for(var key in rows1){
-            rows1[key].school_name_2 = rows2[key]['school_name'];
-        }
+        //for(var key in rows1){
+          //  rows1[key].school_name_2 = rows2[key]['school_name'];
+        //}
+
+        const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join (select school_id as school_id_1, school_name as school_name from t_school) as b using(school_id_1)  join (select school_id as school_id_2, school_name as school_name_2 from t_school) as c using(school_id_2) where tournament_id = ? order by match_num', [tournament_id]);
+        //const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join t_school as b on b.school_id = a.school_id_1  where tournament_id = ? order by match_num', [tournament_id]);
+        //const rows1 = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) where tournament_id = ? order by match_num', [tournament_id]);
 
         return res.json(rows1);
         //res.end('OK');

@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../DB/communication").backendUrl;
+
+console.log(window.location.href);
 
 const readTournament = (setTournamentData) => {
-  fetch("http://localhost:5000/tournament/tournament_call", {
+  fetch(backendUrl + "/tournament/tournament_call", {
     method: "POST",
     mode: "cors",
     headers: {
@@ -29,6 +33,14 @@ const dateSplit = (nowdate) => {
   return dateArray
 }
 
+const changeDeleteMode = (isDeleteMode, setIsDeleteMode) => {
+  setIsDeleteMode(!isDeleteMode)
+}
+
+const deleteTournament = () => {
+
+}
+
 
 export const Input_Tournament = () => {
   const birthYearRef = useRef(null);
@@ -40,6 +52,11 @@ export const Input_Tournament = () => {
 
   const [birthYear, setBirthYear] = useState(InitialYear);
   const [birthMonth, setBirthMonth] = useState(InitialMonth);
+
+  //削除モードを管理するステイト
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
+
+
   //文字分割のための箱を用意
   let dateArray = { "year": "", "month": "", "day": "" }
 
@@ -76,11 +93,7 @@ export const Input_Tournament = () => {
 
   //追加ボタン押したとき
   const handleTournament = () => {
-
-    console.log({ "tournament_name": NameTournamentRef.current.value, "opening": birthYear + "-" + birthMonth + "-01" })
-
-
-    fetch("http://localhost:5000/tournament/tournament_register", {
+    fetch(backendUrl + "/tournament/tournament_register", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -121,7 +134,7 @@ export const Input_Tournament = () => {
         valueUrl={-1}
       />
 
-      <OptionButton/>
+      <OptionButton />
 
 
       <br></br>
@@ -136,6 +149,7 @@ export const Input_Tournament = () => {
       <br />
       <input type="text" ref={NameTournamentRef} />
       <button onClick={handleTournament}>追加</button>
+      <button onClick={() => { setIsDeleteMode(!isDeleteMode) }}>{isDeleteMode && "大会編集中"}{!isDeleteMode && "大会編集モード"}</button>
       <br />
       <hr></hr>
       <br />
@@ -154,17 +168,26 @@ export const Input_Tournament = () => {
                   <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
                 </div>
                 <div className="tournamentName">
-                  <button
-                    onClick={() =>
-                      PageTransition(
-                        "inputschool?urlTournamentId=" +
-                        Tournament.tournament_id +
-                        "&urlTournamentName=" +
-                        Tournament.tournament_name
-                      )
-                    }>
-                    {Tournament.tournament_name}
-                  </button>
+                  {isDeleteMode &&
+                    <button
+                      onClick={() => deleteTournament()}>
+                      {Tournament.tournament_name}
+                    </button>
+                  }
+                  {!isDeleteMode &&
+                    <button
+                      onClick={() =>
+                        PageTransition(
+                          "inputschool?urlTournamentId=" +
+                          Tournament.tournament_id +
+                          "&urlTournamentName=" +
+                          Tournament.tournament_name
+                        )
+                      }>
+                      {Tournament.tournament_name}
+                    </button>
+                  }
+
                   <br />
                   <br />
                 </div>

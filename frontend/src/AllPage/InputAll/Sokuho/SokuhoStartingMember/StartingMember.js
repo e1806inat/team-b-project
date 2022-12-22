@@ -4,6 +4,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../DB/communication").backendUrl;
+
 const { Member } = require("../../../../DB/Member");
 const { PositionDB } = require("../../../../DB/Position9DB")
 
@@ -31,7 +34,7 @@ const thStyle = {
 
 //選手を読み込む
 const loadRegisteredMember = (urlTournamentId, urlSchoolId, setRegisteredMember, isEmptyFlag, setIsEmptyFlag) => {
-    fetch("http://localhost:5000/member/tournament_member_call", {
+    fetch(backendUrl + "/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -103,7 +106,7 @@ const sendSelectedMember = (
     console.log(toSendArray)
 
 
-    fetch("http://localhost:5000/member/starting_member_register", {
+    fetch(backendUrl + "/member/starting_member_register", {
         method: "POST",
         mode: "cors",
         headers: {

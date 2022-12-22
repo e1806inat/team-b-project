@@ -1,5 +1,4 @@
-import { useEffect } from "react"
-import { useState } from "react"
+import React, { useState, useEffect } from "react"; 
 import './App.css';
 
 //データベースから初期項目を読み出し
@@ -53,16 +52,15 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
 
 export const App = () => {
 
-
   //プルダウンのための初期値作成
   let initialPulldown = [0]
 
   const [Schools, setUseSchools] = useState([{ school_id: 1, school_name: "ラサール高等学校" }]);
-  const [nowSelected, setNowSelected] = useState(initialPulldown)
+  const [nowSelected, setNowSelected] = useState(initialPulldown);
 
   useEffect(() => {
     readSchool(setUseSchools)
-  }, [])
+  }, []);
 
   return (
     <div className="App">
@@ -71,26 +69,48 @@ export const App = () => {
       <br></br>
       <br></br>
       <br></br>
-      これ↓がプルダウンです<br></br>
+      <div align="center" class="sel_tytle" >高校名</div>
+      <div class="cp_ipselect cp_sl01">
       {makePulldown(0, Schools, "school_name", nowSelected, setNowSelected)}
+      </div>
       <br></br>
       <br></br>
-      <br></br>
+      <div align="center" class="sel_tytle">検索オプション</div>
+      <div class="cp_ipselect cp_sl01"> 
+      <select name="sei_option">
+        <option value="touroku" selected>登録順</option>
+        <option value="gakunen">学年順</option>
+        <option value="daritu">打率順</option>
+        <option value="anda">安打数順</option>
+        <option value="daseki">打席数順</option>
+      </select>
+      </div>
 
-      これ↓がmap関数で連続表示させている状態です<br></br>
-
+      <br></br>
+      <div align="center">
+      <button align="center">検索</button>
+      </div>
+      <br></br>
+      {/* これ↓がmap関数で連続表示させている状態です */}
+      <br></br>
+      <table align="center">
+      <tr><th>
+      〇〇大会出場　高校一覧
+      </th></tr>
+      <tr><td>
       <div className="mapFunction">
         {Schools.map((component, ind) => (
           <>
-            <button value={ind}>{component.school_name}</button>
+            <button class="sel_button"value={ind}>{component.school_name}</button>
             <br></br>
           </>
         ))
         }
       </div>
-
+      </td></tr>
+      </table>
     </div>
-  );
+  );      
 };
 
 export default App;

@@ -1,3 +1,93 @@
 h1 {
   background: linear-gradient(transparent 80%, #a7d6ff 80%);
 }
+.cp_ipselect {
+	overflow: hidden;
+	width: 40%;
+	margin: 1em auto;
+	text-align: center;
+}
+.cp_ipselect select {
+	width: 100%;
+	padding-right: 1em;
+	cursor: pointer;
+	text-indent: 0.01px;
+	text-overflow: ellipsis;
+	border: none;
+	outline: none;
+	background: transparent;
+	background-image: none;
+	box-shadow: none;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.cp_ipselect select::-ms-expand {
+    display: none;
+}
+.cp_ipselect.cp_sl01 {
+	position: relative;
+	border: 3px solid #0072BC;
+	border-radius: 10px;
+	background: #ffffff;
+}
+.cp_ipselect.cp_sl01::before {
+	position: absolute;
+	top: 0.8em;
+	right: 0.9em;
+	width: 0;
+	height: 0;
+	padding: 0;
+	content: '';
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+	border-top: 15px solid #0072BC;
+	pointer-events: none;
+}
+.cp_ipselect.cp_sl01 select {
+	padding: 10px 50px 10px 10px;
+  font-size: 20px;
+	color: #000000;
+}
+.sel_tytle{
+  font-size: 20px;
+}
+table{
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  width: 90%;
+}
+table tr:last-child{
+  border-bottom:solid 1px #ddd;
+}
+table th{
+  text-align: left;
+  padding: 10px 0;
+  border-right:solid 1px #ddd;
+  border-left:solid 1px #ddd;
+  width: 155px;
+  font-size: 30px;
+}
+table th:nth-child(1){
+  background-color:#dddddd;
+}
+table tr:nth-child(2) td{
+  font-size: 30px;
+}
+table td{
+  text-align: left;
+  padding: 7px 0;
+  border-right:solid 1px #ddd;
+  border-left:solid 1px #ddd;
+  width: 155px;
+}
+.sel_button{
+  font-size: 30px;
+  display: inline-block;
+  padding: 40px 80px;
+  text-decoration: none;
+  color: #B2D235;
+  background-color: #fff;
+  border-radius:20px;
+  border: 3px solid #B2D235;
+}

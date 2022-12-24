@@ -9,6 +9,8 @@ const tournament = require("./routes/tournament");
 const venue = require("./routes/venue");
 const game = require("./routes/game");
 
+const cookieParser = require("cookie-parser");
+
 const session = require('express-session');
 //const { default: errorHandler } = require("./error");
 const { errorHandler } = require("./error");
@@ -24,13 +26,14 @@ const mysqlOptions ={
 
 const sess = {
     secret: "otameshi",
-    cookie: {maxAge: 10 },
+    cookie: {maxAge: 600000 },
     store: new MySQLStore(mysqlOptions),
     resave: false,
     saveUninitialized: false
 };
 
 sess.cookie.secure = true; //for production
+app.use(cookieParser());
 app.use(session(sess));
 // cors対策
 /*

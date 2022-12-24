@@ -36,6 +36,31 @@ router.post("/tournament_member_register", async (req, res, next) => {
     }
 });
 
+//大会毎の選手削除
+router.post("/tournament_member_delete_batch", async (req, res, next) => {
+    const { tournament_id, school_id } = req.body;
+    try {
+        //大会登録選手の一括削除
+        await executeQuery('delete from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        res.end("OK");
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
+//前大会の選手情報参照(登録選手選択画面の補助用→これを使うと画面が見やすくなる！)
+router.post("/pre_tournament_member_call", async (req, res, next) => {
+    const { tournament_id, school_id } = req.body;
+    try {
+        rows = executeQuery('select player_id from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        return res.json(rows);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
 //スタメン登録(このままでは途中で終了した場合に途中までinsertされたやつが残る。そこでupsertにすればもう一回入れなおした時にいい感じになりそう)
 router.post("/starting_member_register", async (req, res, next) => {
     try {
@@ -51,6 +76,18 @@ router.post("/starting_member_register", async (req, res, next) => {
     }
 });
 
+//スタメン一括削除
+router.post("/starting_member_delete_batch", async (req, res, next) => {
+    const {game_id, school_id} = req.body;
+    try {
+        await executeQuery('delete from t_starting_player where game_id = ? and school_id = ?', [game_id, school_id]);
+        res.end("OK");
+    }
+    catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
 
 //過去データ参照のための呼び出し
 router.post("/member_call", async (req, res, next) => {
@@ -76,6 +113,24 @@ router.post("/ref_member_call", async (req, res, next) => {
         //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
         //const rows = await executeQuery(`select * from t_player where grade <= ? and school_id = ? order by ${option} asc`, [grade, school_id, option]);
         const rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by ? desc`, [grades, school_id, option]);
+       
+        return res.json(rows);
+    }
+    catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
+//選手データ参照用のAPI
+router.post("/ref_tournament_member_call", async (req, res, next) => {
+    const { tournament_id, school_id, option } = req.body;
+
+    try {
+        //３年生以下の選手を呼び出す。
+        //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
+        //const rows = await executeQuery(`select * from t_player where grade <= ? and school_id = ? order by ${option} asc`, [grade, school_id, option]);
+        const rows = await executeQuery(`select * from t_player where tournament_id = ? and school_id = ? order by ? desc`, [tournament_id, school_id, option]);
        
         return res.json(rows);
     }
@@ -201,13 +256,13 @@ router.post("/member_edit", async (req, res, next) => {
 
 //選手情報編集、選手情報を消すこともできる
 router.post("/tournament_member_edit", async (req, res, next) => {
-    const { player_id, tournamnet_id, uniform_number, grade, handed_hit, handed_throw, BA } = req.body;
+    const { player_id, tournament_id, uniform_number, grade, handed_hit, handed_throw, BA } = req.body;
 
     //const tran = await beginTran();
 
     try {
         //大会登録選手情報の編集
-        await executeQuery('update t_registered_player set uniform_number = ?, grade = ?, handed_hit = ?, handed_throw = ?, BA = ? where player_id = ? and tournament_id = ?', [uniform_number, grade, handed_hit, handed_throw, BA, player_id, tournamnet_id]);
+        await executeQuery('update t_registered_player set uniform_number = ?, grade = ?, handed_hit = ?, handed_throw = ?, BA = ? where player_id = ? and tournament_id = ?', [uniform_number, grade, handed_hit, handed_throw, BA, player_id, tournament_id]);
         res.end('OK');
     }
     catch (err) {
@@ -313,13 +368,13 @@ router.post("/cal_BA", async (req, res, next) => {
 
 //大会選手の打率を更新
 router.post("/tournament_member_BA_update", async (req, res, next) => {
-    const { player_id, tournamnet_id, BA } = req.body;
+    const { player_id, tournament_id, BA } = req.body;
 
     //const tran = await beginTran();
 
     try {
         //大会登録選手情報の更新
-        await executeQuery('update t_registered_player set BA = ? where player_id = ? and tournament_id = ?', [BA, player_id, tournamnet_id]);
+        await executeQuery('update t_registered_player set BA = ? where player_id = ? and tournament_id = ?', [BA, player_id, tournament_id]);
         res.end('OK');
     }
     catch (err) {

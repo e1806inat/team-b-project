@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
 
+:root{
+    --color-main: #00afcc;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -11,19 +15,21 @@
 
 .sidebar{
     position: fixed;
-    right: -250px;
-    background: rgb(75, 48, 17);
-    width: 250px;
+    right: -3000px;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
     height: 100%;
-    transition: all 0.5s;
+    transition: all 0.9s;
 }
 
-.sidebar header{
-    font-size: 22px;
+.sidebar .menuHeader{
+    font-size: 27px;
+    font-weight: 600;
     color: white;
-    text-align: center;
+    padding-left: 40px;
     line-height: 70px;
-    background: rgb(138, 90, 36);
+    background: rgb(0, 0, 6, 0);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     user-select: none;
 }
 
@@ -35,13 +41,13 @@
     color: white;
     font-size: 20px;
     padding-left: 40px;
-    border-top: 1px solid rgba(255, 255,255,0.1);
-    border-bottom: 1px solid black;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255,255, 0.5);
     transition: 0.4s;
 }
 
 ul li:hover a{
-    padding-left: 50px;
+    padding-left: 30px;
 }
 
 .sidebar ul a i{
@@ -57,15 +63,14 @@ label #hambargerBtn,
 label #cancelBtn{
     position: absolute;
     cursor: pointer;
-    background: #b66f2d;
     border-radius: 3px;
 }
 
 label #hambargerBtn{
-    right: 40px;
+    right: 20px;
     top: 25px;
-    font-size: 25px;
-    color: white;
+    font-size: 30px;
+    color: black;
     padding: 6px 12px;
     transition: all 0.5s;
 }
@@ -91,11 +96,10 @@ label #cancelBtn{
 }
 
 #check:checked ~ label #cancelBtn{
-    right: 195px;
+    right: 15px;
 }
 
 #check:checked ~ .bg{
     margin-right: 250px;
 }
-
 

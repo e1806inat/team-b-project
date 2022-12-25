@@ -19,7 +19,7 @@ export const Hyoji = (UseSchools, navigate, urlTournamentName, urlTournamentId) 
                                         PageTransition(school.school_name + "/InputMember" +
                                         "?urlTournamentId="+urlTournamentId+"&urlTournamentName="+urlTournamentName+
                                         "&urlSchoolId="+school.school_id+"&urlSchoolName="+school.school_name); 
-                                    }} >
+                                    }} className="schoolBtn">
                                     {school.school_name}
                                 </button>
                                 <br />

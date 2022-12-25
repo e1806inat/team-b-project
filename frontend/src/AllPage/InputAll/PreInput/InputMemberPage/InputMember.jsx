@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { myIndexOf } from "./functions/myIndexOf";
 import "./InputMember.css"
+import MemberPopup from "./functions/MemberPopup/MemberPopup"
 
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
@@ -10,7 +11,7 @@ import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
 
-const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, isInitial) => {
+const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, isInitial, setRegisteredMembers) => {
     //高校に所属する3年生以下の人間を全員呼び出す
     fetch(backendUrl + "/member/member_call", {
         method: "POST",
@@ -27,6 +28,7 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
 
             //初回レンダリング時のみ実行
             if (isInitial === true) {
+                //既に選手登録されている人間を読み出す
                 fetch(backendUrl + "/member/tournament_member_call", {
                     method: "POST",
                     mode: "cors",
@@ -37,10 +39,11 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
                 })
                     .then((response) => response.json())
                     .then((selectedMembersData) => {
+                        setRegisteredMembers(selectedMembersData)
 
                         let tempSelectedMember = []
                         let tempUniformNumber = []
-                        tempUniformNumber = tempUniformNumber.slice(0, tempUniformNumber.length)
+
 
                         console.log(selectedMembersData)
 
@@ -55,17 +58,18 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
                                         tempSelectedMember[index] = true
                                     }
                                 }
-                            })
 
-                            selectedMembersData.map((selectedMember, ind) => {
-                                tempUniformNumber[ind] = selectedMember.uniform_number
+                                let i = selectedMembersData.findIndex((v)=> v.player_id === allUnder3Member.player_id)
+                                if(i!==-1){
+                                tempUniformNumber[tempUniformNumber.length-1] = selectedMembersData[i].uniform_number
+                                }
                             })
                         }
 
 
 
                         setCheck(allUnder3MemberData, tempSelectedMember, setSelectedMember);
-                        console.log(tempUniformNumber)
+                        tempUniformNumber = tempUniformNumber.slice(0, tempUniformNumber.length)
                         setUniformNumberArray(tempUniformNumber)
 
                     })
@@ -147,7 +151,7 @@ const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
     )
 }
 
-const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumberArray) => {
+const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumberArray, registeredMembers) => {
 
     let sendArray = copyMember
 
@@ -165,10 +169,34 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
     sendArray.map((component, ind) => {
         if (selectedMember[ind] === true) sendArray2 = [...sendArray2, sendArray[ind]]
     })
+
+    //選択されたものから、既に登録されている人間を除いた配列を作る、登録されているやつを全員消すなら問題なし
+    // let sendArray3 = []
+    // sendArray2.map((v) => {
+    //     if (registeredMembers.some((u) => u.player_name_kanji === v.player_name_kanji)) { }
+    //     else {
+    //         sendArray3 = [...sendArray3, v]
+    //     }
+    // })
+
+    // console.log(sendArray3)
+
+    console.log(registeredMembers)
     console.log(sendArray2)
+    registeredMembers.map((v)=> {
+        fetch(backendUrl + "/member/tournament_member_delete", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tournament_id:urlTournamentId, player_id:v.player_id }),
+        })
+    
+    })
 
 
-
+//バックエンドに送信
     fetch(backendUrl + "/member/tournament_member_register", {
         method: "POST",
         mode: "cors",
@@ -255,6 +283,18 @@ const selectThrowed = (handedThrowState, handleHandedThrow) => {
     }
 }
 
+//選択している数を表示
+const cntSelectedMemberNum = (selectedMember) => {
+    let cnt = 0
+    selectedMember.map((v) => {
+        if (v) cnt++
+    })
+    return cnt
+}
+
+
+
+
 
 export const InputMember = () => {
 
@@ -270,8 +310,10 @@ export const InputMember = () => {
 
     const iningRef = useRef(null)
     const numberRef = useRef(null)
-    const nameKanjiRef = useRef(null)
-    const nameHiraRef = useRef(null)
+
+    //名前を管理するステイト
+    const [nameKanji, setNameKanji] = useState({ famiryName: "", firstName: "" })
+    const [nameHira, setNameHira] = useState({ famiryName: "", firstName: "" })
 
     const [iningState, setIningState] = useState(ining)
     const [schoolState, setSchoolState] = useState(1)
@@ -280,6 +322,11 @@ export const InputMember = () => {
     const [handedHitState, setHandedHitState] = useState("左")
     const [handedThrowState, setHandedThrowState] = useState("左")
 
+    //既に選手登録されている選手を管理するステイト
+    const [registeredMembers, setRegisteredMembers] = useState([])
+
+    //数を監視するステイト
+    let selectedMemberNum = 0
 
     //メンバーを選択しているかどうかのフラグをつくる
     let copyArray = [false]
@@ -297,9 +344,13 @@ export const InputMember = () => {
 
     //クリック時メンバー選択
     const handleSelected = (ind) => {
-        copyArray = selectedMember.slice(0, selectedMember.length); // stateの配列をコピー(値渡し)
-        copyArray[ind] = !copyArray[ind]
-        setSelectedMember(copyArray)
+        console.log(selectedMember[ind])
+        if (cntSelectedMemberNum(selectedMember) >= 20 && selectedMember[ind] === false) {}
+        else{
+            copyArray = selectedMember.slice(0, selectedMember.length); // stateの配列をコピー(値渡し)
+            copyArray[ind] = !copyArray[ind]
+            setSelectedMember(copyArray)
+        }
     }
 
     const [copyMember, setCopyMember] = useState(Member)
@@ -327,7 +378,15 @@ export const InputMember = () => {
 
         initialSetIning();
         initialSetNumber();
-        loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, true)
+        loadMember(uniformNumberArray,
+            setUniformNumberArray,
+            urlTournamentId,
+            urlSchoolId,
+            setCopyMember,
+            selectedMember,
+            setSelectedMember,
+            true,
+            setRegisteredMembers)
         //明日のメモ
         //選手を追加すると、ロードしなおすため背番号が消えてしまう。
         //だから、copymemberとは別の配列を用意してそこに記録する
@@ -360,11 +419,11 @@ export const InputMember = () => {
 
 
 
-    const handleMembers = (uniformNumberArray, setUniformNumberArray) => {
+    const handleMembers = (uniformNumberArray, setUniformNumberArray, nameKanji, nameHira) => {
         let Array = [{
             "school_id": urlSchoolId,
-            "player_name_kanji": nameKanjiRef.current.value,
-            "player_name_hira": nameHiraRef.current.value,
+            "player_name_kanji": nameKanji.famiryName + "　" + nameKanji.firstName,
+            "player_name_hira": nameHira.famiryName + "　" + nameHira.firstName,
             "uniform_number": numberRef.current.value,
             "grade": iningRef.current.value,
             "handed_hit": handedHitState,
@@ -374,30 +433,37 @@ export const InputMember = () => {
             "hit_num": 0
         }]
 
-        console.log(Array)
 
-
-const backendUrl = 
-        fetch("http://localhost:5000/member/member_register", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            //body: JSON.stringify({ email:login_id , password:login_ps }),
-            body: JSON.stringify(Array),
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                if (data === "OK") {
-                    let copyUniformNumberArray = uniformNumberArray
-                    copyUniformNumberArray = copyUniformNumberArray.slice(0, copyUniformNumberArray.length)
-                    console.log(numberRef.current.value)
-                    setUniformNumberArray([...copyUniformNumberArray, numberRef.current.value])
-                    console.log([...uniformNumberArray, numberRef.current.value])
-                    loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, false)
-                }
+        if (copyMember.some((u) => u.player_name_kanji === Array[0].player_name_kanji) &&
+            copyMember.some((u) => u.player_name_hira === Array[0].player_name_hira)
+        ) {
+            console.log("out")
+        }
+        else {
+            console.log("safe")
+            fetch("http://localhost:5000/member/member_register", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(Array),
             })
+                .then((response) => response.text())
+                .then((data) => {
+                    if (data === "OK") {
+                        //背番号の取得
+                        let copyUniformNumberArray = uniformNumberArray
+                        copyUniformNumberArray = copyUniformNumberArray.slice(0, copyUniformNumberArray.length)
+                        console.log(numberRef.current.value)
+                        setUniformNumberArray([...copyUniformNumberArray, numberRef.current.value])
+                        console.log([...uniformNumberArray, numberRef.current.value])
+                        loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, false)
+                    }
+                })
+        }
+
+
     }
 
 
@@ -410,39 +476,56 @@ const backendUrl =
             />
             <OptionButton />
 
-            {<button
-                onClick={() => {
-                    handleSousin(copyMember, selectedMember, urlTournamentId, uniformNumberArray)
-                }}>送信</button>
-            }
 
-            <h3>{urlTournamentName}</h3>
-            <h4>編集中:{urlSchoolName}</h4>
+            <div className="IMtitle">出場選手選択画面</div>
+            <div className="subject">
+                <h3>{urlTournamentName}</h3>
+                <h4>編集中:{urlSchoolName}</h4>
+            </div>
 
             <div className="toroku">
                 <div className="MakeGame">
+                    <div className="grade">
+                        <div className="year">学年<select ref={iningRef} value={iningState} onChange={selectIning} ></select></div>
+                        <div className="uniNum">背番号<select ref={numberRef} value={numberState} onChange={selectNumber} ></select></div>
+                    </div>
+
+                    <div className="inputName">
+
+                        氏（漢字）　　<input onChange={(e) => setNameKanji({ famiryName: e.target.value, firstName: nameKanji.firstName })} ></input>
+                        名（漢字）　　<input onChange={(e) => setNameKanji({ famiryName: nameKanji.famiryName, firstName: e.target.value })} ></input>
+
+
+                        <br />
+                        氏（ひらがな）<input onChange={(e) => setNameHira({ famiryName: e.target.value, firstName: nameHira.firstName })}></input>
+                        名（ひらがな）<input onChange={(e) => setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })}></input>
+                    </div>
+
+                    <div className="selectDominant">
+                        <div>{selectHitted(handedHitState, handleHandedHit)}</div>
+                        <div>{selectThrowed(handedThrowState, handleHandedThrow)}</div>
+                    </div>
+
                     <br />
-                    学年<select ref={iningRef} value={iningState} onChange={selectIning} ></select>&nbsp;
-                    背番号<select ref={numberRef} value={numberState} onChange={selectNumber} ></select>&nbsp;&nbsp;
+                    <button
+                        className="addButton"
+                        onClick={() => handleMembers(uniformNumberArray, setUniformNumberArray, nameKanji, nameHira)}
+                    >追加</button>
+                    {
+                        // () => {
+                        //     selectedMember.map((v) => {
+                        //         if (v) selectedMemberNum = selectedMemberNum + 1
+                        //         console.log(selectedMemberNum)
+                        //     })
+                        //     return(<a>{selectedMemberNum}</a>)
 
-                    {selectHitted(handedHitState, handleHandedHit)}
+                        // }
+                        cntSelectedMemberNum(selectedMember)
+                    }
 
-                    <br />
-
-                    名前（漢字）　<input ref={nameKanjiRef} ></input>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                    {selectThrowed(handedThrowState, handleHandedThrow)}
-
-                    <br />
-
-                    名前（ひらがな）　<input ref={nameHiraRef}></input> &nbsp; &nbsp;
-                    <button onClick={() => handleMembers(uniformNumberArray, setUniformNumberArray)}>追加</button>
-                    <button onClick={() => { console.log(uniformNumberArray) }}>プルダウンテストボタン</button>
+                    {/* <button onClick={() => { console.log(uniformNumberArray) }}>プルダウンテストボタン</button> */}
                 </div>
-                <hr></hr>
             </div>
-            {console.log(uniformNumberArray)}
             <div className="hyoji">
                 <div className="players">
                     {copyMember.map((member, ind) => (
@@ -451,20 +534,43 @@ const backendUrl =
                                 onClick={() => handleSelected(ind)}
                                 className={"InputMember" + selectedMember[ind]}
                             >
-                                {member.player_name_hira} &nbsp; {member.grade}年 &nbsp;
+                                <div className="selectName">
+                                    <div> &nbsp;&nbsp;{member.grade}年</div><div className="playerName">&nbsp;&nbsp;&nbsp;&nbsp;{member.player_name_kanji}（ {member.player_name_hira}）</div>
+                                </div>
                                 {/* &nbsp; 背番号{member.uniform_number}  */}
-                                &nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投
-                                &nbsp; 背番号:{uniformNumberArray[ind]}
-                                <hr></hr>{member.player_name_kanji}
+                                <div className="Dominant">&nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投 &nbsp; 背番号:{uniformNumberArray[ind]}</div>
+
                             </button>
-                            {makePulldownBN(ind, uniformNumberArray, setUniformNumberArray)}
+
+                            <div className="selectdiv">
+                                背番号<br />
+                                {makePulldownBN(ind, uniformNumberArray, setUniformNumberArray)}
+                            </div>
                             <br /><br />
                         </div>
+
                     ))}
                 </div>
             </div>
 
-
+            <div className="sendButtonArea">
+                {/* {<button
+                    onClick={() => {
+                        handleSousin(copyMember, selectedMember, urlTournamentId, uniformNumberArray)
+                    }}
+                    className="sendButton"
+                    >登録
+                </button>} */}
+                <MemberPopup
+                    handleSousin={handleSousin}
+                    copyMember={copyMember}
+                    selectedMember={selectedMember}
+                    urlTournamentId={urlTournamentId}
+                    uniformNumberArray={uniformNumberArray}
+                    PageTransition={PageTransition}
+                    registeredMembers={registeredMembers}
+                />
+            </div>
         </>
     )
 }

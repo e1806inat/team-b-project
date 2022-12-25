@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 const Login = () => {
-//バックエンドのurlを取得
-const backendUrl = require("../../DB/communication").backendUrl;
+  //バックエンドのurlを取得
+  const backendUrl = require("../../DB/communication").backendUrl;
 
   const initialValues = { loginID: "test", password: "123456789" };
   const [formValues, setFormValues] = useState(initialValues);
@@ -45,15 +45,6 @@ const backendUrl = require("../../DB/communication").backendUrl;
 
 
 
-  const syougou = (data) => {
-    console.log(data.id)
-    if (data.id === "OK") {
-      window.location.href = '/home'
-    }
-  }
-
-
-
 
   const handleLogin = () => {
 
@@ -63,12 +54,26 @@ const backendUrl = require("../../DB/communication").backendUrl;
       headers: {
         "Content-Type": "application/json",
       },
-      //body: JSON.stringify({ email:login_id , password:login_ps }),
-      //body: JSON.stringify({ email:login_id , password:login_ps }),
       body: JSON.stringify({ user_name: formValues.loginID, password: formValues.password }),
     })
-      .then((response) => response.json())
-      .then((data) => syougou(data))
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data)
+
+        fetch(backendUrl + "/auth/check_sess", {
+          method: "GET",
+          mode: "cors",
+          headers: {
+              "Content-Type": "application/json",
+          },
+      })
+          .then((response) => response.text())
+          .then((data) => { console.log(data) })
+        // if (data === "OK") {
+        //   window.location.href = '/home'
+        // }
+        // window.location.href = '/home'
+      })
   }
 
 

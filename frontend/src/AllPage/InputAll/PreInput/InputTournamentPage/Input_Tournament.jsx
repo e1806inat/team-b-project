@@ -2,6 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
+import EditTournamentPopup from "./com/EditTournamentPopup/EditTournamentPopup";
+
+import "./InputTournament.css"
 
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
@@ -37,8 +40,10 @@ const changeDeleteMode = (isDeleteMode, setIsDeleteMode) => {
   setIsDeleteMode(!isDeleteMode)
 }
 
-const deleteTournament = () => {
-
+const editTournament = (EditTournamentPopup) => {
+  return (
+    <EditTournamentPopup></EditTournamentPopup>
+  )
 }
 
 
@@ -137,67 +142,75 @@ export const Input_Tournament = () => {
       <OptionButton />
 
 
-      <br></br>
-      <label>
-        <select ref={birthYearRef} value={birthYear} onChange={selectBirthYear}></select>年
-      </label>
-      <label>
-        <select ref={birthMonthRef} value={birthMonth} onChange={selectBirthMonth}></select>月
-      </label>
-      <br />
-      <br />
-      <br />
-      <input type="text" ref={NameTournamentRef} />
-      <button onClick={handleTournament}>追加</button>
-      <button onClick={() => { setIsDeleteMode(!isDeleteMode) }}>{isDeleteMode && "大会編集中"}{!isDeleteMode && "大会編集モード"}</button>
-      <br />
-      <hr></hr>
-      <br />
+      <div class="headline">大会作成</div>
+      <div class="whole1">
+        大会名
+        <input type="text" ref={NameTournamentRef} />
+        <br />
+        日付
+        <label>
+          <select ref={birthYearRef} value={birthYear} onChange={selectBirthYear}></select>年
+        </label>
+        <label>
+          <select ref={birthMonthRef} value={birthMonth} onChange={selectBirthMonth}></select>月
+        </label>
+        <br />
+        <button class="btn_In_to" onClick={handleTournament}>追加</button>
+        <button onClick={() => { setIsDeleteMode(!isDeleteMode) }}>{isDeleteMode && "大会編集中"}{!isDeleteMode && "大会編集モード"}</button>
+      </div>
 
-      <div className="tournamentList">
-        <div className="tournaments">
+      <div class="headline">大会選択</div>
+      <div class="whole">
+        <div className="tournamentList">
+          <div className="tournaments">
 
-          {TournamentData.map((Tournament, ind) => {
-            //文字分割
-            console.log(Tournament.opening)
-            dateArray = dateSplit(Tournament.opening)
+            {TournamentData.map((Tournament, ind) => {
+              //文字分割
+              console.log(Tournament.opening)
+              dateArray = dateSplit(Tournament.opening)
 
-            return (
-              <div className="tournament">
-                <div className="days">
-                  <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
+              return (
+                <div className="tournament">
+                  <div className="days">
+                    <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
+                  </div>
+                  <div className="tournamentName">
+                    {isDeleteMode &&
+                      <>
+                        {/* <button
+                          className="btn_In_to1"
+                          onClick={() => editTournament(EditTournamentPopup)}>
+                          {Tournament.tournament_name}
+                        </button> */}
+                        <EditTournamentPopup
+                          sendClassName="btn_In_to1"
+                          Tournament={Tournament}
+                        />
+                      </>
+
+                    }
+                    {!isDeleteMode &&
+                      <button
+                        className="btn_In_to1"
+                        onClick={() =>
+                          PageTransition(
+                            "inputschool?urlTournamentId=" +
+                            Tournament.tournament_id +
+                            "&urlTournamentName=" +
+                            Tournament.tournament_name
+                          )
+                        }>
+                        {Tournament.tournament_name}
+                      </button>
+                    }
+                    <br />
+                  </div>
                 </div>
-                <div className="tournamentName">
-                  {isDeleteMode &&
-                    <button
-                      onClick={() => deleteTournament()}>
-                      {Tournament.tournament_name}
-                    </button>
-                  }
-                  {!isDeleteMode &&
-                    <button
-                      onClick={() =>
-                        PageTransition(
-                          "inputschool?urlTournamentId=" +
-                          Tournament.tournament_id +
-                          "&urlTournamentName=" +
-                          Tournament.tournament_name
-                        )
-                      }>
-                      {Tournament.tournament_name}
-                    </button>
-                  }
-
-                  <br />
-                  <br />
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </div>
-      <hr></hr>
-      <button onClick={() => PageTransition(-1)}>戻る</button>
     </div>
   )
 }

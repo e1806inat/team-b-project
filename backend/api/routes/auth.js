@@ -115,7 +115,7 @@ router.post("/login", async (req, res, next) => {
     try {
         //ユーザ存在確認
         const rows = await executeQuery(`select * from t_login where user_name = ?`, [user_name]);
-        console.log(rows);
+        //console.log(rows);
         if (rows == 0 && rows == false) {
             return res.status(400).json([
                 {
@@ -132,14 +132,24 @@ router.post("/login", async (req, res, next) => {
                     }
                 ]);
             } else {
-                console.log('私の名前は森口翔太です。好きなものはせんとくんです。');
-                console.log(rows);
+                //console.log('私の名前は森口翔太です。好きなものはせんとくんです。');
+                //console.log(rows);
                 //ユーザ情報をセッションに登録
+                console.log(req.session.user);
                 req.session.user = rows;
                 console.log(req.session.user);
-                return res.json({
-                    id: "OK"
-                });
+                //console.log(req.cookies);
+                //res.cookie('session_id', 'value1', req);
+                res.cookie('sessionID', req.sessionID, {
+                    maxAge:60000,
+                    httpOnly:false,
+                })
+                console.log(res.cookie)
+                //console.log(res.cookie(req.sessionID))
+                //res.json({
+                  //  'session_id': req.sessionID
+                //});
+                res.end('OK');
             }
         }
     } catch (err) {
@@ -150,28 +160,55 @@ router.post("/login", async (req, res, next) => {
 });
 
 //ログアウト
-router.get("/logout", (req, res) => {
-    console.log("asdf");
-    console.log(req.session.id);
-    req.session.destroy();
-    console.log('moriguti');
-    console.log(req.session);
+router.get("/logout", (req, res, err) => {
+    
+    try{
+        console.log("asdf");
+   
+        res.clearCookie('sessionID');
+    //sessionStore.close();
+    //req.session.destroy();
+    
+        console.log(req.cookies);
     //res.redirect("/auth");
-    res.end("OK");
+        res.end("OK");
+    }
+    catch(err){
+        console.log(err);
+        next(err);
+    }
 });
 
 //セッションのチェック
-router.get("/check_sess", (req, res, next) => {
+router.get("/check_sess", async (req, res, next) => {
     try {
-        console.log(req.session.user);
-        console.log(req.session.id);
-        if (req.session.user){
-            res.end("Login");
-        } else {
-            res.end("logout");
+
+        console.log(req.cookies.sessionID);
+        if (req.cookies.sessionID != undefined){
+            return res.end('login');
         }
+        else{
+            return res.end('logout');
+        }
+        // for (const value of Object.keys(req.cookies)) {
+        //     const rows = await executeQuery('select count(*) from sessions where session_id = ?', [value]);
+        //     if (rows[0]['count(*)'] >= 1){
+        //         console.log('a');
+        //          return res.end('login');
+        //     }
+        // }
+        
+        // console.log(req.session.user);
+        // console.log(req.sessionID);
+        // const rows = await executeQuery(`select count(*) from sessions where session_id = ?`, [req.sessionID]);
+        // if (rows[0]['count(*)'] >= 1){
+        //     res.end("Login");
+        // } else {
+        //     res.end("logout");
+        // }
     }
     catch (err) {
+        console.log(err);
         next(err);
     }
 });
@@ -181,7 +218,7 @@ router.post("/user_update", body("password").isLength({ min: 6 }), async (req, r
     const user_name = req.body.user_name;
     const password = req.body.password;
 
-    const errors = validationResult(req);s
+    const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });

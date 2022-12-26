@@ -10,11 +10,11 @@ router.post("/venue_register", async (req, res, next) => {
     const {venue_name} = req.body;
 
     try{
-        rows = await executeQuery("select * from t_venue where venue_name = ? LIMIT 1", [venue_name]);
+        rows = await executeQuery("select count(*) from t_venue where venue_name = ?", [venue_name]);
         if (rows[0]['count(*)'] >= 1){
             return res.status(400).json([
                 {
-                    message: "すでにその試合は存在しています。"
+                    message: "すでに同じ名前の会場が登録されています。"
                 }
             ]);
         } else{
@@ -160,6 +160,14 @@ router.post("/venue_edit", async (req, res, next) => {
     const { venue_id, venue_name } = req.body;
 
     try{
+        rows = await executeQuery("select count(*) from t_venue where venue_name = ?", [venue_name]);
+        if (rows[0]['count(*)'] >= 1){
+            return res.status(400).json([
+                {
+                    message: "すでに同じ名前の会場が登録されています。"
+                }
+            ]);
+        }
         await executeQuery('update t_venue set venue_name = ? where venue_id = ?', [venue_name, venue_id]);
         res.end("OK");
     }    

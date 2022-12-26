@@ -51,6 +51,14 @@ router.post("/school_edit", async (req, res, next) => {
     const { school_id, school_name } = req.body;
     try{
         //学校情報編集
+        const rows = await executeQuery('select count(*) from t_school where school_name = ?', [school_name]);
+        if (rows[0]['count(*)'] >= 1){
+            return res.status(400).json([
+                {
+                    message: "同じ名前の高校がすでに登録されています"
+                }
+            ]);
+        }
         await executeQuery('update t_school set school_name = ? where school_id = ?', [school_name, school_id]);
         //console.log(err);
         res.end("OK");
@@ -68,6 +76,22 @@ router.post("/participants_register", async (req, res, next) => {
         for(var values of req.body){
             await executeQuery('insert into t_participants (tournament_id, school_id, school_order, seed) values (?, ?, ?, ?) on duplicate key update tournament_id = values(tournament_id), school_id = values(school_id), school_order = values(school_order), seed = values(seed)', [values.tournament_id, values.school_id, values.school_order, values.seed]);
         }
+        res.end('OK');
+    }
+    catch(err){
+        console.log('失敗');
+        next(err)
+    }
+});
+
+//参加高情報の一括削除
+router.post("/participants_delete_batch", async (req, res, next) => {
+
+    const{ tournament_id } = req.body;
+
+    try{
+        //on duplicate key update文で組み合わせがなければ挿入あればアップデート
+        await executeQuery('delete from t_participants where tournament_id = ?', [tournament_id]);
         res.end('OK');
     }
     catch(err){

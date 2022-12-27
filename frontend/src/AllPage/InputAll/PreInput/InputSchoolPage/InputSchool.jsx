@@ -92,6 +92,31 @@ const readSchool = (setUseSchools, urlTournamentId) => {
 }
 
 
+//対象の大会の学校情報呼び出し
+const loadRegisteredSchool = (urlTournamentId, receivedAllSchool, setUseSchools) => {
+
+
+  fetch(backendUrl + "/school/school_call_p", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ tournament_id: urlTournamentId }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.length === 0) {
+        console.log("登録されていません")
+        enchantCheck(receivedAllSchool, setUseSchools, [])
+      }
+      else {
+        console.log(data);
+        enchantCheck(receivedAllSchool, setUseSchools, data)
+      }
+    })
+}
+
 
 //checkを付与
 const enchantCheck = (receivedAllSchool, setUseSchools, data) => {
@@ -143,29 +168,7 @@ const addSchool = (setUseSchools, addSchoolName, urlTournamentId, useSchools) =>
 
 }
 
-//対象の大会の学校情報呼び出し
-const loadRegisteredSchool = (urlTournamentId, receivedAllSchool, setUseSchools) => {
 
-
-  fetch(backendUrl + "/school/school_call_p", {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ tournament_id: urlTournamentId }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.length === 0) {
-        console.log("登録されていません")
-      }
-      else {
-        console.log(data);
-        enchantCheck(receivedAllSchool, setUseSchools, data)
-      }
-    })
-}
 
 
 

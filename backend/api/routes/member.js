@@ -1,12 +1,7 @@
 //選手情報関連のAPIたち
 const router = require("express").Router();
-//const mysql = require("mysql2");
-//const async = require('async');
-//const config = require("../mysqlConnection/config");
 const { beginTran, executeQuery } = require("../mysql_client.js");
 const cron = require("node-cron");
-
-//const pool = mysql.createPool(config.serverConf);
 
 //選手情報登録
 router.post("/member_register", async (req, res, next) => {
@@ -22,7 +17,7 @@ router.post("/member_register", async (req, res, next) => {
     }
 });
 
-//大会毎の選手情報登録
+//大会毎の選手情報登録（運用者用webアプリ）
 router.post("/tournament_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
@@ -36,7 +31,7 @@ router.post("/tournament_member_register", async (req, res, next) => {
     }
 });
 
-//大会毎の選手削除
+//大会毎の選手削除（運用者用webアプリ）
 router.post("/tournament_member_delete_batch", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
     try {
@@ -49,10 +44,11 @@ router.post("/tournament_member_delete_batch", async (req, res, next) => {
     }
 });
 
-//前大会の選手情報参照(登録選手選択画面の補助用→これを使うと画面が見やすくなる！)
+//前大会の選手情報参照(登録選手選択画面の補助用→これを使うと画面が見やすくなる！)（運用者用webアプリ）
 router.post("/pre_tournament_member_call", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
     try {
+        //指定の大会で登録されていた選手一覧（選手ID）の取得
         rows = executeQuery('select player_id from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
         return res.json(rows);
     } catch (err) {
@@ -61,7 +57,7 @@ router.post("/pre_tournament_member_call", async (req, res, next) => {
     }
 });
 
-//スタメン登録(このままでは途中で終了した場合に途中までinsertされたやつが残る。そこでupsertにすればもう一回入れなおした時にいい感じになりそう)
+//スタメン登録(このままでは途中で終了した場合に途中までinsertされたやつが残る。そこでupsertにすればもう一回入れなおした時にいい感じになりそう)（運用者用webアプリ）
 router.post("/starting_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
@@ -76,10 +72,11 @@ router.post("/starting_member_register", async (req, res, next) => {
     }
 });
 
-//スタメン一括削除
+//編集のための試合、高校ごとのスタメン登録一括削除（編集の際に削除しておかないとどんどん登録選手が増えていく可能性があるため）（運用者用webアプリ）
 router.post("/starting_member_delete_batch", async (req, res, next) => {
     const {game_id, school_id} = req.body;
     try {
+        //指定の試合の高校のスタメンdelete
         await executeQuery('delete from t_starting_player where game_id = ? and school_id = ?', [game_id, school_id]);
         res.end("OK");
     }
@@ -104,16 +101,20 @@ router.post("/member_call", async (req, res, next) => {
     }
 });
 
-//選手データ参照用のAPI
+//選手データ参照（顧客用webアプリ）
 router.post("/ref_member_call", async (req, res, next) => {
-    const { school_id, grades, option } = req.body;
+    const { school_id, grades, option , asc } = req.body;
 
     try {
-        //３年生以下の選手を呼び出す。
-        //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
-        //const rows = await executeQuery(`select * from t_player where grade <= ? and school_id = ? order by ${option} asc`, [grade, school_id, option]);
-        const rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by ? desc`, [grades, school_id, option]);
-       
+        //選手テーブルから選手情報を呼び出す。in(?)で学年の指定ができる例えばin(1,2)なら２年生以下、in(2,4)なら２年生と卒業生のような感じ
+        //optionは並び替えの基準例えば、gradeなら学年順、BAなら打率順
+        //ascは昇順か降順かasc==1ならば昇順、じゃなければ降順
+        if (asc){
+            const rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by ? asc`, [grades, school_id, option]);
+        } else {
+            const rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by ? desc`, [grades, school_id, option]);
+        }
+            
         return res.json(rows);
     }
     catch (err) {
@@ -122,16 +123,17 @@ router.post("/ref_member_call", async (req, res, next) => {
     }
 });
 
-//選手データ参照用のAPI
+//選手データ参照（顧客用webアプリ）
 router.post("/ref_tournament_member_call", async (req, res, next) => {
-    const { tournament_id, school_id, option } = req.body;
+    const { tournament_id, school_id, option, asc} = req.body;
 
     try {
-        //３年生以下の選手を呼び出す。
-        //選手の学年は毎年４月１日に更新され、３年生は４年生にと設定されている（grade:4）。
-        //const rows = await executeQuery(`select * from t_player where grade <= ? and school_id = ? order by ${option} asc`, [grade, school_id, option]);
-        const rows = await executeQuery(`select * from t_player where tournament_id = ? and school_id = ? order by ? desc`, [tournament_id, school_id, option]);
-       
+        //大会に登録された選手を閲覧可能、optionは並び替えの基準
+        if (asc){
+            const rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by ? asc', [school_id, tournament_id, option]);
+        } else {
+            const rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by ? desc', [school_id, tournament_id, option]);
+        }
         return res.json(rows);
     }
     catch (err) {
@@ -140,31 +142,13 @@ router.post("/ref_tournament_member_call", async (req, res, next) => {
     }
 });
 
-/*
-//３年生以下の学校毎の選手呼び出し。大会に出場する選手登録画面で使用。
-router.post("/member_call", async (req, res, next) => {
-    const { school_id } = req.body;
-
-    try {
-        rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ?', [school_id]);
-        return res.json(rows);
-    }
-    catch (err) {
-        next(err);
-    }
-});*/
-
-//大会に登録されている選手の呼び出し。スタメン登録画面で使用
+//大会に登録されている選手の呼び出し。スタメン登録画面で使用（運用者用webアプリ）
 router.post("/tournament_member_call", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
 
     try {
         //大会毎に登録されている選手の呼び出し
         const rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ?', [school_id, tournament_id]);
-        //const rows = await executeQuery('select * from t__player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
-        //const rows = await executeQuery(`select * from ${table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id, inning]);
-        //const rows = await executeQuery('select * from t_registered_player where tournament_id = ? and school_id = ? join (select player_id, player_name_kanji, playername_hira, grade, handed_hit, handed_throw, BA from t_player where grade <= 3 and school_id = ?) using(plaer_id)', [tournament_id, school_id, school_id]);
-        //const rows = await executeQuery('select * from t_player as a join (select player_id, player_name_kanji from t_registered_player where tournament_id = ? and school_id = ?) as b using(player_id) where grade <= 3', [tournament_id, school_id]);
         return res.json(rows);
     }
     catch (err) {
@@ -173,7 +157,7 @@ router.post("/tournament_member_call", async (req, res, next) => {
     }
 });
 
-//試合ごとのスタメン呼び出し。どこで使うかは分からない。
+//試合ごとのスタメン呼び出し。どこで使うかは分からない。（運用者用webアプリ）
 router.post("/starting_member_call", async (req, res, next) => {
     const { game_id, school_id } = req.body;
 
@@ -188,57 +172,7 @@ router.post("/starting_member_call", async (req, res, next) => {
     }
 });
 
-/*
-//一時スタメン情報保持のためのテーブル作成
-router.post("/tmp_starting_create", async (req, res) => {
-    //create table のための名前作成
-    const table_name = `test_pbl.` + req.body['table_name']
-
-    console.log(table_name);
-
-    try {
-        //一時打席情報登録用テーブル作成
-        await executeQuery(`create table ${table_name} (
-            player_id int not null, 
-            game_id int not null, 
-            school_id int,
-            player_name_kanji varchar(300) not null,
-            position varchar(20), 
-            uniform_number int, 
-            grade int, 
-            handed_hit char(1), 
-            handed_throw char(1), 
-            batting_order int, 
-            BA double,
-            primary key(player_id, game_id),
-            foreign key(school_id) references t_school(school_id))`);
-    }
-    catch (err) {
-        //next(err);
-        console.log("hehehe")
-    }
-    res.end("OK");
-});*/
-
-/*
-//一時スタメン情報保持のためのテーブル作成
-router.post("/tmp_starting_register", async (req, res) => {
-    //create table のための名前作成
-    const table_name = `test_pbl.` + req.body['table_name']
-
-    console.log(table_name);
-
-    try {
-        await executeQuery(`insert into ${table_name} select * from t_starting_player as a join t_player (school_id, player_name_kanji) as b on a.player_id = b.player_id`);
-    }
-    catch (err) {
-        //next(err);
-        console.log("hehe")
-    }
-    res.end("OK");
-});*/
-
-//選手情報編集、選手情報を消すこともできる
+//選手情報編集、選手情報を消すこともできる（運用者用webアプリ）
 router.post("/member_edit", async (req, res, next) => {
     const { player_id, school_id, player_name_kanji, player_name_hira, grade, handed_hit, handed_throw, BA } = req.body;
 
@@ -254,7 +188,7 @@ router.post("/member_edit", async (req, res, next) => {
     }
 });
 
-//選手情報編集、選手情報を消すこともできる
+//選手情報編集、選手情報を消すこともできる（運用者用webアプリ）
 router.post("/tournament_member_edit", async (req, res, next) => {
     const { player_id, tournament_id, uniform_number, grade, handed_hit, handed_throw, BA } = req.body;
 
@@ -270,7 +204,7 @@ router.post("/tournament_member_edit", async (req, res, next) => {
     }
 });
 
-//選手情報編集、選手情報を消すこともできる
+//選手情報編集、選手情報を消すこともできる（運用者用webアプリ）
 router.post("/starting_member_edit", async (req, res, next) => {
     const { player_id, game_id, position, uniform_number, grade, handed_hit, handed_throw, batting_order, BA } = req.body;
 
@@ -286,7 +220,7 @@ router.post("/starting_member_edit", async (req, res, next) => {
     }
 });
 
-//大会毎の選手情報削除
+//大会毎の選手情報削除（運用者用webアプリ）
 router.post("/tournament_member_delete", async (req, res, next) => {
     const { tournament_id, player_id } = req.body;
     try {
@@ -299,7 +233,7 @@ router.post("/tournament_member_delete", async (req, res, next) => {
     }
 });
 
-//スタメンの選手情報削除
+//スタメンの選手情報削除（運用者用webアプリ）
 router.post("/starting_member_delete", async (req, res, next) => {
     const { game_id, player_id } = req.body;
     try {
@@ -312,7 +246,7 @@ router.post("/starting_member_delete", async (req, res, next) => {
     }
 });
 
-//打率計算＆更新
+//打率計算＆更新（運用者用webアプリ）
 router.post("/cal_BA", async (req, res, next) => {
     //試合結果から打率を計算する。
     const { game_id, table_name } = req.body;
@@ -342,8 +276,6 @@ router.post("/cal_BA", async (req, res, next) => {
                 count_bat[key] = (count_bat[key] || 0);
             }
         }
-        //console.log(count_hit);
-        //console.log(count_bat);
         //打率の計算と選手テーブルへの打率挿入
         for (var key in count_bat) {
             //選手テーブルから過去の打席数、安打数を取得
@@ -366,7 +298,7 @@ router.post("/cal_BA", async (req, res, next) => {
     }
 });
 
-//大会選手の打率を更新
+//大会選手の打率を更新（運用者用webアプリ）
 router.post("/tournament_member_BA_update", async (req, res, next) => {
     const { player_id, tournament_id, BA } = req.body;
 
@@ -383,7 +315,7 @@ router.post("/tournament_member_BA_update", async (req, res, next) => {
     }
 });
 
-//学校ID、選手名、学年が同じ選手がいないか確認
+//学校ID、選手名、学年が同じ選手がいないか確認（運用者用webアプリ）
 router.post("/check_member", async (req, res, next) => {
     const { school_id, player_name_kanji, grade } = req.body;
 
@@ -402,7 +334,7 @@ router.post("/check_member", async (req, res, next) => {
     }
 });
 
-//一年に一度学年更新
+//一年に一度学年更新（運用者用webアプリ）
 cron.schedule('* * * 1 4 *',async () => {
     //4月1日に学年を更新
     const tran = await beginTran();

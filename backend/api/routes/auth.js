@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
     res.send("Hello Authjs");
 });
 
-//ユーザの登録のAPI
+//ユーザの登録のAPI（運用者用webアプリ）
 router.post("/user_register", body("password").isLength({ min: 6 }), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;
@@ -69,7 +69,7 @@ router.post("/user_register", body("password").isLength({ min: 6 }), async (req,
     }
 });
 
-//ユーザの削除API
+//ユーザの削除API（運用者用webアプリ）
 router.post("/user_delete", async (req, res, next) => {
     const { user_name } = req.body;
 
@@ -109,7 +109,7 @@ router.post("/user_delete", async (req, res, next) => {
     }
 });
 
-//ログイン用のAPI
+//ログイン用のAPI（運用者用webアプリ）
 router.post("/login", async (req, res, next) => {
     const { user_name, password } = req.body;
     try {
@@ -139,12 +139,17 @@ router.post("/login", async (req, res, next) => {
                 req.session.user = rows;
                 console.log(req.session.user);
                 //console.log(req.cookies);
+
                 //res.cookie('session_id', 'value1', req);
-                res.cookie('sessionID', req.sessionID, {
-                    maxAge:60000,
-                    httpOnly:false,
-                })
-                console.log(res.cookie)
+                // res.cookie('sessionID', req.sessionID, {
+                //     maxAge:60000,
+                //     httpOnly:false,
+                // })
+
+                res.cookie('sessionID', req.sessionID);
+
+                //res.setHeader('Set-Cookie', [`sessionID=${req.sessionID}`]);
+
                 //console.log(res.cookie(req.sessionID))
                 //res.json({
                   //  'session_id': req.sessionID
@@ -159,18 +164,26 @@ router.post("/login", async (req, res, next) => {
     }
 });
 
-//ログアウト
+//ログアウト（運用者用webアプリ）
 router.get("/logout", (req, res, err) => {
     
     try{
         console.log("asdf");
-   
+        //console.log(req.session.user);
+        //delete req.session.user;
+        //req.session.destroy
+        if(!req.session.user){
+            console.log('naidesu');
+        }
         res.clearCookie('sessionID');
-    //sessionStore.close();
-    //req.session.destroy();
-    
-        console.log(req.cookies);
-    //res.redirect("/auth");
+        //sessionStore.close();
+        //req.session.destroy();
+        //console.log('test');
+        // if(req.session.user){
+        //     console.log('arimasu');
+        // }
+        //console.log(req.cookies);
+        //res.redirect("/auth");
         res.end("OK");
     }
     catch(err){
@@ -179,10 +192,10 @@ router.get("/logout", (req, res, err) => {
     }
 });
 
-//セッションのチェック
+//セッションのチェック（運用者用webアプリ）
 router.get("/check_sess", async (req, res, next) => {
     try {
-
+        console.log(req.cookies);
         console.log(req.cookies.sessionID);
         if (req.cookies.sessionID != undefined){
             return res.end('login');
@@ -213,7 +226,7 @@ router.get("/check_sess", async (req, res, next) => {
     }
 });
 
-//ユーザ編集(パスワード編集)のAPI
+//ユーザ編集(パスワード編集)のAPI（運用者用webアプリ）
 router.post("/user_update", body("password").isLength({ min: 6 }), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;

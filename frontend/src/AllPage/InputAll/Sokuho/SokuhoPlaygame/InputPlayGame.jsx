@@ -42,8 +42,8 @@ const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2,
         body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId }),
     })
         .then((response) => response.json())
-        .then((data1) => {
-            setBattingOrder(data1)
+        .then((TeamAdata) => {
+            setBattingOrder(TeamAdata)
 
             fetch(backendUrl + "/member/starting_member_call", {
                 method: "POST",
@@ -54,17 +54,17 @@ const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2,
                 body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId2 }),
             })
                 .then((response) => response.json())
-                .then((data2) => {
-                    setBattingOrder2(data2)
-                    nowPlayingMember[0].pitcher = ditectPitcher(data2)
-                    nowPlayingMember[1].pitcher = ditectPitcher(data1)
+                .then((TeamBdata) => {
+                    setBattingOrder2(TeamBdata)
+                    nowPlayingMember[0].pitcher = ditectPitcher(TeamBdata)
+                    nowPlayingMember[1].pitcher = ditectPitcher(TeamAdata)
                     setNowPlayingMember(nowPlayingMember)
                 })
         })
 }
 
-//自作プルダウン
-const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected) => {
+//自作プルダウン　改造あり
+const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected, urlSchoolName, urlSchoolName2) => {
     //pulldownIdは0でいいです。
     //ArrayListは表示したい要素を並べた配列です、普通の配列ではなく連想配列です。
     //idテキストは連想配列の属性を書きます。
@@ -84,7 +84,9 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
                 }
                 }>
                 {ArrayList.map((component, ind) => (
-                    <option value={ind}>{component[idText]}</option>
+                    <option value={ind}>
+                        {component[idText]}打席目：{component.inning % 10 === 1 && urlSchoolName}{component.inning % 10 === 2 && urlSchoolName2}
+                    </option>
                 ))
                 }
             </select>
@@ -101,13 +103,13 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
     const touchedCoordinate = battersBox.touched_coordinate.split("_")
 
     let teamBBatter = 0;
-    let teamAPitchar = 0;
+    let teamApitcher = 0;
 
     const value = battersBox.inning
     for (let i = nowSelected; i >= 0; i--) {
         if (value !== battersBoxAll[i].inning) {
             teamBBatter = battersBoxAll[i].player_id
-            teamAPitchar = battersBoxAll[i].pitchar_id
+            teamApitcher = battersBoxAll[i].pitcher_id
             break
         }
     }
@@ -122,13 +124,13 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
     setNowPlayingMember(
         [{
             batter: battingOrder.findIndex((u) => u.player_id === battersBox.player_id),
-            pitcher: battingOrder2.findIndex((u) => u.player_id === battersBox.pitchar_id)
+            pitcher: battingOrder2.findIndex((u) => u.player_id === battersBox.pitcher_id)
         },
         {
             batter: teamBBatter,
-            pitcher: teamAPitchar
+            pitcher: teamApitcher
         }])
-    console.log(battingOrder2.findIndex((u) => u.player_id === battersBox.pitchar_id))
+    console.log(battingOrder2.findIndex((u) => u.player_id === battersBox.pitcher_id))
     console.log(battersBox.player_id)
 
 
@@ -208,7 +210,7 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                         setNowIningState([Math.floor(latestDasaki.inning / 10) - 1, 1])
                     }
                     else {
-                        setNowIningState([Math.floor(latestDasaki.inning / 10) - 1, 0])
+                        setNowIningState([Math.floor(latestDasaki.inning / 10), 0])
                     }
 
                     //ランナー取得
@@ -229,27 +231,24 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
 
                 }
 
-                //スコアの取得
-                let initialSchoolId = data[0].school_id;
-                const { Score } = require("../../../../DB/Score")
-                let SolveScore = Score
-                let inningCount = 0
-                let leastSchoolId = data[0].school_id
+
+                //スコア取得
+                //スコアの初期化
+                const InitialScore = [
+                    [null, null, null, null, null, null, null, null, null, null, null, null],
+                    [null, null, null, null, null, null, null, null, null, null, null, null]
+                ]
+
+                let sendScore = InitialScore
                 data.map((u) => {
-                    if (initialSchoolId === u.school_id) {
-                        if (SolveScore[0][inningCount] === null) SolveScore[0][inningCount] = 0
-                        if (leastSchoolId !== u.school_id) inningCount = inningCount + 1
-                        console.log(SolveScore[0][inningCount])
-                        SolveScore[0][inningCount] = SolveScore[0][inningCount] + u.score
-                        leastSchoolId = u.school_id
-                    }
-                    else {
-                        if (SolveScore[1][inningCount] === null) SolveScore[1][inningCount] = 0
-                        SolveScore[1][inningCount] = SolveScore[1][inningCount] + u.score
-                        leastSchoolId = u.school_id
-                    }
+                    //null対策
+                    if (sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] === null) sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = 0
+                    //受け取ったスコアを配列に格納
+                    sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] + u.score
                 })
-                setScoreState(SolveScore)
+                setScoreState(sendScore)
+
+
 
                 //今現在のプレイヤー取得
                 fetch(backendUrl + "/member/starting_member_call", {
@@ -261,8 +260,8 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                     body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId }),
                 })
                     .then((response) => response.json())
-                    .then((data1) => {
-                        setBattingOrder(data1)
+                    .then((TeamAdata) => {
+                        setBattingOrder(TeamAdata)
                         //打順を持ってくる
                         fetch(backendUrl + "/member/starting_member_call", {
                             method: "POST",
@@ -273,72 +272,66 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                             body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId2 }),
                         })
                             .then((response) => response.json())
-                            .then((data2) => {
+                            .then((TeamBdata) => {
+                                let teamABatter = 0
+                                let teamApitcher = 0
+                                let teamBBatter = 0
+                                let teamBpitcher = 0
 
-                                let teamABatter = data1.findIndex((u) => u.player_id === latestDasaki.player_id) + 1
-                                let teamAPitchar = data2.findIndex((u) => u.player_id === latestDasaki.pitchar_id)
-                                let teamBBatter = data2.findIndex((u) => u.player_id === latestDasaki.player_id) + 1
-                                let teamBPitchar = data1.findIndex((u) => u.player_id === latestDasaki.pitchar_id)
+                                //先攻
+                                if (latestDasaki.inning % 10 - 1 === 0) {
+                                    teamABatter = TeamAdata.findIndex((u) => u.player_id === latestDasaki.player_id)
+                                    teamBpitcher = TeamBdata.findIndex((u) => u.player_id === latestDasaki.pitcher_id)
+                                    for (let i = data.length - 1; i >= 0; i--) {
+                                        if (latestDasaki.inning !== data[i].inning) {
+                                            teamBBatter = TeamBdata.findIndex((u) => u.player_id === data[i].player_id)
+                                            teamApitcher = TeamAdata.findIndex((u) => u.player_id === data[i].pitcher_id)
+                                            break
+                                        }
+                                    }
+                                    if (data[data.length - 1].outcount !== 3) teamABatter++
+                                    else teamBBatter++
+                                }
+                                //後攻
+                                else if (latestDasaki.inning % 10 - 1 === 1) {
+                                    for (let i = data.length - 1; i >= 0; i--) {
+                                        if (latestDasaki.inning !== data[i].inning) {
+                                            console.log(data[i])
+                                            teamABatter = TeamAdata.findIndex((u) => u.player_id === data[i].player_id)
+                                            teamBpitcher = TeamBdata.findIndex((u) => u.player_id === data[i].pitcher_id)
+                                            break
+                                        }
+                                    }
+                                    teamBBatter = TeamBdata.findIndex((u) => u.player_id === latestDasaki.player_id)
+                                    teamApitcher = TeamAdata.findIndex((u) => u.player_id === latestDasaki.pitcher_id)
+                                    if (data[data.length - 1].outcount !== 3) teamBBatter++
+                                    else teamABatter++
+                                }
 
                                 //打順に存在しないか最初の打者であるとき、もしくは打順最後の打者であるとき
-                                if (teamABatter === 9) teamABatter = 0
-                                if (teamAPitchar === -1) teamAPitchar = 0
-                                if (teamBBatter === 9) teamBBatter = 0
-                                if (teamBPitchar === -1) teamBPitchar = 0
+                                if (teamABatter === 9 || teamABatter === -1) teamABatter = 0
+                                if (teamBpitcher === -1) teamBpitcher = 0
+                                if (teamBBatter === 9 || teamBBatter === -1) teamBBatter = 0
+                                if (teamApitcher === -1) teamApitcher = 0
 
-
+                                //最後に今現在プレイ中の選手を格納
                                 setNowPlayingMember(
                                     [{
                                         batter: teamABatter,
-                                        pitcher: teamAPitchar
+                                        pitcher: teamBpitcher
                                     },
                                     {
                                         batter: teamBBatter,
-                                        pitcher: teamBPitchar
+                                        pitcher: teamApitcher
                                     }]
                                 )
                             })
                     })
-
-
-
-                // //後攻チームのメンバー取得
-                // if ((latestDasaki.inning / 100 >= 2) || (Math.floor(latestDasaki.inning / 10) === 2)) {
-                //     fetch(backendUrl + "/member/tournament_member_call", {
-                //         method: "POST",
-                //         mode: "cors",
-                //         headers: {
-                //             "Content-Type": "application/json",
-                //         },
-                //         body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId2 }),
-                //     })
-                //         .then((response) => response.json())
-                //         .then((data) => { })
-                // }
-                // //先行チームのメンバー取得
-                // else if ((Math.floor(latestDasaki.inning / 100) === 1) || (Math.floor(latestDasaki.inning / 10) === 1)) {
-                //     fetch(backendUrl + "/member/tournament_member_call", {
-                //         method: "POST",
-                //         mode: "cors",
-                //         headers: {
-                //             "Content-Type": "application/json",
-                //         },
-                //         body: JSON.stringify({ tournament_id: urlTournamentId, school_id: urlSchoolId }),
-                //     })
-                //         .then((response) => response.json())
-                //         .then((data) => {
-
-
-
-                //         })
-
-                //     console.log(latestDasaki.player_id)
-                // }
             }
-
-
         })
 }
+
+
 
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
 const DasekiRegister = (sendInfo) => {
@@ -369,6 +362,82 @@ const loadRegisteredMember = (setRegisteredMember, urlTournamentId, urlSchoolId)
     })
         .then((response) => response.json())
         .then((data) => { setRegisteredMember(data) })
+}
+
+
+//修正内容をバックエンドに送る
+const sendEdit = (
+    urlGameId,
+    dasekiAll,
+    nowSelected,
+    nowIningState,
+    addScoreState,
+    scoreState,
+    nowOutCountState,
+    nowPlayingMember,
+    battingOrder,
+    battingOrder2,
+    runnerCountState,
+    freeWriteState,
+    canvasX1,
+    canvasY1,
+    flag,
+    batterResult,
+    isPinch,
+) => {
+    console.log(dasekiAll[nowSelected])
+    //DBに送るための準備
+
+    let totalScore = 0
+    scoreState[nowIningState[1]].map((score) => {
+        totalScore = totalScore + score
+    })
+    let runnerCount = ""
+    runnerCountState.map((runner) => {
+        if (runner === true) runnerCount = "1" + runnerCount
+        else if (runner === false) runnerCount = "0" + runnerCount
+    })
+    let isHit = 0; let isFourball = 0; let isDeadball = 0;
+    if (batterResult === 0) { }
+    else if (batterResult === 1) isHit = 1
+    else if (batterResult === 2) isFourball = 1
+    else if (batterResult === 3) isDeadball = 1
+
+    //DBにデータを送る
+    let sendInfo = {
+        at_bat_id: dasekiAll[nowSelected].at_bat_id,
+        table_name: urlGameId,
+        inning: (nowIningState[1] + 1) * 10 + (nowIningState[0] + 1),
+        game_id: urlGameId,
+        school_id: dasekiAll[nowSelected].school_id,
+        player_id: battingOrder[nowPlayingMember[nowIningState[1]].batter].player_id,
+        pitcher_id: battingOrder2[nowPlayingMember[nowIningState[1]].pitcher].player_id,
+        score: addScoreState,
+        total_score: totalScore,
+        outcount: nowOutCountState,
+        base: runnerCount,
+        text_inf: freeWriteState,
+        pass: 0,
+        touched_coordinate: canvasX1 + "_" + canvasY1,
+        ball_kind: flag,
+        hit: isHit,
+        foreball: isFourball,
+        deadball: isDeadball,
+        pinch: isPinch
+    }
+
+    console.log(sendInfo)
+
+    fetch(backendUrl + "/daseki/tmp_daseki_update", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify(sendInfo),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+        })
 }
 
 
@@ -438,7 +507,7 @@ const InputPlayGame = () => {
         at_bat_id: 1, ball_kind: "2", base: "000",
         deadball: 0, foreball: 0, game_id: 1,
         hit: 0, inning: 11, outcount: 3,
-        pass: 0, pinch: "0", pitchar_id: 21, player_id: 7,
+        pass: 0, pinch: "0", pitcher_id: 21, player_id: 7,
         school_id: 1, score: 0, text_inf: "アウト:ピッチャーフライ",
         total_score: 0, touched_coordinate: "400_450"
     }])
@@ -455,6 +524,10 @@ const InputPlayGame = () => {
 
     //代打フラグ 0なら代打でない 1なら代打
     const [isPinch, setIsPinch] = useState(0)
+
+    //編集モードであるかどうかを監視するステイト
+    const [isEditMode, setIsEditMode] = useState(false)
+
 
     //画面解像度取得
     var sw = document.documentElement.clientWidth; // 画面の横幅
@@ -807,13 +880,36 @@ const InputPlayGame = () => {
                     </div>
                 </div>
 
-                {makePulldown(0, dasekiAll, "at_bat_id", nowSelected, setNowSelected)}
-                <button onClick={() =>
+                {makePulldown(0, dasekiAll, "at_bat_id", nowSelected, setNowSelected, urlSchoolName, urlSchoolName2)}
+                <button onClick={() => {
+                    setIsEditMode(!isEditMode);
                     editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
                         setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
                         setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2
-                    )}>修正打席選択</button>
-
+                    )
+                }}>修正打席選択</button>
+                {<button
+                    onClick={() =>
+                        sendEdit(
+                            urlGameId,
+                            dasekiAll,
+                            nowSelected,
+                            nowIningState,
+                            addScoreState,
+                            scoreState,
+                            nowOutCountState,
+                            nowPlayingMember,
+                            battingOrder,
+                            battingOrder2,
+                            runnerCountState,
+                            freeWriteState,
+                            canvasX1,
+                            canvasY1,
+                            flag,
+                            batterResult,
+                            isPinch,
+                        )}
+                >修正確定</button>}
             </div>
         </div >
 

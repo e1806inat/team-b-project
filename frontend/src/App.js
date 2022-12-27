@@ -17,8 +17,8 @@ import './App.css';
 //package.jsonも編集すること
 
 // const routeUrl = "/j_R4_team_b/frontend"
-const routeUrl = "/team-b-project/frontend"
-// const routeUrl = ""
+// const routeUrl = "/team-b-project/frontend"
+const routeUrl = ""
 
 
 const App = () => {

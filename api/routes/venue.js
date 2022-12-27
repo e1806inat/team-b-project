@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
     res.send("Hello venuejs");
 });
 
-//会場情報登録
+//会場情報登録（運用者用webアプリ）
 router.post("/venue_register", async (req, res, next) => {
     const {venue_name} = req.body;
 
@@ -37,7 +37,7 @@ router.post("/venue_register", async (req, res, next) => {
     }
 });
 
-//登録されている会場を呼び出し
+//登録されている会場を呼び出し（運用者用webアプリ）
 router.post("/venue_call", async (req, res, next) => {
     try{
         //会場呼び出し
@@ -71,7 +71,7 @@ router.post("/venue_call", (req, res) => {
     });
 });*/
 
-//登録されている会場の削除
+//登録されている会場の削除（運用者用webアプリ）
 router.post("/venue_delete", async (req, res, next) => {
     const { venue_id } = req.body;
 
@@ -86,7 +86,7 @@ router.post("/venue_delete", async (req, res, next) => {
     }
 });
 
-//登録されている会場の編集
+//登録されている会場の編集（運用者用webアプリ）
 router.post("/venue_edit", async (req, res, next) => {
     //console.log(req.body);
     const { venue_id, venue_name } = req.body;

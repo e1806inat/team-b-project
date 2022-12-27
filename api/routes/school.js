@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { beginTran, executeQuery } = require("../mysql_client.js");
 
-//テスト用一括学校情報登録
+//テスト用一括学校情報登録（運用者用webアプリ）
 router.post("/school_register_to_test", async (req, res, next) => {
     try{
         for(var values of req.body){
@@ -14,7 +14,7 @@ router.post("/school_register_to_test", async (req, res, next) => {
     }
 });
 
-//学校情報登録
+//学校情報登録（運用者用webアプリ）
 router.post("/school_register", async (req, res, next) => {
     const { beginTran } = require("../mysql_client.js");
     const tran = await beginTran();
@@ -45,7 +45,7 @@ router.post("/school_register", async (req, res, next) => {
     }
 });
 
-//学校情報編集
+//学校情報編集（運用者用webアプリ）
 router.post("/school_edit", async (req, res, next) => {
     //const tran = await beginTran();
     const { school_id, school_name } = req.body;
@@ -68,7 +68,7 @@ router.post("/school_edit", async (req, res, next) => {
 });
 
 
-//大会ごとの参加校を登録
+//大会ごとの参加校を登録（運用者用webアプリ）
 router.post("/participants_register", async (req, res, next) => {
 
     try{
@@ -84,7 +84,7 @@ router.post("/participants_register", async (req, res, next) => {
     }
 });
 
-//参加高情報の一括削除
+//参加高情報の一括削除（運用者用webアプリ）
 router.post("/participants_delete_batch", async (req, res, next) => {
 
     const{ tournament_id } = req.body;
@@ -100,7 +100,7 @@ router.post("/participants_delete_batch", async (req, res, next) => {
     }
 });
 
-//対象の大会の学校情報呼び出し
+//対象の大会の学校情報呼び出し（運用者用webアプリ）
 router.post("/school_call_p", async (req, res, next) => {
     const { tournament_id } = req.body;
 
@@ -115,7 +115,7 @@ router.post("/school_call_p", async (req, res, next) => {
     }
 });
 
-//学校情報呼び出し
+//学校情報呼び出し（運用者用webアプリ）
 router.post("/school_call", async (req, res, next) => {
     //const { tournament_id } = req.body;
     try{
@@ -127,7 +127,7 @@ router.post("/school_call", async (req, res, next) => {
     }
 });
 
-//参加学校情報を消すことができる
+//参加学校情報を消すことができる（運用者用webアプリ）
 router.post("/participants_delete", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
 
@@ -140,7 +140,7 @@ router.post("/participants_delete", async (req, res, next) => {
     }
 });
 
-//参加学校情報を編集できる(シード値と学校順の変更)
+//参加学校情報を編集できる(シード値と学校順の変更)（運用者用webアプリ）
 router.post("/participants_edit", async (req, res, next) => {
     const { tournament_id, school_id, school_order, seed } = req.body;
 
@@ -154,7 +154,7 @@ router.post("/participants_edit", async (req, res, next) => {
     }
 });
 
-//学校情報を消すことができる
+//学校情報を消すことができる（運用者用webアプリ）
 router.post("/school_delete", async (req, res, next) => {
     const { school_id, school_name } = req.body;
 

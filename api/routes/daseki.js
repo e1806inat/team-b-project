@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
     res.send("Hello daseki");
 });
 
-//一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
+//一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）（運用者用webアプリ）
 router.post("/daseki_register", async (req, res, next) => {
     const { table_name, inning, game_id, school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
     const tmp_table_name = `test_pbl.` + table_name;
@@ -30,7 +30,7 @@ router.post("/daseki_register", async (req, res, next) => {
     }
 });
 
-//一時打席情報登録用のテーブル作成
+//一時打席情報登録用のテーブル作成（運用者用webアプリ）
 router.post("/tmp_table_create", async (req, res, next) => {
     //create table のための名前作成
     const table_name = `test_pbl.` + req.body['table_name']
@@ -50,7 +50,7 @@ router.post("/tmp_table_create", async (req, res, next) => {
     }
 });  
 
-//一時打席情報登録用のテーブル削除
+//一時打席情報登録用のテーブル削除（運用者用webアプリ）
 router.post("/tmp_table_delete", async (req, res, next) => {
 
     const { table_name, game_id } = req.body;
@@ -60,22 +60,26 @@ router.post("/tmp_table_delete", async (req, res, next) => {
 
     try {
         //一時テーブルの情報が蓄積テーブルに登録されているか確認
-        const rows = await tran.query(`select count(*) from t_at_bat where game_id = ?`, [game_id]);
-        console.log(rows);
-        if (rows[0]['count(*)'] >= 1) {
-            try {
-                await tran.query(`drop table ${tmp_table_name}`);
-                await tran.commit();
-                res.end("OK");
-            }
-            catch (err) {
-                console.log("sakujodekinai")
-                await tran.rollback();
-            }
+        const count_of_bat = await tran.query('select count(*) from t_at_bat where game_id = ?', [game_id]);
+        const count_of_tmp = await tran.query(`select count(*) from ${tmp_table_name}`);
+        
+        if (count_of_bat[0]['count(*)'] >= 1 && count_of_bat[0]['count(*)'] == count_of_tmp[0]['count(*)']) {
+            await tran.query(`drop table ${tmp_table_name}`);
+            await tran.commit();
+            res.end("OK");
+            // try {
+            //     await tran.query(`drop table ${tmp_table_name}`);
+            //     await tran.commit();
+            //     res.end("OK");
+            // }
+            // catch (err) {
+            //     console.log("sakujodekinai")
+            //     await tran.rollback();
+            // }
         }
         else {
             //保存されていないときの処理
-            console.log('そんなテーブルないです');
+            console.log('試合テーブルを削除できませんでした');
             //console.log(err);
             await tran.rollback();
             next(err);
@@ -89,31 +93,49 @@ router.post("/tmp_table_delete", async (req, res, next) => {
     }
 });
 
-//一時打席情報登録テーブルの情報を打席情報蓄積テーブルへ送信
+//一時打席情報登録テーブルの情報を打席情報蓄積テーブルへ送信（運用者用webアプリ）
 router.post("/data_register", async (req, res) => {
     //一時テーブルの名前受け取り
-    const table_name = `test_pbl.` + req.body;
-    const tran = await beginTran();
+    const { table_name, game_id } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
 
     try {
-        await tran.query(`insert into t_at_bat select * from ${table_name}`);
+        //一時打席情報記録テーブルの内容を打席情報記録テーブルに登録
+        await tran.query(`insert into t_at_bat select * from ${tmp_table_name}`);
+        //さきほど打席情報記録テーブルに登録した情報の行数を抜き出し
+        const count_of_bat = await tran.query('select count(*) from t_at_bat where game_id = ?', [game_id]);
+        //一時打席情報記録テーブルの行数を抜き出し
+        const count_of_tmp = await tran.query(`select count(*) from ${tmp_table_name}`);
+        //二つの一打席情報の行数が一意するかどうかで正常に登録できているかを判定
+        //確認できたら内容をcommit
+        if (count_of_bat[0]['count(*)'] >= 1 && count_of_bat[0]['count(*)'] == count_of_tmp[0]['count(*)']) {
+            await tran.commit();
+            res.end("OK");
+        }
+        else {
+            //確認できなければrollback
+            console.log('試合情報を登録できません');
+            //console.log(err);
+            await tran.rollback();
+            next(err);
+        }
         await tran.commit();
         res.end("OK");
     }
     catch (err) {
-        console.log('試合テーブルを削除できません');
+        console.log('試合情報を登録できません');
         await tran.rollback();
         next(err);
     }
 });
 
-//試合情報送信（速報用）
+//試合情報送信（速報用）（運用者用webアプリ）
 router.post("/tmp_daseki_transmission", async (req, res, next) => {
     const { table_name, at_bat_id, inning, game_id } = req.body;
     const tmp_table_name = `test_pbl.` + table_name;
 
     try {
-        //試合情報の取得と送信(速報用)
+        //試合情報の取得と送信(速報用)（運用者用webアプリ）
         const rows = await executeQuery(`select * from ${tmp_table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id, inning]);
 
         return res.json(rows);
@@ -125,7 +147,7 @@ router.post("/tmp_daseki_transmission", async (req, res, next) => {
     }
 });
 
-//試合情報送信（速報用）
+//試合情報送信（速報用）（運用者用webアプリ）
 router.post("/tmp_daseki_call", async (req, res, next) => {
     const table_name = `test_pbl.` + req.body['table_name'];
 
@@ -141,7 +163,7 @@ router.post("/tmp_daseki_call", async (req, res, next) => {
     }
 });
 
-//テーブル存在確認
+//テーブル存在確認（運用者用webアプリ）
 router.post("/tmp_table_check", async (req, res, next) => {
     const table_name = req.body['table_name'];
 
@@ -182,7 +204,7 @@ router.post("/daseki_transmission", async (req, res, next) => {
 
 
 
-//試合中選手情報更新
+//試合中選手情報更新（運用者用webアプリ）
 router.post("/player_data_change", async (req, res, next) => {
    
     const { player_id, game_id, position, batting_order } = req.body;
@@ -202,7 +224,7 @@ router.post("/player_data_change", async (req, res, next) => {
     }
 });
 
-//速報中の試合情報更新（編集）
+//速報中の試合情報更新（編集）（運用者用webアプリ）
 router.post("/tmp_daseki_update", async (req, res, next) => {
     const { table_name, at_bat_id, game_id, school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
 
@@ -217,7 +239,7 @@ router.post("/tmp_daseki_update", async (req, res, next) => {
     }
 });
 
-//過去の試合情報更新（編集）
+//過去の試合情報更新（編集）（運用者用webアプリ）
 router.post("/registered_daseki_update", async (req, res, next) => {
     const { at_bat_id, game_id, school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
 

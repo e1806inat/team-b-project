@@ -3,7 +3,7 @@ const { rejectSeries } = require("async");
 const { text } = require("express");
 const { beginTran, executeQuery } = require("../mysql_client.js");
 
-//試合情報登録
+//試合情報登録（運用者用webアプリ）
 router.post("/game_register", async (req, res, next) => {
     const { tournament_id, school_id_1, school_id_2, venue_id, match_num, first_rear_1, first_rear_2, game_ymd, match_results } = req.body;
 
@@ -39,7 +39,7 @@ router.post("/game_register", async (req, res, next) => {
     }
 });
 
-//試合情報編集・削除・参照のための読み出し
+//試合情報編集・削除・参照のための読み出し（運用者用webアプリ）
 router.post("/game_call", async (req, res, next) => {
     const {tournament_id} = req.body;
 
@@ -55,7 +55,7 @@ router.post("/game_call", async (req, res, next) => {
     }
 });
 
-//試合情報の編集
+//試合情報の編集（運用者用webアプリ）
 router.post("/game_edit", async(req, res, next) => {
     const {game_id, tournament_id, school_id_1, school_id_2, venue_id, match_num, first_rear_1, first_rear_2, game_ymd, match_results} = req.body;
     try{
@@ -69,7 +69,7 @@ router.post("/game_edit", async(req, res, next) => {
     }
 });
 
-//試合情報の削除
+//試合情報の削除（運用者用webアプリ）
 router.post("/game_delete", async (req, res, next) => {
     const {game_id, tournament_id} = req.body;
     
@@ -84,7 +84,7 @@ router.post("/game_delete", async (req, res, next) => {
     }
 });
 
-//試合終了時のAPI
+//試合終了時のAPI試合結果を試合テーブルに登録する（運用者用webアプリ）
 router.post("/game_sets", async (req, res, next) => {
     const { game_id, school_id_1, school_id_2 } = req.body;
 

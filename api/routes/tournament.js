@@ -3,7 +3,7 @@ const { beginTran, executeQuery } = require("../mysql_client.js");
 
 //const pool = mysql.createPool(config.serverConf);
 
-//大会情報登録
+//大会情報登録（運用者用webアプリ）
 router.post("/tournament_register", async(req, res, next) => {
     const { tournament_name, opening} = req.body;
     try{
@@ -25,7 +25,7 @@ router.post("/tournament_register", async(req, res, next) => {
     }
 });
 
-//登録されている大会のテーブルを最新のものかつnotnullな１０件呼び出してクライアント側に渡す
+//登録されている大会のテーブルを最新のものかつnotnullな１０件呼び出してクライアント側に渡す（運用者用webアプリ）
 router.post("/tournament_call", async (req, res, next) => {
     try{
         const rows = await executeQuery('select * from t_tournament order by opening desc limit 10');
@@ -37,7 +37,7 @@ router.post("/tournament_call", async (req, res, next) => {
     }
 });
 
-//大会テーブルの編集
+//大会テーブルの編集（運用者用webアプリ）
 router.post("/tournament_edit", async (req, res, next) => {
     const { tournament_id, tournament_name, opening} = req.body;
     try{
@@ -50,7 +50,7 @@ router.post("/tournament_edit", async (req, res, next) => {
     }
 });
 
-//大会テーブルの削除
+//大会テーブルの削除（運用者用webアプリ）
 router.post("/tournament_delete", async (req, res, next) => {
     const { tournament_id} = req.body;
     try{
@@ -63,7 +63,7 @@ router.post("/tournament_delete", async (req, res, next) => {
     }
 });
 
-//トーナメント表作成した場合の登録
+//トーナメント表作成した場合の登録（運用者用webアプリ）
 router.post("/tournament_table_register", async (req, res, next) => {
     const { tournament_id } = req.body;
 

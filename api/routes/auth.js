@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
     res.send("Hello Authjs");
 });
 
-//ユーザの登録のAPI
+//ユーザの登録のAPI（運用者用webアプリ）
 router.post("/user_register", body("password").isLength({ min: 6 }), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;
@@ -69,7 +69,7 @@ router.post("/user_register", body("password").isLength({ min: 6 }), async (req,
     }
 });
 
-//ユーザの削除API
+//ユーザの削除API（運用者用webアプリ）
 router.post("/user_delete", async (req, res, next) => {
     const { user_name } = req.body;
 
@@ -109,7 +109,7 @@ router.post("/user_delete", async (req, res, next) => {
     }
 });
 
-//ログイン用のAPI
+//ログイン用のAPI（運用者用webアプリ）
 router.post("/login", async (req, res, next) => {
     const { user_name, password } = req.body;
     try {
@@ -164,7 +164,7 @@ router.post("/login", async (req, res, next) => {
     }
 });
 
-//ログアウト
+//ログアウト（運用者用webアプリ）
 router.get("/logout", (req, res, err) => {
     
     try{
@@ -192,7 +192,7 @@ router.get("/logout", (req, res, err) => {
     }
 });
 
-//セッションのチェック
+//セッションのチェック（運用者用webアプリ）
 router.get("/check_sess", async (req, res, next) => {
     try {
         console.log(req.cookies);
@@ -226,7 +226,7 @@ router.get("/check_sess", async (req, res, next) => {
     }
 });
 
-//ユーザ編集(パスワード編集)のAPI
+//ユーザ編集(パスワード編集)のAPI（運用者用webアプリ）
 router.post("/user_update", body("password").isLength({ min: 6 }), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;

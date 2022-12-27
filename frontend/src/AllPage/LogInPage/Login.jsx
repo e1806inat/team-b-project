@@ -60,19 +60,10 @@ const Login = () => {
       .then((data) => {
         console.log(data)
 
-        fetch(backendUrl + "/auth/check_sess", {
-          method: "GET",
-          mode: "cors",
-          headers: {
-              "Content-Type": "application/json",
-          },
-      })
-          .then((response) => response.text())
-          .then((data) => { console.log(data) })
-        // if (data === "OK") {
-        //   window.location.href = '/home'
-        // }
-        // window.location.href = '/home'
+        if (data === "OK") {
+          window.location.href = '/home'
+        }
+        window.location.href = '/home'
       })
   }
 

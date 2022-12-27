@@ -15,7 +15,8 @@ import './App.css';
 
 //今回の開発で使えるサーバのurlを入力してください、「https: ~~~ ac.jp/ここのルートを指定する/」
 // const routeUrl = "/j_R4_team_b/frontend"
-const routeUrl = ""
+const routeUrl = "/team-b-project/frontend"
+// const routeUrl = ""
 
 
 const App = () => {

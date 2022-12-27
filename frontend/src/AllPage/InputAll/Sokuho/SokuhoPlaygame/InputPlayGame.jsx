@@ -89,19 +89,19 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
                 }
             </select>
         </>
-
     )
 }
 
+//打席編集
 const editBattersBox = (battersBox, battersBoxAll, nowSelected,
     setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
     setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2) => {
 
-    console.log(battersBox.inning)
+    console.log(battersBox)
     const touchedCoordinate = battersBox.touched_coordinate.split("_")
 
-    const teamBBatter = 0;
-    const teamAPitchar = 0;
+    let teamBBatter = 0;
+    let teamAPitchar = 0;
 
     const value = battersBox.inning
     for (let i = nowSelected; i >= 0; i--) {
@@ -112,7 +112,7 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
         }
     }
 
-    setNowIningState([battersBox.inning % 10 - 1, Math.floor(battersBox.inning / 10 - 1)])
+    setNowIningState([Math.floor(battersBox.inning / 10 - 1), battersBox.inning % 10 - 1])
     setNowOutCountState(battersBox.outcount)
     setRunnerCountState([battersBox.base / 100 >= 1, battersBox.base / 10 >= 1 && battersBox.base === 0, battersBox.base === 1])
     setFreeWriteState(battersBox.text_inf)
@@ -130,6 +130,7 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
         }])
     console.log(battingOrder2.findIndex((u) => u.player_id === battersBox.pitchar_id))
     console.log(battersBox.player_id)
+
 
 
 }
@@ -165,7 +166,7 @@ const TmpTableCheck = (urlGameId, TmpTableCreate, TmpDasekiCall, urlTournamentId
     })
         .then((response) => response.text())
         .then((data) => {
-            if (data === "not exist") { TmpTableCreate(urlGameId); console.log(data)}
+            if (data === "not exist") { TmpTableCreate(urlGameId); console.log(data) }
             else if (data === "exist") {
                 console.log(data)
                 TmpDasekiCall(urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
@@ -194,23 +195,39 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
             console.log(data)
             setDasekiAll(data)
 
-            //空っぽなら虫
+            //空っぽなら無視
             if (data.length !== 0) {
                 let latestDasaki = data[data.length - 1]
 
-                //イニング取得
-                if (Math.floor(latestDasaki.inning / 100) >= 1) {
-                    setNowIningState([latestDasaki.inning % 100 - 1, Math.floor(latestDasaki.inning / 100) - 1])
+                if (latestDasaki.outcount === 3) {
+                    //アウトカウント取得
+                    setNowOutCountState(0)
+
+                    //イニング取得
+                    if (latestDasaki.inning % 10 === 1) {
+                        setNowIningState([Math.floor(latestDasaki.inning / 10) - 1, 1])
+                    }
+                    else {
+                        setNowIningState([Math.floor(latestDasaki.inning / 10) - 1, 0])
+                    }
+
+                    //ランナー取得
+                    setRunnerCountState([false, false, false])
+
                 }
+
                 else {
-                    setNowIningState([latestDasaki.inning % 10 - 1, Math.floor(latestDasaki.inning / 10) - 1])
+                    //アウトカウント取得
+                    setNowOutCountState(latestDasaki.outcount)
+
+                    //イニング取得
+                    setNowIningState([Math.floor(latestDasaki.inning / 10) - 1, latestDasaki.inning % 10 - 1])
+
+                    //ランナー取得
+                    setRunnerCountState([latestDasaki.base[0] === "1", latestDasaki.base[1] === "1", latestDasaki.base[2] === "1"])
+
+
                 }
-
-                //アウトカウント取得
-                setNowOutCountState(latestDasaki.outcount)
-
-                //ランナー取得
-                setRunnerCountState([latestDasaki.base[0] === "1", latestDasaki.base[1] === "1", latestDasaki.base[2] === "1"])
 
                 //スコアの取得
                 let initialSchoolId = data[0].school_id;
@@ -232,7 +249,6 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                         leastSchoolId = u.school_id
                     }
                 })
-
                 setScoreState(SolveScore)
 
                 //今現在のプレイヤー取得
@@ -247,7 +263,7 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                     .then((response) => response.json())
                     .then((data1) => {
                         setBattingOrder(data1)
-
+                        //打順を持ってくる
                         fetch(backendUrl + "/member/starting_member_call", {
                             method: "POST",
                             mode: "cors",
@@ -259,15 +275,17 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                             .then((response) => response.json())
                             .then((data2) => {
 
-                                let teamABatter = data1.findIndex((u) => u.player_id === latestDasaki.player_id)
+                                let teamABatter = data1.findIndex((u) => u.player_id === latestDasaki.player_id) + 1
                                 let teamAPitchar = data2.findIndex((u) => u.player_id === latestDasaki.pitchar_id)
-                                let teamBBatter = data2.findIndex((u) => u.player_id === latestDasaki.player_id)
+                                let teamBBatter = data2.findIndex((u) => u.player_id === latestDasaki.player_id) + 1
                                 let teamBPitchar = data1.findIndex((u) => u.player_id === latestDasaki.pitchar_id)
 
-                                if (teamABatter === -1) teamABatter = 0
+                                //打順に存在しないか最初の打者であるとき、もしくは打順最後の打者であるとき
+                                if (teamABatter === 9) teamABatter = 0
                                 if (teamAPitchar === -1) teamAPitchar = 0
-                                if (teamBBatter === -1) teamBBatter = 0
+                                if (teamBBatter === 9) teamBBatter = 0
                                 if (teamBPitchar === -1) teamBPitchar = 0
+
 
                                 setNowPlayingMember(
                                     [{
@@ -355,6 +373,9 @@ const loadRegisteredMember = (setRegisteredMember, urlTournamentId, urlSchoolId)
 
 
 
+
+
+
 const canvasSize = 1000;
 const homebase = 400;
 
@@ -376,14 +397,14 @@ const InputPlayGame = () => {
     const urlSchoolName2 = searchParams.get("urlSchoolName2")
     const urlGameId = searchParams.get("urlGameId")
 
-    //Score記録
+    //Score記録 左が裏表、右が回数 イニングとは逆
     const { Score } = require("../../../../DB/Score")
     const [scoreState, setScoreState] = useState(Score)
 
     //Scoreの加算値の監視
     const [addScoreState, setAddScoreState] = useState(0)
 
-    //今のイニング 左が裏表、右が回
+    //今のイニング 左が回、右が表裏
     const [nowIningState, setNowIningState] = useState([0, 0])
 
     //自由記述内容を監視
@@ -413,7 +434,14 @@ const InputPlayGame = () => {
     const [registeredMember2, setRegisteredMember2] = useState([])
 
     //打席一覧情報のステイト
-    const [dasekiAll, setDasekiAll] = useState([{ at_bat_id: 0 }])
+    const [dasekiAll, setDasekiAll] = useState([{
+        at_bat_id: 1, ball_kind: "2", base: "000",
+        deadball: 0, foreball: 0, game_id: 1,
+        hit: 0, inning: 11, outcount: 3,
+        pass: 0, pinch: "0", pitchar_id: 21, player_id: 7,
+        school_id: 1, score: 0, text_inf: "アウト:ピッチャーフライ",
+        total_score: 0, touched_coordinate: "400_450"
+    }])
 
     //打席一覧情報のプルダウンの選択状況を管理するステイト
     const [nowSelected, setNowSelected] = useState([])
@@ -519,14 +547,14 @@ const InputPlayGame = () => {
             const w = 0.03 * homebase;  //ベースの幅
             const margin = 10;    //ベース位置調整用
 
-            //ベースの色
+            //ベースの色 １：３塁、２：２塁、３:１塁
             let baseColor2 = [];
             for (let i = 0; i < 3; i++) {
                 if (runnerCountState[i]) {
-                    baseColor2[i] = "blue";
+                    baseColor2[2 - i] = "blue";
                 }
                 else {
-                    baseColor2[i] = "white";
+                    baseColor2[2 - i] = "white";
                 }
             }
 
@@ -700,7 +728,7 @@ const InputPlayGame = () => {
                 </div>
                 <div className="outCountsAndRunnerCounts">
                     {outCount(nowOutCountState, setNowOutCountState)}
-                    {runnerCount(runnerCountState, setRunnerCountState)}
+                    ３塁：２塁：１塁{runnerCount(runnerCountState, setRunnerCountState)}
                 </div>
                 <div className="BatterAndPitcher">
 

@@ -3,7 +3,9 @@ const router = require("express").Router();
 const config = require("../mysqlConnection/config");
 const { beginTran, executeQuery } = require("../mysql_client.js");
 
-//const pool = mysql.createPool(config.serverConf);
+router.get("/", (req, res) => {
+    res.send("Hello venuejs");
+});
 
 //会場情報登録
 router.post("/venue_register", async (req, res, next) => {
@@ -34,40 +36,6 @@ router.post("/venue_register", async (req, res, next) => {
         next(err);
     }
 });
-/*
-router.post("/venue_register", (req, res) => {
-    const {venue_name} = req.body;
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        console.log("MYSQLと接続中です");
-        //select文とlimitで同じ名前の会場がすでに登録されていないかを判定
-        connection.query("select * from t_venue where venue_name = ? LIMIT 1", [venue_name], (err, rows) => {
-            //connection.release();
-            //console.log(rows.length);
-            if(rows.length != 0){
-                connection.release();
-                return res.status(400).json([
-                    {
-                        message: "すでにその会場は登録しています。"
-                    }
-                ]); 
-            }else{
-                connection.query("insert into t_venue values (0, ?)", [venue_name], (err, rows) => {
-                    connection.release();
-                    if (err) {
-                        return res.status(400).json([
-                            {
-                                message: "会場情報を登録できませんでした"
-                            }
-                        ]); 
-                    }
-                    res.end('OK');
-                });
-            }
-        });
-    });
-});*/
 
 //登録されている会場を呼び出し
 router.post("/venue_call", async (req, res, next) => {
@@ -116,43 +84,7 @@ router.post("/venue_delete", async (req, res, next) => {
         console.log(err);
         next(err);
     }
-
-    /*try{
-        const rows = await executeQuery("delete from kaizyou where venue_id = ?", [venue_id]);
-        console.log(rows);
-        if(rows[0]['count(*)' >= 1]){
-            await executeQuery(`drop table ${table_name}`);
-            res.end("OK");
-        }
-        else{
-            console.log('そんなテーブルないです');
-        }
-    }
-    catch(err){
-        console.log("会場情報を消去できませんでした");
-        console.log(err);
-    }*/
 });
-/*
-router.post("/venue_delete", (req, res) => {
-    const { venue_id } = req.body;
-    pool.getConnection((err, connection) => {
-        if (err) throw err;
-
-        console.log("MYSQLと接続中です");
-        //登録されている全ての会場のテーブルを読み出し
-        connection.query("delete from t_venue where venue_id = ?", [venue_id], (err, rows) => {
-            connection.release();
-            if(err){
-                return res.status(400).json([
-                    {
-                        message: "会場情報を消去できませんでした"
-                    }
-                ]); 
-            }
-        });
-    });
-});*/
 
 //登録されている会場の編集
 router.post("/venue_edit", async (req, res, next) => {

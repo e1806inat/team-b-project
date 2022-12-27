@@ -169,16 +169,21 @@ router.get("/logout", (req, res, err) => {
     
     try{
         console.log("asdf");
-        
+        //console.log(req.session.user);
         //delete req.session.user;
         //req.session.destroy
-
+        if(!req.session.user){
+            console.log('naidesu');
+        }
         res.clearCookie('sessionID');
-    //sessionStore.close();
-    //req.session.destroy();
-    
+        //sessionStore.close();
+        //req.session.destroy();
+        //console.log('test');
+        // if(req.session.user){
+        //     console.log('arimasu');
+        // }
         //console.log(req.cookies);
-    //res.redirect("/auth");
+        //res.redirect("/auth");
         res.end("OK");
     }
     catch(err){
@@ -190,7 +195,7 @@ router.get("/logout", (req, res, err) => {
 //セッションのチェック
 router.get("/check_sess", async (req, res, next) => {
     try {
-
+        console.log(req.cookies);
         console.log(req.cookies.sessionID);
         if (req.cookies.sessionID != undefined){
             return res.end('login');

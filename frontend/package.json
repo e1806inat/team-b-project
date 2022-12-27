@@ -1,7 +1,8 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "/j_R4_team_b/frontend/",
+
+  "homepage": "/team-b-project/frontend/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

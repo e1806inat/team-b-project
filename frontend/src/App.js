@@ -14,6 +14,8 @@ import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 import './App.css';
 
 //今回の開発で使えるサーバのurlを入力してください、「https: ~~~ ac.jp/ここのルートを指定する/」
+//package.jsonも編集すること
+
 // const routeUrl = "/j_R4_team_b/frontend"
 const routeUrl = "/team-b-project/frontend"
 // const routeUrl = ""

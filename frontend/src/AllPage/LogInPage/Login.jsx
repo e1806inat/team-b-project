@@ -48,7 +48,7 @@ const Login = () => {
 
   const handleLogin = () => {
 
-    fetch("http://localhost:5000/auth/login", {
+    fetch(backendUrl + "/auth/login", {
       method: "POST",
       mode: "cors",
       headers: {

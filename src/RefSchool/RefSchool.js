@@ -13,6 +13,7 @@ const RefSchool = () => {
   //大会を読み込む
 
   const [schoolsData, setSchoolsData] = useState([]);
+ 
 
   const readSchools = (setSchoolsData) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
@@ -30,6 +31,8 @@ const RefSchool = () => {
         setSchoolsData(data)
       })
   }
+
+  
 
   //ページ遷移用
   const navigate = useNavigate()
@@ -166,7 +169,7 @@ const RefSchool = () => {
         </article>
       </div>
       <div>
-        <button 
+        <button
           className='btn_In_sch2'
           onClick={() => {
             //検索したい学年を選択できるようにするためにチェックボックスで選択された学年の配列を作成

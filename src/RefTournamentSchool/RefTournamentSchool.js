@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import TournamentMemberList from "./TournamentMemberList";
 
 import "./RefTournamentSchool.css"
@@ -8,9 +8,11 @@ import "./RefTournamentSchool.css"
 
 const RefTournamentSchool = () => {
   //多分ここでurlから大会IDと大会名を抜き出す
+  //実際に組み込んで動かす場合はコメントアウトを外して使う
   // const [searchParams] = useSearchParams();
   // const urlTournamentName = searchParams.get("urlTournamentName");
   //const urlTournamentId = searchParams.get("urlTournamentId");
+  //urlTournamentは必要だったので入力しているが本番はurlから入力を受け取るようにする
   const urlTournamentId = 1;
 
   // const backendUrl = require("../../../../DB/communication").backendUrl;
@@ -22,7 +24,7 @@ const RefTournamentSchool = () => {
   const [tournamentMembersData, setTournamentMembersData] = useState([]);
   const [uSelectSchool, setUSelectSchool] = useState([]);
   const [uSelectOption, setUSelectOption] = useState([]);
-  
+
 
   const readSchools = (setSchoolsData) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
@@ -32,7 +34,7 @@ const RefTournamentSchool = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({"tournament_id":1})
+      body: JSON.stringify({ "tournament_id": 1 })
     })
       .then((response) => response.json())
       .then((data) => {
@@ -43,27 +45,27 @@ const RefTournamentSchool = () => {
 
   const readTournamentMemebers = (setTournamentMembersData, urlSchoolId, urlTournamentId, urlOption) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
-    
+
     fetch("http://localhost:5000/member/ref_tournament_member_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ school_id: urlSchoolId, tournament_id: urlTournamentId, option: urlOption })
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ school_id: urlSchoolId, tournament_id: urlTournamentId, option: urlOption })
     })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            if (data.length === 0) {
-                console.log("登録されていません")
-            }
-            else {
-                console.log(data)
-            }
-            setTournamentMembersData(data)
-        })
-}
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        if (data.length === 0) {
+          console.log("登録されていません")
+        }
+        else {
+          console.log(data)
+        }
+        setTournamentMembersData(data)
+      })
+  }
 
 
   //console.log(setSchoolsData);
@@ -100,26 +102,15 @@ const RefTournamentSchool = () => {
   const [nowOption, setNowOption] = useState([0]);
 
   let optionArray = [{ option: 'player_name_hira', optionID: '1', optionName: 'あいうえお順' }, { option: 'grade', optionID: '2', optionName: '学年順' }, { option: 'BA', optionID: '3', optionName: '打率順' }, { option: 'hit_num', optionID: '4', optionName: '安打数順' }, { option: 'bat_num', optionID: '5', optionName: '打席数順' }]
-  
-  //let addInfo = {tournament_id:urlTournamentId, option:optionArray[nowOption[0]].option}
-  let addInfo = {tournament_id:"1", option:optionArray[nowOption[0]].option}
-
-  console.log(addInfo);
-
-  //console.log(participantSchoolsData);
 
   useEffect(() => {
-    //console.log('動いてます');
     readSchools(setSchoolsData);
   }, []);
 
   useEffect(() => {
-    //console.log('動いてます');
-    if(Object.keys(schoolsData).length){
+    if (Object.keys(schoolsData).length) {
       readTournamentMemebers(setTournamentMembersData, uSelectSchool, urlTournamentId, uSelectOption);
     }
-    //readMemebers(setMembersData, schoolsData[0]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
-    //readMemebers(setMembersData, schoolsData[nowSchoolName[0]]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
   }, [uSelectSchool, uSelectOption]);
 
 
@@ -154,26 +145,29 @@ const RefTournamentSchool = () => {
           <p>検索</p>
         </button>
       </div>
-      <div className="schoolName_t2" bordercolor="red">
-                <p>{selectedSchoolName}　県大会出場　選手一覧</p>
-            </div>
-            <table border="2" className="membersExample_t">
-                <tr>
-                    <td width="50" rowspan="2" bgcolor="#228b22">学年</td>
-                    <td width="300" bgcolor="#228b22">ふりがな</td>
-                    <td width="50" rowspan="2" bgcolor="#228b22">打</td>
-                    <td width="50" rowspan="2" bgcolor="#228b22">投</td>
-                    <td width="75" rowspan="2" bgcolor="#228b22">安打数</td>
-                    <td width="75" rowspan="2" bgcolor="#228b22">打席数</td>
-                    <td width="75" rowspan="2" bgcolor="#228b22">打率</td>
-                </tr>
-                <tr>
-                    <td width="300" rowspan="2" bgcolor="#228b22">名前</td>
-                </tr>
-            </table>
-            <div className="refMemberData_t">
-                <TournamentMemberList members={tournamentMembersData} />
-            </div>
+      <div className="box_schools_t">
+        <div className="schoolName_t2" bordercolor="red">
+           {/*ほんとは県大会ではなく{urlTournamentName}にする*/}
+          <p>{selectedSchoolName}　県大会出場　選手一覧</p>
+        </div>
+        <table border="2" className="membersExample_t">
+          <tr>
+            <td width="50" rowspan="2" bgcolor="#228b22">学年</td>
+            <td width="300" bgcolor="#228b22">ふりがな</td>
+            <td width="50" rowspan="2" bgcolor="#228b22">打</td>
+            <td width="50" rowspan="2" bgcolor="#228b22">投</td>
+            <td width="75" rowspan="2" bgcolor="#228b22">安打数</td>
+            <td width="75" rowspan="2" bgcolor="#228b22">打席数</td>
+            <td width="75" rowspan="2" bgcolor="#228b22">打率</td>
+          </tr>
+          <tr>
+            <td width="300" rowspan="2" bgcolor="#228b22">名前</td>
+          </tr>
+        </table>
+        <div className="refMemberData_t">
+          <TournamentMemberList members={tournamentMembersData} />
+        </div>
+      </div>
     </div>
   );
 }

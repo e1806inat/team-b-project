@@ -4,22 +4,25 @@ import MemberList from "./MemberList";
 import "./RefSchool.css"
 import "./RefSchoolData.css"
 
-//import { v4 as uuid4 } from "uuid";
-
 const RefSchool = () => {
 
   // const backendUrl = require("../../../../DB/communication").backendUrl;
 
-  //大会を読み込む
-
+  //school_callで読み込んだ学校のデータを保持する
   const [schoolsData, setSchoolsData] = useState([]);
+  //選択された学校の名前を保持する
   const [selectedSchoolName, setSelectedSchoolName] = useState('');
+  //ref_member_callで読み込んだ選手のデータを保持する
   const [membersData, setMembersData] = useState([]);
-  //readMemebers(setMembersData, schoolsData[nowSchoolName[0]]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
+  //選択された学校のデータを保持する
   const [uSelectSchool, setUSelectSchool] = useState([]);
+  //選択されている学年を保持する
   const [uSelectGrade, setUSelectGrade] = useState([]);
+  //選択されているオプションを保持する
   const [uSelectOption, setUSelectOption] = useState([]);
 
+
+  //school_callをフェッチし学校のデータを取得する
   const readSchools = (setSchoolsData) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
     fetch("http://localhost:5000/school/school_call", {
@@ -28,7 +31,6 @@ const RefSchool = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      //body: JSON.stringify({})
     })
       .then((response) => response.json())
       .then((data) => {
@@ -38,6 +40,7 @@ const RefSchool = () => {
       })
   }
 
+  //ref_member_callをフェッチし選択された条件にそって選手の一覧を取得する
   const readMemebers = (setMembersData, schoolId, selectedGrades, option) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
     fetch("http://localhost:5000/member/ref_member_call", {
@@ -62,13 +65,6 @@ const RefSchool = () => {
       })
   }
 
-  //ページ遷移用
-  // const navigate = useNavigate()
-  // const PageTransition = (url) => {
-  //   navigate(url)
-  // }
-
-  //console.log(setSchoolsData);
   //自作プルダウン
   const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected) => {
     //pulldownIdは0でいいです。
@@ -98,9 +94,9 @@ const RefSchool = () => {
     )
   }
 
-  // let schoolsArray = [];
-
+  //閲覧したい学年の情報をチェックボックスで保持する
   const [grades, setGrades] = useState([{ grade: 1, completed: true }, { grade: 2, completed: true }, { grade: 3, completed: true }, { grade: 4, completed: true }]);
+  //バックエンドに送れる形(配列)に編集した学年情報を保持する
   const [gradesArray, setGradesArray] = useState([1, 2, 3, 4]);
 
   const toggleGrade = (grade) => {
@@ -116,10 +112,6 @@ const RefSchool = () => {
     console.log(NewGradesArray);
     setGrades(newGrades);
     setGradesArray(NewGradesArray);
-    //let tmpGrade = gradesArray.split(',');
-    //console.log(NewGradesArray.split(','));
-    // console.log(tmpGrade);
-    // setUSelectGrade(tmpGrade);
   };
 
   //学年の数に合わせてチェックボックスの処理を分割した
@@ -137,42 +129,23 @@ const RefSchool = () => {
     toggleGrade(4);
   };
 
-  //const [nowTournamentName, setNowTournamentName] = useState("")
-
-
-  // const [grade2, setGrades2] = useState([{ grade: 2, completed: true }]);
-  // const [grade3, setGrades3] = useState([{ grade: 3, completed: true }]);
-  // const [grade4, setGrades4] = useState([{ grade: 4, completed: true }]);
-
-  // const [nowSchoolName, setNowSchoolName] = useState([schoolsData[0]['school_name']]);
-
+  //プルダウンのためのステイト
   const [nowSchoolName, setNowSchoolName] = useState([0]);
   const [nowOption, setNowOption] = useState([0]);
 
+  //選択できるオプションの配列
   let optionArray = [{ option: 'player_name_hira', optionID: '1', optionName: 'あいうえお順' }, { option: 'grade', optionID: '2', optionName: '学年順' }, { option: 'BA', optionID: '3', optionName: '打率順' }, { option: 'hit_num', optionID: '4', optionName: '安打数順' }, { option: 'bat_num', optionID: '5', optionName: '打席数順' }]
 
-  //let addInfo = {grades:grades, option:optionArray[nowOption[0]].option}
-
-  //console.log(nowSchoolName);
-
   useEffect(() => {
-    //console.log('動いてます');
-    console.log('eeeeee')
     readSchools(setSchoolsData);
-    if(Object.keys(schoolsData).length){
-      readMemebers(setMembersData, uSelectSchool, uSelectGrade, uSelectOption);
-    }
-    //readMemebers(setMembersData, schoolsData[0]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
-    //readMemebers(setMembersData, schoolsData[nowSchoolName[0]]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
   }, []);
 
   useEffect(() => {
-    //console.log('動いてます');
+    //学校情報を取得できている場合のみ動く
     if(Object.keys(schoolsData).length){
       readMemebers(setMembersData, uSelectSchool, uSelectGrade, uSelectOption);
     }
-    //readMemebers(setMembersData, schoolsData[0]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
-    //readMemebers(setMembersData, schoolsData[nowSchoolName[0]]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
+    //動くタイミングは以下の三つのステイトのいずれかが動作する時
   }, [uSelectSchool, uSelectGrade, uSelectOption]);
 
   return (
@@ -219,29 +192,10 @@ const RefSchool = () => {
         <button
           className='btn_In_sch2'
           onClick={() => {
-            //検索したい学年を選択できるようにするためにチェックボックスで選択された学年の配列を作成
-            //これによってDBのSQL文でwhere in 句が使えるようになる
-            // let gradesArray = [];
-            // for (var item of grades) {
-            //   if (item.completed) {
-            //     gradesArray.push(item.grade);
-            //   }
-            // }
-            console.log('aaa')
             setUSelectSchool(schoolsData[nowSchoolName[0]]['school_id']);
             setSelectedSchoolName(schoolsData[nowSchoolName[0]]['school_name']);
             setUSelectGrade(gradesArray);
             setUSelectOption(optionArray[nowOption[0]]['option']);
-            // PageTransition(
-            //   "ref_schoolData?urlSchoolId=" +
-            //   schoolsData[nowSchoolName[0]].school_id +
-            //   "&urlSchoolName=" +
-            //   schoolsData[nowSchoolName[0]].school_name +
-            //   "&urlGrades=" +
-            //   gradesArray +
-            //   "&urlOption=" +
-            //   optionArray[nowOption[0]].option
-            // )
           }}>
           <p>検索</p>
         </button>

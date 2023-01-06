@@ -28,7 +28,7 @@ router.post("/tournament_register", async(req, res, next) => {
 //登録されている大会のテーブルを最新のものかつnotnullな１０件呼び出してクライアント側に渡す（運用者用webアプリ）
 router.post("/tournament_call", async (req, res, next) => {
     try{
-        const rows = await executeQuery('select * from t_tournament order by opening desc limit 10');
+        const rows = await executeQuery('select * from t_tournament order by opening desc');
         return res.json(rows);
     }
     catch(err){

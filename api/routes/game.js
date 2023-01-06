@@ -120,4 +120,49 @@ router.post("/game_sets", async (req, res, next) => {
     }
 });
 
+//試合中の試合の情報を登録するAPI（運用者用webアプリ）
+//これを使うことで試合中かどうかの判定が可能
+router.post("/during_game_register", async (req, res, next) => {
+    const { game_id, tmp_table_name } = req.body;
+
+    try{
+        await executeQuery("insert into t_during_game values (?, ?)", [game_id, tmp_table_name]);
+        res.end("OK");
+    }
+    catch(err){
+        console.log(err);
+        //await tran.rollback();
+        next(err);
+    }
+});
+
+//試合中の試合の情報を削除するAPI（運用者用webアプリ）
+router.post("/during_game_delete", async (req, res, next) => {
+    const { game_id } = req.body;
+
+    try{
+        await executeQuery("delete from t_during_game where game_id = ?", [game_id]);
+        res.end("OK");
+    }
+    catch(err){
+        console.log(err);
+        //await tran.rollback();
+        next(err);
+    }
+});
+
+//試合中の試合の情報を参照するAPI（運用者用webアプリ）
+router.post("/ref_during_game", async (req, res, next) => {
+
+    try{
+        const rows = await executeQuery("select * from t_during_game");
+        return res.json(rows);
+    }
+    catch(err){
+        console.log(err);
+        //await tran.rollback();
+        next(err);
+    }
+});
+
 module.exports = router;

@@ -94,10 +94,12 @@ router.post("/tmp_table_delete", async (req, res, next) => {
 });
 
 //一時打席情報登録テーブルの情報を打席情報蓄積テーブルへ送信（運用者用webアプリ）
-router.post("/data_register", async (req, res) => {
+router.post("/data_register", async (req, res, next) => {
     //一時テーブルの名前受け取り
     const { table_name, game_id } = req.body;
     const tmp_table_name = `test_pbl.` + table_name;
+
+    const tran = await beginTran();
 
     try {
         //一時打席情報記録テーブルの内容を打席情報記録テーブルに登録
@@ -119,7 +121,6 @@ router.post("/data_register", async (req, res) => {
             await tran.rollback();
             next(err);
         }
-        await tran.commit();
         res.end("OK");
     }
     catch (err) {
@@ -227,13 +228,15 @@ router.post("/player_data_change", async (req, res, next) => {
 //速報中の試合情報更新（編集）（運用者用webアプリ）
 router.post("/tmp_daseki_update", async (req, res, next) => {
     const { table_name, at_bat_id, game_id, school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
 
     try{
         //試合情報の編集
-        await executeQuery(`update ${table_name} set school_id = ?, player_id = ?, pitcher_id = ?, score = ?, total_score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ?, hit = ?, foreball = ?, deadball = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, at_bat_id, game_id]);
+        await executeQuery(`update ${tmp_table_name} set school_id = ?, player_id = ?, pitcher_id = ?, score = ?, total_score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ?, hit = ?, foreball = ?, deadball = ?, pinch = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, at_bat_id, game_id]);
         res.end("OK");
     }
     catch(err){
+        console.log(err);
         console.log('試合情報を登録できません');
         next(err);
     }
@@ -247,7 +250,7 @@ router.post("/registered_daseki_update", async (req, res, next) => {
 
     try{
         //試合情報の編集
-        await executeQuery(`update t_at_bat set score = ?, total_score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ?, hit = ?, foreball = ?, deadball = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, at_bat_id, game_id]);
+        await executeQuery(`update t_at_bat set score = ?, total_score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ?, hit = ?, foreball = ?, deadball = ?, pinch = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, at_bat_id, game_id]);
         res.end("OK");
     }
     catch(err){

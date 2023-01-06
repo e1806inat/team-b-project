@@ -1,6 +1,6 @@
 import React from 'react'
 
-import "./RefSchoolData.css"
+//import "./RefSchoolData.css"
 
 const Member = ({member}) => {
 

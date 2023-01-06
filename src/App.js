@@ -1,6 +1,6 @@
 
 //各種ページのインポート
-import {RefSchool, RefSchoolData, RefTournamentSchool, RefTournamentMember} from './PageIndex';
+import {RefSchool, RefTournamentSchool} from './PageIndex';
   
   //import { OutPutGame } from './AllPage/OutPutGame/OutPutGame'
   
@@ -24,18 +24,13 @@ import {RefSchool, RefSchoolData, RefTournamentSchool, RefTournamentMember} from
           <Routes>
             {/* 選手情報参照画面 */}
             <Route path={routeUrl + '/ref_school'} element={<RefSchool />} />
-            <Route path={routeUrl + '/ref_school/ref_SchoolData/'} element={<RefSchoolData />} />
 
-            {/*大会登録選手情報参照画面*/}
-            <Route path={routeUrl + '/ref_Pschool'} element={<RefTournamentSchool />} />
-            <Route path={routeUrl + '/ref_Pschool/ref_PschoolData'} element={<RefTournamentMember />} />
+             {/*大会登録選手情報参照画面*/}
+             <Route path={routeUrl + '/ref_Pschool'} element={<RefTournamentSchool />} />
           </Routes>
         </BrowserRouter>
   
-  
-  
-  
-  
+
       </div>
     );
   };

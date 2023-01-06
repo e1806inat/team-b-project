@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from 'react-router-dom'
-import SchoolList from "./SchoolList";
+import React, { useState, useEffect } from "react";
+import MemberList from "./MemberList";
 
 import "./RefSchool.css"
+import "./RefSchoolData.css"
 
 //import { v4 as uuid4 } from "uuid";
 
@@ -13,6 +13,12 @@ const RefSchool = () => {
   //大会を読み込む
 
   const [schoolsData, setSchoolsData] = useState([]);
+  const [selectedSchoolName, setSelectedSchoolName] = useState('');
+  const [membersData, setMembersData] = useState([]);
+  //readMemebers(setMembersData, schoolsData[nowSchoolName[0]]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
+  const [uSelectSchool, setUSelectSchool] = useState([]);
+  const [uSelectGrade, setUSelectGrade] = useState([]);
+  const [uSelectOption, setUSelectOption] = useState([]);
 
   const readSchools = (setSchoolsData) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
@@ -27,15 +33,40 @@ const RefSchool = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
+        console.log(data[0]['school_id'])
         setSchoolsData(data)
       })
   }
 
-  //ページ遷移用
-  const navigate = useNavigate()
-  const PageTransition = (url) => {
-    navigate(url)
+  const readMemebers = (setMembersData, schoolId, selectedGrades, option) => {
+    // fetch(backendUrl + "/tournament/tournament_call", {
+    fetch("http://localhost:5000/member/ref_member_call", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ school_id: schoolId, grades: selectedGrades, option: option })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        //console.log(urlGrades)
+        if (data.length === 0) {
+          console.log("登録されていません")
+        }
+        else {
+          console.log(data)
+        }
+        setMembersData(data)
+      })
   }
+
+  //ページ遷移用
+  // const navigate = useNavigate()
+  // const PageTransition = (url) => {
+  //   navigate(url)
+  // }
 
   //console.log(setSchoolsData);
   //自作プルダウン
@@ -70,7 +101,6 @@ const RefSchool = () => {
   // let schoolsArray = [];
 
   const [grades, setGrades] = useState([{ grade: 1, completed: true }, { grade: 2, completed: true }, { grade: 3, completed: true }, { grade: 4, completed: true }]);
-
   const [gradesArray, setGradesArray] = useState([1, 2, 3, 4]);
 
   const toggleGrade = (grade) => {
@@ -86,6 +116,10 @@ const RefSchool = () => {
     console.log(NewGradesArray);
     setGrades(newGrades);
     setGradesArray(NewGradesArray);
+    //let tmpGrade = gradesArray.split(',');
+    //console.log(NewGradesArray.split(','));
+    // console.log(tmpGrade);
+    // setUSelectGrade(tmpGrade);
   };
 
   //学年の数に合わせてチェックボックスの処理を分割した
@@ -119,12 +153,28 @@ const RefSchool = () => {
 
   //let addInfo = {grades:grades, option:optionArray[nowOption[0]].option}
 
-  console.log(schoolsData);
+  //console.log(nowSchoolName);
 
   useEffect(() => {
     //console.log('動いてます');
+    console.log('eeeeee')
     readSchools(setSchoolsData);
+    if(Object.keys(schoolsData).length){
+      readMemebers(setMembersData, uSelectSchool, uSelectGrade, uSelectOption);
+    }
+    //readMemebers(setMembersData, schoolsData[0]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
+    //readMemebers(setMembersData, schoolsData[nowSchoolName[0]]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
   }, []);
+
+  useEffect(() => {
+    //console.log('動いてます');
+    if(Object.keys(schoolsData).length){
+      readMemebers(setMembersData, uSelectSchool, uSelectGrade, uSelectOption);
+    }
+    //readMemebers(setMembersData, schoolsData[0]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
+    //readMemebers(setMembersData, schoolsData[nowSchoolName[0]]['school_id'], gradesArray.split(','), optionArray[nowOption[0]]['option']);
+  }, [uSelectSchool, uSelectGrade, uSelectOption]);
+
   return (
     <div>
       <div class="headline">選手一覧　検索</div>
@@ -166,7 +216,7 @@ const RefSchool = () => {
         </article>
       </div>
       <div>
-        <button 
+        <button
           className='btn_In_sch2'
           onClick={() => {
             //検索したい学年を選択できるようにするためにチェックボックスで選択された学年の配列を作成
@@ -177,71 +227,49 @@ const RefSchool = () => {
             //     gradesArray.push(item.grade);
             //   }
             // }
-            PageTransition(
-              "ref_schoolData?urlSchoolId=" +
-              schoolsData[nowSchoolName[0]].school_id +
-              "&urlSchoolName=" +
-              schoolsData[nowSchoolName[0]].school_name +
-              "&urlGrades=" +
-              gradesArray +
-              "&urlOption=" +
-              optionArray[nowOption[0]].option
-            )
+            console.log('aaa')
+            setUSelectSchool(schoolsData[nowSchoolName[0]]['school_id']);
+            setSelectedSchoolName(schoolsData[nowSchoolName[0]]['school_name']);
+            setUSelectGrade(gradesArray);
+            setUSelectOption(optionArray[nowOption[0]]['option']);
+            // PageTransition(
+            //   "ref_schoolData?urlSchoolId=" +
+            //   schoolsData[nowSchoolName[0]].school_id +
+            //   "&urlSchoolName=" +
+            //   schoolsData[nowSchoolName[0]].school_name +
+            //   "&urlGrades=" +
+            //   gradesArray +
+            //   "&urlOption=" +
+            //   optionArray[nowOption[0]].option
+            // )
           }}>
           <p>検索</p>
         </button>
       </div>
       <div >
         <div className="box_schools">
-          <div className="schools">高校一覧</div>
-          <div className="school">
-            <SchoolList schools={schoolsData} gradesArray={gradesArray} option={optionArray[nowOption[0]].option} />
+          <div className="schools">{selectedSchoolName}　選手一覧</div>
+          <table border="2" className="membersExample">
+            <tr>
+              <td width="50" rowspan="2" bgcolor="#000080">学年</td>
+              <td width="300" bgcolor="#000080">ふりがな</td>
+              <td width="50" rowspan="2" bgcolor="#000080">打</td>
+              <td width="50" rowspan="2" bgcolor="#000080">投</td>
+              <td width="75" rowspan="2" bgcolor="#000080">安打数</td>
+              <td width="75" rowspan="2" bgcolor="#000080">打席数</td>
+              <td width="75" rowspan="2" bgcolor="#000080">打率</td>
+            </tr>
+            <tr>
+              <td width="300" rowspan="2" bgcolor="#000080">名前</td>
+            </tr>
+          </table>
+          <div className="refMemberData">
+            <MemberList members={membersData} />
           </div>
         </div>
       </div>
     </div>
   );
-
-  /*
-  const [todos, setTodos] = useState([
-    {id: 1, name: "Todo1", completed: false}]);
-
-    const todoNameRef = useRef();
-
-    const handleAddTodo = () => {
-      //タスクの追加
-      console.log(todoNameRef.current.value);
-      const name = todoNameRef.current.value; 
-      if (name === "") return;
-      setTodos((prevTodos) => {
-        return [...prevTodos, {id: uuid4(), name: name, completed: false}]
-      });
-      todoNameRef.current.value = null;
-    };
-
-    const toggleTodo = (id) => {
-      const newTodos = [...todos];
-      const todo = newTodos.find((todo) => todo.id === id);
-      console.log("aaaaa");
-      console.log(todo.completed);
-      console.log("bbbbb")
-      todo.completed = !todo.completed;
-      setTodos(newTodos);
-    };
-
-    const handleClear = () => {
-      const newTodos = todos.filter((todo) => !todo.completed);
-      setTodos(newTodos);
-    }
-
-  return  (
-  <div>
-    <TodoList todos={todos} toggleTodo={toggleTodo}/>
-    <input type="text" ref={todoNameRef}/>
-    <button onClick={handleAddTodo}>タスクを追加</button>
-    <button onClick={handleClear}>完了したタスクの削除</button>
-    <div>残りのタスク:{todos.filter((todo) => !todo.completed).length}</div>
-  </div>);*/
 }
 
 export default RefSchool;

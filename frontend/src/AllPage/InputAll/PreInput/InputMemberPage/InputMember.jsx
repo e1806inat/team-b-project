@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { myIndexOf } from "./functions/myIndexOf";
 import "./InputMember.css"
 import MemberPopup from "./functions/MemberPopup/MemberPopup"
+import EditMemberPopup from "./functions/EditMemberPopup/EditMemberPopup";
 
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
@@ -59,9 +59,9 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
                                     }
                                 }
 
-                                let i = selectedMembersData.findIndex((v)=> v.player_id === allUnder3Member.player_id)
-                                if(i!==-1){
-                                tempUniformNumber[tempUniformNumber.length-1] = selectedMembersData[i].uniform_number
+                                let i = selectedMembersData.findIndex((v) => v.player_id === allUnder3Member.player_id)
+                                if (i !== -1) {
+                                    tempUniformNumber[tempUniformNumber.length - 1] = selectedMembersData[i].uniform_number
                                 }
                             })
                         }
@@ -183,20 +183,20 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
 
     console.log(registeredMembers)
     console.log(sendArray2)
-    registeredMembers.map((v)=> {
+    registeredMembers.map((v) => {
         fetch(backendUrl + "/member/tournament_member_delete", {
             method: "POST",
             mode: "cors",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ tournament_id:urlTournamentId, player_id:v.player_id }),
+            body: JSON.stringify({ tournament_id: urlTournamentId, player_id: v.player_id }),
         })
-    
+
     })
 
 
-//バックエンドに送信
+    //バックエンドに送信
     fetch(backendUrl + "/member/tournament_member_register", {
         method: "POST",
         mode: "cors",
@@ -339,14 +339,28 @@ export const InputMember = () => {
     const urlSchoolId = searchParams.get("urlSchoolId")
     const urlSchoolName = searchParams.get("urlSchoolName")
 
+    //編集・削除モードかどうかを管理するステイト
+    const [isEditMode, setisEditMode] = useState(false)
+
+    //修正中のプレイヤー名を管理するすていと
+    const [editingMemberName, setEditingMemberName] = useState(
+        {
+            player_name_kanji: { famiryName: "", firstName: "" },
+            player_name_hira: { famiryName: "", firstName: "" }
+        }
+    )
+
+    //修正か削除かを管理するステイト
+    const [EorDCheckbox, setEorDCheckbox] = useState(true)
+
     //背番号を格納する配列
     const [uniformNumberArray, setUniformNumberArray] = useState([null]);
 
     //クリック時メンバー選択
     const handleSelected = (ind) => {
         console.log(selectedMember[ind])
-        if (cntSelectedMemberNum(selectedMember) >= 20 && selectedMember[ind] === false) {}
-        else{
+        if (cntSelectedMemberNum(selectedMember) >= 20 && selectedMember[ind] === false) { }
+        else {
             copyArray = selectedMember.slice(0, selectedMember.length); // stateの配列をコピー(値渡し)
             copyArray[ind] = !copyArray[ind]
             setSelectedMember(copyArray)
@@ -511,66 +525,87 @@ export const InputMember = () => {
                         className="addButton"
                         onClick={() => handleMembers(uniformNumberArray, setUniformNumberArray, nameKanji, nameHira)}
                     >追加</button>
-                    {
-                        // () => {
-                        //     selectedMember.map((v) => {
-                        //         if (v) selectedMemberNum = selectedMemberNum + 1
-                        //         console.log(selectedMemberNum)
-                        //     })
-                        //     return(<a>{selectedMemberNum}</a>)
 
-                        // }
-                        cntSelectedMemberNum(selectedMember)
-                    }
+                    <button
+                        onClick={() => { setisEditMode(!isEditMode) }}
+                    >{isEditMode && "大会編集中"}{!isEditMode && "大会編集モード"}</button>
 
-                    {/* <button onClick={() => { console.log(uniformNumberArray) }}>プルダウンテストボタン</button> */}
                 </div>
             </div>
-            <div className="hyoji">
-                <div className="players">
-                    {copyMember.map((member, ind) => (
-                        <div className="school">
-                            <button
-                                onClick={() => handleSelected(ind)}
-                                className={"InputMember" + selectedMember[ind]}
-                            >
-                                <div className="selectName">
-                                    <div> &nbsp;&nbsp;{member.grade}年</div><div className="playerName">&nbsp;&nbsp;&nbsp;&nbsp;{member.player_name_kanji}（ {member.player_name_hira}）</div>
+            {!isEditMode &&
+                <>
+                    <div className="hyoji">
+                        <div className="players">
+                            {copyMember.map((member, ind) => (
+                                <div className="school">
+                                    <button
+                                        onClick={() => handleSelected(ind)}
+                                        className={"InputMember" + selectedMember[ind]}
+                                    >
+                                        <div className="selectName">
+                                            <div> &nbsp;&nbsp;{member.grade}年</div><div className="playerName">&nbsp;&nbsp;&nbsp;&nbsp;{member.player_name_kanji}（ {member.player_name_hira}）</div>
+                                        </div>
+                                        {/* &nbsp; 背番号{member.uniform_number}  */}
+                                        <div className="Dominant">&nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投 &nbsp; 背番号:{uniformNumberArray[ind]}</div>
+
+                                    </button>
+
+                                    <div className="selectdiv">
+                                        背番号<br />
+                                        {makePulldownBN(ind, uniformNumberArray, setUniformNumberArray)}
+                                    </div>
+                                    <br /><br />
                                 </div>
-                                {/* &nbsp; 背番号{member.uniform_number}  */}
-                                <div className="Dominant">&nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投 &nbsp; 背番号:{uniformNumberArray[ind]}</div>
 
-                            </button>
-
-                            <div className="selectdiv">
-                                背番号<br />
-                                {makePulldownBN(ind, uniformNumberArray, setUniformNumberArray)}
-                            </div>
-                            <br /><br />
+                            ))}
                         </div>
+                    </div>
 
-                    ))}
-                </div>
-            </div>
+                    <div className="sendButtonArea">
+                        <MemberPopup
+                            handleSousin={handleSousin}
+                            copyMember={copyMember}
+                            selectedMember={selectedMember}
+                            urlTournamentId={urlTournamentId}
+                            uniformNumberArray={uniformNumberArray}
+                            PageTransition={PageTransition}
+                            registeredMembers={registeredMembers}
+                        />
+                    </div>
+                </>
+            }
 
-            <div className="sendButtonArea">
-                {/* {<button
-                    onClick={() => {
-                        handleSousin(copyMember, selectedMember, urlTournamentId, uniformNumberArray)
-                    }}
-                    className="sendButton"
-                    >登録
-                </button>} */}
-                <MemberPopup
-                    handleSousin={handleSousin}
-                    copyMember={copyMember}
-                    selectedMember={selectedMember}
-                    urlTournamentId={urlTournamentId}
-                    uniformNumberArray={uniformNumberArray}
-                    PageTransition={PageTransition}
-                    registeredMembers={registeredMembers}
-                />
-            </div>
+            {isEditMode &&
+                <>
+                    <div className="hyoji">
+                        <div className="players">
+                            {copyMember.map((member, ind) => (
+                                <div className="school">
+                                    <EditMemberPopup
+                                        member={member}
+                                        ind={ind}
+                                        selectedMember={selectedMember}
+                                        uniformNumberArray={uniformNumberArray}
+                                        EorDCheckbox={EorDCheckbox}
+                                        setEorDCheckbox={setEorDCheckbox}
+                                        editingMemberName={editingMemberName}
+                                        setEditingMemberName={setEditingMemberName}
+                                        selectHitted={selectHitted}
+                                        handedHitState={handedHitState}
+                                        handleHandedHit={handleHandedHit}
+                                        selectThrowed={selectThrowed}
+                                        handedThrowState={handedThrowState}
+                                        handleHandedThrow={handleHandedThrow}
+                                    />
+                                    <br /><br />
+                                </div>
+
+                            ))}
+                        </div>
+                    </div>
+                </>
+            }
+
         </>
     )
 }

@@ -66,6 +66,7 @@ export const PullDownMember = (props) => {
                     <>
                         {/* 後攻チーム */}
                         <li className='cannotTouchLi'><a className='cannotTouchA' href="#">打者</a></li>
+                        {console.log(props.nowPlayingMember[1].batter)}
                         <li><a href="#">{props.battingOrder2[props.nowPlayingMember[1].batter].player_name_kanji}</a>
                             <ul>
 

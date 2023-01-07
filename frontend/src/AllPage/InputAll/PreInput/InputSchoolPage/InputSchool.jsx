@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 
+import EditSchoolPopup from "./comInputSchool/EditSchoolPopup/EditSchoolPopup"
+
 import './InputSchool.css';
 
 //バックエンドのurlを取得
@@ -168,6 +170,52 @@ const addSchool = (setUseSchools, addSchoolName, urlTournamentId, useSchools) =>
 
 }
 
+//高校を編集する
+const EditSchool = (school_id, school_name, setUseSchools, urlTournamentId) => {
+  fetch(backendUrl + "/school/school_edit", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ school_id: school_id, school_name: school_name }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      if (data === "OK") {
+        console.log(school_name + "を編集しました")
+        readSchool(setUseSchools, urlTournamentId)
+      }
+    })
+
+  console.log(school_id)
+  console.log(school_name)
+  console.log(urlTournamentId)
+
+}
+
+// 学校情報を削除
+const DeleteSchool = (school_id, school_name, setUseSchools, urlTournamentId) => {
+  fetch(backendUrl + "/school/school_delete", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ school_id: school_id, school_name: school_name }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      if (data === "OK") {
+        console.log(school_name + "を削除しました")
+        readSchool(setUseSchools, urlTournamentId)
+      }
+    })
+
+  console.log(school_id)
+  console.log(school_name)
+  console.log(urlTournamentId)
+}
 
 
 
@@ -192,6 +240,15 @@ export const InputSchool = () => {
   const [isCheckBoxMode, setIsCheckBoxMode] = useState(!true)
   const ref = useRef()
   const [useSchools, setUseSchools] = useState([])
+
+  //編集削除モードかそうでないか
+  const [isEditMode, setIsEditMode] = useState(false)
+
+  //編集か削除か
+  const [EorDCheckbox, setEorDCheckbox] = useState(true)
+
+  //編集中の学校名を管理するステイト
+  const [editingSchoolName, setEditingSchoolName] = useState("")
 
   useEffect(() => {
     //全学校読み出し
@@ -240,16 +297,50 @@ export const InputSchool = () => {
       {/* <button onClick={handleCheckBox}>チェックボックス入力</button>
       <button onClick={() => sendSchool(useSchools, urlTournamentId, Schools, setUseSchools)}>高校名登録</button> */}
 
-      <div className="ButtonArea">
-        <button id="checkButton" onClick={handleCheckBox}>高校選択</button>
-      </div>
+      {/* 編集モードでないとき */}
+      {!isEditMode &&
+        <>
+          {/* 高校選択ボタン */}
+          <div className="ButtonArea">
+            <button id="checkButton" onClick={handleCheckBox}>高校選択</button>
+          </div>
 
-      <hr></hr>
-      {!isCheckBoxMode && Hyoji(useSchools, navigate, urlTournamentName, urlTournamentId)}
-      {isCheckBoxMode && CheckBoxList(useSchools, setUseSchools)}<br />
-      <div className="ButtonArea">
-        <button className="decisionButton" onClick={() => sendSchool(useSchools, urlTournamentId, setUseSchools)}>高校名登録</button>
-      </div>
+          {/* 編集モード切り替えボタン */}
+          <div className="ButtonArea">
+            <button id="checkButton" onClick={() => { setIsEditMode(!isEditMode) }}>編集モード</button>
+          </div>
+
+          <hr></hr>
+
+          {!isCheckBoxMode &&
+            Hyoji(useSchools, navigate, urlTournamentName, urlTournamentId, isEditMode, EditSchoolPopup,
+              EorDCheckbox, setEorDCheckbox, EditSchool, DeleteSchool, readSchool, setUseSchools,
+              editingSchoolName, setEditingSchoolName
+            )}
+          {isCheckBoxMode && CheckBoxList(useSchools, setUseSchools)}<br />
+
+          {/* 登録ボタン */}
+          <div className="ButtonArea">
+            <button className="decisionButton" onClick={() => sendSchool(useSchools, urlTournamentId, setUseSchools)}>高校名登録</button>
+          </div>
+        </>
+      }
+
+      {/* 編集モード中 */}
+      {isEditMode &&
+        <>
+          {/* 編集モード切り替えボタン */}
+          <div className="ButtonArea">
+            <button id="checkButton" onClick={() => { setIsEditMode(!isEditMode) }}>編集モード</button>
+          </div>
+
+          <hr></hr>
+          {Hyoji(useSchools, navigate, urlTournamentName, urlTournamentId, isEditMode, EditSchoolPopup,
+            EorDCheckbox, setEorDCheckbox, EditSchool, DeleteSchool, readSchool, setUseSchools,
+            editingSchoolName, setEditingSchoolName
+          )}
+        </>
+      }
 
       <hr></hr>
     </div>

@@ -25,9 +25,13 @@ const readTournament = (setTournamentData) => {
 
 //文字分割
 const dateSplit = (nowdate) => {
-  let dateArray = nowdate.split('-');
-  dateArray = { "year": dateArray[0], "month": dateArray[1], "day": dateArray[2] }
-  return dateArray
+  console.log(nowdate)
+  if (nowdate !== null) {
+    let dateArray = nowdate.split('-');
+    dateArray = { "year": dateArray[0], "month": dateArray[1], "day": dateArray[2] }
+    return dateArray
+  }
+
 }
 
 
@@ -83,6 +87,9 @@ const handleTournament = (
   if (TournamentData.some((v) => v.tournament_name === nowTournamentName)) {
     console.log("名前被ってます")
   }
+  else if (nowTournamentName === "") {
+    console.log("空白です")
+  }
   else {
     console.log(nowTournamentName + "を登録します")
 
@@ -125,8 +132,17 @@ const editTournament = (urlTournamentId, newTournamentName, openingDate, Tournam
 }
 
 //削除
-const changeDeleteMode = (isDeleteMode, setIsDeleteMode) => {
-  setIsDeleteMode(!isDeleteMode)
+const tournamentDelete = (tournamentId) => {
+  fetch(backendUrl + "/tournament/tournament_edit", {
+    method: "POST",
+    mode: "cors",
+    headers: { "Content-Type": "application/json", },
+    body: JSON.stringify({ tournament_id: tournamentId }),
+  })
+    .then((response) => response.text())
+    .then((data) => { if (data === "OK") console.log("削除しました") })
+
+  // console.log(tournamentId + "削除しました")
 }
 
 
@@ -163,6 +179,12 @@ export const Input_Tournament = () => {
 
   //削除モードを管理するステイト
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+
+  //編集中の大会名を管理するステイト
+  const [editingTnmtName, setEditingTnmtName] = useState("")
+
+  //編集するか削除するかのチェックボックスを管理するステイト,trueなら編集,falseなら削除
+  const [EorDcheckBox, setEorDcheckBox] = useState(true)
 
 
   //文字分割のための箱を用意
@@ -221,7 +243,12 @@ export const Input_Tournament = () => {
               setTournamentData, yearArray, monthArray, dayArray, nowOpeningDate, nowTournamentName, TournamentData
             )
           }}>追加</button>
-        <button onClick={() => { setIsDeleteMode(!isDeleteMode) }}>{isDeleteMode && "大会編集中"}{!isDeleteMode && "大会編集モード"}</button>
+
+        {/* 編集・削除モードボタン */}
+        <button
+          onClick={() => { setIsDeleteMode(!isDeleteMode) }}
+        >{isDeleteMode && "大会編集中"}{!isDeleteMode && "大会編集モード"}</button>
+
       </div>
 
       <div class="headline">大会選択</div>
@@ -230,57 +257,68 @@ export const Input_Tournament = () => {
           <div className="tournaments">
 
             {TournamentData.map((Tournament, ind) => {
-              //文字分割
-              dateArray = dateSplit(Tournament.opening)
 
-              return (
-                <div className="tournament">
-                  <div className="days">
-                    <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
-                  </div>
-                  <div className="tournamentName">
-                    {isDeleteMode &&
-                      <>
-                        {/* <button
+              if (Tournament.tournament_name !== null) {
+                //文字分割
+                dateArray = dateSplit(Tournament.opening)
+
+                return (
+                  <div className="tournament">
+                    <div className="days">
+                      <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
+                    </div>
+                    <div className="tournamentName">
+                      {isDeleteMode &&
+                        <>
+                          {/* <button
+                      className="btn_In_to1"
+                      onClick={() => editTournament(EditTournamentPopup)}>
+                      {Tournament.tournament_name}
+                    </button> */}
+                          <EditTournamentPopup
+                            sendClassName="btn_In_to1"
+                            Tournament={Tournament}
+                            ind={ind}
+                            editTournament={editTournament}
+                            editOpeningDate={editOpeningDate}
+                            setEditOpeningDate={setEditOpeningDate}
+                            yearArray={yearArray}
+                            monthArray={monthArray}
+                            dayArray={dayArray}
+                            makePulldown={makePulldown}
+                            TournamentData={TournamentData}
+                            setTournamentData={setTournamentData}
+                            editingTnmtName={editingTnmtName}
+                            setEditingTnmtName={setEditingTnmtName}
+                            EorDcheckBox={EorDcheckBox}
+                            setEorDcheckBox={setEorDcheckBox}
+                            tournamentDelete={tournamentDelete}
+                            readTournament={readTournament}
+                            dateSplit={dateSplit}
+                          />
+                        </>
+
+                      }
+                      {!isDeleteMode &&
+                        <button
                           className="btn_In_to1"
-                          onClick={() => editTournament(EditTournamentPopup)}>
+                          onClick={() =>
+                            PageTransition(
+                              "inputschool?urlTournamentId=" +
+                              Tournament.tournament_id +
+                              "&urlTournamentName=" +
+                              Tournament.tournament_name
+                            )
+                          }>
                           {Tournament.tournament_name}
-                        </button> */}
-                        <EditTournamentPopup
-                          sendClassName="btn_In_to1"
-                          Tournament={Tournament}
-                          ind={ind}
-                          editTournament={editTournament}
-                          editOpeningDate={editOpeningDate}
-                          setEditOpeningDate={setEditOpeningDate}
-                          yearArray={yearArray}
-                          monthArray={monthArray}
-                          dayArray={dayArray}
-                          makePulldown={makePulldown}
-                          TournamentData={TournamentData}
-                          setTournamentData={setTournamentData}
-                        />
-                      </>
-
-                    }
-                    {!isDeleteMode &&
-                      <button
-                        className="btn_In_to1"
-                        onClick={() =>
-                          PageTransition(
-                            "inputschool?urlTournamentId=" +
-                            Tournament.tournament_id +
-                            "&urlTournamentName=" +
-                            Tournament.tournament_name
-                          )
-                        }>
-                        {Tournament.tournament_name}
-                      </button>
-                    }
-                    <br />
+                        </button>
+                      }
+                      <br />
+                    </div>
                   </div>
-                </div>
-              )
+                )
+              }
+
             })}
           </div>
         </div>

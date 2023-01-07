@@ -11,31 +11,77 @@ class Popup extends React.Component {
       <div className="popup_field">
         <div className="popup_inner_field">
           <div className="title">{this.props.text}</div>
+
+          {/* 編集チェックボックス */}
+          <input
+            type="checkbox"
+            checked={this.props.EorDcheckBox}
+            onClick={() => {
+              this.props.setEorDcheckBox(true)
+              //初期値を入れる
+              this.props.setEditingTnmtName(this.props.Tournament.tournament_name)
+            }}
+          ></input>大会を編集する<br></br>
+
           名前の変更<br></br>
           変更前：{this.props.Tournament.tournament_name}<br></br>
-          変更後：<input id="chengeId"></input><br></br><br></br>
+          変更後：<input
+            id="changeId" value={this.props.editingTnmtName}
+            onChange={(e) => { this.props.setEditingTnmtName(e.target.value) }}
+          ></input><br></br><br></br>
           日付の変更:<br></br>
           変更前：{this.props.Tournament.opening}<br></br>
           変更後：
           {this.props.makePulldown(0, this.props.yearArray, "year", this.props.editOpeningDate, this.props.setEditOpeningDate)}年
           {this.props.makePulldown(1, this.props.monthArray, "month", this.props.editOpeningDate, this.props.setEditOpeningDate)}月
-          {this.props.makePulldown(2, this.props.dayArray, "day", this.props.editOpeningDate, this.props.setEditOpeningDate)}日
+          {this.props.makePulldown(2, this.props.dayArray, "day", this.props.editOpeningDate, this.props.setEditOpeningDate)}日<br></br><br></br>
+
+          {/* 削除チェックボックス */}
+          <input
+            type="checkbox"
+            checked={!this.props.EorDcheckBox}
+            onClick={() => {
+              this.props.setEorDcheckBox(false)
+              //警告をを入れる
+              this.props.setEditingTnmtName("大会を削除します")
+            }}
+          ></input>大会を削除する<br></br>
 
           <p>情報が更新されますがよろしいでしょうか？</p>
-          <button className="button_style" onClick={this.props.closePopup}>いいえ</button>
+
+          {/* いいえのボタン */}
+          <button className="button_style"
+            onClick={() => {
+              this.props.closePopup()
+              this.props.setEorDcheckBox(true)
+            }}>いいえ</button>
           <nbsp></nbsp>
+
+          {/* はいのボタン */}
           <button className="button_style"
             onClick={
               () => {
-                this.props.editTournament(
-                  this.props.Tournament.tournament_id,
-                  document.getElementById("chengeId").value,
-                  this.props.yearArray[this.props.editOpeningDate[0]].year + "-" +
-                  this.props.monthArray[this.props.editOpeningDate[1]].month + "-" +
-                  this.props.dayArray[this.props.editOpeningDate[2]].day,
-                  this.props.TournamentData,
-                  this.props.setTournamentData
-                )
+                if (this.props.EorDcheckBox) {
+                  //編集を確定する
+                  this.props.editTournament(
+                    this.props.Tournament.tournament_id,
+                    document.getElementById("changeId").value,
+                    this.props.yearArray[this.props.editOpeningDate[0]].year + "-" +
+                    this.props.monthArray[this.props.editOpeningDate[1]].month + "-" +
+                    this.props.dayArray[this.props.editOpeningDate[2]].day,
+                    this.props.TournamentData,
+                    this.props.setTournamentData
+                  )
+                }
+                else {
+                  //大会を削除する
+                  this.props.tournamentDelete(this.props.Tournament.tournament_id)
+                }
+
+                // 大会を読み込む
+                this.props.readTournament(this.props.setTournamentData)
+
+                // ポップアップを閉じる
                 this.props.closePopup()
               }
             }>はい</button>
@@ -64,7 +110,24 @@ class EditTournamentPopup extends React.Component {
   render() {
     return (
       <div>
-        <button className={this.props.sendClassName} onClick={this.togglePopup}>{this.props.Tournament.tournament_name}</button>
+        <button className={this.props.sendClassName}
+          onClick={() => {
+            this.togglePopup()
+            //初期値を入れる
+            this.props.setEditingTnmtName(this.props.Tournament.tournament_name)
+            let splitted = this.props.dateSplit(this.props.Tournament.opening)
+            // this.props.setEditOpeningDate([
+            //   this.props.yearArray.findIndex((v) => v.year.toString() === splitted.year),
+            //   this.props.monthArray.findIndex((v) => v.month.toString() === splitted.month),
+            //   this.props.dayArray.findIndex((v) => v.day.toString() === splitted.day)
+            // ])
+            console.log([
+              this.props.yearArray.findIndex((v) => v.year.toString() === splitted.year),
+              this.props.monthArray.findIndex((v) => v.month.toString() === splitted.month),
+              this.props.dayArray.findIndex((v) => v.day.toString() === splitted.day)
+            ])
+          }}
+        >{this.props.Tournament.tournament_name}</button>
         {/* this.state.PopupがtrueであればPopupウィンドウを開く */}
         {this.state.showPopup ? (
           <Popup text="確認画面" closePopup={this.togglePopup}
@@ -79,6 +142,13 @@ class EditTournamentPopup extends React.Component {
             makePulldown={this.props.makePulldown}
             TournamentData={this.props.TournamentData}
             setTournamentData={this.props.setTournamentData}
+            editingTnmtName={this.props.editingTnmtName}
+            setEditingTnmtName={this.props.setEditingTnmtName}
+            EorDcheckBox={this.props.EorDcheckBox}
+            setEorDcheckBox={this.props.setEorDcheckBox}
+            tournamentDelete={this.props.tournamentDelete}
+            readTournament={this.props.readTournament}
+            dateSplit={this.props.dateSplit}
           />
         ) : null}
       </div>

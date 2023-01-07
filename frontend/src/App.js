@@ -51,9 +51,6 @@ const App = () => {
 
           <Route path={'*'} element={<NotFound />} />
         </Routes>
-        <button>
-          <Link to={routeUrl + '/login'}>Back To Login</Link>
-        </button>
       </BrowserRouter>
 
 

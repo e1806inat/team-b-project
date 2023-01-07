@@ -63,7 +63,6 @@ const Login = () => {
         if (data === "OK") {
           window.location.href = '/home'
         }
-        window.location.href = '/home'
       })
   }
 
@@ -95,9 +94,9 @@ const Login = () => {
               </div>
             </div>
             <button className="submitButton" onClick={handleLogin}>アカウント情報を送信</button>
-            {Object.keys(formErrors).length === 0 && isSubmit && (
+            {/* {Object.keys(formErrors).length === 0 && isSubmit && (
               <div className="MsgOk">照合中です</div>
-            )}
+            )} */}
           </div>
         </form>
       </div>

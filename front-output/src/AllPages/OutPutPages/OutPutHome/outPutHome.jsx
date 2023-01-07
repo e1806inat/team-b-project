@@ -1,11 +1,67 @@
+import React, { useState, useEffect } from "react";
 import { OptionFunc } from '../../../Functions/OptionFunc/OptionFunc'
-import { useNavigate } from 'react-router-dom'
+import { useSearchParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import GameList from "./GameList";
+
 
 const goToPage = () => {
     console.log("移動します")
 }
 
 const OutPutHome = () => {
+
+    const [searchParams] = useSearchParams();
+    // const urlTournamentId = searchParams.get("urlTournamentId");
+    // const urlTournamentName = searchParams.get("urlTournamentName");
+    const urlTournamentId = 35;
+    const urlTournamentName = 'aaaa';
+    //const tournament = {tournament_id:urlTournamentId, tournament_name:urlTournamentName}
+
+    const [gamesData, setGamesData] = useState([]);
+    const [gamesState, setGamesState] = useState([]);
+
+    //
+    const readGames = (setGamesData) => {
+        // fetch(backendUrl + "/tournament/tournament_call", {
+        fetch("http://localhost:5000/game/game_call", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ tournament_id: urlTournamentId })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setGamesData(data);
+            })
+    }
+
+     //school_callをフェッチし学校のデータを取得する
+     const readGamesState = (setGamesState) => {
+        // fetch(backendUrl + "/tournament/tournament_call", {
+        fetch("http://localhost:5000/game/ref_during_game", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setGamesState(data);
+            })
+    }
+
+    useEffect(() => {
+        readGames(setGamesData);
+        readGamesState(setGamesState);
+        console.log('動いてます');
+    }, []);
+
     //ページ遷移用
     const navigate = useNavigate()
     const PageTransition = (url) => {
@@ -25,30 +81,8 @@ const OutPutHome = () => {
             ></OptionFunc>
 
             <div class="whole">
-                <div class="date">
-                    {/* <!-- <input type="date" name="today" id="today"> --> */}
-                    10月30日(日)
-                </div>
-                <div class='targetModules'>
-                    <div class='gameName'>春季中国地区高等学校野球島根県大会　東部地区</div>
-                    <div class="displayGames" onClick={goToPage}>
-                        <div class='gameDetaile'>
-                            <div class='gameRound'>3回戦</div>
-                            <div class='gameCard'>
-                                <div class='firstAttackTeam, teamName'>平田</div>
-                                <div class='gameScore'>
-                                    <div class='firstAttackTeamScore'>1</div>
-                                    <div class='gameState'>5回裏</div>
-                                    <div class='secondAttackTeamScore'>3</div>
-                                </div>
-                                <div class='secondAttackTeam, teamName'>出雲</div>
-                            </div>
-                            <div class="gamePlace">浜山公園野球場</div>
-                        </div>
-                        <p></p>
-
-                    </div>
-                </div>
+                <div class='gameName'>{urlTournamentName}</div>
+                <GameList games={gamesData} duringGames={gamesState}/>
             </div>
         </>
 

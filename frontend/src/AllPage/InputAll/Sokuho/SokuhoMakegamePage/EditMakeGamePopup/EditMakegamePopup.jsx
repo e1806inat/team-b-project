@@ -67,7 +67,10 @@ class Popup extends React.Component {
                     <nbsp></nbsp>
 
                     {/* はいのボタン */}
-                    {(true) &&
+                    {(
+                        this.props.isDuplicateA(this.props.editingSelected) ||
+                        this.props.isDuplicateB()
+                    ) &&
                         <button className="button_style"
                             onClick={() => {
                                 this.props.closePopup()
@@ -187,9 +190,11 @@ class EditMakegamePopup extends React.Component {
                         setEditingSelectedYmd={this.props.setEditingSelectedYmd}
                         EditGame={this.props.EditGame}
                         DeleteGame={this.props.DeleteGame}
-                        loadGame = {this.props.loadGame}
+                        loadGame={this.props.loadGame}
                         setGameInfoState={this.props.setGameInfoState}
                         urlTournamentId={this.props.urlTournamentId}
+                        isDuplicateA={this.props.isDuplicateA}
+                        isDuplicateB={this.props.isDuplicateB}
                     />
                 ) : null}
             </div>

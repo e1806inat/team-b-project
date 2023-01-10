@@ -149,14 +149,26 @@ const makeDay = () => {
 
 
 //被りチェック関数（登録内容同士） 
-const  isDuplicateA = () => {
-
+const isDuplicateA = (editingSelected) => {
+    let TorF = false
+    if (editingSelected[1] === editingSelected[2]) TorF = true
+    return TorF
 }
 
 
 //被りチェック関数（登録内容と既登録のもの）
-const isDuplicateB = () =>{
-    
+const isDuplicateB = (gameInfoState, sendInfo) => {
+
+    let TorF = false
+
+    if (
+        gameInfoState.some((v) => v.school_id_1 === sendInfo.school_id_1) &&
+        gameInfoState.some((v) => v.school_id_2 === sendInfo.school_id_2) &&
+        gameInfoState.some((v) => v.venue_id === sendInfo.venue_id) &&
+        gameInfoState.some((v) => v.game_ymd === sendInfo.game_ymd)
+    ) { TorF = true; console.log("被っています")}
+
+    return TorF
 }
 
 
@@ -390,6 +402,8 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                                             loadGame={loadGame}
                                             setGameInfoState={setGameInfoState}
                                             urlTournamentId={urlTournamentId}
+                                            isDuplicateA={isDuplicateA}
+                                            isDuplicateB={isDuplicateB}
                                         />
                                         <br /><br />
                                     </div>

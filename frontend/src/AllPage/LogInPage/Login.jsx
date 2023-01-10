@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 const Login = () => {
-  //バックエンドのurlを取得
-  const backendUrl = require("../../DB/communication").backendUrl;
+//バックエンドのurlを取得
+const backendUrl = require("../../DB/communication").backendUrl;
 
   const initialValues = { loginID: "test", password: "123456789" };
   const [formValues, setFormValues] = useState(initialValues);
@@ -45,25 +45,30 @@ const Login = () => {
 
 
 
+  const syougou = (data) => {
+    console.log(data.id)
+    if (data.id === "OK") {
+      window.location.href = '/home'
+    }
+  }
+
+
+
 
   const handleLogin = () => {
 
-    fetch(backendUrl + "/auth/login", {
+    fetch("http://localhost:5000/auth/login", {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
+      //body: JSON.stringify({ email:login_id , password:login_ps }),
+      //body: JSON.stringify({ email:login_id , password:login_ps }),
       body: JSON.stringify({ user_name: formValues.loginID, password: formValues.password }),
     })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log(data)
-
-        if (data === "OK") {
-          window.location.href = '/home'
-        }
-      })
+      .then((response) => response.json())
+      .then((data) => syougou(data))
   }
 
 
@@ -94,9 +99,9 @@ const Login = () => {
               </div>
             </div>
             <button className="submitButton" onClick={handleLogin}>アカウント情報を送信</button>
-            {/* {Object.keys(formErrors).length === 0 && isSubmit && (
+            {Object.keys(formErrors).length === 0 && isSubmit && (
               <div className="MsgOk">照合中です</div>
-            )} */}
+            )}
           </div>
         </form>
       </div>

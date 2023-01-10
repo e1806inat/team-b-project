@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import './Sokuho_Input_Makegame.css'
-
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
-import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
+import {OptionButton} from "../../../OtherPage/optionFunc/OptionButton"
 //import { Schools } from "../../../../DB/Schools";
 //const { Schools } = require("../../../../DB/Schools"); //分割代入
 //const { Venues } = require("../../../../DB/Venues"); //分割代入
@@ -72,7 +70,7 @@ const handleAddGame = (urlTournamentId, nowSelected, iningList, Schools, Venues,
         school_id_1: Schools[nowSelected[1]].school_id,
         school_id_2: Schools[nowSelected[2]].school_id,
         venue_id: Venues[nowSelected[3]].venue_id,
-        first_rear_1: "先攻",
+        first_rear_1: "先行",
         first_rear_2: "後攻",
         game_ymd: YearList[nowSelectedYmd[0]].year + "-" + MonthList[nowSelectedYmd[1]].month + "-" + DayList[nowSelectedYmd[2]].day,
         match_resuts: null
@@ -106,11 +104,9 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
         <>
             <select id="tekitouni"
                 onChange={(e) => {
-
-                    let Array = nowSelected.slice(0, nowSelected.length)
-                    Array[pulldownId] = e.target.value
-                    setNowSelected(Array)
-                    console.log(Array)
+                    nowSelected[pulldownId] = e.target.value
+                    setNowSelected(nowSelected)
+                    console.log(nowSelected)
                 }}>
                 {ArrayList.map((component, ind) => (
                     <option value={ind}>{component[idText]}</option>
@@ -170,7 +166,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     const DayList = makeDay()
 
     //回戦の値を適当に定義
-    const iningList = [{ ining: 1 }, { ining: 2 }, { ining: 3 }, { ining: 4 }, { ining: 5 }, { ining: "準決勝" }, { ining: "決勝" }]
+    const iningList = [{ ining: 1 }, { ining: 2 }, { ining: 3 }, { ining: 4 }, { ining: 5 }]
 
     //urlから値を読み出す
     const [searchParams] = useSearchParams();
@@ -190,6 +186,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     }, [])
 
     useEffect(() => {
+
         loadGame(setGameInfoState, urlTournamentId);
     }, [Schools, Venues])
 
@@ -200,55 +197,38 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                 PageTransition={PageTransition}
                 valueUrl={-1}
             />
-
             <OptionButton />
-
-            <div class="headline">
-                編集中：{urlTournamentName}
-            </div>
+            <h3>編集中：{urlTournamentName}</h3>
             <div className="MakeGame">
-                <div class="whole_Sokuhou">
-                    年{makePulldown(0, YearList, "year", nowSelectedYmd, setNowSelectedYmd)}
-                    月{makePulldown(1, MonthList, "month", nowSelectedYmd, setNowSelectedYmd)}
-                    日{makePulldown(2, DayList, "day", nowSelectedYmd, setNowSelectedYmd)}<br />
+                年{makePulldown(0, YearList, "year", nowSelectedYmd, setNowSelectedYmd)}
+                月{makePulldown(1, MonthList, "month", nowSelectedYmd, setNowSelectedYmd)}
+                日{makePulldown(2, DayList, "day", nowSelectedYmd, setNowSelectedYmd)}<br />
 
-                    回戦{makePulldown(0, iningList, "ining", nowSelected, setNowSelected)}<br />
-                    先行チーム{makePulldown(1, Schools, "school_name", nowSelected, setNowSelected)}<br />
-                    後攻チーム{makePulldown(2, Schools, "school_name", nowSelected, setNowSelected)}<br />
-                    会場{makePulldown(3, Venues, "venue_name", nowSelected, setNowSelected)}<br />
-
-
-                    {/* 追加ボタン */}
-                    {nowSelected[1] !== nowSelected[2] &&
-                        <button className="btn_So_Make" onClick={() => handleAddGame(
-                            urlTournamentId,
-                            nowSelected,
-                            iningList,
-                            Schools,
-                            Venues,
-                            nowSelectedYmd,
-                            YearList,
-                            MonthList,
-                            DayList,
-                            setGameInfoState
-                        )}>追加
-                        </button>
-                    }
-                    {nowSelected[1] === nowSelected[2] &&
-                        <button className="btn_So_Make" onClick={() => { }}>追加
-                        </button>
-                    }
-
-                    {console.log(nowSelected[1] === nowSelected[2])}
-                </div>
+                回戦{makePulldown(0, iningList, "ining", nowSelected, setNowSelected)}<br />
+                先行チーム{makePulldown(1, Schools, "school_name", nowSelected, setNowSelected)}<br />
+                後攻チーム{makePulldown(2, Schools, "school_name", nowSelected, setNowSelected)}<br />
+                会場{makePulldown(3, Venues, "venue_name", nowSelected, setNowSelected)}<br />
+                <button onClick={() => handleAddGame(
+                    urlTournamentId,
+                    nowSelected,
+                    iningList,
+                    Schools,
+                    Venues,
+                    nowSelectedYmd,
+                    YearList,
+                    MonthList,
+                    DayList,
+                    setGameInfoState
+                )}>追加</button>
             </div>
 
             <hr></hr>
 
             <div className="dispGames">
+                {console.log(gameInfoState)}
                 {gameInfoState.map(gameInfo => (
                     <div className="game">
-                        <button className="btn_So_Make"
+                        <button
                             onClick={() => PageTransition(
                                 "starting_member?urlTournamentId=" +
                                 urlTournamentId +
@@ -272,7 +252,9 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                         </button><br /><br />
                     </div>
                 ))}
+
             </div>
+
         </>
     )
 }

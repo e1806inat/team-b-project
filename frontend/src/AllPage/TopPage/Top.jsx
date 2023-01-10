@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 const { Member } = require("../../DB/Member");
 const { Member2 } = require("../../DB/Member2");
 const { PositionDB } = require("../../DB/PositionDB");
@@ -61,16 +60,6 @@ const thStyle2 = {
 };
 
 const Top = () => {
-
-    //ページ遷移用
-    const navigate = useNavigate()
-    const PageTransition = (url) => {
-        navigate(url)
-    }
-
-   
-
-
     //守備位置
 
     const PositionRef1 = useRef(null)
@@ -450,9 +439,6 @@ const Top = () => {
       }
     }
 
-    useEffect(()=>{
-        PageTransition("home")
-    })
 
 
     return (

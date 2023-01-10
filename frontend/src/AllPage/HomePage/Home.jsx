@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { TitleBar } from '../OtherPage/TitleBar/TitleBar'
 import './home.css'
 
-//バックエンドのurlを取得
-const backendUrl = require("../../DB/communication").backendUrl;
+
 
 
 const Home = () => {
@@ -24,18 +23,7 @@ const Home = () => {
                 <div class="logout">
                     <button><i
                         class="fa-solid fa-arrow-right-from-bracket"
-                        onClick={() => {
-                            fetch(backendUrl + "/auth/check_sess", {
-                                method: "GET",
-                                mode: "cors",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                            })
-                                .then((response) => response.text())
-                                .then((data) => { console.log(data) })
-                            PageTransition(-1)
-                        }}
+                        onClick={() => PageTransition("./Login")}
                     ></i></button>
                 </div>
             </header>

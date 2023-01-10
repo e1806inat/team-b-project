@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
     res.send("Hello Authjs");
 });
 
-//ユーザの登録のAPI（運用者用webアプリ）
+//ユーザの登録のAPI
 router.post("/user_register", body("password").isLength({ min: 6 }), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;
@@ -69,7 +69,7 @@ router.post("/user_register", body("password").isLength({ min: 6 }), async (req,
     }
 });
 
-//ユーザの削除API（運用者用webアプリ）
+//ユーザの削除API
 router.post("/user_delete", async (req, res, next) => {
     const { user_name } = req.body;
 
@@ -109,13 +109,13 @@ router.post("/user_delete", async (req, res, next) => {
     }
 });
 
-//ログイン用のAPI（運用者用webアプリ）
+//ログイン用のAPI
 router.post("/login", async (req, res, next) => {
     const { user_name, password } = req.body;
     try {
         //ユーザ存在確認
         const rows = await executeQuery(`select * from t_login where user_name = ?`, [user_name]);
-        //console.log(rows);
+        console.log(rows);
         if (rows == 0 && rows == false) {
             return res.status(400).json([
                 {
@@ -132,29 +132,14 @@ router.post("/login", async (req, res, next) => {
                     }
                 ]);
             } else {
-                //console.log('私の名前は森口翔太です。好きなものはせんとくんです。');
-                //console.log(rows);
+                console.log('私の名前は森口翔太です。好きなものはせんとくんです。');
+                console.log(rows);
                 //ユーザ情報をセッションに登録
-                console.log(req.session.user);
                 req.session.user = rows;
                 console.log(req.session.user);
-                //console.log(req.cookies);
-
-                //res.cookie('session_id', 'value1', req);
-                // res.cookie('sessionID', req.sessionID, {
-                //     maxAge:60000,
-                //     httpOnly:false,
-                // })
-
-                res.cookie('sessionID', req.sessionID);
-
-                //res.setHeader('Set-Cookie', [`sessionID=${req.sessionID}`]);
-
-                //console.log(res.cookie(req.sessionID))
-                //res.json({
-                  //  'session_id': req.sessionID
-                //});
-                res.end('OK');
+                return res.json({
+                    id: "OK"
+                });
             }
         }
     } catch (err) {
@@ -164,74 +149,39 @@ router.post("/login", async (req, res, next) => {
     }
 });
 
-//ログアウト（運用者用webアプリ）
-router.get("/logout", (req, res, err) => {
-    
-    try{
-        console.log("asdf");
-        //console.log(req.session.user);
-        //delete req.session.user;
-        //req.session.destroy
-        if(!req.session.user){
-            console.log('naidesu');
-        }
-        res.clearCookie('sessionID');
-        //sessionStore.close();
-        //req.session.destroy();
-        //console.log('test');
-        // if(req.session.user){
-        //     console.log('arimasu');
-        // }
-        //console.log(req.cookies);
-        //res.redirect("/auth");
-        res.end("OK");
-    }
-    catch(err){
-        console.log(err);
-        next(err);
-    }
+//ログアウト
+router.get("/logout", (req, res) => {
+    console.log("asdf");
+    console.log(req.session.id);
+    req.session.destroy();
+    console.log('moriguti');
+    console.log(req.session);
+    //res.redirect("/auth");
+    res.end("OK");
 });
 
-//セッションのチェック（運用者用webアプリ）
-router.get("/check_sess", async (req, res, next) => {
+//セッションのチェック
+router.get("/check_sess", (req, res, next) => {
     try {
-        console.log(req.cookies);
-        console.log(req.cookies.sessionID);
-        if (req.cookies.sessionID != undefined){
-            return res.end('login');
+        console.log(req.session.user);
+        console.log(req.session.id);
+        if (req.session.user){
+            res.end("Login");
+        } else {
+            res.end("logout");
         }
-        else{
-            return res.end('logout');
-        }
-        // for (const value of Object.keys(req.cookies)) {
-        //     const rows = await executeQuery('select count(*) from sessions where session_id = ?', [value]);
-        //     if (rows[0]['count(*)'] >= 1){
-        //         console.log('a');
-        //          return res.end('login');
-        //     }
-        // }
-        
-        // console.log(req.session.user);
-        // console.log(req.sessionID);
-        // const rows = await executeQuery(`select count(*) from sessions where session_id = ?`, [req.sessionID]);
-        // if (rows[0]['count(*)'] >= 1){
-        //     res.end("Login");
-        // } else {
-        //     res.end("logout");
-        // }
     }
     catch (err) {
-        console.log(err);
         next(err);
     }
 });
 
-//ユーザ編集(パスワード編集)のAPI（運用者用webアプリ）
+//ユーザ編集(パスワード編集)のAPI
 router.post("/user_update", body("password").isLength({ min: 6 }), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;
 
-    const errors = validationResult(req);
+    const errors = validationResult(req);s
 
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });

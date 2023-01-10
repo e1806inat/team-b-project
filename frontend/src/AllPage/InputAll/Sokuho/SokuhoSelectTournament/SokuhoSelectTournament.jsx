@@ -32,6 +32,8 @@ const dateSplit = (nowdate) => {
 
 
 export const Input_Tournament = () => {
+  const birthYearRef = useRef(null);
+  const birthMonthRef = useRef(null);
 
   const InitialYear = 2020
   const InitialMonth = 1
@@ -54,12 +56,39 @@ export const Input_Tournament = () => {
     navigate(url)
   }
 
+  const setYear = () => {
+    for (let i = InitialYear; i <= new Date().getFullYear() + 10; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.text = i;
+      birthYearRef.current.appendChild(option);
+    }
+  }
+
+  const setMonth = () => {
+    for (let i = InitialMonth; i <= 12; i++) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.text = i;
+      birthMonthRef.current.appendChild(option);
+    }
+  }
 
 
+
+  const selectBirthYear = (e) => {
+    setBirthYear(e.target.value);
+  }
+
+  const selectBirthMonth = (e) => {
+    setBirthMonth(e.target.value);
+  }
 
 
 
   useEffect(() => {
+    setYear();
+    setMonth();
     readTournament(setTournamentData);
   }, []);
 
@@ -71,45 +100,55 @@ export const Input_Tournament = () => {
         valueUrl={-1}
       />
       <OptionButton />
+      <p></p>
+      <label>
+        <select ref={birthYearRef} value={birthYear} onChange={selectBirthYear}></select>年
+      </label>
+      <label>
+        <select ref={birthMonthRef} value={birthMonth} onChange={selectBirthMonth}></select>月
+      </label>
+      <br />
+      <br />
+      <br />
+      <br />
+      <hr></hr>
+      <br />
 
+      <div className="tournamentList">
+        <div className="tournaments">
 
-      <div class="headline">大会選択</div>
-      <div class="whole">
-        <div className="tournamentList">
-          <div className="tournaments">
+          {TournamentData.map((Tournament, ind) => {
+            //文字分割
+            dateArray = dateSplit(Tournament.opening)
 
-            {TournamentData.map((Tournament, ind) => {
-              if (Tournament.tournament_name !== null) {
-                //文字分割
-                dateArray = dateSplit(Tournament.opening)
-
-                return (
-                  <div className="tournament">
-                    <div className="days">
-                      <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
-                    </div>
-                    <div className="tournamentName">
-                      <button
-                        className="btn_In_to1"
-                        onClick={() =>
-                          PageTransition(
-                            "sokuho_input_makegame?urlTournamentId=" +
-                            Tournament.tournament_id +
-                            "&urlTournamentName=" +
-                            Tournament.tournament_name
-                          )
-                        }>
-                        {Tournament.tournament_name}
-                      </button>
-                      <br />
-                    </div>
-                  </div>
-                )
-              }
-            })}
-          </div>
+            return (
+              <div className="tournament">
+                <div className="days">
+                  <span>{dateArray.year}年{dateArray.month}月{dateArray.day}日</span>
+                </div>
+                <div className="tournamentName">
+                  <button
+                    onClick={() =>
+                      PageTransition(
+                        "sokuho_input_makegame?urlTournamentId=" +
+                        Tournament.tournament_id +
+                        "&urlTournamentName=" +
+                        Tournament.tournament_name
+                      )
+                    }>
+                    {Tournament.tournament_name}
+                  </button>
+                  <br />
+                  <br />
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
+      <hr></hr>
+      <button><Link to={'/home/input_mode/pre_input'}>戻る</Link> </button>
+
     </div>
   )
 }

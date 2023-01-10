@@ -58,8 +58,8 @@ const handleKakutei = (
   })
   let runnerCount = ""
   runnerCountState.map((runner) => {
-    if (runner === true) runnerCount = runnerCount + "1"
-    else if (runner === false) runnerCount = runnerCount + "0"
+    if (runner === true) runnerCount = "1" + runnerCount
+    else if (runner === false) runnerCount = "0" + runnerCount
   })
   let isHit = 0; let isFourball = 0; let isDeadball = 0;
   if (batterResult === 0) { }
@@ -73,11 +73,11 @@ const handleKakutei = (
   //DBにデータを送る
   let sendInfo = {
     table_name: urlGameId,
-    inning: (nowIningState[0] + 1) * 10 + (nowIningState[1] + 1),
+    inning: (nowIningState[1] + 1) * 10 + (nowIningState[0] + 1),
     game_id: urlGameId,
     school_id: schoolIdArray[nowIningState[1]],
-    player_id: battingOrderArray[nowIningState[1]][nowPlayingMember[nowIningState[1]].batter].player_id,
-    pitcher_id: battingOrder2[nowPlayingMember[nowIningState[1]].pitcher].player_id,
+    player_id: battingOrder[nowPlayingMember[nowIningState[1]].batter].player_id,
+    pitchar_id:battingOrder2[nowPlayingMember[nowIningState[1]].pitcher].player_id,
     score: addScoreState,
     total_score: total_score,
     outcount: nowOutCountState,
@@ -107,7 +107,7 @@ const handleKakutei = (
   let copyArray = nowPlayingMember.slice(0, nowPlayingMember.length);
   if (copyArray[nowIningState[1]].batter >= 8) copyArray[nowIningState[1]].batter = 0
   else if (copyArray[nowIningState[1]].batter >= 0)
-    copyArray[nowIningState[1]].batter = copyArray[nowIningState[1]].batter + 1
+  copyArray[nowIningState[1]].batter = copyArray[nowIningState[1]].batter + 1
   setNowPlayingMember(copyArray)
 
   //入力メモ

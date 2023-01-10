@@ -7,16 +7,10 @@ class GameEndPopup extends React.Component {
       <div className="popup_field">
         <div className="popup_inner_field">
           <div className="title">{this.props.text}</div>
-          <p>試合を終了し、情報を登録しますがよろしいでしょうか？</p>
+          <p>情報が更新されますがよろしいでしょうか？</p>
           <button className="button_style" onClick={this.props.closePopup}>いいえ</button>
           <nbsp></nbsp>
-          <button className="button_style"
-            onClick={() => {
-              this.props.closePopup()
-              this.props.TableRegister(this.props.urlGameId)
-              this.props.CalculateBatAvg(this.props.urlGameId)
-              this.props.TmpTableDelete(this.props.urlGameId)
-            }}>はい</button>
+          <button className="button_style" onClick={this.props.closePopup}>はい</button>
         </div>
       </div>
     );
@@ -41,22 +35,17 @@ class GameEndPopup_field extends React.Component {
   //renderの中に設置したいメインのDOM(部品）を記述していく
   render() {
     return (
-      <>
-        <li><a href="#" onClick={this.togglePopup}>試合終了</a></li>
+      <div>
+        <h1>test</h1>
+        <button onClick={this.togglePopup}>更新</button>
         {/* this.state.PopupがtrueであればPopupウィンドウを開く */}
         {this.state.showPopup ? (
-          <GameEndPopup text="確認画面"
-            closePopup={this.togglePopup}
-            TableRegister={this.props.TableRegister}
-            urlGameId={this.props.urlGameId}
-            TmpTableDelete={this.props.TmpTableDelete}
-            CalculateBatAvg={this.props.CalculateBatAvg}
-          />
+          <GameEndPopup text="確認画面" closePopup={this.togglePopup} />
         ) : null}
-      </>
+      </div>
     );
   }
 }
 
 //配置する部品の決まり文句
-export default GameEndPopup_field;
+export default GameEndPopup;

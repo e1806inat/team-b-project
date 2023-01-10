@@ -9,12 +9,10 @@ const tournament = require("./routes/tournament");
 const venue = require("./routes/venue");
 const game = require("./routes/game");
 
-//const http = require("http");
-
-const cookieParser = require("cookie-parser");
-
 const session = require('express-session');
+//const { default: errorHandler } = require("./error");
 const { errorHandler } = require("./error");
+//const { loginlogout } = require("./loginout");
 const MySQLStore = require('express-mysql-session')(session); //追加分
 
 const mysqlOptions ={
@@ -26,14 +24,13 @@ const mysqlOptions ={
 
 const sess = {
     secret: "otameshi",
-    cookie: {maxAge: 600000 },
+    cookie: {maxAge: 10 },
     store: new MySQLStore(mysqlOptions),
     resave: false,
     saveUninitialized: false
 };
 
 sess.cookie.secure = true; //for production
-app.use(cookieParser());
 app.use(session(sess));
 // cors対策
 
@@ -47,26 +44,17 @@ app.use((req, res, next) => {
     next();
 });
 
-// const server = http.createServer(app);
-// server.listen(PORT, () => console.log(`server is running ${PORT}`));
-
 //sessのテスト後で別ファイルに分けるべし
-var loginCheck = function(req, res, next) {
-  if(req.session.user) {
-    next();
-  } else {
-    res.redirect('/auth');
-  }
-};
-    
+/*
+var sessionCheck = function(req, res, next) {
+    if (req.session.user) {
+      next();
+    } else {
+      res.redirect('/auth');
+    }
+  };*/
+
 app.use(express.json());
-
-app.get("/", loginCheck);
-
-app.get("/", (req, res) => {
-  res.send("Hello Express");
-});
-
 //app.use(require('./loginout'));
 //app.use(errorHandler);
 app.use("/auth", auth);
@@ -78,6 +66,10 @@ app.use("/venue",  venue);
 app.use("/game",  game);
 app.use(errorHandler);
 
+
+app.get("/", (req, res) => {
+    res.send("Hello Express");
+});
 /*
 app.post("/", (req, res) => {
     let message = req.body.message

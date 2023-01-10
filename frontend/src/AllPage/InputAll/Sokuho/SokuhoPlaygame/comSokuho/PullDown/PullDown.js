@@ -70,34 +70,16 @@ export const PullDown = (props) => {
 
     //座標指定
     props.setFlag(2)
-    props.setcanvasX1(ballPositionDB[1 + value].ballPositionX)
+    props.setcanvasX1(500)
     props.setcanvasY1(0)
 
     //打率計算のための記録
     props.setBatterResult(1)
 
-    //自由記述と座標指定
-    if (value === 1) { 
-      props.setFreeWriteState(isTimelyText + "レフト側ホームラン") 
-      props.setcanvasX1(ballPositionDB.find((v)=> v.name === "HR_left").ballPositionX)
-      props.setcanvasY1(ballPositionDB.find((v)=> v.name === "HR_left").ballPositionY)
-    }
-    else if (value === 2) { 
-      props.setFreeWriteState(isTimelyText + "センター側ホームラン") 
-      props.setcanvasX1(ballPositionDB.find((v)=> v.name === "HR_center").ballPositionX)
-      props.setcanvasY1(ballPositionDB.find((v)=> v.name === "HR_center").ballPositionY)
-    }
-    else if (value === 3) { 
-      props.setFreeWriteState(isTimelyText + "ライト側ホームラン") 
-      props.setcanvasX1(ballPositionDB.find((v)=> v.name === "HR_right").ballPositionX)
-      props.setcanvasY1(ballPositionDB.find((v)=> v.name === "HR_right").ballPositionY)
-    }
-    else if (value === 4) {
-      props.setFlag(2)
-      props.setFreeWriteState(isTimelyText + Position[props.nowPosition - 1].kata + "ランニングホームラン")
-      props.setcanvasX1(ballPositionDB[props.nowPosition - 1].ballPositionX)
-      props.setcanvasY1(ballPositionDB[props.nowPosition - 1].ballPositionY)
-    }
+    //自由記述
+    if (value === 1) { props.setFreeWriteState(isTimelyText + "レフト側ホームラン") }
+    else if (value === 2) { props.setFreeWriteState(isTimelyText + "センター側ホームラン") }
+    else if (value === 3) { props.setFreeWriteState(isTimelyText + "ライト側ホームラン") }
   }
 
   //バントの結果
@@ -146,6 +128,10 @@ export const PullDown = (props) => {
     //自由記述
     if (value === 1) { props.setFreeWriteState("フォアボール"); props.setBatterResult(2) }
     else if (value === 2) { props.setFreeWriteState("デッドボール"); props.setBatterResult(3) }
+  }
+
+  const handleGameEnd = (GameEndPulldown) => {
+    GameEndPulldown()
   }
 
 
@@ -230,13 +216,7 @@ export const PullDown = (props) => {
             <li><a href="#" onClick={() => handleShishikyu(1)}>四球</a></li>
             <li><a href="#" onClick={() => handleShishikyu(2)}>死球</a></li>
             {/* 試合終了 */}
-            <props.GameEndPopup_field
-            TableRegister = {props.TableRegister}
-            urlGameId={props.urlGameId}
-            TmpTableDelete={props.TmpTableDelete}
-            CalculateBatAvg={props.CalculateBatAvg}
-            />
-            {/* <li><a href="#" onClick={() => handleGameEnd(props.GameEndPopup_field)}>試合終了</a></li> */}
+            <li><a href="#" onClick={() => handleGameEnd(props.GameEndPulldown)}>試合終了</a></li>
           </ul>
         </li>
       </ul>

@@ -2,66 +2,6 @@ import React from "react";
 import "./EditMemberPopup.css"
 import isEnpty from "../../../../../../Functions/IsEnpty";
 
-const selectHitted = (handedHitState, handleHandedHit) => {
-    if (handedHitState === "左") {
-        return (
-            <>
-                <button style={{ color: "white", background: "lightskyblue" }}>左打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("右")}>右打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("両")}>両打</button>
-            </>
-        )
-    }
-    else if (handedHitState === "右") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("左")}>左打</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>右打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("両")}>両打</button>
-            </>
-        )
-    }
-    else if (handedHitState === "両") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("左")}>左打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("右")}>右打</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>両打</button>
-            </>
-        )
-    }
-}
-
-const selectThrowed = (handedThrowState, handleHandedThrow) => {
-    if (handedThrowState === "左") {
-        return (
-            <>
-                <button style={{ color: "white", background: "lightskyblue" }}>左投</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("右")}>右投</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("両")}>両投</button>
-            </>
-        )
-    }
-    else if (handedThrowState === "右") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("左")}>左投</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>右打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("両")}>両投</button>
-            </>
-        )
-    }
-    else if (handedThrowState === "両") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("左")}>左投</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("右")}>右投</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>両打</button>
-            </>
-        )
-    }
-}
-
 //メインのDOMの中で配置するサブ部品のような要素
 class Popup extends React.Component {
 
@@ -70,7 +10,7 @@ class Popup extends React.Component {
             <div className="popup_field">
                 <div className="popup_in_field3">
                     <div className="title">{this.props.text}</div>
-                    <div className='editarea'>
+                    <div className='editarea2'>
                         {/* 編集チェックボックス */}
                         <input
                             type="checkbox"
@@ -174,8 +114,8 @@ class Popup extends React.Component {
                         変更前：{this.props.member.handed_hit}打{this.props.member.handed_throw}投<br></br>
                         変更後：
                         <div className='selectarea'>
-                            <div className='battingarea'>{selectHitted(this.props.handedHitState, this.props.handleHandedHit)}</div>
-                            <div className='throwarea'>{selectThrowed(this.props.handedThrowState, this.props.handleHandedThrow)}</div>
+                            <div className='battingarea'>{this.props.selectHitted(this.props.handedHitState, this.props.handleHandedHit)}</div>
+                            <div className='throwarea'>{this.props.selectThrowed(this.props.handedThrowState, this.props.handleHandedThrow)}</div>
                         </div>
 
                         {/* 削除チェックボックス */}

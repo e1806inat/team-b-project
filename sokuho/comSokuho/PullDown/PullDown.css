@@ -85,7 +85,7 @@
 }
 #dropmenu li ul li a {
   padding: 13px 15px;
-  background: white;
+  background: rgba(232, 235, 235, 0.9);
   color: black;
   text-align: left;
   font-size: 12px;
@@ -129,5 +129,5 @@
   overflow: visible;
   height: 38px;
 }
-#dropmenu li ul li ul li a {  background: white}
+#dropmenu li ul li ul li a {  background: rgba(232, 235, 235, 0.9)}
 #dropmenu li:hover ul li ul li a:hover {  background: var(--color-main) ;color: white }

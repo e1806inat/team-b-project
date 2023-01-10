@@ -17,9 +17,10 @@ const backendUrl = require("../../../../DB/communication").backendUrl;
 
 
 //データベースとのやりとり
-const loadGame = (setGameInfoState, urlTournamentId) => {
+// 試合リストを読み込む
+const loadGame = async (setGameInfoState, urlTournamentId) => {
 
-    fetch(backendUrl + "/game/game_call", {
+    await fetch(backendUrl + "/game/game_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -28,12 +29,9 @@ const loadGame = (setGameInfoState, urlTournamentId) => {
         body: JSON.stringify({ tournament_id: urlTournamentId }),
     })
         .then((response) => response.json())
-        .then((data) => handleSentGame(data, setGameInfoState))
+        .then((data) => setGameInfoState(data))
 }
-const handleSentGame = (data, setGameInfoState) => {
-    console.log(data)
-    setGameInfoState(data)
-}
+
 
 //大会に所属する高校を読み出す
 const loadSchool = (setSchools, urlTournamentId) => {
@@ -99,11 +97,8 @@ const handleAddGame = (urlTournamentId, nowSelected, iningList, Schools, Venues,
 }
 
 
-
-
 //自作プルダウン
 const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected) => {
-
 
     return (
         <>
@@ -124,6 +119,7 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
 
     )
 }
+
 
 //リスト作成関数
 const makeYear = () => {
@@ -152,9 +148,60 @@ const makeDay = () => {
 }
 
 
+//被りチェック関数（登録内容同士） 
+const  isDuplicateA = () => {
+
+}
+
+
+//被りチェック関数（登録内容と既登録のもの）
+const isDuplicateB = () =>{
+    
+}
+
+
+//試合編集
+const EditGame = (sendInfo) => {
+    fetch(backendUrl + "/game/game_edit", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify(sendInfo),
+    })
+        .then((response) => response.text())
+        .then((data) => {
+
+            if (data === "OK") {
+
+            }
+        })
+
+    console.log(sendInfo)
+}
+
+
+//試合削除
+const DeleteGame = (sendInfo) => {
+    fetch(backendUrl + "/game/game_edit", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify(sendInfo),
+    })
+        .then((response) => response.text())
+        .then((data) => {
+
+            if (data === "OK") {
+
+            }
+        })
+
+    console.log(sendInfo)
+}
 
 
 export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
+
     //ページ遷移用
     const navigate = useNavigate()
     const PageTransition = (url) => {
@@ -183,6 +230,10 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     //今選択しているものの内容を監視
     const [nowSelected, setNowSelected] = useState([0, 0, 0, 0])
     const [nowSelectedYmd, setNowSelectedYmd] = useState([0, 0, 0])
+
+    //今編集で選択しているものの内容を監視
+    const [editingSelected, setEditingSelected] = useState([0, 0, 0, 0])
+    const [editingSelectedYmd, setEditingSelectedYmd] = useState([0, 0, 0])
 
     //編集削除モードかそうでないか
     const [isEditMode, setIsEditMode] = useState(false)
@@ -229,18 +280,23 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
 
                     {/* 追加ボタン */}
                     {nowSelected[1] !== nowSelected[2] &&
-                        <button className="btn_So_Make" onClick={() => handleAddGame(
-                            urlTournamentId,
-                            nowSelected,
-                            iningList,
-                            Schools,
-                            Venues,
-                            nowSelectedYmd,
-                            YearList,
-                            MonthList,
-                            DayList,
-                            setGameInfoState
-                        )}>追加
+                        <button className="btn_So_Make" onClick={async () => {
+                            await handleAddGame(
+                                urlTournamentId,
+                                nowSelected,
+                                iningList,
+                                Schools,
+                                Venues,
+                                nowSelectedYmd,
+                                YearList,
+                                MonthList,
+                                DayList,
+                                setGameInfoState
+                            )
+
+                            await loadGame(setGameInfoState, urlTournamentId)
+
+                        }}>追加
                         </button>
                     }
                     {nowSelected[1] === nowSelected[2] &&
@@ -249,74 +305,101 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                     }
 
 
-                    {/* <EditMakegamePopup
-
-                        EorDCheckbox={EorDCheckbox}
-                        setEorDCheckbox={setEorDCheckbox}
-                        makePulldown={makePulldown}
-                    /> */}
 
 
                 </div>
             </div>
 
-            <hr></hr>
+
 
             <div className="dispGames">
-   
 
+                {/* 編集モードでないとき */}
                 {!isEditMode &&
                     <>
-                       {gameInfoState.map(gameInfo => (
-                    <div className="game">
-                        <button className="btn_So_Make"
-                            onClick={() => PageTransition(
-                                "starting_member?urlTournamentId=" +
-                                urlTournamentId +
-                                "&urlTournamentName=" +
-                                urlTournamentName +
-                                "&urlSchoolId=" +
-                                gameInfo.school_id_1 +
-                                "&urlSchoolName=" +
-                                gameInfo.school_name +
-                                "&urlSchoolId2=" +
-                                gameInfo.school_id_2 +
-                                "&urlSchoolName2=" +
-                                gameInfo.school_name_2 +
-                                "&urlGameId=" +
-                                gameInfo.game_id
-                            )}>
-                            {gameInfo.match_num}回戦<br />
-                            {gameInfo.school_name}<br />
-                            {gameInfo.school_name_2}<br />
-                            {Venues.length !== 0 && Venues[gameInfo.venue_id].venue_name}
-                        </button><br /><br />
-                    </div>
-                ))}
+
+                        {/* 編集モード切り替えボタン */}
+                        <div className="ButtonArea">
+                            <button id="checkButton"
+                                onClick={() => { setIsEditMode(!isEditMode) }}>編集モード
+                            </button>
+                        </div>
+
+                        <hr></hr>
+
+                        {gameInfoState.map(gameInfo => (
+                            <div className="game">
+                                <button className="btn_So_Make"
+                                    onClick={() => PageTransition(
+                                        "starting_member?urlTournamentId=" +
+                                        urlTournamentId +
+                                        "&urlTournamentName=" +
+                                        urlTournamentName +
+                                        "&urlSchoolId=" +
+                                        gameInfo.school_id_1 +
+                                        "&urlSchoolName=" +
+                                        gameInfo.school_name +
+                                        "&urlSchoolId2=" +
+                                        gameInfo.school_id_2 +
+                                        "&urlSchoolName2=" +
+                                        gameInfo.school_name_2 +
+                                        "&urlGameId=" +
+                                        gameInfo.game_id
+                                    )}>
+                                    {gameInfo.match_num}回戦<br />
+                                    {gameInfo.school_name}<br />
+                                    {gameInfo.school_name_2}<br />
+                                    {Venues.length !== 0 && Venues[gameInfo.venue_id].venue_name}
+                                </button><br /><br />
+                            </div>
+                        ))}
                     </>
                 }
 
+                {/* 編集モード中 */}
                 {isEditMode &&
                     <>
+
+                        {/* 編集モード切り替えボタン */}
+                        <div className="ButtonArea">
+                            <button id="checkButton" onClick={() => { setIsEditMode(!isEditMode) }}>編集中</button>
+                        </div>
+
                         <div className="hyoji">
                             <div className="players">
-                                {gameInfoState.map((game, ind) => (
+                                {gameInfoState.map((gameInfo, ind) => (
                                     <div className="school">
-                                        {/* <EditMakegamePopup
-                                            game={game}
+                                        <EditMakegamePopup
+                                            gameInfo={gameInfo}
                                             ind={ind}
                                             EorDCheckbox={EorDCheckbox}
                                             setEorDCheckbox={setEorDCheckbox}
                                             makePulldown={makePulldown}
-                                        /> */}
+                                            iningList={iningList}
+                                            Schools={Schools}
+                                            Venues={Venues}
+                                            YearList={YearList}
+                                            MonthList={MonthList}
+                                            DayList={DayList}
+                                            editingSelected={editingSelected}
+                                            setEditingSelected={setEditingSelected}
+                                            editingSelectedYmd={editingSelectedYmd}
+                                            setEditingSelectedYmd={setEditingSelectedYmd}
+                                            EditGame={EditGame}
+                                            DeleteGame={DeleteGame}
+                                            loadGame={loadGame}
+                                            setGameInfoState={setGameInfoState}
+                                            urlTournamentId={urlTournamentId}
+                                        />
                                         <br /><br />
                                     </div>
-
                                 ))}
                             </div>
                         </div>
                     </>
                 }
+
+                <hr></hr>
 
             </div>
         </>

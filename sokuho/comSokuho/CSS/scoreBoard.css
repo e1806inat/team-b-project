@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
+
+:root{
+    --color-main: #00afcc;
+}
+
+*{
+    font-family: 'M PLUS 1p', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.InputPlayGame {
+    text-align: center;
+}
+
+/*スコアボード*/
+.scoreBoardTable {
+    text-align: center;
+    width: 100%;
+    table-layout: fixed;
+    /* border: 1.5px #7e7e7e solid; */
+    margin: auto;
+    border: none;
+}
+
+.scoreBoardTr {
+    background: var(--color-main);
+}
+
+.scoreBoardSchoolName {
+    width: 350%;
+    table-layout: fixed;
+    /* border: 1.5px #7e7e7e solid; */
+}
+
+.scoreBoardTh {
+    width: 80%;
+}
+
+.diamondPng {
+    width: 80%;
+    text-align: center;
+    margin: auto
+}
+
+
+.size {
+    color: #1da1f2;
+    /*青色にする*/
+}
+
+table,
+table td {
+    border: none;
+}
+
+.scoreBoardTr2 td{
+    background-color: rgba(232, 235, 235, 0.4);
+}
+
+/*キャンバスに関する*/
+canvas {
+    border: 1px solid black;
+}
+
+table .nowIningScore {
+    color: black;
+    font-weight: 600;
+    background-color: rgba(0, 175, 204, 0.3);
+}

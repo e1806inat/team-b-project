@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
+
+:root{
+    --color-main: #00afcc;
+}
+
+*{
+    font-family: 'M PLUS 1p', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.freeWrite {
+  width: auto;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.freewriteInput {
+  width: 70%;
+  height: 80px;
+  margin-top: 15px;
+  font-size: 2em;
+  color: rgb(236, 22, 22);
+}

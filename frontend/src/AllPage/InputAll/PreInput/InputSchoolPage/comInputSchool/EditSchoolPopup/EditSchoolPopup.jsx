@@ -1,7 +1,19 @@
 import React from "react";
 
+//送られた文字列がどれか空ならtrue
+const isEnpty = (strArray) => {
+    let flag = false
+    strArray.map((str) => {
+        if (!str) {
+            flag = true
+        }
+    })
+    return flag
+}
+
 //メインのDOMの中で配置するサブ部品のような要素
 class Popup extends React.Component {
+
     render() {
         return (
             <div className="popup_field">
@@ -48,36 +60,44 @@ class Popup extends React.Component {
                         }}>いいえ</button>
                     <nbsp></nbsp>
 
+
                     {/* はいのボタン */}
-                    <button className="button_style"
-                        onClick={
-                            () => {
-                                if (this.props.EorDCheckbox) {
-                                    //編集を確定する
-                                    this.props.EditSchool(
-                                        this.props.school.school_id,
-                                        document.getElementById("changeId").value,
-                                        this.props.setUseSchools,
-                                        this.props.urlTournamentId
-                                    )
-                                }
-                                else {
-                                    //高校を削除する
-                                    this.props.DeleteSchool(
-                                        this.props.school.school_id,
-                                        this.props.school.school_name,
-                                        this.props.setUseSchools,
-                                        this.props.urlTournamentId,
-                                    )
-                                }
+                    {!isEnpty([this.props.editingSchoolName]) &&
+                        <button className="button_style"
+                            onClick={
+                                () => {
+                                    if (this.props.EorDCheckbox) {
+                                        //編集を確定する
+                                        this.props.EditSchool(
+                                            this.props.school.school_id,
+                                            document.getElementById("changeId").value,
+                                            this.props.setUseSchools,
+                                            this.props.urlTournamentId
+                                        )
+                                    }
+                                    else {
+                                        //高校を削除する
+                                        this.props.DeleteSchool(
+                                            this.props.school.school_id,
+                                            this.props.school.school_name,
+                                            this.props.setUseSchools,
+                                            this.props.urlTournamentId,
+                                        )
+                                    }
 
-                                // 高校を読み込む
-                                this.props.readSchool(this.props.setUseSchools, this.props.urlTournamentId)
+                                    // 高校を読み込む
+                                    this.props.readSchool(this.props.setUseSchools, this.props.urlTournamentId)
 
-                                // ポップアップを閉じる
-                                this.props.closePopup()
-                            }
-                        }>はい</button>
+                                    // ポップアップを閉じる
+                                    this.props.closePopup()
+                                }
+                            }>はい</button>
+                    }
+
+                    {isEnpty([this.props.editingSchoolName]) &&
+                        <button className="button_style">はい
+                        </button>
+                    }
                 </div>
             </div>
         );

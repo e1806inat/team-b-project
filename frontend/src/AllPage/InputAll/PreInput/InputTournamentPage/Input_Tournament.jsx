@@ -9,6 +9,18 @@ import "./InputTournament.css"
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
+
+//送られた文字列がどれか空ならtrue
+const isEnpty = (strArray) => {
+  let flag = false
+  strArray.map((str) => {
+    if (!str) {
+      flag = true
+    }
+  })
+  return flag
+}
+
 //大会を読み込む
 const readTournament = (setTournamentData) => {
   fetch(backendUrl + "/tournament/tournament_call", {
@@ -236,13 +248,25 @@ export const Input_Tournament = () => {
           {makePulldown(2, dayArray, "day", nowOpeningDate, setNowOpeningDate)}日
         </label>
         <br />
-        <button
-          class="btn_In_to"
-          onClick={() => {
-            handleTournament(
-              setTournamentData, yearArray, monthArray, dayArray, nowOpeningDate, nowTournamentName, TournamentData
-            )
-          }}>追加</button>
+
+        {/* 追加ボタン */}
+        {isEnpty([nowTournamentName]) &&
+          <button
+            class="btn_In_to"
+            onClick={() => {}}>追加
+          </button>
+        }
+
+        {!isEnpty([nowTournamentName]) &&
+          <button
+            class="btn_In_to"
+            onClick={() => {
+              handleTournament(
+                setTournamentData, yearArray, monthArray, dayArray, nowOpeningDate, nowTournamentName, TournamentData
+              )
+            }}>追加
+          </button>
+        }
 
         {/* 編集・削除モードボタン */}
         <button

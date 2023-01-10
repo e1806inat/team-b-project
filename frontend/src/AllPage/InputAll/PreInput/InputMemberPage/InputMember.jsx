@@ -11,6 +11,27 @@ import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
 
+//ひらがなチェック
+const isHiragana = (str) => {
+    str = (str == null) ? "" : str;
+    if (str.match(/^[ぁ-んー　]*$/)) {    //"ー"の後ろの文字は全角スペースです。
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//送られた文字列がどれか空ならfalse
+const isEnpty = (strArray) => {
+    let flag = true
+    strArray.map((str) => {
+        if (!str) {
+            flag = false
+        }
+    })
+    return flag
+}
+
 const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, isInitial, setRegisteredMembers) => {
     //高校に所属する3年生以下の人間を全員呼び出す
     fetch(backendUrl + "/member/member_call", {
@@ -93,9 +114,6 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
 }
 
 
-
-const { Schools } = require("../../../../DB/Schools"); //分割代入
-//const { Member } = require("../../../../DB/Member")
 const Member = [{}]
 
 const setCheck = (copyMember, selectedMember, setSelectedMember) => {
@@ -151,6 +169,37 @@ const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
     )
 }
 
+
+//自作プルダウン
+const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected) => {
+    //pulldownIdは0でいいです。
+    //ArrayListは表示したい要素を並べた配列です、普通の配列ではなく連想配列です。
+    //idテキストは連想配列の属性を書きます。
+    //nowSelectedは今プルダウンで何が選択されているかが入ります。初期値は[0]で、これは0番目の値が選択されている状態です。
+    //setNowSelectedはnowSelecedの値をuseStateの機能で上書きする関数です。setNowSelected(更新値)とすれば、nowSelectedに更新値が入ります。
+
+    return (
+        <>
+            <select id="tekitouni"
+                onChange={(e) => {
+                    //ステイトが変化すると再描画させるための文、これがないと再描画されない
+                    //なお、消すと再描画はされないが内部は変化する
+                    nowSelected = nowSelected.slice(0, nowSelected.length);
+                    nowSelected[pulldownId] = e.target.value
+                    setNowSelected(nowSelected)
+                    console.log(nowSelected)
+                }
+                }>
+                {ArrayList.map((component, ind) => (
+                    <option value={ind}>{component[idText]}</option>
+                ))
+                }
+            </select>
+        </>
+    )
+}
+
+//登録ボタンで内容を送信
 const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumberArray, registeredMembers) => {
 
     let sendArray = copyMember
@@ -205,7 +254,31 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
         },
         body: JSON.stringify(sendArray2),
     })
+
 }
+
+
+//メンバーの編集内容をバックエンドに送信
+const EditMember = (sendInfo) => {
+    fetch(backendUrl + "/member/member_edit", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify(sendInfo),
+    })
+        .then((response) => response.text())
+        .then((data) => {
+
+            if (data === "OK") {
+                console.log(sendInfo.player_name_kanji + "を編集しました")
+                // readSchool(setUseSchools, urlTournamentId)
+            }
+        })
+
+    console.log(sendInfo)
+}
+
+
 
 const lordRegisteredMember = (urlTournamentId, urlSchoolId) => {
     fetch(backendUrl + "/member/tournament_member_call", {
@@ -294,8 +367,6 @@ const cntSelectedMemberNum = (selectedMember) => {
 
 
 
-
-
 export const InputMember = () => {
 
     //ページ遷移用
@@ -342,6 +413,9 @@ export const InputMember = () => {
     //編集・削除モードかどうかを管理するステイト
     const [isEditMode, setisEditMode] = useState(false)
 
+    //編集中の学年のプルダウンの位置を管理するステイト
+    const [editGrade, setEditGrade] = useState([0])
+
     //修正中のプレイヤー名を管理するすていと
     const [editingMemberName, setEditingMemberName] = useState(
         {
@@ -349,6 +423,10 @@ export const InputMember = () => {
             player_name_hira: { famiryName: "", firstName: "" }
         }
     )
+
+    //学年のプルダウンのための配列
+    const gradeArray = [{ grade: 1 }, { grade: 2 }, { grade: 3 }, { grade: 4 }]
+
 
     //修正か削除かを管理するステイト
     const [EorDCheckbox, setEorDCheckbox] = useState(true)
@@ -432,7 +510,7 @@ export const InputMember = () => {
 
 
 
-
+    //追加ボタン
     const handleMembers = (uniformNumberArray, setUniformNumberArray, nameKanji, nameHira) => {
         let Array = [{
             "school_id": urlSchoolId,
@@ -455,7 +533,7 @@ export const InputMember = () => {
         }
         else {
             console.log("safe")
-            fetch("http://localhost:5000/member/member_register", {
+            fetch(backendUrl + "/member/member_register", {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -511,8 +589,21 @@ export const InputMember = () => {
 
 
                         <br />
-                        氏（ひらがな）<input onChange={(e) => setNameHira({ famiryName: e.target.value, firstName: nameHira.firstName })}></input>
-                        名（ひらがな）<input onChange={(e) => setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })}></input>
+                        氏（ひらがな）<input
+                            value={nameHira.famiryName}
+                            onChange={
+                                (e) => {
+                                    setNameHira({ famiryName: e.target.value, firstName: nameHira.firstName })
+                                }
+                            }></input>
+                        名（ひらがな）<input
+                            // onChange={(e) => setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })
+                            value={nameHira.firstName}
+                            onChange={
+                                (e) => {
+                                    setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })
+                                }
+                            }></input>
                     </div>
 
                     <div className="selectDominant">
@@ -520,11 +611,34 @@ export const InputMember = () => {
                         <div>{selectThrowed(handedThrowState, handleHandedThrow)}</div>
                     </div>
 
+                    {/* チェックを入れる */}
                     <br />
-                    <button
-                        className="addButton"
-                        onClick={() => handleMembers(uniformNumberArray, setUniformNumberArray, nameKanji, nameHira)}
-                    >追加</button>
+                    {(!isHiragana(nameHira.famiryName) || !isHiragana(nameHira.firstName) ||
+                        !isEnpty([nameHira.famiryName, nameHira.firstName, nameKanji.famiryName, nameKanji.firstName])) &&
+                        <button
+                            className="addButton"
+                            onClick={() => handleMembers(uniformNumberArray, setUniformNumberArray, nameKanji, nameHira)}
+                        >追加</button>
+                    }
+
+                    {(isHiragana(nameHira.famiryName) && isHiragana(nameHira.firstName) &&
+                        nameHira.famiryName !== "" && nameHira.firstName !== "" &&
+                        nameKanji.famiryName !== "" && nameKanji.firstName !== "") &&
+                        <button
+                            className="addButton"
+                            onClick={() => { }}
+                        >追加</button>
+                    }
+
+                    {console.log(isEnpty([nameHira.famiryName, nameHira.firstName, nameKanji.famiryName, nameKanji.firstName]))}
+
+
+
+                    <div>{(!isHiragana(nameHira.famiryName) || !isHiragana(nameHira.firstName)) &&
+                        <>ひらがなを入力してください</>}
+                    </div>
+
+                    現在の選手選択数:{cntSelectedMemberNum(selectedMember)}<br />
 
                     <button
                         onClick={() => { setisEditMode(!isEditMode) }}
@@ -536,28 +650,40 @@ export const InputMember = () => {
                 <>
                     <div className="hyoji">
                         <div className="players">
-                            {copyMember.map((member, ind) => (
-                                <div className="school">
-                                    <button
-                                        onClick={() => handleSelected(ind)}
-                                        className={"InputMember" + selectedMember[ind]}
-                                    >
-                                        <div className="selectName">
-                                            <div> &nbsp;&nbsp;{member.grade}年</div><div className="playerName">&nbsp;&nbsp;&nbsp;&nbsp;{member.player_name_kanji}（ {member.player_name_hira}）</div>
+                            {copyMember.map((member, ind) => {
+
+                                //漢字名前がない者は表示されない
+                                if (member.player_name_kanji !== null) {
+                                    return (
+
+
+                                        <div className="school">
+                                            <button
+                                                onClick={() => handleSelected(ind)}
+                                                className={"InputMember" + selectedMember[ind]}
+                                            >
+                                                <div className="selectName">
+                                                    <div> &nbsp;&nbsp;{member.grade}年</div><div className="playerName">&nbsp;&nbsp;&nbsp;&nbsp;{member.player_name_kanji}（ {member.player_name_hira}）</div>
+                                                </div>
+                                                {/* &nbsp; 背番号{member.uniform_number}  */}
+                                                <div className="Dominant">&nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投 &nbsp; 背番号:{uniformNumberArray[ind]}</div>
+
+                                            </button>
+
+                                            <div className="selectdiv">
+                                                背番号<br />
+                                                {makePulldownBN(ind, uniformNumberArray, setUniformNumberArray)}
+                                            </div>
+                                            <br /><br />
                                         </div>
-                                        {/* &nbsp; 背番号{member.uniform_number}  */}
-                                        <div className="Dominant">&nbsp; {member.handed_hit}打 &nbsp; {member.handed_throw}投 &nbsp; 背番号:{uniformNumberArray[ind]}</div>
 
-                                    </button>
+                                    )
+                                }
 
-                                    <div className="selectdiv">
-                                        背番号<br />
-                                        {makePulldownBN(ind, uniformNumberArray, setUniformNumberArray)}
-                                    </div>
-                                    <br /><br />
-                                </div>
 
-                            ))}
+                            }
+
+                            )}
                         </div>
                     </div>
 
@@ -596,6 +722,13 @@ export const InputMember = () => {
                                         selectThrowed={selectThrowed}
                                         handedThrowState={handedThrowState}
                                         handleHandedThrow={handleHandedThrow}
+                                        makePulldown={makePulldown}
+                                        editGrade={editGrade}
+                                        setEditGrade={setEditGrade}
+                                        EditMember={EditMember}
+                                        gradeArray={gradeArray}
+                                        isEnpty={isEnpty}
+                                        isHiragana={isHiragana}
                                     />
                                     <br /><br />
                                 </div>

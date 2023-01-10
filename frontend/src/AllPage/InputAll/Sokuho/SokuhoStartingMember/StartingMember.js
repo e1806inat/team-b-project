@@ -103,8 +103,6 @@ const sendSelectedMember = (
         toSendArray[i].BA = registeredMember1[nowSelected[i + 9]].BA
     }
 
-    console.log(toSendArray)
-
 
     fetch(backendUrl + "/member/starting_member_register", {
         method: "POST",
@@ -165,8 +163,8 @@ const StartingMember = () => {
         handed_hit: "右",
         handed_throw: "右",
         player_id: 2,
-        player_name_hira: "はしば ひでよし",
-        player_name_kanji: "羽柴 秀吉",
+        player_name_hira: "",
+        player_name_kanji: "",
         school_id: 1,
         tournament_id: 1,
         uniform_number: 1
@@ -264,6 +262,9 @@ const StartingMember = () => {
                 </tbody>
             </table><br />
 
+            {}
+
+            {/* 登録ボタン */}
             <button onClick={() => {
                 sendSelectedMember(
                     nowSelected,
@@ -280,6 +281,8 @@ const StartingMember = () => {
                     urlSchoolId2)
 
             }}>登録</button>
+
+            {/* ページ遷移ボタン */}
             <button onClick={() => PageTransition(
                 "InputPlayGame?urlTournamentId=" +
                 urlTournamentId +

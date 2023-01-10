@@ -106,9 +106,11 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
         <>
             <select id="tekitouni"
                 onChange={(e) => {
-                    nowSelected[pulldownId] = e.target.value
-                    setNowSelected(nowSelected)
-                    console.log(nowSelected)
+
+                    let Array = nowSelected.slice(0, nowSelected.length)
+                    Array[pulldownId] = e.target.value
+                    setNowSelected(Array)
+                    console.log(Array)
                 }}>
                 {ArrayList.map((component, ind) => (
                     <option value={ind}>{component[idText]}</option>
@@ -214,18 +216,30 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                     先行チーム{makePulldown(1, Schools, "school_name", nowSelected, setNowSelected)}<br />
                     後攻チーム{makePulldown(2, Schools, "school_name", nowSelected, setNowSelected)}<br />
                     会場{makePulldown(3, Venues, "venue_name", nowSelected, setNowSelected)}<br />
-                    <button className="btn_So_Make" onClick={() => handleAddGame(
-                        urlTournamentId,
-                        nowSelected,
-                        iningList,
-                        Schools,
-                        Venues,
-                        nowSelectedYmd,
-                        YearList,
-                        MonthList,
-                        DayList,
-                        setGameInfoState
-                    )}>追加</button>
+
+
+                    {/* 追加ボタン */}
+                    {nowSelected[1] !== nowSelected[2] &&
+                        <button className="btn_So_Make" onClick={() => handleAddGame(
+                            urlTournamentId,
+                            nowSelected,
+                            iningList,
+                            Schools,
+                            Venues,
+                            nowSelectedYmd,
+                            YearList,
+                            MonthList,
+                            DayList,
+                            setGameInfoState
+                        )}>追加
+                        </button>
+                    }
+                    {nowSelected[1] === nowSelected[2] &&
+                        <button className="btn_So_Make" onClick={() => { }}>追加
+                        </button>
+                    }
+
+                    {console.log(nowSelected[1] === nowSelected[2])}
                 </div>
             </div>
 

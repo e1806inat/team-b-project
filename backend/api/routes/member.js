@@ -233,7 +233,7 @@ router.post("/tournament_member_delete", async (req, res, next) => {
     }
 });
 
-//スタメンの選手情報削除（運用者用webアプリ）
+//スタメン画面での選手情報削除（運用者用webアプリ）守備位置とかも含む
 router.post("/starting_member_delete", async (req, res, next) => {
     const { game_id, player_id } = req.body;
     try {

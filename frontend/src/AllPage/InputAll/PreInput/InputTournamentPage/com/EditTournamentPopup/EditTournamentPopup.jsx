@@ -1,7 +1,6 @@
 import React from "react";
 import "./EditTournamentPopup.css"
-
-
+import isEnpty from "../../../../../../Functions/IsEnpty";
 
 //メインのDOMの中で配置するサブ部品のような要素
 class Popup extends React.Component {
@@ -58,33 +57,46 @@ class Popup extends React.Component {
           <nbsp></nbsp>
 
           {/* はいのボタン */}
-          <button className="button_style"
-            onClick={
-              () => {
-                if (this.props.EorDcheckBox) {
-                  //編集を確定する
-                  this.props.editTournament(
-                    this.props.Tournament.tournament_id,
-                    document.getElementById("changeId").value,
-                    this.props.yearArray[this.props.editOpeningDate[0]].year + "-" +
-                    this.props.monthArray[this.props.editOpeningDate[1]].month + "-" +
-                    this.props.dayArray[this.props.editOpeningDate[2]].day,
-                    this.props.TournamentData,
-                    this.props.setTournamentData
-                  )
-                }
-                else {
-                  //大会を削除する
-                  this.props.tournamentDelete(this.props.Tournament.tournament_id)
-                }
+          {!isEnpty([this.props.editingTnmtName]) &&
+            <button className="button_style"
+              onClick={
+                () => {
+                  if (this.props.EorDcheckBox) {
+                    //編集を確定する
+                    this.props.editTournament(
+                      this.props.Tournament.tournament_id,
+                      document.getElementById("changeId").value,
+                      this.props.yearArray[this.props.editOpeningDate[0]].year + "-" +
+                      this.props.monthArray[this.props.editOpeningDate[1]].month + "-" +
+                      this.props.dayArray[this.props.editOpeningDate[2]].day,
+                      this.props.TournamentData,
+                      this.props.setTournamentData
+                    )
+                  }
+                  else {
+                    //大会を削除する
+                    this.props.tournamentDelete(this.props.Tournament.tournament_id)
+                  }
 
-                // 大会を読み込む
-                this.props.readTournament(this.props.setTournamentData)
+                  // 大会を読み込む
+                  this.props.readTournament(this.props.setTournamentData)
 
-                // ポップアップを閉じる
-                this.props.closePopup()
-              }
-            }>はい</button>
+                  // ポップアップを閉じる
+                  this.props.closePopup()
+                }
+              }>はい
+            </button>
+          }
+          {isEnpty([this.props.editingTnmtName]) &&
+            <button className="button_style"
+              onClick={
+                () => {
+                }
+              }>はい
+            </button>
+          }
+
+
         </div>
       </div>
     );

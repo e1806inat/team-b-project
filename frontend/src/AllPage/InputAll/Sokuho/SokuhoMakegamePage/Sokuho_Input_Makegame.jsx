@@ -5,6 +5,9 @@ import './Sokuho_Input_Makegame.css'
 
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
+
+import EditMakegamePopup from "./EditMakeGamePopup/EditMakegamePopup"
+
 //import { Schools } from "../../../../DB/Schools";
 //const { Schools } = require("../../../../DB/Schools"); //分割代入
 //const { Venues } = require("../../../../DB/Venues"); //分割代入
@@ -181,6 +184,12 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     const [nowSelected, setNowSelected] = useState([0, 0, 0, 0])
     const [nowSelectedYmd, setNowSelectedYmd] = useState([0, 0, 0])
 
+    //編集削除モードかそうでないか
+    const [isEditMode, setIsEditMode] = useState(false)
+
+    //編集か削除か
+    const [EorDCheckbox, setEorDCheckbox] = useState(true)
+
 
 
 
@@ -239,14 +248,26 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                         </button>
                     }
 
-                    {console.log(nowSelected[1] === nowSelected[2])}
+
+                    {/* <EditMakegamePopup
+
+                        EorDCheckbox={EorDCheckbox}
+                        setEorDCheckbox={setEorDCheckbox}
+                        makePulldown={makePulldown}
+                    /> */}
+
+
                 </div>
             </div>
 
             <hr></hr>
 
             <div className="dispGames">
-                {gameInfoState.map(gameInfo => (
+   
+
+                {!isEditMode &&
+                    <>
+                       {gameInfoState.map(gameInfo => (
                     <div className="game">
                         <button className="btn_So_Make"
                             onClick={() => PageTransition(
@@ -272,6 +293,31 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                         </button><br /><br />
                     </div>
                 ))}
+                    </>
+                }
+
+                {isEditMode &&
+                    <>
+                        <div className="hyoji">
+                            <div className="players">
+                                {gameInfoState.map((game, ind) => (
+                                    <div className="school">
+                                        {/* <EditMakegamePopup
+                                            game={game}
+                                            ind={ind}
+                                            EorDCheckbox={EorDCheckbox}
+                                            setEorDCheckbox={setEorDCheckbox}
+                                            makePulldown={makePulldown}
+                                        /> */}
+                                        <br /><br />
+                                    </div>
+
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                }
+
             </div>
         </>
     )

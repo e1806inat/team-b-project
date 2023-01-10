@@ -6,97 +6,97 @@ import isEnpty from "../../../../../../Functions/IsEnpty";
 class Popup extends React.Component {
 
   render() {
+    console.log('ok')
     return (
       <div className="popup_field">
-        <div className="popup_inner_field">
+        <div className="popup_in_field">
           <div className="title">{this.props.text}</div>
+          <div className='editarea'>
+            {/* 編集チェックボックス */}
+            <input
+              type="checkbox"
+              checked={this.props.EorDcheckBox}
+              onClick={() => {
+                this.props.setEorDcheckBox(true)
+                //初期値を入れる
+                this.props.setEditingTnmtName(this.props.Tournament.tournament_name)
+              }}
+            ></input>大会を編集する<br></br>
 
-          {/* 編集チェックボックス */}
-          <input
-            type="checkbox"
-            checked={this.props.EorDcheckBox}
-            onClick={() => {
-              this.props.setEorDcheckBox(true)
-              //初期値を入れる
-              this.props.setEditingTnmtName(this.props.Tournament.tournament_name)
-            }}
-          ></input>大会を編集する<br></br>
+            名前の変更<br></br>
+            変更前：{this.props.Tournament.tournament_name}<br></br>
+            変更後：<input
+              id="changeId" value={this.props.editingTnmtName}
+              onChange={(e) => { this.props.setEditingTnmtName(e.target.value) }}
+            ></input><br></br><br></br>
+            日付の変更:<br></br>
+            変更前：{this.props.Tournament.opening}<br></br>
+            変更後：
+            {this.props.makePulldown(0, this.props.yearArray, "year", this.props.editOpeningDate, this.props.setEditOpeningDate)}年
+            {this.props.makePulldown(1, this.props.monthArray, "month", this.props.editOpeningDate, this.props.setEditOpeningDate)}月
+            {this.props.makePulldown(2, this.props.dayArray, "day", this.props.editOpeningDate, this.props.setEditOpeningDate)}日<br></br><br></br>
 
-          名前の変更<br></br>
-          変更前：{this.props.Tournament.tournament_name}<br></br>
-          変更後：<input
-            id="changeId" value={this.props.editingTnmtName}
-            onChange={(e) => { this.props.setEditingTnmtName(e.target.value) }}
-          ></input><br></br><br></br>
-          日付の変更:<br></br>
-          変更前：{this.props.Tournament.opening}<br></br>
-          変更後：
-          {this.props.makePulldown(0, this.props.yearArray, "year", this.props.editOpeningDate, this.props.setEditOpeningDate)}年
-          {this.props.makePulldown(1, this.props.monthArray, "month", this.props.editOpeningDate, this.props.setEditOpeningDate)}月
-          {this.props.makePulldown(2, this.props.dayArray, "day", this.props.editOpeningDate, this.props.setEditOpeningDate)}日<br></br><br></br>
+            {/* 削除チェックボックス */}
+            <input
+              type="checkbox"
+              checked={!this.props.EorDcheckBox}
+              onClick={() => {
+                this.props.setEorDcheckBox(false)
+                //警告をを入れる
+                this.props.setEditingTnmtName("大会を削除します")
+              }}
+            ></input>大会を削除する<br></br>
+          </div>
 
-          {/* 削除チェックボックス */}
-          <input
-            type="checkbox"
-            checked={!this.props.EorDcheckBox}
-            onClick={() => {
-              this.props.setEorDcheckBox(false)
-              //警告をを入れる
-              this.props.setEditingTnmtName("大会を削除します")
-            }}
-          ></input>大会を削除する<br></br>
+          <div className='buttonarea'>
+            {/* いいえのボタン */}
+            <button className="button_style_2"
+              onClick={() => {
+                this.props.closePopup()
+                this.props.setEorDcheckBox(true)
+              }}>やめる</button>
+            <nbsp></nbsp>
 
-          <p>情報が更新されますがよろしいでしょうか？</p>
+            {/* はいのボタン */}
+            {!isEnpty([this.props.editingTnmtName]) &&
+              <button className="button_style_2"
+                onClick={
+                  () => {
+                    if (this.props.EorDcheckBox) {
+                      //編集を確定する
+                      this.props.editTournament(
+                        this.props.Tournament.tournament_id,
+                        document.getElementById("changeId").value,
+                        this.props.yearArray[this.props.editOpeningDate[0]].year + "-" +
+                        this.props.monthArray[this.props.editOpeningDate[1]].month + "-" +
+                        this.props.dayArray[this.props.editOpeningDate[2]].day,
+                        this.props.TournamentData,
+                        this.props.setTournamentData
+                      )
+                    }
+                    else {
+                      //大会を削除する
+                      this.props.tournamentDelete(this.props.Tournament.tournament_id)
+                    }
 
-          {/* いいえのボタン */}
-          <button className="button_style"
-            onClick={() => {
-              this.props.closePopup()
-              this.props.setEorDcheckBox(true)
-            }}>いいえ</button>
-          <nbsp></nbsp>
+                    // 大会を読み込む
+                    this.props.readTournament(this.props.setTournamentData)
 
-          {/* はいのボタン */}
-          {!isEnpty([this.props.editingTnmtName]) &&
-            <button className="button_style"
-              onClick={
-                () => {
-                  if (this.props.EorDcheckBox) {
-                    //編集を確定する
-                    this.props.editTournament(
-                      this.props.Tournament.tournament_id,
-                      document.getElementById("changeId").value,
-                      this.props.yearArray[this.props.editOpeningDate[0]].year + "-" +
-                      this.props.monthArray[this.props.editOpeningDate[1]].month + "-" +
-                      this.props.dayArray[this.props.editOpeningDate[2]].day,
-                      this.props.TournamentData,
-                      this.props.setTournamentData
-                    )
+                    // ポップアップを閉じる
+                    this.props.closePopup()
                   }
-                  else {
-                    //大会を削除する
-                    this.props.tournamentDelete(this.props.Tournament.tournament_id)
+                }>決定
+              </button>
+            }
+            {isEnpty([this.props.editingTnmtName]) &&
+              <button className="button_style_2"
+                onClick={
+                  () => {
                   }
-
-                  // 大会を読み込む
-                  this.props.readTournament(this.props.setTournamentData)
-
-                  // ポップアップを閉じる
-                  this.props.closePopup()
-                }
-              }>はい
-            </button>
-          }
-          {isEnpty([this.props.editingTnmtName]) &&
-            <button className="button_style"
-              onClick={
-                () => {
-                }
-              }>はい
-            </button>
-          }
-
-
+                }>はい
+              </button>
+            }
+          </div>
         </div>
       </div>
     );

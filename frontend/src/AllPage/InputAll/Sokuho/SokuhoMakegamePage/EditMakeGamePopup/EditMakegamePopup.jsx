@@ -1,5 +1,5 @@
 import React from "react";
-// import "./EditMemberPopup.css"
+import "./EditMakeGamePopup.css"
 import isEnpty from "../../../../../Functions/IsEnpty";
 
 
@@ -9,71 +9,68 @@ class Popup extends React.Component {
     render() {
         return (
             <div className="popup_field">
-                <div className="popup_inner_field">
+                <div className="popup_in_field4">
                     <div className="title">{this.props.text}</div>
+                    <div className='editarea'>
+                        {/* 編集チェックボックス */}
+                        <input
+                            type="checkbox"
+                            checked={this.props.EorDCheckbox}
+                            onClick={() => {
+                                this.props.setEorDCheckbox(true)
+                                //初期値を入れる
+                                // this.props.setEditingMemberName(this.props.member.player_name_kanji)
+                                console.log(this.props.editGrade)
+                            }}
+                        ></input>大会を編集する<br></br>
 
-                    {/* 編集チェックボックス */}
-                    <input
-                        type="checkbox"
-                        checked={this.props.EorDCheckbox}
-                        onClick={() => {
-                            this.props.setEorDCheckbox(true)
-                            //初期値を入れる
-                            // this.props.setEditingMemberName(this.props.member.player_name_kanji)
-                            console.log(this.props.editGrade)
-                        }}
-                    ></input>大会を編集する<br></br>
+                        変更前：{this.props.gameInfo.game_ymd}<br />
+                        変更後：
+                        年{this.props.makePulldown(0, this.props.YearList, "year", this.props.editingSelectedYmd, this.props.setEditingSelectedYmd)}
+                        月{this.props.makePulldown(1, this.props.MonthList, "month", this.props.editingSelectedYmd, this.props.setEditingSelectedYmd)}
+                        日{this.props.makePulldown(2, this.props.DayList, "day", this.props.editingSelectedYmd, this.props.setEditingSelectedYmd)}<br />
 
-                    変更前：{this.props.gameInfo.game_ymd}<br />
-                    変更後：
-                    年{this.props.makePulldown(0, this.props.YearList, "year", this.props.editingSelectedYmd, this.props.setEditingSelectedYmd)}
-                    月{this.props.makePulldown(1, this.props.MonthList, "month", this.props.editingSelectedYmd, this.props.setEditingSelectedYmd)}
-                    日{this.props.makePulldown(2, this.props.DayList, "day", this.props.editingSelectedYmd, this.props.setEditingSelectedYmd)}<br />
+                        回戦の変更<br />
+                        変更前：{this.props.gameInfo.match_num}<br />
+                        変更後：{this.props.makePulldown(0, this.props.iningList, "ining", this.props.editingSelected, this.props.setEditingSelected)}<br />
 
-                    回戦の変更<br />
-                    変更前：{this.props.gameInfo.match_num}<br />
-                    変更後：{this.props.makePulldown(0, this.props.iningList, "ining", this.props.editingSelected, this.props.setEditingSelected)}<br />
+                        先攻の高校を変更<br />
+                        変更前：{this.props.gameInfo.school_name}<br />
+                        変更後：{this.props.makePulldown(1, this.props.Schools, "school_name", this.props.editingSelected, this.props.setEditingSelected)}<br />
 
-                    先攻の高校を変更<br />
-                    変更前：{this.props.gameInfo.school_name}<br />
-                    変更後：{this.props.makePulldown(1, this.props.Schools, "school_name", this.props.editingSelected, this.props.setEditingSelected)}<br />
+                        後攻の高校を変更<br />
+                        変更前：{this.props.gameInfo.school_name_2}<br />
+                        変更後：{this.props.makePulldown(2, this.props.Schools, "school_name", this.props.editingSelected, this.props.setEditingSelected)}<br />
 
-                    後攻の高校を変更<br />
-                    変更前：{this.props.gameInfo.school_name_2}<br />
-                    変更後：{this.props.makePulldown(2, this.props.Schools, "school_name", this.props.editingSelected, this.props.setEditingSelected)}<br />
-
-                    会場を変更<br />
-                    変更前：{this.props.gameInfo.venue_name}<br />
-                    変更後：{this.props.makePulldown(3, this.props.Venues, "venue_name", this.props.editingSelected, this.props.setEditingSelected)}<br />
+                        会場を変更<br />
+                        変更前：{this.props.gameInfo.venue_name}<br />
+                        変更後：{this.props.makePulldown(3, this.props.Venues, "venue_name", this.props.editingSelected, this.props.setEditingSelected)}<br />
 
 
-                    {/* 削除チェックボックス */}
-                    <input
-                        type="checkbox"
-                        checked={!this.props.EorDCheckbox}
-                        onClick={() => {
-                            this.props.setEorDCheckbox(false)
-                        }}
-                    ></input>大会を削除する<br></br>
+                        {/* 削除チェックボックス */}
+                        <input
+                            type="checkbox"
+                            checked={!this.props.EorDCheckbox}
+                            onClick={() => {
+                                this.props.setEorDCheckbox(false)
+                            }}
+                        ></input>大会を削除する
+                    </div>
 
-                    <p>情報が更新されますがよろしいでしょうか？</p>
 
-                    {/* いいえのボタン */}
-                    <button className="button_style"
-                        onClick={() => {
-                            this.props.closePopup()
-                            this.props.setEorDCheckbox(true)
-                        }}>いいえ</button>
-                    <nbsp></nbsp>
-
-                    {/* はいのボタン */}
-                    {(
-                        this.props.isDuplicateA(this.props.editingSelected) ||
-                        this.props.isDuplicateB()
-                    ) &&
-                        <button className="button_style"
+                    <div className='buttonarea3'>
+                        {/* いいえのボタン */}
+                        <button className="button_style_3"
                             onClick={() => {
                                 this.props.closePopup()
+                                this.props.setEorDCheckbox(true)
+                            }}>やめる</button>
+                        <nbsp></nbsp>
+
+                        {/* はいのボタン */}
+
+                        <button className="button_style_3"
+                            onClick={() => {
 
                                 if (this.props.EorDCheckbox) {
 
@@ -92,8 +89,15 @@ class Popup extends React.Component {
                                         match_results: this.props.gameInfo.match_results
                                     }
 
-                                    this.props.EditGame(sendInfo)
+                                    if (!(this.props.isDuplicateA(this.props.editingSelected) ||
+                                        this.props.isDuplicateB(this.props.gameInfoState, sendInfo))
+                                    ) {
 
+                                        this.props.EditGame(sendInfo)
+                                        this.props.closePopup()
+
+                                    }
+                                    else {console.log("aaaaiiiii")}
                                 }
 
                                 else {
@@ -103,25 +107,15 @@ class Popup extends React.Component {
                                     }
 
                                     this.props.DeleteGame(sendInfo)
-
+                                    this.props.closePopup()
                                 }
 
                                 this.props.loadGame(this.props.setGameInfoState, this.props.urlTournamentId)
 
-                            }}>はい
+                            }}>決定
                         </button>
 
-                    }
-                    {(false) &&
-
-                        <button className="button_style"
-                            onClick={() => {
-                                this.props.closePopup()
-                            }}>はい
-                        </button>
-
-                    }
-
+                    </div>
                 </div>
             </div>
         );
@@ -191,6 +185,7 @@ class EditMakegamePopup extends React.Component {
                         EditGame={this.props.EditGame}
                         DeleteGame={this.props.DeleteGame}
                         loadGame={this.props.loadGame}
+                        gameInfoState={this.props.gameInfoState}
                         setGameInfoState={this.props.setGameInfoState}
                         urlTournamentId={this.props.urlTournamentId}
                         isDuplicateA={this.props.isDuplicateA}

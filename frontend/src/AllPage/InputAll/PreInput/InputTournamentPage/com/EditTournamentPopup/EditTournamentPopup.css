@@ -14,18 +14,31 @@ h1 {
   margin: auto;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.popup_inner_field {
+
+.popup_in_field {
   position: relative;
-  width: 400px;
-  height: 300px;
-  top:30%;
+  width: 600px;
+  height: 400px;
+  top: 30%;
   margin: auto;
   background: #dcefff;
   border-bottom: solid 6px #3f87ce;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
 
-.title{
+.editarea {
+  left:150px;
+  position:relative;
+  margin: auto;
+}
+
+.buttonarea{
+  display:flex;
+  justify-content:space-around;
+  padding:20px 70px;
+}
+
+.title {
   font-size: 1.5em;
   background: #5fb3f5;
   padding: 7px;
@@ -35,19 +48,19 @@ h1 {
   letter-spacing: 0.05em;
 }
 
-p{
+p {
   font-size: 1.1em;
   padding: 20px 10px;
   text-align: center;
 }
 
-.button_style {
+.button_style_2 {
   width: 150px;
   height: 50px;
   background: #ffffff;
   border-radius: 3px;
   position: relative;
-  margin: 6%;
+  margin: auto;
   max-width: 300px;
   padding: 10px 50px;
   color: #313131;
@@ -55,7 +68,7 @@ p{
   font-weight: 600;
 }
 
-.button_style:hover {
+.button_style_2:hover {
   background: #696969;
-  color:#ffffff;
+  color: #ffffff;
 }

@@ -160,6 +160,8 @@ const isDuplicateA = (editingSelected) => {
 const isDuplicateB = (gameInfoState, sendInfo) => {
 
     let TorF = false
+    console.log(gameInfoState)
+    console.log(sendInfo.game_ymd)
 
     if (
         gameInfoState.some((v) => v.school_id_1 === sendInfo.school_id_1) &&
@@ -174,19 +176,19 @@ const isDuplicateB = (gameInfoState, sendInfo) => {
 
 //試合編集
 const EditGame = (sendInfo) => {
-    fetch(backendUrl + "/game/game_edit", {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "application/json", },
-        body: JSON.stringify(sendInfo),
-    })
-        .then((response) => response.text())
-        .then((data) => {
+    // fetch(backendUrl + "/game/game_edit", {
+    //     method: "POST",
+    //     mode: "cors",
+    //     headers: { "Content-Type": "application/json", },
+    //     body: JSON.stringify(sendInfo),
+    // })
+    //     .then((response) => response.text())
+    //     .then((data) => {
 
-            if (data === "OK") {
+    //         if (data === "OK") {
 
-            }
-        })
+    //         }
+    //     })
 
     console.log(sendInfo)
 }
@@ -400,6 +402,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                                             EditGame={EditGame}
                                             DeleteGame={DeleteGame}
                                             loadGame={loadGame}
+                                            gameInfoState={gameInfoState}
                                             setGameInfoState={setGameInfoState}
                                             urlTournamentId={urlTournamentId}
                                             isDuplicateA={isDuplicateA}

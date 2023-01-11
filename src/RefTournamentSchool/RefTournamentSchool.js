@@ -25,6 +25,90 @@ const RefTournamentSchool = () => {
   const [uSelectSchool, setUSelectSchool] = useState([]);
   const [uSelectOption, setUSelectOption] = useState([]);
 
+  const tmpSchools = [
+    {
+        "school_id": 1,
+        "school_name": "川之江高等学校"
+    },
+    {
+        "school_id": 2,
+        "school_name": "三島高等学校"
+    },
+    {
+        "school_id": 3,
+        "school_name": "土居高等学校"
+    },
+    {
+        "school_id": 4,
+        "school_name": "新居浜東高等学校"
+    },
+    {
+        "school_id": 5,
+        "school_name": "新居浜西高等学校"
+    }
+]
+
+  const tmpMembers = [
+    {
+        "player_id": 22,
+        "school_id": 2,
+        "player_name_kanji": "受湯　札",
+        "player_name_hira": "じゅとう　さつ",
+        "grade": 3,
+        "handed_hit": "右",
+        "handed_throw": "右",
+        "hit_num": 0,
+        "bat_num": 5,
+        "BA": 0
+    },
+    {
+        "player_id": 23,
+        "school_id": 2,
+        "player_name_kanji": "岩弘　健司",
+        "player_name_hira": "いわひろ　けんじ",
+        "grade": 3,
+        "handed_hit": "右",
+        "handed_throw": "右",
+        "hit_num": 0,
+        "bat_num": 6,
+        "BA": 0
+    },
+    {
+        "player_id": 24,
+        "school_id": 2,
+        "player_name_kanji": "回丘　恵三",
+        "player_name_hira": "かいおか　けいぞう",
+        "grade": 3,
+        "handed_hit": "右",
+        "handed_throw": "右",
+        "hit_num": 1,
+        "bat_num": 8,
+        "BA": 0.125
+    },
+    {
+        "player_id": 25,
+        "school_id": 2,
+        "player_name_kanji": "皆葉　恒武",
+        "player_name_hira": "みなば　つねたけ",
+        "grade": 3,
+        "handed_hit": "右",
+        "handed_throw": "右",
+        "hit_num": 4,
+        "bat_num": 9,
+        "BA": 0.444
+    },
+    {
+        "player_id": 26,
+        "school_id": 2,
+        "player_name_kanji": "土井元　恵三",
+        "player_name_hira": "どいもと　けいぞう",
+        "grade": 3,
+        "handed_hit": "右",
+        "handed_throw": "右",
+        "hit_num": 0,
+        "bat_num": 5,
+        "BA": 0
+    }]
 
   const readSchools = (setSchoolsData) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
@@ -123,7 +207,8 @@ const RefTournamentSchool = () => {
           <div className="box_schoolName_t">
             <div className="schoolName_t">高校名</div>
             <label>
-              {makePulldown(0, schoolsData, "school_name", nowSchoolName, setNowSchoolName)}
+              {/* {makePulldown(0, schoolsData, "school_name", nowSchoolName, setNowSchoolName)} */}
+              {makePulldown(0, tmpSchools, "school_name", nowSchoolName, setNowSchoolName)}
             </label>
           </div>
           <div className="box_option_t">
@@ -165,7 +250,7 @@ const RefTournamentSchool = () => {
           </tr>
         </table>
         <div className="refMemberData_t">
-          <TournamentMemberList members={tournamentMembersData} />
+          <TournamentMemberList members={tmpMembers} />
         </div>
       </div>
     </div>

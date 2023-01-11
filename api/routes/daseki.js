@@ -148,14 +148,16 @@ router.post("/tmp_daseki_transmission", async (req, res, next) => {
     }
 });
 
-//試合情報送信（速報用）（運用者用webアプリ）
+//試合情報送信（速報用）
 router.post("/tmp_daseki_call", async (req, res, next) => {
-    const table_name = `test_pbl.` + req.body['table_name'];
+    const { table_name } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
 
     try {
         //試合情報の取得と送信(速報用)
-        const rows = await executeQuery(`select * from ${table_name}`);
-        return res.json(rows);
+        const rows = await executeQuery(`select * from ${tmp_table_name} order by at_bat_id desc`);
+        // const rows = await executeQuery(`select * from ${tmp_table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id order by at_bat_id desc limit 1`, [game_id]);
+         return res.json(rows);
     }
     catch (err) { 
         console.log(err);
@@ -193,7 +195,7 @@ router.post("/daseki_transmission", async (req, res, next) => {
     try {
         //試合情報の取得と送信
         //テスト用
-        const rows = await executeQuery(`select * from t_at_bat as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ? and inning = ?`, [game_id, at_bat_id]);
+        const rows = await executeQuery(`select * from t_at_bat as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ?`, [game_id, at_bat_id]);
         
         return res.json(rows);
     }
@@ -254,6 +256,24 @@ router.post("/registered_daseki_update", async (req, res, next) => {
         res.end("OK");
     }
     catch(err){
+        console.log('試合情報を登録できません');
+        next(err);
+    }
+});
+
+//速報中の試合の状況取得（運用者用webアプリ）
+router.post("/tmp_daseki_state", async (req, res, next) => {
+    const { table_name } = req.body;
+    const tmp_table_name = `test_pbl.` + table_name;
+
+    try{
+        //試合情報の編集
+        //await executeQuery(`update ${tmp_table_name} set school_id = ?, player_id = ?, pitcher_id = ?, score = ?, total_score = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ?, hit = ?, foreball = ?, deadball = ?, pinch = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, at_bat_id, game_id]);
+        const rows = await executeQuery(`select inning from ${tmp_table_name} order by inning desc limit 1`);
+        return res.json(rows);
+    }
+    catch(err){
+        console.log(err);
         console.log('試合情報を登録できません');
         next(err);
     }

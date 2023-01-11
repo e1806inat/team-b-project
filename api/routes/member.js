@@ -93,7 +93,7 @@ router.post("/member_call", async (req, res, next) => {
     try {
         
         //選手の学年は毎年４月１日に更新され、３年生は４年生と設定されている（grade:4）。
-        const rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ?', [school_id]);
+        const rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ? and player_name_kanji is not null', [school_id]);
         return res.json(rows);
     }
     catch (err) {
@@ -206,6 +206,7 @@ router.post("/member_edit", async (req, res, next) => {
         res.end('OK');
     }
     catch (err) {
+        console.log(err);
         next(err);
     }
 });

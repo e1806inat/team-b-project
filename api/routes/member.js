@@ -185,7 +185,7 @@ router.post("/starting_member_call", async (req, res, next) => {
 
     try {
         //試合ごとのスタメンの呼び出し
-        const rows = await executeQuery('select * from t_starting_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id)  where game_id = ? ', [school_id, game_id]);
+        const rows = await executeQuery('select * from t_starting_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id)  where game_id = ? order by batting_order', [school_id, game_id]);
         return res.json(rows);
     }
     catch (err) {

@@ -12,7 +12,7 @@ const pageStyle = {
 const borderStyle = {
   display: "inline-block",
   border: "solid 2px #707070",
-  background: '#202090',
+  background: '#191970',
   color: 'white',
   fontSize: "4vw"
 }
@@ -148,139 +148,54 @@ export const OutPutGame = () => {
   const urlGameId = "8";
   // const urlSchoolId1 = searchParams.get("urlSchoolId1");
   // const urlSchoolId2 = searchParams.get("urlSchoolId2");
+  //打席情報
   const [dasekiData, setDasekiData] = useState([]);
+  //試合情報
   const [gameData, setGameData] = useState([]);
+  //大会登録選手school1
   const [tournamentMember1, setTournamentMember1] = useState([]);
+  //大会登録選手school2
   const [tournamentMember2, setTournamentMember2] = useState([]);
+  //大会登録選手school1+school2
   const [tournamentMember, setTournamentMember] = useState([]);
+  //スタメンschool1
   const [startingMember1, setStartingMember1] = useState([]);
+  //スタメンschool2
   const [startingMember2, setStartingMember2] = useState([]);
+  //回戦情報
   const [nowState, setNowState] = useState('');
+  //開催年
   const [gameYear, setGameYear] = useState('');
+   //開催月
   const [gameMonth, setGameMonth] = useState('');
+   //開催日
   const [gameDay, setGameDay] = useState('');
+  //大会名
   const [tournamentName, setTournamentName] = useState('');
+  //会場名
   const [venueName, setVenueName] = useState('');
+  //学校名１
   const [schoolName1, setSchoolName1] = useState('');
+  //学校名２
   const [schoolName2, setSchoolName2] = useState('');
+  //トータルスコア１
+  const [totalScore1, setTotalScore1] = useState(0);
+   //トータルスコア２
+  const [totalScore2, setTotalScore2] = useState(0);
+  //交代情報
+  const [pinchText, setPinchText] = useState(0);
   // const [batterName, setBatterName] = useState('');
   // const [pitcherName, setPitcherName] = useState('');
+  //打者データ
   const [batterData, setBatterData] = useState('');
+  //投手データ
   const [pitcherData, setPitcherData] = useState('');
-  const [battersData, setBattersData] = useState([]);
-
-
-  // const readDasekiData = async (setDasekiData, urlTableName) => {
-  //   // fetch(backendUrl + "/tournament/tournament_call", {
-  //   await fetch("http://localhost:5000/daseki/tmp_daseki_call", {
-  //     method: "POST",
-  //     mode: "cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ table_name: urlTableName })
-  //   })
-  // .then((response) => response.json())
-  // .then((data) => {
-  //   console.log(data)
-  //   setDasekiData(data)
-  //   console.log(data[0])
-  //   console.log(tournamentMember)
-  //   var stateArray = data[0]['inning'].toString().split("");
-  //   if (stateArray[Array.length - 1] === 1) {
-  //     setNowState(stateArray[0] + '回表');
-  //   } else {
-  //     setNowState(stateArray[0] + '回裏');
-  //   }
-  //   // let batter = dasekiData[0].find(function(element, ind){
-  //   //   console.log(element)
-  //   //   if(element['player_id'] === tournamentMember[0]['player_id']){
-  //   //     return tournamentMember[ind]['player_name_kanji']
-  //   //   }
-  //   // });
-  //   // let pitcher = dasekiData[0].find(function(element, ind){
-  //   //   if(element['pitcher_id'] === tournamentMember[0]['player_id']){
-  //   //     return element[ind]['player_name_kanji']
-  //   //   }
-  //   // });
-  //   let batter = 'aa'
-  //   let pitcher = 'aa'
-  //   setBatterName(batter);
-  //   setPitcherName(pitcher);
-  // })
-  // }
-
-  // const readGameData = async (setGameData, urlGameId) => {
-  //   // fetch(backendUrl + "/tournament/tournament_call", {
-  //   await fetch("http://localhost:5000/game/a_game_call", {
-  //     method: "POST",
-  //     mode: "cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ game_id: urlGameId })
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data)
-  //       setGameData(data)
-  //       readTournamentMember1(setTournamentMember1, data[0]['tournament_id'], data[0]['school_id_1']);
-  //       readTournamentMember2(setTournamentMember2, data[0]['tournament_id'], data[0]['school_id_2']);
-  //       tournamentMemberConcat(setTournamentMember, tournamentMember1, tournamentMember2);
-  //       setGameYear(data[0]['game_ymd'].split('-')[0]);
-  //       setGameMonth(data[0]['game_ymd'].split('-')[1]);
-  //       setGameDay(data[0]['game_ymd'].split('-')[2]);
-  //       setTournamentName(data[0]['tournament_name']);
-  //       setVenueName(data[0]['venue_name']);
-  //       setSchoolName1(data[0]['school_name_1']);
-  //       setSchoolName2(data[0]['school_name_2']);
-  //     })
-  // }
-
-  // const readTournamentMember1 = async (setTournamentMember1, tournamentId, schoolId1) => {
-  //   // fetch(backendUrl + "/tournament/tournament_call", {
-  //   await fetch("http://localhost:5000/member/tournament_member_call", {
-  //     method: "POST",
-  //     mode: "cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ tournament_id: tournamentId, school_id: schoolId1 })
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data)
-  //       setTournamentMember1(data)
-  //     })
-  // }
-
-  // const readTournamentMember2 = async (setTournamentMember2, tournamentId, schoolId2) => {
-  //   // fetch(backendUrl + "/tournament/tournament_call", {
-  //   await fetch("http://localhost:5000/member/tournament_member_call", {
-  //     method: "POST",
-  //     mode: "cors",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ tournament_id: tournamentId, school_id: schoolId2 })
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data)
-  //       setTournamentMember2(data)
-  //     })
-  // }
-
-  // const tournamentMemberConcat = async (setTournamentMember, tournamentMember1, tournamentMember2) => {
-  //   // fetch(backendUrl + "/tournament/tournament_call", {
-  //   console.log(tournamentMember1);
-  //   await setTournamentMember(tournamentMember1.concat(tournamentMember2));
-  //   console.log(tournamentMember);
-  //   await readDasekiData(setDasekiData, urlTableName);
-  // }
+  //const [battersData, setBattersData] = useState([]);
+  //自動更新管理
+  const [autoUpdate, setAutoUpdate] = useState('');
 
   useEffect(() => {
-    //readGameData(setGameData, urlGameId);
+    //試合情報フェッチ
     const gameStart = async () => {
       const ResGameData = await fetch("http://localhost:5000/game/a_game_call", {
         method: "POST",
@@ -302,7 +217,7 @@ export const OutPutGame = () => {
       setVenueName(gameData[0]['venue_name']);
       setSchoolName1(gameData[0]['school_name_1']);
       setSchoolName2(gameData[0]['school_name_2']);
-
+      //大会登録メンバー１フェッチ
       const ResTournamentMember1 = await fetch("http://localhost:5000/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
@@ -316,6 +231,7 @@ export const OutPutGame = () => {
 
       //console.log(member1);
       setTournamentMember1(member1);
+       //大会登録メンバー２フェッチ
       const ResTournamentMember2 = await fetch("http://localhost:5000/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
@@ -332,6 +248,7 @@ export const OutPutGame = () => {
       console.log(member)
       console.log('aasdfasdfasdfasdfasfsdfasd')
 
+       //スタメン１フェッチ
       const ResStartingMember1 = await fetch("http://localhost:5000/member/starting_member_call", {
         method: "POST",
         mode: "cors",
@@ -347,6 +264,7 @@ export const OutPutGame = () => {
 
       setStartingMember1(startMember1);
 
+         //スタメン２フェッチ
       const ResStartingMember2 = await fetch("http://localhost:5000/member/starting_member_call", {
         method: "POST",
         mode: "cors",
@@ -358,58 +276,81 @@ export const OutPutGame = () => {
       const startMember2 = await ResStartingMember2.json();
 
       console.log(startMember2)
-    
+
       setStartingMember2(startMember2);
 
+       //スタメン１＋２結合
       const startMember = await startMember1.concat(startMember2);
 
-      setBattersData(startMember);
+      //setBattersData(startMember);
 
+       //打席情報フェッチ
       const ResDasekiData = await fetch("http://localhost:5000/daseki/tmp_daseki_call", {
         method: "POST",
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ table_name: urlTableName })
+        body: JSON.stringify({ table_name: urlTableName , game_id: urlGameId})
       })
 
-      const daseki = await ResDasekiData.json();
+      let daseki = await ResDasekiData.json();
+     
+      console.log(typeof(daseki[0]['school_id']))
+      console.log(typeof(gameData[0]['school_id_1']))
+
+      if(daseki[0]['school_id'] === gameData[0]['school_id_1']){
+        console.log('inatukidesu')
+        setTotalScore1(daseki[0]['total_score']);
+      } else {
+        setTotalScore2(daseki[0]['total_score']);
+      }
+
+      //交代情報をidから名前に変更
+      if(daseki[0]['pinch'] !== null){
+        var pinchArray = daseki[0]['pinch'].split(',');
+        var tmpText = '打者交代：　';
+        for(var pinch of pinchArray){
+          var pinchNum = pinch.split('→');
+          for(var value1 of member){
+            if(value1['player_id'].toString() === pinchNum[0]){
+              tmpText = tmpText + value1['player_name_kanji'].split(' ')[0] + '→';
+              for(var value2 of member){
+                if(value2['player_id'].toString() === pinchNum[1]){
+                  tmpText = tmpText + value2['player_name_kanji'].split(' ')[0] + '　';
+                }
+              }
+            }
+          }
+        }
+        daseki[0]['pinch'] = tmpText;
+        setPinchText(tmpText);
+      }
       setDasekiData(daseki);
-      console.log(daseki)
       
-      // if(daseki[0]['pinch'] !== null){
-      //   for(var pich of batterData){
-
-      //   }
-      // }
-
+      //現在の回数を算出
       var stateArray = daseki[0]['inning'].toString().split("");
-      if (stateArray[Array.length - 1] === 1) {
+      console.log(stateArray)
+      if (stateArray[stateArray.length - 1] === '1') {
         setNowState(stateArray[0] + '回表');
       } else {
         setNowState(stateArray[0] + '回裏');
       }
-
-      //打者IDと一致する名前の検索
-      for(var batter of member){
-        if(batter['player_id'] === daseki[0]['player_id']){
-          setBatterData(batter);
-          break
-        }
-      }
+      //バッター情報を登録
+      setBatterData(daseki[0]);
 
       //投手IDと一致する名前の検索
-      for(var pitcher of member){
-        if(pitcher['player_id'] === daseki[0]['pitcher_id']){   
+      for (var pitcher of tournamentMember) {
+        if (pitcher['player_id'] === daseki[0]['pitcher_id']) {
           setPitcherData(pitcher);
           break
         }
       }
-      
     }
     gameStart();
-  }, []);
+  }, [autoUpdate]);
+
+  var cntUpdate = 0;
 
   // useEffect(() => {
   //   //readGameData(setGameData, urlGameId);
@@ -421,12 +362,12 @@ export const OutPutGame = () => {
   //       headers: {
   //         "Content-Type": "application/json",
   //       },
-  //       body: JSON.stringify({ table_name: urlTableName })
+  //       body: JSON.stringify({ table_name: urlTableName, game_id:urlGameId })
   //     })
 
   //     const daseki = await ResDasekiData.json();
-      
-  //     var tmpBattersData = battersData;
+
+  //     //var tmpBattersData = battersData;
 
 
   //     //交代情報を反映するための処理
@@ -454,50 +395,60 @@ export const OutPutGame = () => {
   //     //     setBattersData(tmpBattersData);
   //     //   }
   //     // }
+  //     setDasekiData(daseki);
+  //     console.log(daseki)
 
-  //     if(daseki[0]['pinch'] !== null){
-  //       var pinchText = '打者交代　';
-  //       const pinchInfoArray = daseki[0]['pinch'].split(',');
-  //       //var ind = 0;
-  //       for(var pinchInfo of pinchInfoArray){
-  //         //var ind = 0;
-  //         let pinch = pinchInfo.split('→');
-  //         for(var memberDel of tmpBattersData){
-  //           if(pinch[0] === memberDel['player_id']){
-  //             //tmpBattersData.splice(ind, 1);
-  //             pinchText = pinchText + memberDel['player_name_kanji'] + '→';
-  //             break
-  //           }
-  //           //ind++;
-  //         }
-  //         //var ind = 0;
-  //         for(var memberAdd of tournamentMember){
-  //           if(pinch[1] === memberAdd['player_id']){
-  //             pinchText = pinchText + memberAdd['player_name_kanji'] + '　';
-  //             //tmpBattersData.push(tournamentMember[ind]);
-  //             break
-  //           }
-  //           //ind++;
-  //         }
-  //         //setBattersData(tmpBattersData);
-  //       }
-  //     }
+  //     // if(daseki[0]['pinch'] !== null){
+  //     //   for(var pich of batterData){
+
+  //     //   }
+  //     // }
 
   //     var stateArray = daseki[0]['inning'].toString().split("");
-  //     if (stateArray[Array.length - 1] === 1) {
+  //     console.log(stateArray)
+  //     if (stateArray[stateArray.length - 1] === '1') {
   //       setNowState(stateArray[0] + '回表');
   //     } else {
   //       setNowState(stateArray[0] + '回裏');
   //     }
 
-  //     //打者IDと一致する名前の検索
-  //     for(var batter of tournamentMember){
-  //       if(batter['player_id'] === daseki[0]['player_id']){
-  //         setBatterData(batter);
-  //         break
-  //       }
-  //     }
+  //     setBatterData(daseki[0]);
 
+  //     // if(daseki[0]['pinch'] !== null){
+  //     //   var pinchText = '打者交代　';
+  //     //   const pinchInfoArray = daseki[0]['pinch'].split(',');
+  //     //   //var ind = 0;
+  //     //   for(var pinchInfo of pinchInfoArray){
+  //     //     //var ind = 0;
+  //     //     let pinch = pinchInfo.split('→');
+  //     //     for(var memberDel of tmpBattersData){
+  //     //       if(pinch[0] === memberDel['player_id']){
+  //     //         //tmpBattersData.splice(ind, 1);
+  //     //         pinchText = pinchText + memberDel['player_name_kanji'] + '→';
+  //     //         break
+  //     //       }
+  //     //       //ind++;
+  //     //     }
+  //     //     //var ind = 0;
+  //     //     for(var memberAdd of tournamentMember){
+  //     //       if(pinch[1] === memberAdd['player_id']){
+  //     //         pinchText = pinchText + memberAdd['player_name_kanji'] + '　';
+  //     //         //tmpBattersData.push(tournamentMember[ind]);
+  //     //         break
+  //     //       }
+  //     //       //ind++;
+  //     //     }
+  //     //     //setBattersData(tmpBattersData);
+  //     //   }
+  //     // }
+  //     console.log(daseki[0]['school_id'])
+  //     console.log(gameData['school_id_1'])
+      
+  //     if(daseki[0]['school_id'] === gameData[0]['school_id_1']){
+  //       setTotalScore1(daseki[0]['total_score']);
+  //     } else {
+  //       setTotalScore2(daseki[0]['total_score']);
+  //     }
   //     //投手IDと一致する名前の検索
   //     for(var pitcher of tournamentMember){
   //       if(pitcher['player_id'] === daseki[0]['pitcher_id']){   
@@ -505,14 +456,9 @@ export const OutPutGame = () => {
   //         break
   //       }
   //     }
-
   //   }
   //   duringGame();
-  // }, []);
-
-  // useEffect(() => {
-   
-  // }, []);
+  // }, [autoUpdate]);
 
   var ballcnt = 0;
   function change_ball_count() {
@@ -606,8 +552,13 @@ export const OutPutGame = () => {
     fontSize: "3vw"
   }
 
-  //console.log(gameData)
-
+  // 3秒ごとに実行
+  setInterval(() => {
+    cntUpdate++;
+    console.log(cntUpdate);
+    setAutoUpdate(cntUpdate);
+  }, 30000);
+ 
   //const tournamentName = gameData[0]['tournament_name'];
   //const venueName = gameData[0]['venue_name'];
 
@@ -646,7 +597,7 @@ export const OutPutGame = () => {
             <td style={tdStyle}>7</td>
             <td style={tdStyle}>8</td>
             <td style={tdStyle}>9</td>
-            <td style={tdStyle}>計</td>
+            <td style={tdStyle}>{totalScore1}</td>
           </tr>
           <tr>
             <td style={team2Style}>{schoolName2}</td>
@@ -659,7 +610,7 @@ export const OutPutGame = () => {
             <td style={tdStyle}>7</td>
             <td style={tdStyle}>8</td>
             <td style={tdStyle}>9</td>
-            <td style={tdStyle}>計</td>
+            <td style={tdStyle}>{totalScore2}</td>
           </tr>
         </tbody>
 
@@ -670,7 +621,7 @@ export const OutPutGame = () => {
           <tbody>
             <tr><th style={schoolStyle} colSpan="2">{schoolName1}</th></tr>
             <tr><th style={batterStyle}>打者</th><th style={playerStyle}>{batterData['player_name_kanji']}</th></tr>
-            <tr><th style={playerStyle} colSpan="2">打者の情報</th></tr>
+            {pinchText !== '' && <tr><th style={playerStyle} colSpan="2">{pinchText}</th></tr>}
           </tbody>
         </table>
 
@@ -678,7 +629,7 @@ export const OutPutGame = () => {
           <tbody>
             <tr><th style={schoolStyle} colSpan="2">{schoolName2}</th></tr>
             <tr><th style={pitcherStyle}>投手</th><th style={playerStyle}>{pitcherData['player_name_kanji']}</th></tr>
-            <tr><th style={playerStyle} colSpan="2">投手の情報</th></tr>
+            {/* <tr><th style={playerStyle} colSpan="2">投手の情報</th></tr> */}
           </tbody>
         </table>
       </div><br></br>
@@ -721,32 +672,38 @@ export const OutPutGame = () => {
       <div style={fieldStyle}><img src={pic} alt="field" style={imgsize} /></div><br></br>
       <button onClick={beforebatter} style={logStyle}>前の打席</button>
       <button onClick={nextbatter} style={logStyle}>次の打席</button><br></br>
-      <DasekiHistoryList dasekiesInfo={dasekiData}/>
+      <div className="textSokuhou">
+        <span class="box-title">テキスト速報</span>
+        <DasekiHistoryList dasekiesInfo={dasekiData}/>
+      </div>
       <div>
-        <div>先発メンバー</div>
-        <div>{schoolName1}</div>
-        <table border="2" className="members1">
-          <tr>
-            <td width="50" rowspan="2" bgcolor="#228b22">打順</td>
-            <td width="300" bgcolor="#228b22">名前</td>
-            <td width="75" rowspan="2" bgcolor="#228b22">背番号</td>
-            <td width="150" rowspan="2" bgcolor="#228b22">ポジション</td>
-            <td width="75" rowspan="2" bgcolor="#228b22">打率</td>
-          </tr>
-        </table>
-        <StartingMemberList startingMembers={startingMember1}/>
+        <div className="startingMemberTag">先発メンバー</div>
+        <div className="startingMember">
+          <div className="schoolBox">{schoolName1}</div>
+          <table border="1" className="members">
+            <tr>
+              <td width="50" height="50" rowspan="2" bgcolor="#228b22">打順</td>
+              <td width="300" height="50" bgcolor="#228b22">名前</td>
+              <td width="75" height="50" rowspan="2" bgcolor="#228b22">背番号</td>
+              <td width="150" height="50" rowspan="2" bgcolor="#228b22">ポジション</td>
+              <td width="75" height="50" rowspan="2" bgcolor="#228b22">打率</td>
+            </tr>
+          </table>
+          <StartingMemberList startingMembers={startingMember1} />
 
-        <div>{schoolName2}</div>
-        <table border="2" className="members2">
-          <tr>
-            <td width="50" rowspan="2" bgcolor="#228b22">打順</td>
-            <td width="300" bgcolor="#228b22">名前</td>
-            <td width="75" rowspan="2" bgcolor="#228b22">背番号</td>
-            <td width="150" rowspan="2" bgcolor="#228b22">ポジション</td>
-            <td width="75" rowspan="2" bgcolor="#228b22">打率</td>
-          </tr>
-        </table>
-        <StartingMemberList startingMembers={startingMember2}/>
+
+          <div className="schoolBox">{schoolName2}</div>
+          <table border="1" className="members">
+            <tr>
+              <td width="50" height="50" rowspan="2" bgcolor="#00080">打順</td>
+              <td width="300" height="50" bgcolor="#228b22">名前</td>
+              <td width="75" height="50" rowspan="2" bgcolor="#228b22">背番号</td>
+              <td width="150" height="50" rowspan="2" bgcolor="#228b22">ポジション</td>
+              <td width="75" height="50" rowspan="2" bgcolor="#228b22">打率</td>
+            </tr>
+          </table>
+          <StartingMemberList startingMembers={startingMember2}/>
+        </div>
       </div>
     </div>
   )

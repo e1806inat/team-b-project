@@ -99,6 +99,76 @@
   /* animation-delay: 6s; */
 }
 
+.startingMemberTag{
+  background:#016435;
+  color:white;
+  text-align:center;
+  width: 650px;
+  font-size: 33px;
+  height: 50px;
+  margin:  auto;
+}
+
+
+.startingMember{
+  margin:  auto;
+  text-align:center;
+ 
+}
+.startingMembers{
+  margin:  auto;
+  text-align:center;
+  font-size: 20px;
+}
+
+.schoolBox{
+  background:black;
+  color:white;
+  width: 400px;
+  height: 50px;
+  margin:  20px;  
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.members{
+  color:white;
+  margin:  auto;
+  
+}
+.members td{
+  background: #191970;
+}
+
+.textSokuhou{
+  position: relative;
+    margin: 2em 0;
+    padding: 25px 10px 7px;
+    border: solid 2px rgb(229,239,234);
+}
+.textSokuhou .box-title {
+  position: absolute;
+  display: inline-block;
+  top: -2px;
+  left: -2px;
+  padding: 0 9px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 15px;
+  background: rgb(229,239,234);
+  color: #016435;
+  font-weight: bold;
+}
+.textSokuhou .startingMembers {
+  margin: 0; 
+  padding: 0;
+}
+
+.daseki{
+  
+}
 /* 信号機の光の影の部分のアニメーション */
 /* @keyframes shadow {
   0% {

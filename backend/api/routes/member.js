@@ -22,7 +22,7 @@ router.post("/tournament_member_register", async (req, res, next) => {
     try {
         for (const value of req.body) {
             //upsertで大会毎に出場する選手を登録
-            await executeQuery('insert into t_registered_player (player_id, tournament_id, school_id, uniform_number, grade, handed_hit, handed_throw, BA) values (?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), BA = values(BA)', [value.player_id, value.tournament_id, value.school_id, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.BA]);
+            await executeQuery('insert into t_registered_player (player_id, tournament_id, school_id, uniform_number, grade, handed_hit, handed_throw, hit_num, bat_num, BA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on duplicate key update grade = values(grade), handed_hit = values(handed_hit), handed_throw = values(handed_throw), BA = values(BA)', [value.player_id, value.tournament_id, value.school_id, value.uniform_number, value.grade, value.handed_hit, value.handed_throw, value.hit_num, value.bat_num, value.BA]);
         }
         res.end("OK");
     } catch (err) {
@@ -93,7 +93,7 @@ router.post("/member_call", async (req, res, next) => {
     try {
         
         //選手の学年は毎年４月１日に更新され、３年生は４年生と設定されている（grade:4）。
-        const rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ?', [school_id]);
+        const rows = await executeQuery('select * from t_player where grade <= 3 and school_id = ? and player_name_kanji is not null', [school_id]);
         return res.json(rows);
     }
     catch (err) {
@@ -103,18 +103,29 @@ router.post("/member_call", async (req, res, next) => {
 
 //選手データ参照（顧客用webアプリ）
 router.post("/ref_member_call", async (req, res, next) => {
-    const { school_id, grades, option , asc } = req.body;
+    const { school_id, grades, option } = req.body;
 
     try {
         //選手テーブルから選手情報を呼び出す。in(?)で学年の指定ができる例えばin(1,2)なら２年生以下、in(2,4)なら２年生と卒業生のような感じ
         //optionは並び替えの基準例えば、gradeなら学年順、BAなら打率順
         //ascは昇順か降順かasc==1ならば昇順、じゃなければ降順
-        if (asc){
-            const rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by ? asc`, [grades, school_id, option]);
-        } else {
-            const rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by ? desc`, [grades, school_id, option]);
+        var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by player_name_hira`, [grades, school_id]);
+        if (option=="grade"){
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by grade`, [grades, school_id]);
+        } 
+        else if (option=="player_name_hira"){
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by player_name_hira`, [grades, school_id]);
         }
-            
+        else if (option=="BA"){
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by BA desc`, [grades, school_id]);
+        }
+        else if (option=="hit_num"){
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by hit_num desc`, [grades, school_id]);
+        }
+        else if (option=="bat_num"){
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by bat_num desc`, [grades, school_id]);
+        }
+        //console.log(rows)    
         return res.json(rows);
     }
     catch (err) {
@@ -125,14 +136,25 @@ router.post("/ref_member_call", async (req, res, next) => {
 
 //選手データ参照（顧客用webアプリ）
 router.post("/ref_tournament_member_call", async (req, res, next) => {
-    const { tournament_id, school_id, option, asc} = req.body;
+    const { tournament_id, school_id, option} = req.body;
 
     try {
         //大会に登録された選手を閲覧可能、optionは並び替えの基準
-        if (asc){
-            const rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by ? asc', [school_id, tournament_id, option]);
-        } else {
-            const rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by ? desc', [school_id, tournament_id, option]);
+        var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by player_name_hira', [school_id, tournament_id, option]);
+        if (option=="grade"){
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by grade', [school_id, tournament_id, option]);
+        } 
+        else if (option=="player_name_hira"){
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by player_name_hira', [school_id, tournament_id, option]);
+        }
+        else if (option=="BA"){
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by  BA desc', [school_id, tournament_id, option]);
+        }
+        else if (option=="hit_num"){
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by hit_num desc', [school_id, tournament_id, option]);
+        }
+        else if (option=="bat_num"){
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by bat_num desc', [school_id, tournament_id, option]);
         }
         return res.json(rows);
     }
@@ -184,6 +206,7 @@ router.post("/member_edit", async (req, res, next) => {
         res.end('OK');
     }
     catch (err) {
+        console.log(err);
         next(err);
     }
 });
@@ -233,7 +256,7 @@ router.post("/tournament_member_delete", async (req, res, next) => {
     }
 });
 
-//スタメン画面での選手情報削除（運用者用webアプリ）守備位置とかも含む
+//スタメンの選手情報削除（運用者用webアプリ）
 router.post("/starting_member_delete", async (req, res, next) => {
     const { game_id, player_id } = req.body;
     try {

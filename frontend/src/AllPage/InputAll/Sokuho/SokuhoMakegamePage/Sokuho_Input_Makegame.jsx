@@ -29,7 +29,7 @@ const loadGame = async (setGameInfoState, urlTournamentId) => {
         body: JSON.stringify({ tournament_id: urlTournamentId }),
     })
         .then((response) => response.json())
-        .then((data) => setGameInfoState(data))
+        .then((data) => {setGameInfoState(data);console.log(data)})
 }
 
 
@@ -65,7 +65,7 @@ const loadVenue = (setVenues) => {
         .then((data) => { setVenues(data); console.log(data) })
 }
 
-const handleAddGame = (urlTournamentId, nowSelected, iningList, Schools, Venues, nowSelectedYmd, YearList, MonthList, DayList, setGameInfoState) => {
+const handleAddGame = async(urlTournamentId, nowSelected, iningList, Schools, Venues, nowSelectedYmd, YearList, MonthList, DayList, setGameInfoState) => {
 
     let gameData = {
         tournament_id: urlTournamentId,
@@ -80,7 +80,7 @@ const handleAddGame = (urlTournamentId, nowSelected, iningList, Schools, Venues,
     }
     console.log(gameData)
 
-    fetch(backendUrl + "/game/game_register", {
+    await fetch(backendUrl + "/game/game_register", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -168,27 +168,29 @@ const isDuplicateB = (gameInfoState, sendInfo) => {
         gameInfoState.some((v) => v.school_id_2 === sendInfo.school_id_2) &&
         gameInfoState.some((v) => v.venue_id === sendInfo.venue_id) &&
         gameInfoState.some((v) => v.game_ymd === sendInfo.game_ymd)
-    ) { TorF = true; console.log("被っています")}
+    ) { TorF = true; console.log("被っています") }
 
     return TorF
 }
 
 
+
+
 //試合編集
 const EditGame = (sendInfo) => {
-    // fetch(backendUrl + "/game/game_edit", {
-    //     method: "POST",
-    //     mode: "cors",
-    //     headers: { "Content-Type": "application/json", },
-    //     body: JSON.stringify(sendInfo),
-    // })
-    //     .then((response) => response.text())
-    //     .then((data) => {
+    fetch(backendUrl + "/game/game_edit", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify(sendInfo),
+    })
+        .then((response) => response.text())
+        .then((data) => {
 
-    //         if (data === "OK") {
+            if (data === "OK") {
 
-    //         }
-    //     })
+            }
+        })
 
     console.log(sendInfo)
 }
@@ -341,6 +343,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
 
                         <hr></hr>
 
+                        {/* 試合リストを表示 */}
                         {gameInfoState.map(gameInfo => (
                             <div className="game">
                                 <button className="btn_So_Make"
@@ -352,7 +355,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                                         "&urlSchoolId=" +
                                         gameInfo.school_id_1 +
                                         "&urlSchoolName=" +
-                                        gameInfo.school_name +
+                                        gameInfo.school_name_1 +
                                         "&urlSchoolId2=" +
                                         gameInfo.school_id_2 +
                                         "&urlSchoolName2=" +
@@ -360,10 +363,12 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                                         "&urlGameId=" +
                                         gameInfo.game_id
                                     )}>
+                                    {gameInfo.game_ymd}<br />
                                     {gameInfo.match_num}回戦<br />
-                                    {gameInfo.school_name}<br />
+                                    {gameInfo.school_name_1}<br />
                                     {gameInfo.school_name_2}<br />
-                                    {Venues.length !== 0 && Venues[gameInfo.venue_id].venue_name}
+                                    {Venues.length !== 0 && Venues.find((v) => v.venue_id === gameInfo.venue_id).venue_name}
+
                                 </button><br /><br />
                             </div>
                         ))}

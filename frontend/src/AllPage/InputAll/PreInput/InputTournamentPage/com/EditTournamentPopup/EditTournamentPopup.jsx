@@ -6,12 +6,11 @@ import isEnpty from "../../../../../../Functions/IsEnpty";
 class Popup extends React.Component {
 
   render() {
-    console.log('ok')
     return (
       <div className="popup_field">
         <div className="popup_in_field">
           <div className="title">{this.props.text}</div>
-          <div className='editarea'>
+          <div className='editarea3'>
             {/* 編集チェックボックス */}
             <input
               type="checkbox"

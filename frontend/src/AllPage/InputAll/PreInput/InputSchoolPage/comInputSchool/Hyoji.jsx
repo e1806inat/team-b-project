@@ -22,7 +22,7 @@ export const Hyoji = (UseSchools, navigate, urlTournamentName, urlTournamentId, 
                                             <br />
                                             <button
                                                 onClick={() => {
-                                                    PageTransition(school.school_name + "/InputMember" +
+                                                    PageTransition("InputMember" +
                                                         "?urlTournamentId=" + urlTournamentId + "&urlTournamentName=" + urlTournamentName +
                                                         "&urlSchoolId=" + school.school_id + "&urlSchoolName=" + school.school_name);
                                                 }} className="schoolBtn">

@@ -16,7 +16,7 @@ export const scoreBoard = (scoreState, nowIningState, urlSchoolName, urlSchoolNa
                     )}
                     <th className="scoreBoardSchoolName">計</th>
                 </tr>
-                <tr>
+                <tr className="scoreBoardTr2">
                     <td>{urlSchoolName}</td>
                     {scoreState[0].map((a, ind) => {
                         teamAscore = teamAscore + a;
@@ -27,7 +27,7 @@ export const scoreBoard = (scoreState, nowIningState, urlSchoolName, urlSchoolNa
                     )}
                     <td>{teamAscore}</td>
                 </tr>
-                <tr>
+                <tr className="scoreBoardTr2">
                     <td>{urlSchoolName2}</td>
                     {scoreState[1].map((a, ind) => {
                         teamBscore = teamBscore + a;

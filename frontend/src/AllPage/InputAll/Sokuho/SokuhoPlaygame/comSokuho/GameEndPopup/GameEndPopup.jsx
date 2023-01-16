@@ -16,6 +16,7 @@ class GameEndPopup extends React.Component {
               this.props.TableRegister(this.props.urlGameId)
               this.props.CalculateBatAvg(this.props.urlGameId)
               this.props.TmpTableDelete(this.props.urlGameId)
+              this.props.RefDuringGame(this.props.RefDuringGame)
             }}>はい</button>
         </div>
       </div>
@@ -50,6 +51,7 @@ class GameEndPopup_field extends React.Component {
             TableRegister={this.props.TableRegister}
             urlGameId={this.props.urlGameId}
             TmpTableDelete={this.props.TmpTableDelete}
+            DeleteDuringGame={this.props.DeleteDuringGame}
             CalculateBatAvg={this.props.CalculateBatAvg}
           />
         ) : null}

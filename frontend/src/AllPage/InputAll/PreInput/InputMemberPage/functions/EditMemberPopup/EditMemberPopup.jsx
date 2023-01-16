@@ -2,66 +2,6 @@ import React from "react";
 import "./EditMemberPopup.css"
 import isEnpty from "../../../../../../Functions/IsEnpty";
 
-const selectHitted = (handedHitState, handleHandedHit) => {
-    if (handedHitState === "左") {
-        return (
-            <>
-                <button style={{ color: "white", background: "lightskyblue" }}>左打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("右")}>右打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("両")}>両打</button>
-            </>
-        )
-    }
-    else if (handedHitState === "右") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("左")}>左打</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>右打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("両")}>両打</button>
-            </>
-        )
-    }
-    else if (handedHitState === "両") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("左")}>左打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedHit("右")}>右打</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>両打</button>
-            </>
-        )
-    }
-}
-
-const selectThrowed = (handedThrowState, handleHandedThrow) => {
-    if (handedThrowState === "左") {
-        return (
-            <>
-                <button style={{ color: "white", background: "lightskyblue" }}>左投</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("右")}>右投</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("両")}>両投</button>
-            </>
-        )
-    }
-    else if (handedThrowState === "右") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("左")}>左投</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>右打</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("両")}>両投</button>
-            </>
-        )
-    }
-    else if (handedThrowState === "両") {
-        return (
-            <>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("左")}>左投</button>
-                <button style={{ color: "white", background: "mediumblue" }} onClick={() => handleHandedThrow("右")}>右投</button>
-                <button style={{ color: "white", background: "lightskyblue" }}>両打</button>
-            </>
-        )
-    }
-}
-
 //メインのDOMの中で配置するサブ部品のような要素
 class Popup extends React.Component {
 
@@ -70,7 +10,7 @@ class Popup extends React.Component {
             <div className="popup_field">
                 <div className="popup_in_field3">
                     <div className="title">{this.props.text}</div>
-                    <div className='editarea'>
+                    <div className='editarea2'>
                         {/* 編集チェックボックス */}
                         <input
                             type="checkbox"
@@ -90,7 +30,9 @@ class Popup extends React.Component {
                         名前の変更<br></br>
                         変更前：{this.props.member.player_name_kanji}{this.props.member.player_name_hira}<br></br>
                         変更後：<br />
-                        氏（漢字）
+
+
+                        {"氏（漢字）　　"}
                         <input
                             id="changeIdKanjiFamiry" value={this.props.editingMemberName.player_name_kanji.famiryName}
                             onChange={(e) => {
@@ -109,26 +51,8 @@ class Popup extends React.Component {
                             }}
                         ></input>
 
-                        氏（ひらがな）
-                        <input
-                            id="changeIdHiraFamiry" value={this.props.editingMemberName.player_name_hira.famiryName}
-                            onChange={(e) => {
-                                this.props.setEditingMemberName(
-                                    {
-                                        player_name_kanji: {
-                                            famiryName: this.props.editingMemberName.player_name_kanji.famiryName,
-                                            firstName: this.props.editingMemberName.player_name_kanji.firstName
-                                        },
-                                        player_name_hira: {
-                                            famiryName: e.target.value,
-                                            firstName: this.props.editingMemberName.player_name_hira.firstName
-                                        }
-                                    }
-                                )
-                            }}
-                        ></input><br></br>
 
-                        名（漢字）
+                        {"　名（漢字）　　"}
                         <input
                             id="changeIdKanjiFirst" value={this.props.editingMemberName.player_name_kanji.firstName}
                             onChange={(e) => {
@@ -145,10 +69,28 @@ class Popup extends React.Component {
                                     }
                                 )
                             }}
+                        ></input><br></br>
+
+                        {"氏（ひらがな）"}
+                        <input
+                            id="changeIdHiraFamiry" value={this.props.editingMemberName.player_name_hira.famiryName}
+                            onChange={(e) => {
+                                this.props.setEditingMemberName(
+                                    {
+                                        player_name_kanji: {
+                                            famiryName: this.props.editingMemberName.player_name_kanji.famiryName,
+                                            firstName: this.props.editingMemberName.player_name_kanji.firstName
+                                        },
+                                        player_name_hira: {
+                                            famiryName: e.target.value,
+                                            firstName: this.props.editingMemberName.player_name_hira.firstName
+                                        }
+                                    }
+                                )
+                            }}
                         ></input>
 
-
-                        名（ひらがな）
+                        {"　名（ひらがな）"}
                         <input
                             id="changeIdHiraFirst" value={this.props.editingMemberName.player_name_hira.firstName}
                             onChange={(e) => {
@@ -174,8 +116,8 @@ class Popup extends React.Component {
                         変更前：{this.props.member.handed_hit}打{this.props.member.handed_throw}投<br></br>
                         変更後：
                         <div className='selectarea'>
-                            <div className='battingarea'>{selectHitted(this.props.handedHitState, this.props.handleHandedHit)}</div>
-                            <div className='throwarea'>{selectThrowed(this.props.handedThrowState, this.props.handleHandedThrow)}</div>
+                            <div className='battingarea'>{this.props.selectHitted(this.props.handedHitState, this.props.handleHandedHit)}</div>
+                            <div className='throwarea'>{this.props.selectThrowed(this.props.handedThrowState, this.props.handleHandedThrow)}</div>
                         </div>
 
                         {/* 削除チェックボックス */}
@@ -198,12 +140,27 @@ class Popup extends React.Component {
                             onClick={() => {
                                 this.props.closePopup()
                                 this.props.setEorDCheckbox(true)
+
+                                // 初期化
+                                this.props.setEditingMemberName(
+                                    {
+                                        player_name_kanji: {
+                                            famiryName: "",
+                                            firstName: ""
+                                        },
+                                        player_name_hira: {
+                                            famiryName: "",
+                                            firstName: ""
+                                        }
+                                    }
+                                )
+
                             }}>やめる</button>
                         <nbsp></nbsp>
 
                         {/* はいのボタン */}
 
-                        {(isEnpty([
+                        {(!isEnpty([
                             this.props.editingMemberName.player_name_kanji.famiryName,
                             this.props.editingMemberName.player_name_kanji.firstName,
                             this.props.editingMemberName.player_name_hira.famiryName,
@@ -215,10 +172,10 @@ class Popup extends React.Component {
 
                             <button className="button_style_3"
                                 onClick={
-                                    () => {
+                                    async() => {
                                         if (this.props.EorDCheckbox) {
                                             //編集を確定する
-                                            const sendInfo = {
+                                            const sendInfo = await{
                                                 player_id: this.props.member.player_id,
                                                 school_id: this.props.member.school_id,
                                                 player_name_kanji:
@@ -234,11 +191,13 @@ class Popup extends React.Component {
                                                 handed_throw: this.props.handedThrowState,
                                                 BA: this.props.member.BA
                                             }
-                                            this.props.EditMember(sendInfo)
+                                            await this.props.EditMember(sendInfo)
+                                            await console.log("sendEdited")
+                                            await this.props.setTrigger(!this.props.trigger)
                                         }
                                         else {
                                             //削除する
-                                            const sendInfo = {
+                                            const sendInfo = await{
                                                 player_id: this.props.member.player_id,
                                                 school_id: this.props.member.school_id,
                                                 player_name_kanji: null,
@@ -248,21 +207,22 @@ class Popup extends React.Component {
                                                 handed_throw: null,
                                                 BA: null
                                             }
-                                            this.props.EditMember(sendInfo)
+                                            await this.props.EditMember(sendInfo)
+                                            await this.props.setTrigger(!this.props.trigger)
                                         }
 
                                         // 大会を読み込む
                                         // this.props.readTournament(this.props.setTournamentData)
 
                                         // ポップアップを閉じる
-                                        this.props.closePopup()
+                                        await this.props.closePopup()
                                     }
                                 }>決定
                             </button>
 
                         }
 
-                        {(!isEnpty([
+                        {(isEnpty([
                             this.props.editingMemberName.player_name_kanji.famiryName,
                             this.props.editingMemberName.player_name_kanji.firstName,
                             this.props.editingMemberName.player_name_hira.famiryName,
@@ -270,7 +230,7 @@ class Popup extends React.Component {
                         ]) ||
                             !this.props.isHiragana(this.props.editingMemberName.player_name_hira.famiryName) ||
                             !this.props.isHiragana(this.props.editingMemberName.player_name_hira.firstName)) &&
-                            <button className="button_style_3">決定</button>
+                            <button className="button_style_3">決定a</button>
                         }
                     </div>
 
@@ -341,6 +301,8 @@ class EditMemberPopup extends React.Component {
                         gradeArray={this.props.gradeArray}
                         isEnpty={this.props.isEnpty}
                         isHiragana={this.props.isHiragana}
+                        trigger={this.props.trigger}
+                        setTrigger={this.props.setTrigger}
                     />
                 ) : null}
             </div>

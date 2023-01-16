@@ -106,7 +106,6 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
                     Array = [...Array, 1]
                 }
                 uniformNumberArray = Array
-                console.log("aaaaa")
                 setUniformNumberArray(uniformNumberArray)
             }
 
@@ -199,6 +198,67 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
     )
 }
 
+
+//追加ボタン関数
+const handleMembers = (
+    urlSchoolId,
+    numberRef,
+    iningRef,
+    handedHitState,
+    handedThrowState,
+    copyMember,
+    uniformNumberArray,
+    setUniformNumberArray,
+    nameKanji,
+    nameHira,
+    trigger,
+    setTrigger
+) => {
+    let Array = [{
+        "school_id": urlSchoolId,
+        "player_name_kanji": nameKanji.famiryName + "　" + nameKanji.firstName,
+        "player_name_hira": nameHira.famiryName + "　" + nameHira.firstName,
+        "uniform_number": numberRef.current.value,
+        "grade": iningRef.current.value,
+        "handed_hit": handedHitState,
+        "handed_throw": handedThrowState,
+        "BA": 0,
+        "bat_num": 0,
+        "hit_num": 0
+    }]
+
+
+    if (copyMember.some((u) => u.player_name_kanji === Array[0].player_name_kanji) &&
+        copyMember.some((u) => u.player_name_hira === Array[0].player_name_hira)
+    ) {
+        console.log("out")
+    }
+    else {
+        console.log("safe")
+        fetch(backendUrl + "/member/member_register", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(Array),
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                if (data === "OK") {
+                    //背番号の取得
+                    let copyUniformNumberArray = uniformNumberArray
+                    copyUniformNumberArray = copyUniformNumberArray.slice(0, copyUniformNumberArray.length)
+                    console.log(numberRef.current.value)
+                    setUniformNumberArray([...copyUniformNumberArray, numberRef.current.value])
+                    console.log([...uniformNumberArray, numberRef.current.value])
+                    setTrigger(!trigger)
+                }
+            })
+    }
+}
+
+
 //登録ボタンで内容を送信
 const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumberArray, registeredMembers) => {
 
@@ -259,23 +319,23 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
 
 
 //メンバーの編集内容をバックエンドに送信
-const EditMember = (sendInfo) => {
-    fetch(backendUrl + "/member/member_edit", {
+const EditMember = async (sendInfo) => {
+    await fetch(backendUrl + "/member/member_edit", {
         method: "POST",
         mode: "cors",
         headers: { "Content-Type": "application/json", },
         body: JSON.stringify(sendInfo),
     })
-        .then((response) => response.text())
-        .then((data) => {
+        .then(async (response) => response.text())
+        .then(async (data) => {
 
             if (data === "OK") {
-                console.log(sendInfo.player_name_kanji + "を編集しました")
-                // readSchool(setUseSchools, urlTournamentId)
+                await console.log(sendInfo.player_name_kanji + "を編集しました")
+                await console.log("EditMember")
             }
         })
 
-    console.log(sendInfo)
+    await console.log(sendInfo)
 }
 
 
@@ -410,6 +470,9 @@ export const InputMember = () => {
     const urlSchoolId = searchParams.get("urlSchoolId")
     const urlSchoolName = searchParams.get("urlSchoolName")
 
+    //DBからデータを読み出したいときのトリガーとなるステイト
+    const [trigger, setTrigger] = useState(false)
+
     //編集・削除モードかどうかを管理するステイト
     const [isEditMode, setisEditMode] = useState(false)
 
@@ -470,15 +533,6 @@ export const InputMember = () => {
 
         initialSetIning();
         initialSetNumber();
-        loadMember(uniformNumberArray,
-            setUniformNumberArray,
-            urlTournamentId,
-            urlSchoolId,
-            setCopyMember,
-            selectedMember,
-            setSelectedMember,
-            true,
-            setRegisteredMembers)
         //明日のメモ
         //選手を追加すると、ロードしなおすため背番号が消えてしまう。
         //だから、copymemberとは別の配列を用意してそこに記録する
@@ -487,6 +541,25 @@ export const InputMember = () => {
         lordRegisteredMember(urlTournamentId, urlSchoolId)
     }, [])
 
+    useEffect(() => {
+        // 選手を読み込む
+        const handleLoadMember = async () => {
+            await console.log("rendering")
+            await loadMember(
+                uniformNumberArray,
+                setUniformNumberArray,
+                urlTournamentId,
+                urlSchoolId,
+                setCopyMember,
+                selectedMember,
+                setSelectedMember,
+                true,
+                setRegisteredMembers
+            )
+        }
+
+        handleLoadMember()
+    }, [trigger])
 
 
 
@@ -510,53 +583,7 @@ export const InputMember = () => {
 
 
 
-    //追加ボタン
-    const handleMembers = (uniformNumberArray, setUniformNumberArray, nameKanji, nameHira) => {
-        let Array = [{
-            "school_id": urlSchoolId,
-            "player_name_kanji": nameKanji.famiryName + "　" + nameKanji.firstName,
-            "player_name_hira": nameHira.famiryName + "　" + nameHira.firstName,
-            "uniform_number": numberRef.current.value,
-            "grade": iningRef.current.value,
-            "handed_hit": handedHitState,
-            "handed_throw": handedThrowState,
-            "BA": 0,
-            "bat_num": 0,
-            "hit_num": 0
-        }]
 
-
-        if (copyMember.some((u) => u.player_name_kanji === Array[0].player_name_kanji) &&
-            copyMember.some((u) => u.player_name_hira === Array[0].player_name_hira)
-        ) {
-            console.log("out")
-        }
-        else {
-            console.log("safe")
-            fetch(backendUrl + "/member/member_register", {
-                method: "POST",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(Array),
-            })
-                .then((response) => response.text())
-                .then((data) => {
-                    if (data === "OK") {
-                        //背番号の取得
-                        let copyUniformNumberArray = uniformNumberArray
-                        copyUniformNumberArray = copyUniformNumberArray.slice(0, copyUniformNumberArray.length)
-                        console.log(numberRef.current.value)
-                        setUniformNumberArray([...copyUniformNumberArray, numberRef.current.value])
-                        console.log([...uniformNumberArray, numberRef.current.value])
-                        loadMember(uniformNumberArray, setUniformNumberArray, urlTournamentId, urlSchoolId, setCopyMember, selectedMember, setSelectedMember, false)
-                    }
-                })
-        }
-
-
-    }
 
 
     return (
@@ -617,8 +644,8 @@ export const InputMember = () => {
                         !isEnpty([nameHira.famiryName, nameHira.firstName, nameKanji.famiryName, nameKanji.firstName])) &&
                         <button
                             className="addButton"
-                            onClick={() => handleMembers(uniformNumberArray, setUniformNumberArray, nameKanji, nameHira)}
-                        >追加</button>
+                            onClick={() => { }}
+                        >追加a</button>
                     }
 
                     {(isHiragana(nameHira.famiryName) && isHiragana(nameHira.firstName) &&
@@ -626,12 +653,22 @@ export const InputMember = () => {
                         nameKanji.famiryName !== "" && nameKanji.firstName !== "") &&
                         <button
                             className="addButton"
-                            onClick={() => { }}
+                            onClick={() => handleMembers(
+                                urlSchoolId,
+                                numberRef,
+                                iningRef,
+                                handedHitState,
+                                handedThrowState,
+                                copyMember,
+                                uniformNumberArray,
+                                setUniformNumberArray,
+                                nameKanji,
+                                nameHira,
+                                trigger,
+                                setTrigger
+                            )}
                         >追加</button>
                     }
-
-                    {console.log(isEnpty([nameHira.famiryName, nameHira.firstName, nameKanji.famiryName, nameKanji.firstName]))}
-
 
 
                     <div>{(!isHiragana(nameHira.famiryName) || !isHiragana(nameHira.firstName)) &&
@@ -729,6 +766,8 @@ export const InputMember = () => {
                                         gradeArray={gradeArray}
                                         isEnpty={isEnpty}
                                         isHiragana={isHiragana}
+                                        trigger={trigger}
+                                        setTrigger={setTrigger}
                                     />
                                     <br /><br />
                                 </div>

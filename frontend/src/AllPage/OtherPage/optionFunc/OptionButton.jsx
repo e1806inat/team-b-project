@@ -29,7 +29,7 @@ export const OptionButton = () => {
 
 
                 <div class="sidebar">
-                    <div className="menuHeader">お店情報</div>
+                    <div className="menuHeader">menu</div>
                     <ul>
                         <li >
                             <a href="#"><i class="fas fa-qrcode"></i>ダッシュボード</a>

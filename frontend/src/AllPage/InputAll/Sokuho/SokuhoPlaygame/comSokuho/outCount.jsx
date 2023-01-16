@@ -50,7 +50,6 @@ export const outCount = (outCountState, setOutCountState) => {
 
     return (
         <div className="outCount">
-            アウトカウント
             {outCountState === 0 && outZero(setOutCountState)}
             {outCountState === 1 && outOne(setOutCountState)}
             {outCountState === 2 && outTwo(setOutCountState)}

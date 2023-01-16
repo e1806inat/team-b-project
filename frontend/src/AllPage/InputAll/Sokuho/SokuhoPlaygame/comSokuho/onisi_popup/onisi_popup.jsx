@@ -67,10 +67,7 @@ const handleKakutei = (
   else if (batterResult === 2) isFourball = 1
   else if (batterResult === 3) isDeadball = 1
 
-
-  console.log(batterResult)
-
-  //DBにデータを送る
+  //DBにデータを送る配列作成
   let sendInfo = {
     table_name: urlGameId,
     inning: (nowIningState[0] + 1) * 10 + (nowIningState[1] + 1),
@@ -89,10 +86,12 @@ const handleKakutei = (
     hit: isHit,
     foreball: isFourball,
     deadball: isDeadball,
-    pinch: isPinch
+    pinch: isPinch,
+    batting_order:nowPlayingMember[nowIningState[1]]
   }
 
   console.log(sendInfo)
+  //実際に送信
   DasekiRegister(sendInfo)
 
   //値の初期化

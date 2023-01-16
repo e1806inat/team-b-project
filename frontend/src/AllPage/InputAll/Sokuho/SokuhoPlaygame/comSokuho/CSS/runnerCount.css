@@ -1,9 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
+
+:root{
+    --color-main: #00afcc;
+}
+
+*{
+    font-family: 'M PLUS 1p', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.runnerCount{
+    margin-bottom: 20px;
+}
+
+.runnerCount .runner{
+    width: 100%;
+    padding: 10px 0;
+    background-color: rgba(232, 235, 235, 0.2);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.fa-stack{
+    font-size: 3em;
+}
+
+.fa-stack-1x{
+    font-size: 0.4em;
+    color: white;
+    margin-top: 6%;
+    margin-left: 6%;
+}
+
 .diamondtrue {
-    color: rgb(17, 0, 255);
-    font-size: 5em;
+    color: rgba(0, 175, 204);
+    /* font-size: 5em; */
+    margin: 5px;
 }
 
 .diamondfalse {
     color: rgb(0, 0, 0);
-    font-size: 5em;
+    /* font-size: 5em; */
+    margin: 5px;
 }

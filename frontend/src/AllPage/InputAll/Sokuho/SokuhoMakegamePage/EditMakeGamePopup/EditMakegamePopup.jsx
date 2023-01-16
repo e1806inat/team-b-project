@@ -35,7 +35,7 @@ class Popup extends React.Component {
                         変更後：{this.props.makePulldown(0, this.props.iningList, "ining", this.props.editingSelected, this.props.setEditingSelected)}<br />
 
                         先攻の高校を変更<br />
-                        変更前：{this.props.gameInfo.school_name}<br />
+                        変更前：{this.props.gameInfo.school_name_1}<br />
                         変更後：{this.props.makePulldown(1, this.props.Schools, "school_name", this.props.editingSelected, this.props.setEditingSelected)}<br />
 
                         後攻の高校を変更<br />
@@ -70,8 +70,9 @@ class Popup extends React.Component {
                         {/* はいのボタン */}
 
                         <button className="button_style_3"
-                            onClick={() => {
+                            onClick={async () => {
 
+                                // 編集モード
                                 if (this.props.EorDCheckbox) {
 
                                     let sendInfo = {
@@ -92,25 +93,25 @@ class Popup extends React.Component {
                                     if (!(this.props.isDuplicateA(this.props.editingSelected) ||
                                         this.props.isDuplicateB(this.props.gameInfoState, sendInfo))
                                     ) {
-
-                                        this.props.EditGame(sendInfo)
-                                        this.props.closePopup()
-
+                                        await this.props.EditGame(sendInfo)
+                                        await this.props.closePopup()
+                                        await this.props.loadGame(this.props.setGameInfoState, this.props.urlTournamentId)
                                     }
-                                    else {console.log("aaaaiiiii")}
+                                    else { console.log("編集できませんでした") }
                                 }
 
+                                // 削除モード
                                 else {
                                     let sendInfo = {
                                         game_id: this.props.gameInfo.game_id,
                                         tournament_id: this.props.gameInfo.tournament_id
                                     }
 
-                                    this.props.DeleteGame(sendInfo)
-                                    this.props.closePopup()
+                                    await this.props.DeleteGame(sendInfo)
+                                    await this.props.closePopup()
                                 }
 
-                                this.props.loadGame(this.props.setGameInfoState, this.props.urlTournamentId)
+                                await this.props.loadGame(this.props.setGameInfoState, this.props.urlTournamentId)
 
                             }}>決定
                         </button>
@@ -153,11 +154,11 @@ class EditMakegamePopup extends React.Component {
                         <button className="btn_So_Make"
                             onClick={() => { }}>
                             {this.props.gameInfo.match_num}回戦<br />
-                            {this.props.gameInfo.school_name}<br />
+                            {this.props.gameInfo.school_name_1}<br />
                             {this.props.gameInfo.school_name_2}<br />
                             {
                                 this.props.Venues.length !== 0 &&
-                                this.props.Venues[this.props.gameInfo.venue_id].venue_name
+                                this.props.Venues.find((v) => v.venue_id === this.props.gameInfo.venue_id).venue_name
                             }
                         </button><br /><br />
                     </div>

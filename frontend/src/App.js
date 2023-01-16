@@ -7,6 +7,8 @@ import {
   SokuhoSelectTournament,
 } from './AllPage/PageIndex';
 
+import { routeUrl } from './DB/communication';
+
 import { OutPutGame } from './AllPage/OutPutGame/OutPutGame'
 
 import React from 'react'
@@ -18,10 +20,12 @@ import './App.css';
 
 // const routeUrl = "/j_R4_team_b/frontend"
 // const routeUrl = "/team-b-project/frontend"
-const routeUrl = ""
+// const routeUrl = ""
 
 
 const App = () => {
+  // const routeUrl = require("./DB/communication")
+
   return (
     <div>
       <BrowserRouter>
@@ -34,7 +38,7 @@ const App = () => {
           {/* 事前入力 */}
           <Route path={routeUrl + '/home/pre_input/input_tournament/'} element={<Input_Tournament />} />
           <Route path={routeUrl + '/home/pre_input/input_tournament/inputschool/'} element={<InputSchool />} />
-          <Route path={routeUrl + '/home/pre_input/input_tournament/inputschool/:school/InputMember/'} element={<InputMember />} />
+          <Route path={routeUrl + '/home/pre_input/input_tournament/inputschool/InputMember/'} element={<InputMember />} />
 
           {/* 速報入力 */}
           <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/'} element={< SokuhoSelectTournament />} />
@@ -53,10 +57,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
 
-
-
-
-
+      {console.log(routeUrl)}
     </div>
   );
 };

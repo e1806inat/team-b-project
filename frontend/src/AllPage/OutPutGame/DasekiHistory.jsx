@@ -1,13 +1,11 @@
 import React from 'react'
 
-const Daseki = ({ dasekiInfo }) => {
+const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
 
     // const handleTodoClick = () => {
     //     toggleTodo(todo.id);
     // };
     //var nowInning = '';
-    console.log(dasekiInfo)
-
     var baseFlag = true;
     var outFlag = true;
     //var pinchFlag = true;
@@ -34,7 +32,13 @@ const Daseki = ({ dasekiInfo }) => {
         }
     }
 
-    console.log(dasekiInfo['pinch']);
+    //console.log(dasekiInfo['pinch']);
+    // console.log(score);
+    // console.log(gameData)
+    // console.log(gameData[0]['school_id_1'])
+    // console.log(dasekiInfo.school_id)
+    // console.log(dasekiInfo.score)
+    // console.log(dasekiInfo.player_name_kanji)
 
     if (dasekiInfo.outcount === 0) {
         outFlag = false;
@@ -63,6 +67,9 @@ const Daseki = ({ dasekiInfo }) => {
                         {baseFlag && <span>{baseState}</span>}
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                        {dasekiInfo.score !== 0 && <span>　</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
                     </div>
                 )
             } else {
@@ -79,6 +86,9 @@ const Daseki = ({ dasekiInfo }) => {
                         {baseFlag && <span>{baseState}</span>}
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                        {dasekiInfo.score !== 0 && <span>　</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
                     </div>
                 )
             }
@@ -99,6 +109,9 @@ const Daseki = ({ dasekiInfo }) => {
                         {baseFlag && <span>{baseState}</span>}
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                        {dasekiInfo.score !== 0 && <span>　</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
                     </div>
                 )
             } else {
@@ -115,6 +128,9 @@ const Daseki = ({ dasekiInfo }) => {
                         {baseFlag && <span>{baseState}</span>}
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                        {dasekiInfo.score !== 0 && <span>　</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
                     </div>
                 )
             }

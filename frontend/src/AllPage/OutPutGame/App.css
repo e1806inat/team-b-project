@@ -103,9 +103,9 @@
   background:#016435;
   color:white;
   text-align:center;
-  width: 650px;
-  font-size: 33px;
-  height: 50px;
+  font-size: 3vh;
+  width: 70%;
+  height: 5vh;
   margin:  auto;
 }
 
@@ -118,25 +118,29 @@
 .startingMembers{
   margin:  auto;
   text-align:center;
-  font-size: 20px;
+  font-size: 2vh;
+  width: 84%;
+  height: 4vh;
 }
 
 .schoolBox{
   background:black;
   color:white;
-  width: 400px;
-  height: 50px;
-  margin:  20px;  
+  margin:  3vh;  
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: 2vh;
+  width: 55%;
+  height: 5vh;
 }
 
 .members{
   color:white;
   margin:  auto;
-  
+  font-size: 1.5vh;
+  width: 84%;
+  height: 4vh;
 }
 .members td{
   background: #191970;
@@ -145,18 +149,18 @@
 .textSokuhou{
   position: relative;
     margin: 2em 0;
-    padding: 25px 10px 7px;
-    border: solid 2px rgb(229,239,234);
+    padding: 2vh 1vh 1vh;
+    border: solid 0.5vh rgb(229,239,234);
 }
 .textSokuhou .box-title {
   position: absolute;
   display: inline-block;
-  top: -2px;
-  left: -2px;
-  padding: 0 9px;
-  height: 30px;
-  line-height: 30px;
-  font-size: 15px;
+  top: -0.5vh;
+  left: -0.5vh;
+  padding: 0 2vh;
+  height: 2vh;
+  line-height:2vh;
+  font-size: 1vh;
   background: rgb(229,239,234);
   color: #016435;
   font-weight: bold;
@@ -167,7 +171,11 @@
 }
 
 .daseki{
-  
+  font-size: 1.5vh;
+}
+
+.position{
+  font-size: 1.3vh;
 }
 /* 信号機の光の影の部分のアニメーション */
 /* @keyframes shadow {

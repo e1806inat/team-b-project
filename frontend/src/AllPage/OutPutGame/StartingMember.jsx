@@ -5,11 +5,11 @@ const StartingMember = ({startingMember}) => {
   return (
     <table border="1" className='startingMembers'>
         <tr>
-            <td width="50" height="50" rowspan="2">{startingMember.batting_order}</td>
-            <td width="300"height="50" rowspan="2">{startingMember.player_name_kanji}</td>
-            <td width="75" height="50" rowspan="2">{startingMember.uniform_number}</td>
-            <td width="150" height="50" rowspan="2">{startingMember.position}</td>
-            <td width="75" height="50" rowspan="2">{startingMember.BA}</td>
+            <td width="8%" height="15vh" rowspan="2">{startingMember.batting_order}</td>
+            <td width="30%"height="10vh" rowspan="2">{startingMember.player_name_kanji}</td>
+            <td width="10%" height="10vh" rowspan="2">{startingMember.uniform_number}</td>
+            <td className='position' width="18%" height="10vh" rowspan="2">{startingMember.position}</td>
+            <td width="16%" height="10vh" rowspan="2">{startingMember.BA}</td>
         </tr>
     </table>
   )

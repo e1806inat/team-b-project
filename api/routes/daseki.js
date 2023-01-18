@@ -13,6 +13,26 @@ router.get("/", (req, res) => {
     res.send("Hello daseki");
 });
 
+//テスト用
+router.post("/daseki_register_for_test", async (req, res, next) => {
+    //const { table_name, inning, game_id, school_id, player_id, pitcher_id, score, total_score, batting_order, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
+    const tmp_table_name = `test_pbl.` + `test116`;
+
+    try {
+        //打席情報登録
+        for(var values of req.body){
+            await executeQuery(`insert into ${tmp_table_name} values ("0", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [values.inning, values.game_id, values.school_id, values.player_id, values.pitcher_id, values.score, values.total_score, values.outcount, values.base, values.text_inf, values.pass, values.touched_coordinate, values.ball_kind, values.hit, values.foreball, values.deadball, values.pinch,  values.batting_order]);
+        }
+        //await executeQuery(`insert into ${tmp_table_name} values ("0", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [inning, game_id, school_id, player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch,  batting_order]);
+        res.end("OK");
+    }
+    catch (err) {
+        //next(err);
+        console.log(err);
+        next(err);
+    }
+});
+
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）（運用者用webアプリ）
 router.post("/daseki_register", async (req, res, next) => {
     const { table_name, inning, game_id, school_id, player_id, pitcher_id, score, total_score, batting_order, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
@@ -39,13 +59,14 @@ router.post("/tmp_table_create", async (req, res, next) => {
 
     try {
         //一時打席情報登録用テーブル作成
-        await executeQuery(`create table ${table_name} (at_bat_id int not null auto_increment, inning int, game_id int not null,  school_id int not null, player_id int not null, pitcher_id int not null, score int, total_score int, batting_order int, outcount int, base char(3), text_inf varchar(300), pass bool, touched_coordinate varchar(100), ball_kind varchar(10), hit bool, foreball bool, deadball bool, pinch varchar(300), primary key(at_bat_id, game_id), foreign key(school_id) references t_school(school_id),
+        await executeQuery(`create table ${table_name} (at_bat_id int not null auto_increment, inning int, game_id int not null,  school_id int not null, player_id int not null, pitcher_id int not null, score int, total_score int, outcount int, base char(3), text_inf varchar(300), pass bool, touched_coordinate varchar(100), ball_kind varchar(10), hit bool, foreball bool, deadball bool, pinch varchar(300), batting_order int, primary key(at_bat_id, game_id), foreign key(school_id) references t_school(school_id),
         foreign key(player_id) references t_player(player_id))`);
         res.end('OK');   
     }
     catch (err) {
         //next(err);
         console.log("hehehe")
+        console.log(err)
         next(err);
     }
 });  
@@ -82,7 +103,8 @@ router.post("/tmp_table_delete", async (req, res, next) => {
             console.log('試合テーブルを削除できませんでした');
             //console.log(err);
             await tran.rollback();
-            next(err);
+            res.end("sippai");
+            //next(err);
         }
     }
     catch (err) {

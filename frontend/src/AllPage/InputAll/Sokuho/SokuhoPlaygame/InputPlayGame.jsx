@@ -28,59 +28,18 @@ import { battedBall } from './comSokuho/comCanvas/battedBall';
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
 
-//選手読み込み
-// const setBatter = (setBattingOrder, setBattingOrder2, urlSchoolId, urlSchoolId2, urlGameId, nowPlayingMember, setNowPlayingMember) => {
 
-//     //ピッチャーを探す
-//     const ditectPitcher = (data) => {
-//         let result = 0
-//         data.map((data, ind) => {
-//             if (data.position === "ピッチャー") {
-//                 result = ind
-//             }
-//         })
-//         return result
-//     }
-
-//     fetch(backendUrl + "/member/starting_member_call", {
-//         method: "POST",
-//         mode: "cors",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId }),
-//     })
-//         .then((response) => response.json())
-//         .then((TeamAdata) => {
-//             TeamAdata.sort((a, b) => a.batting_order - b.batting_order)
-//             console.log(TeamAdata)
-//             setBattingOrder(TeamAdata)
-
-//             fetch(backendUrl + "/member/starting_member_call", {
-//                 method: "POST",
-//                 mode: "cors",
-//                 headers: {
-//                     "Content-Type": "application/json",
-//                 },
-//                 body: JSON.stringify({ game_id: urlGameId, school_id: urlSchoolId2 }),
-//             })
-//                 .then((response) => response.json())
-//                 .then((TeamBdata) => {
-//                     TeamBdata.sort((a, b) => a.batting_order - b.batting_order)
-//                     console.log(TeamBdata)
-//                     setBattingOrder2(TeamBdata)
-//                     nowPlayingMember[0].pitcher = ditectPitcher(TeamBdata)
-//                     nowPlayingMember[1].pitcher = ditectPitcher(TeamAdata)
-//                     setNowPlayingMember(nowPlayingMember)
-//                 })
-//         })
-// }
 
 //自作プルダウン　改造あり
 const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected, urlSchoolName, urlSchoolName2,
     dasekiAll, setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2
+    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+    battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
 ) => {
+    
+    console.log(dasekiAll)
+
+
     //pulldownIdは0でいいです。
     //ArrayListは表示したい要素を並べた配列です、普通の配列ではなく連想配列です。
     //idテキストは連想配列の属性を書きます。
@@ -99,7 +58,8 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
 
                     editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
                         setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2
+                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+                        battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
                     )
                 }
                 }>
@@ -117,10 +77,11 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
 //打席編集
 const editBattersBox = (battersBox, battersBoxAll, nowSelected,
     setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2) => {
+    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+    battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2) => {
 
     console.log(battersBox)
-    let touchedCoordinate = battersBox.touched_coordinate.split("_")
+    let touchedCoordinate = battersBoxAll[nowSelected].touched_coordinate.split("_")
     touchedCoordinate = touchedCoordinate.slice(0, touchedCoordinate.length)
 
     let teamABatter = 0;
@@ -128,7 +89,61 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
     let teamBBatter = 0;
     let teamApitcher = 0;
 
-    const value = battersBox.inning
+    //pinchを反映させる
+    battersBoxAll.map((v, indBB) => {
+        let playerId = []
+        if (v.pinch !== "" && v.pinch !== "0" && v.pinch !== null && v.pinch !== undefined) {
+
+            //pinchに値が入っており、かつ値が正常であると思われる場合
+            if (v.pinch.length > 3) {
+                //スライス
+                playerId = v.pinch.split("→")
+
+                //表回
+                if (v.inning % 10 - 1 === 0) {
+                    //打順配列からplayerId[0]を探す
+                    battingOrder.map((u, indBB) => {
+                        if (u.player_id.toString() === playerId[0]) {
+                            //登録されているメンバーからplayerId[1]を探す
+                            registeredMember1.map((regiMember1) => {
+                                //あればその選手を打順配列に入れ替える
+                                if (regiMember1.player_id.toString() === playerId[1]) {
+                                    battingOrder[indBB] = regiMember1
+                                    setBattingOrder(battingOrder)
+                                }
+                            })
+                        }
+                    })
+                }
+
+                //裏回
+                else if (v.inning % 10 - 1 === 1) {
+                    //打順配列からplayerId[0]を探す
+                    battingOrder2.map((u, indBB) => {
+                        if (u.player_id === playerId[0]) {
+                            //登録されているメンバーからplayerId[1]を探す
+                            registeredMember2.map((regiMember2) => {
+                                //あればその選手を打順配列に入れ替える
+                                if (regiMember2.player_id === playerId[1]) {
+                                    battingOrder2[indBB] = regiMember2
+                                }
+                            })
+                        }
+                    })
+                }
+            }
+
+            //pinchに値が入っており、かつ内容がおかしい場合
+            else {
+                battersBoxAll[indBB].pinch = null
+                battersBoxAll[indBB].player_id = battersBoxAll[6].player_id
+            }
+        }
+    })
+
+    console.log(battersBoxAll)
+
+    const value = battersBoxAll[nowSelected].inning
     for (let i = nowSelected; i >= 0; i--) {
         if (value !== battersBoxAll[i].inning) {
             teamBBatter = battersBoxAll[i].player_id
@@ -137,37 +152,48 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
         }
     }
 
+    //画面に反映
     setNowIningState([Math.floor(battersBox.inning / 10 - 1), battersBox.inning % 10 - 1])
     setNowOutCountState(battersBox.outcount)
     setRunnerCountState([battersBox.base / 100 >= 1, battersBox.base / 10 >= 1 && battersBox.base / 100 < 1, battersBox.base % 10 === 1])
     setFreeWriteState(battersBox.text_inf)
-    console.log(touchedCoordinate)
+    setFlag(battersBox.ball_kind)
     setcanvasX1(touchedCoordinate[0])
     setcanvasY1(touchedCoordinate[1])
     setAddScoreState(battersBox.score)
+
     if (battersBox.inning % 10 === 1) {
-        setNowPlayingMember(
-            [{
-                batter: battingOrder.findIndex((u) => u.player_id === battersBox.player_id),
-                pitcher: battingOrder2.findIndex((u) => u.player_id === battersBox.pitcher_id)
-            },
-            {
-                batter: teamBBatter,
-                pitcher: teamApitcher
-            }]
-        )
+        let sendMember1 = [{
+            batter: battingOrder.findIndex((u) => u.player_id === battersBoxAll[nowSelected].player_id),
+            pitcher: battingOrder2.findIndex((u) => u.player_id === battersBoxAll[nowSelected].pitcher_id)
+        },
+        {
+            batter: teamBBatter,
+            pitcher: teamApitcher
+        }]
+
+        //値が入ってないときの処理
+        if (sendMember1[0].batter === -1) { sendMember1[0].batter = 0 }
+        if (sendMember1[0].pitcher === -1) { sendMember1[0].pitcher = 0 }
+        setNowPlayingMember(sendMember1)
     }
     else if (battersBox.inning % 10 === 2) {
-        setNowPlayingMember(
-            [{
+        let sendMember2 = [
+            {
                 batter: teamABatter,
                 pitcher: teamBpitcher
             },
             {
-                batter: battingOrder2.findIndex((u) => u.player_id === battersBox.player_id),
-                pitcher: battingOrder.findIndex((u) => u.player_id === battersBox.pitcher_id)
-            }]
-        )
+                batter: battingOrder2.findIndex((u) => u.player_id === battersBoxAll[nowSelected].player_id),
+                pitcher: battingOrder.findIndex((u) => u.player_id === battersBoxAll[nowSelected].pitcher_id)
+            }
+        ]
+
+        //値が入ってないときの処理
+        if (sendMember2[1].batter === -1) { sendMember2[1].batter = 0 }
+        if (sendMember2[1].pitcher === -1) { sendMember2[1].pitcher = 0 }
+
+        setNowPlayingMember(sendMember2)
     }
 
 
@@ -220,9 +246,6 @@ const RefDuringGame = async (urlGameId, setIsDuringGame) => {
         })
 }
 
-
-
-
 //一時打席情報登録用のテーブル作成
 const TmpTableCreate = async (urlGameId) => {
 
@@ -264,8 +287,9 @@ const TmpTableCheck = (urlGameId, setIsExistTmpTable, TmpDasekiCall, urlTourname
             //テーブルが存在するとき
             else if (data === "exist") {
                 console.log(data)
+                console.log("DBからデータを読み出します")
                 setIsExistTmpTable(true)
-                TmpDasekiCall(urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
+                TmpDasekiCall(urlGameId, urlSchoolId, urlSchoolId2,
                     setNowIningState, setScoreState, setNowOutCountState,
                     setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2
                 )
@@ -274,7 +298,7 @@ const TmpTableCheck = (urlGameId, setIsExistTmpTable, TmpDasekiCall, urlTourname
 }
 
 ////試合情報受け取り（速報用）
-const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
+const TmpDasekiCall = (urlGameId, urlSchoolId, urlSchoolId2,
     setNowIningState, setScoreState, setNowOutCountState,
     setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2) => {
 
@@ -290,7 +314,14 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
+            //反転させる
             data.reverse()
+
+            //代打を反映
+            data.map((daseki, ind) => {
+                // console.log(daseki.pinch)
+            })
+
             setDasekiAll(data)
 
             //空っぽなら無視
@@ -343,7 +374,6 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                 setScoreState(sendScore)
 
 
-
                 //今現在のプレイヤー取得
                 //まずは先行チーム
                 fetch(backendUrl + "/member/starting_member_call", {
@@ -356,10 +386,7 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                 })
                     .then((response) => response.json())
                     .then((TeamAdata) => {
-                        console.log(TeamAdata)
 
-                        TeamAdata.sort((a, b) => a.batting_order - b.batting_order)
-                        setBattingOrder(TeamAdata)
 
                         //後攻チーム
                         //打順を持ってくる
@@ -374,6 +401,25 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                             .then((response) => response.json())
                             .then((TeamBdata) => {
 
+                                let text = null
+                                let index = 0
+                                // data.map((v) => {
+                                //     if (v.pinch === null || v.pinch === 0) {
+                                //         text = v.pinch.split("→")
+
+                                //         if (v.inning % 10 - 1 === 0) {
+                                //             index = TeamAdata.findIndex((u) => u.player_id === text[0])
+                                //         }
+                                //         else {
+
+                                //         }
+                                //     }
+                                //     console.log(v)
+                                // })
+
+                                TeamAdata.sort((a, b) => a.batting_order - b.batting_order)
+                                setBattingOrder(TeamAdata)
+
                                 TeamBdata.sort((a, b) => a.batting_order - b.batting_order)
                                 setBattingOrder2(TeamBdata)
 
@@ -382,7 +428,7 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                                 let teamBBatter = 0
                                 let teamBpitcher = 0
 
-                                //先攻
+                                //さっきの打席が先攻チームだった場合
                                 if (latestDasaki.inning % 10 - 1 === 0) {
                                     teamABatter = TeamAdata.findIndex((u) => u.player_id === latestDasaki.player_id)
                                     teamBpitcher = TeamBdata.findIndex((u) => u.player_id === latestDasaki.pitcher_id)
@@ -393,9 +439,11 @@ const TmpDasekiCall = (urlGameId, urlTournamentId, urlSchoolId, urlSchoolId2,
                                             break
                                         }
                                     }
-                                    if (data[data.length - 1].outcount !== 3) teamABatter++
-                                    else teamBBatter++
+                                    if (latestDasaki.outcount !== 3) teamABatter++
+                                    //過去に後攻の打席がある場合
+                                    else if (data.some((v) => v.inning % 10 - 1 === 1)) teamBBatter++
                                 }
+
                                 //後攻
                                 else if (latestDasaki.inning % 10 - 1 === 1) {
                                     for (let i = data.length - 1; i >= 0; i--) {
@@ -658,7 +706,7 @@ const CalculateBatAvg = (urlGameId) => {
 }
 
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
-const DasekiRegister = (sendInfo) => {
+const DasekiRegister = (sendInfo, trigger, setTrigger) => {
 
     fetch(backendUrl + "/daseki/daseki_register", {
         method: "POST",
@@ -670,7 +718,9 @@ const DasekiRegister = (sendInfo) => {
     })
         .then((response) => response.text())
         .then((data) => {
-            console.log(data)
+            if (data === "OK") {
+                setTrigger(!trigger)
+            }
         })
 }
 
@@ -716,16 +766,33 @@ const sendEdit = (
     scoreState[nowIningState[1]].map((score) => {
         totalScore = totalScore + score
     })
+
     let runnerCount = ""
     runnerCountState.map((runner) => {
         if (runner === true) runnerCount = "1" + runnerCount
         else if (runner === false) runnerCount = "0" + runnerCount
     })
+
     let isHit = 0; let isFourball = 0; let isDeadball = 0;
     if (batterResult === 0) { }
     else if (batterResult === 1) isHit = 1
     else if (batterResult === 2) isFourball = 1
     else if (batterResult === 3) isDeadball = 1
+
+    //選手だけここで入れる
+    let order = []
+    if (nowIningState[1] === 0) {
+        order = {
+            player_id: battingOrder[nowPlayingMember[nowIningState[1]].batter].player_id,
+            pitcher_id: battingOrder2[nowPlayingMember[nowIningState[1]].pitcher].player_id
+        }
+    }
+    else if (nowIningState[1] === 1) {
+        order = {
+            player_id: battingOrder2[nowPlayingMember[nowIningState[1]].batter].player_id,
+            pitcher_id: battingOrder[nowPlayingMember[nowIningState[1]].pitcher].player_id
+        }
+    }
 
     //DBにデータを送る
     let sendInfo = {
@@ -734,8 +801,8 @@ const sendEdit = (
         inning: (nowIningState[1] + 1) * 10 + (nowIningState[0] + 1),
         game_id: urlGameId,
         school_id: dasekiAll[nowSelected].school_id,
-        player_id: battingOrder[nowPlayingMember[nowIningState[1]].batter].player_id,
-        pitcher_id: battingOrder2[nowPlayingMember[nowIningState[1]].pitcher].player_id,
+        player_id: order.player_id,
+        pitcher_id: order.pitcher_id,
         score: addScoreState,
         total_score: totalScore,
         outcount: nowOutCountState,
@@ -750,7 +817,7 @@ const sendEdit = (
         pinch: isPinch
     }
 
-
+    console.log(sendInfo)
 
     fetch(backendUrl + "/daseki/tmp_daseki_update", {
         method: "POST",
@@ -763,7 +830,7 @@ const sendEdit = (
             console.log(data)
         })
 
-    console.log(sendInfo)
+
 }
 
 
@@ -854,8 +921,14 @@ const InputPlayGame = () => {
     //今の打順と今のピッチャーが誰なのかを2チーム文記録する
     const [nowPlayingMember, setNowPlayingMember] = useState([{ batter: 0, pitcher: 0 }, { batter: 0, pitcher: 0 }])
 
-    //代打フラグ 0なら代打でない 1なら代打
-    const [isPinch, setIsPinch] = useState(0)
+    //代打フラグ 4→15,12→6
+    const [isPinch, setIsPinch] = useState(null)
+
+    //代打で変更される前の打順を記録するステイト
+    const [latestBatOrder, setLatestBatOrder] = useState({ dasekiNum: 0, order: [] })
+
+    //データを読み込みを行うトリガー
+    const [trigger, setTrigger] = useState(true)
 
     //編集モードであるかどうかを監視するステイト
     const [isEditMode, setIsEditMode] = useState(false)
@@ -991,15 +1064,19 @@ const InputPlayGame = () => {
         //チーム2の選手登録情報を読み出す
         loadRegisteredMember(setRegisteredMember2, urlTournamentId, urlSchoolId2)
 
+
+
+        RefDuringGame(urlGameId, setIsDuringGame)
+
+    }, [])
+
+    useEffect(() => {
         //テーブル存在確認
         TmpTableCheck(urlGameId, setIsExistTmpTable, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
             setNowIningState, setScoreState, setNowOutCountState,
             setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2
         )
-
-        RefDuringGame(urlGameId, setIsDuringGame)
-
-    }, [])
+    }, [trigger])
 
 
 
@@ -1059,12 +1136,17 @@ const InputPlayGame = () => {
                                 battingOrder={battingOrder}
                                 battingOrder2={battingOrder2}
                                 setBattingOrder={setBattingOrder}
+                                setBattingOrder2={setBattingOrder2}
                                 registeredMember1={registeredMember1}
                                 registeredMember2={registeredMember2}
                                 nowIningState={nowIningState}
                                 nowPlayingMember={nowPlayingMember}
                                 setNowPlayingMember={setNowPlayingMember}
                                 setIsPinch={setIsPinch}
+                                latestBatOrder={latestBatOrder}
+                                setLatestBatOrder={setLatestBatOrder}
+                                dasekiAll={dasekiAll}
+                                dasekiNum={dasekiAll.length}
                             />
                         </div>
                         <div className="freeWrite">
@@ -1134,6 +1216,10 @@ const InputPlayGame = () => {
                                     setBatterResult={setBatterResult}
                                     isPinch={isPinch}
                                     setIsPinch={setIsPinch}
+                                    TmpDasekiCall={TmpDasekiCall}
+                                    trigger={trigger}
+                                    setTrigger={setTrigger}
+
                                 />
                             </div>
                         </>
@@ -1144,7 +1230,8 @@ const InputPlayGame = () => {
                 {isEditMode &&
                     makePulldown(0, dasekiAll, "at_bat_id", nowSelected, setNowSelected, urlSchoolName, urlSchoolName2,
                         dasekiAll, setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2
+                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+                        battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
                     )
                 }
 
@@ -1154,7 +1241,8 @@ const InputPlayGame = () => {
                         setIsEditMode(true);
                         editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
                             setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-                            setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, battingOrder, battingOrder2
+                            setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+                            battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
                         )
                     }}>修正モード
                     </button>
@@ -1165,7 +1253,7 @@ const InputPlayGame = () => {
                         loardNowDaseki(setNowOutCountState, setNowIningState, setRunnerCountState, setScoreState,
                             setNowPlayingMember, setFreeWriteState,
                             dasekiAll, battingOrder, battingOrder2)
-                            setNowSelected([0])
+                        setNowSelected([0])
                     }}>速報入力に戻る
                     </button>
                 }

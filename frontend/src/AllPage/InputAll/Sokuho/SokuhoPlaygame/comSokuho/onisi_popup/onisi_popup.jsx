@@ -31,7 +31,10 @@ const handleKakutei = (
   batterResult,
   setBatterResult,
   isPinch,
-  setIsPinch
+  setIsPinch,
+  TmpDasekiCall,
+  trigger,
+  setTrigger
 
 ) => {
   //ポップアップを消す
@@ -87,12 +90,12 @@ const handleKakutei = (
     foreball: isFourball,
     deadball: isDeadball,
     pinch: isPinch,
-    batting_order:nowPlayingMember[nowIningState[1]]
+    batting_order: nowPlayingMember[nowIningState[1]]
   }
 
   console.log(sendInfo)
   //実際に送信
-  DasekiRegister(sendInfo)
+  DasekiRegister(sendInfo,trigger,setTrigger)
 
   //値の初期化
   setAddScoreState(0)
@@ -158,6 +161,9 @@ class Popup extends React.Component {
                 this.props.setBatterResult,
                 this.props.isPinch,
                 this.props.setIsPinch,
+                this.props.TmpDasekiCall,
+                this.props.trigger,
+                this.props.setTrigger
               )
             }>はい
           </button>
@@ -222,6 +228,9 @@ class Popupfield extends React.Component {
             setBatterResult={this.props.setBatterResult}
             isPinch={this.props.isPinch}
             setIsPinch={this.props.setIsPinch}
+            TmpDasekiCall={this.props.TmpDasekiCall}
+            trigger={this.props.trigger}
+            setTrigger={this.props.setTrigger} 
           />
         ) : null}
       </div>

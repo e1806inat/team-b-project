@@ -14,8 +14,7 @@ const { PositionDB } = require("../../../../DB/Position9DB")
 const tableStyle = {
     border: '1px solid black',
     borderCollapse: 'collapse',
-    textAlign: 'center',
-    width: '70%'
+    textAlign: 'center'
 }
 
 const tdStyle = {
@@ -27,8 +26,19 @@ const tdStyle = {
 const thStyle = {
     border: '1px solid #3498DB',
     background: '#3498DB',
-    color: 'white',
-    padding: '2px'
+    color: 'white'
+};
+
+const thStyle2 = {
+    border: '1px solid #FF3347',
+    background: '#FF3347',
+    color: 'white'
+};
+
+const tdStyle2 = {
+    border: '1px solid #FF99a3',
+    background: 'white',
+    padding: '5px'
 };
 
 
@@ -44,7 +54,6 @@ const loadRegisteredMember = (urlTournamentId, urlSchoolId, setRegisteredMember,
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
             if (data.length !== 0) { setIsEmptyFlag(!isEmptyFlag) }
             setRegisteredMember(data)
         })
@@ -66,6 +75,7 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
                     setNowSelected(nowSelected)
                     console.log(nowSelected)
                 }}>
+                <option hidden>選択してください</option>
                 {ArrayList.map((component, ind) => (
                     <option value={ind}>{component[idText]}</option>
                 ))
@@ -74,6 +84,48 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
         </>
 
     )
+}
+
+const tyouhuku = (nowSelected, urlSchoolName, nowSelected2, urlSchoolName2) => {
+    //守備位置重複確認
+    let error = 0;
+    for (let i = 0; i <= 8; i++) {
+        for (let j = i + 1; j <= 8; j++) {
+            if (nowSelected[i] === nowSelected[j]) {
+                alert(urlSchoolName + "の" + (i + 1) + "番打者と" + (j + 1) + "番打者の守備位置が重複しています")
+                error++;
+                break;
+            }
+            if (nowSelected2[i] === nowSelected2[j]) {
+                alert(urlSchoolName2 + "の" + (i + 1) + "番打者と" + (j + 1) + "番打者の守備位置が重複しています")
+                error++;
+                break;
+            }
+        }
+        if (error > 0) {
+            error = 0;
+            break;
+        }
+    }
+    //選手氏名重複確認
+    for (let i = 9; i <= 17; i++) {
+        for (let j = i + 1; j <= 17; j++) {
+            if (nowSelected[i] === nowSelected[j]) {
+                alert(urlSchoolName + "の" + (i - 8) + "番打者と" + (j - 8) + "番打者の選手氏名が重複しています")
+                error++;
+                break;
+            }
+            if (nowSelected2[i] === nowSelected2[j]) {
+                alert(urlSchoolName2 + "の" + (i - 8) + "番打者と" + (j - 8) + "番打者の選手氏名が重複しています")
+                error++;
+                break;
+            }
+        }
+        if (error > 0) {
+            error = 0;
+            break;
+        }
+    }
 }
 
 
@@ -135,7 +187,6 @@ const loadStartingMember = (game_id, school_id, setRegisteredSM) => {
         .then((data) => {
             data.sort((a, b) => a.batting_order - b.batting_order)
             setRegisteredSM(data);
-            console.log(data)
         })
 }
 
@@ -284,9 +335,9 @@ const StartingMember = () => {
             />
             <h3>編集中：{urlTournamentName}</h3>
             <div id="error"></div>
-            <table style={tableStyle}><tr><th>{urlSchoolName}</th></tr></table>
             <table style={tableStyle}>
                 <tbody>
+                    <tr><th colSpan={5}><font size="+2">{urlSchoolName}　</font></th></tr>
                     <tr>
                         <th style={thStyle} rowspan="2">打順</th>
                         <th style={thStyle} rowspan="2">位置</th>
@@ -296,9 +347,11 @@ const StartingMember = () => {
                         <th style={thStyle} rowspan="2">既登録の選手情報</th>
                     </tr>
                     <tr><th style={thStyle}>選手氏名</th></tr>
+
                     {registeredMember1.length === 0 &&
                         <div>選手が登録されていません</div>
                     }
+
                     {registeredMember1.length !== 0 && enptyArray.map((component, ind) => (
                         <>
                             <tr>
@@ -338,18 +391,19 @@ const StartingMember = () => {
                 </tbody>
             </table><br />
 
-            <table style={tableStyle}><tr><th>{urlSchoolName2}</th></tr></table>
+
             <table style={tableStyle}>
                 <tbody>
+                    <tr><th colSpan={5}><font size="+2">{urlSchoolName2}　</font></th></tr>
                     <tr>
-                        <th style={thStyle} rowspan="2">打順</th>
-                        <th style={thStyle} rowspan="2">位置</th>
-                        <th style={thStyle}>ふりがな</th>
-                        <th style={thStyle} rowspan="2">背番号</th>
-                        <th style={thStyle} rowspan="2">学年</th>
-                        <th style={thStyle} rowspan="2">既登録の選手情報</th>
+                        <th style={thStyle2} rowspan="2">打順</th>
+                        <th style={thStyle2} rowspan="2">位置</th>
+                        <th style={thStyle2}>ふりがな</th>
+                        <th style={thStyle2} rowspan="2">背番号</th>
+                        <th style={thStyle2} rowspan="2">学年</th>
+                        <th style={thStyle2} rowspan="2">既登録の選手情報</th>
                     </tr>
-                    <tr><th style={thStyle}>選手氏名</th></tr>
+                    <tr><th style={thStyle2}>選手氏名</th></tr>
 
                     {registeredMember2.length === 0 &&
                         <div>選手が登録されていません</div>
@@ -357,15 +411,15 @@ const StartingMember = () => {
                     {registeredMember2.length !== 0 && enptyArray.map((component, ind) => (
                         <>
                             <tr>
-                                <td style={tdStyle} rowspan="2">{ind + 1}</td>
-                                <td style={tdStyle} rowspan="2">
+                                <td style={tdStyle2} rowspan="2">{ind + 1}</td>
+                                <td style={tdStyle2} rowspan="2">
 
                                     {makePulldown(ind, PositionDB, "kata", nowSelected2, setNowSelected2)}
                                 </td>
-                                <td style={tdStyle}><div id="player_name_hira1">{registeredMember2[nowSelected2[ind + 9]].player_name_hira}</div></td>
-                                <td style={tdStyle} rowspan="2"><div id="uniform_number1">{registeredMember2[nowSelected2[ind + 9]].uniform_number}</div></td>
-                                <td style={tdStyle} rowspan="2"><div id="grade1">{registeredMember2[nowSelected2[ind + 9]].grade}</div></td>
-                                <td style={tdStyle} rowspan="2">
+                                <td style={tdStyle2}><div id="player_name_hira1">{registeredMember2[nowSelected2[ind + 9]].player_name_hira}</div></td>
+                                <td style={tdStyle2} rowspan="2"><div id="uniform_number1">{registeredMember2[nowSelected2[ind + 9]].uniform_number}</div></td>
+                                <td style={tdStyle2} rowspan="2"><div id="grade1">{registeredMember2[nowSelected2[ind + 9]].grade}</div></td>
+                                <td style={tdStyle2} rowspan="2">
 
                                     {/* 既登録の選手情報 */}
                                     <div id="regiSM2">
@@ -384,7 +438,7 @@ const StartingMember = () => {
 
                             </tr>
                             <tr>
-                                <td style={tdStyle}>
+                                <td style={tdStyle2}>
                                     {makePulldown(ind + 9, registeredMember2, "player_name_kanji", nowSelected2, setNowSelected2)}
                                 </td>
                             </tr>
@@ -398,6 +452,7 @@ const StartingMember = () => {
 
             {!isDuplicate(nowSelected) &&
                 <button onClick={() => {
+
                     sendSelectedMember(
                         nowSelected,
                         PositionDB,
@@ -421,7 +476,14 @@ const StartingMember = () => {
             }
 
             {isDuplicate(nowSelected) &&
-                <button onClick={() => { }}>登録</button>
+                <button onClick={() => {
+                    tyouhuku(
+                        nowSelected,
+                        urlSchoolName,
+                        nowSelected2,
+                        urlSchoolName2
+                    )
+                }}>登録</button>
             }
 
             {/* ページ遷移ボタン */}

@@ -45,8 +45,6 @@ const makeBarCom = (menu, PageTransition) => {
         return madeUrl
     }
 
-    console.log(menu)
-
     //選手登録画面に飛ぶ項目を作成
     if (menu.text === "InputMember") {
 

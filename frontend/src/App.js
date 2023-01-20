@@ -7,6 +7,10 @@ import {
   SokuhoSelectTournament,
 } from './AllPage/PageIndex';
 
+import {
+  OutPutHome
+} from "./AllPage/OutPutPage/PageIndex"
+
 import { routeUrl } from './DB/communication';
 
 import { OutPutGame } from './AllPage/OutPutGame/OutPutGame'
@@ -52,6 +56,8 @@ const App = () => {
 
           {/* 出力画面 */}
           <Route path={routeUrl + '/home/output_game/'} element={<OutPutGame />} />
+          <Route path={routeUrl + '/home/OutputHome/'} element={<OutPutHome />} />
+          <Route path={routeUrl + '/home/OutputHome/GameList'} element={<OutPutHome />} />
 
           <Route path={'*'} element={<NotFound />} />
         </Routes>

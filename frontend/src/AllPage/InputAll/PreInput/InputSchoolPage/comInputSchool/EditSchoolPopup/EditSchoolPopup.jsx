@@ -30,7 +30,7 @@ class Popup extends React.Component {
                             //初期値を入れる
                             this.props.setEditingSchoolName(this.props.school.school_name)
                         }}
-                    ></input>大会を編集する<br></br>
+                    ></input>高校名を編集する<br></br>
 
                     名前の変更<br></br>
                     変更前：{this.props.school.school_name}<br></br>
@@ -47,9 +47,9 @@ class Popup extends React.Component {
                         onClick={() => {
                             this.props.setEorDCheckbox(false)
                             //警告をを入れる
-                            this.props.setEditingSchoolName("大会を削除します")
+                            this.props.setEditingSchoolName("高校を削除します")
                         }}
-                    ></input>大会を削除する<br></br>
+                    ></input>高校名を削除する<br></br>
                     <div classNAme='buttonarea'>
                         {/* いいえのボタン */}
                         <button className="button_style_3"

@@ -46,8 +46,7 @@ const Home = () => {
                 <button class="btn" onClick={() => PageTransition('pre_input/input_tournament')}>事前入力</button>
                 <button class="btn" onClick={() => PageTransition('sokuho/sokuho_select_tournament')}>速報入力</button>
                 <button class="btn" onClick={() => PageTransition('acount_register')}>アカウント登録</button>
-                <button class="btn" onClick={() => PageTransition("input_mode")}>過去データ参照</button>
-                <button class="btn" onClick={() => PageTransition("output_game")}>出力直遷移</button>
+                <button class="btn" onClick={() => PageTransition("OutPutHome")}>出力直遷移</button>
             </div>
         </div>
     )

@@ -178,7 +178,7 @@ router.post("/tmp_daseki_call", async (req, res, next) => {
     try {
         //試合情報の取得と送信(速報用)
         const rows1 = await executeQuery('select * from t_game where game_id = ?', [game_id]);
-        const rows2 = await executeQuery(`select * from ${tmp_table_name} as daseki join (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as player using(player_id) order by at_bat_id desc`, [rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
+        const rows2 = await executeQuery(`select * from ${tmp_table_name} as daseki join (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as player using(player_id) order by at_bat_id`, [rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
         //const rows = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join (select school_id as school_id_1, school_name as school_name_1 from t_school) as b using(school_id_1) join (select school_id as school_id_2, school_name as school_name_2 from t_school) as c using(school_id_2)  join t_tournament as tournament using(tournament_id) where game_id = ?', [game_id]);
         // const rows = await executeQuery(`select * from ${tmp_table_name} as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id order by at_bat_id desc limit 1`, [game_id]);
          return res.json(rows2);

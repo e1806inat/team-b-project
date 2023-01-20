@@ -181,4 +181,44 @@ router.post("/ref_during_game", async (req, res, next) => {
     }
 });
 
+//試合中の試合のテーブル名の参照
+router.post("/ref_table_name", async (req, res, next) => {
+
+    const{ game_id } = req.body;
+
+    try {
+        const rows = await executeQuery("select * from t_during_game where game_id = ?", [game_id]);
+        return res.json(rows);
+    }
+    catch (err) {
+        console.log(err);
+        //await tran.rollback();
+        next(err);
+    }
+});
+
+//一日に一度一時テーブルを全削除する
+/*
+cron.schedule('* * 0 * * *', async () => {
+    //4月1日に学年を更新
+    //const tran = await beginTran();
+    try{
+        // await tran.query('update t_player set grade = replace(grade, 3, 4) where grade = 3');
+        // await tran.query('update t_player set grade = replace(grade, 2, 3) where grade = 2');
+        // await tran.query('update t_player set grade = replace(grade, 1, 2) where grade = 1');
+        //tran.commit();
+        const rows  = await executeQuery('select * from t_during_game');
+        //const tmp_table_name = `test_pbl.` + table_name;
+        for(var value of rows){
+            var tmp_table_name = `test_pbl.` + value.table_name;
+            await executeQuery(`drop table ${tmp_table_name}`);
+        }
+    }
+    catch(err){
+        //tran.rollback();
+        console.log(err);
+        next(err);
+    }
+});*/
+
 module.exports = router;

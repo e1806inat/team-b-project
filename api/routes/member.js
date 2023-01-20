@@ -49,7 +49,7 @@ router.post("/pre_tournament_member_call", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
     try {
         //指定の大会で登録されていた選手一覧（選手ID）の取得
-        rows = executeQuery('select player_id from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
+        const rows = executeQuery('select player_id from t_registered_player where tournament_id = ? and school_id = ?', [tournament_id, school_id]);
         return res.json(rows);
     } catch (err) {
         console.log(err);

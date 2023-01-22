@@ -177,6 +177,10 @@
 .position{
   font-size: 1.3vh;
 }
+
+.tdstyle:hover{
+  opacity: 0.5;
+}
 /* 信号機の光の影の部分のアニメーション */
 /* @keyframes shadow {
   0% {

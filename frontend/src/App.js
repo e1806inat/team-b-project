@@ -8,6 +8,7 @@ import {
 } from './AllPage/PageIndex';
 
 import { OutPutGame } from './AllPage/OutPutGame/OutPutGame'
+import { OutPutGamePast } from './AllPage/OutPutGame/OutPutGamePast'
 
 import React from 'react'
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
@@ -48,6 +49,7 @@ const App = () => {
 
           {/* 出力画面 */}
           <Route path={routeUrl + '/home/output_game/'} element={<OutPutGame />} />
+          <Route path={routeUrl + '/home/output_game_past/'} element={<OutPutGamePast />} />
 
           <Route path={'*'} element={<NotFound />} />
         </Routes>

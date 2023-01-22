@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
+const Daseki = ({ dasekiInfo , gameData, score, inningArray}) => {
 
     // const handleTodoClick = () => {
     //     toggleTodo(todo.id);
@@ -32,7 +32,7 @@ const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
         }
     }
 
-    //console.log(dasekiInfo['pinch']);
+    //console.log(score);
     // console.log(score);
     // console.log(gameData)
     // console.log(gameData[0]['school_id_1'])
@@ -52,7 +52,7 @@ const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
     } else {
         //n回表の出力
         if (dasekiInfo.inning % 10 === 1) {
-            if (dasekiInfo.inning !== null) {
+            if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
                 return (
                     <div className="daseki">
                         <div>【{Math.floor(dasekiInfo.inning / 10)}回表】</div>
@@ -68,8 +68,8 @@ const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
                         {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
                     </div>
                 )
             } else {
@@ -87,14 +87,14 @@ const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
                         {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
                     </div>
                 )
             }
         } else {
              //n回裏の出力
-            if (dasekiInfo.inning !== null) {
+            if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
                 return (
                     <div className="daseki">
                         <div>【{Math.floor(dasekiInfo.inning / 10)}回裏】</div>
@@ -110,8 +110,8 @@ const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
                         {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
                     </div>
                 )
             } else {
@@ -129,8 +129,8 @@ const Daseki = ({ dasekiInfo , gameData, score, scoreState1, scoreState2}) => {
                         {dasekiInfo.pinch !== null && <span>　</span>}
                         {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
                         {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>{gameData[0]['school_name_1']} {dasekiInfo.total_score} - {score[0][dasekiInfo.at_bat_id - 1]} {gameData[0]['school_name_2']}</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>{gameData[0]['school_name_1']} {score[1][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} {gameData[0]['school_name_2']}</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
                     </div>
                 )
             }

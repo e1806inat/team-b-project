@@ -37,7 +37,7 @@ router.post("/school_register", async (req, res, next) => {
             await tran.query("insert into t_school values (0, ?)", [school_name]);
             await tran.commit();
             console.log("bakasyouta");
-            res.end("Ok");
+            res.end("OK");
         }
     } catch (err) {
         await tran.rollback();

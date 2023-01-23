@@ -197,6 +197,26 @@ router.post("/ref_table_name", async (req, res, next) => {
     }
 });
 
+//試合前のテーブルと試合終了後のテーブルを出力するAPI
+router.post("/game_status", async (req, res, next) => {
+    try {
+        const endGames = await executeQuery("select * from t_game as a join t_venue as venue using(venue_id) join (select school_id as school_id_1, school_name as school_name_1 from t_school) as b using(school_id_1) join (select school_id as school_id_2, school_name as school_name_2 from t_school) as c using(school_id_2)  join t_tournament as tournament using(tournament_id) where match_results is not null order by opening desc");
+        const preGames =  await executeQuery("select * from t_game as a join t_venue as venue using(venue_id) join (select school_id as school_id_1, school_name as school_name_1 from t_school) as b using(school_id_1) join (select school_id as school_id_2, school_name as school_name_2 from t_school) as c using(school_id_2)  join t_tournament as tournament using(tournament_id) where match_results is null order by opening desc");
+        //const rows = await executeQuery('select * from t_game as a join t_venue as venue using(venue_id) join (select school_id as school_id_1, school_name as school_name_1 from t_school) as b using(school_id_1) join (select school_id as school_id_2, school_name as school_name_2 from t_school) as c using(school_id_2)  join t_tournament as tournament using(tournament_id) where game_id = ?', [game_id]);
+        // console.log(endGames);
+        // console.log(preGames)
+        return res.json({
+            end: endGames,
+            pre: preGames
+        });
+    }
+    catch (err) {
+        console.log(err);
+        //await tran.rollback();
+        next(err);
+    }
+});
+
 //一日に一度一時テーブルを全削除する
 /*
 cron.schedule('* * 0 * * *', async () => {

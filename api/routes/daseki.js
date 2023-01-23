@@ -213,15 +213,17 @@ router.post("/tmp_table_check", async (req, res, next) => {
 
 //試合情報送信(過去データ参照用)
 router.post("/daseki_transmission", async (req, res, next) => {
-    const { at_bat_id, game_id } = req.body;
+    const { game_id } = req.body;
     
 
     try {
         //試合情報の取得と送信
         //テスト用
-        const rows = await executeQuery(`select * from t_at_bat as bat join (select * from t_starting_player where game_id = ?) as s_player using(player_id) join t_school as school on s_player.school_id = school.school_id where at_bat_id = ?`, [game_id, at_bat_id]);
+        const rows1 = await executeQuery('select * from t_game where game_id = ?', [game_id]);
+        const rows2 = await executeQuery(`select * from t_at_bat as bat join (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as player using(player_id) where game_id = ?`, [rows1[0]['school_id_1'], rows1[0]['school_id_2'], game_id]);
+        //const rows2 = await executeQuery(`select * from ${tmp_table_name} as daseki join (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as player using(player_id) order by at_bat_id`, [rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
         
-        return res.json(rows);
+        return res.json(rows2);
     }
     catch (err) { 
         console.log(err);

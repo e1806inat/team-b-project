@@ -1,0 +1,48 @@
+.frontHomeBox {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    color: #CCCCCC;
+    background: #F8F8F8;
+    border-bottom: solid 2px #CCCCCC;
+}
+.frontHomeBox p {
+    margin: 0; 
+    padding: 0;
+    color: black;
+    font-weight: bold;
+}
+
+.tournamentBtn {
+    border-bottom: 2px dotted #CCCCCC;
+    width: 30vh;
+}
+
+.tournamentTable{
+    Margin:auto;
+    width: 40vh;
+    height: 11vh;
+    display: inline-block;
+    font-size: 1.4vh;
+   
+    border-bottom: 0.2vh dotted #CCCCCC;
+}
+
+.tournamentName:hover {
+    color:#FF5300
+}
+.p:hover{
+    color:#FF5300
+}
+
+.pName{
+    text-align: left;
+}
+
+.tournamentBox{
+    /* border-bottom: 0.2vh dotted #CCCCCC; */
+    display: inline-block;
+    width: 45vh;
+    height: 12.5vh;
+    vertical-align:middle;
+    Margin:auto;
+}

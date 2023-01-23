@@ -1,7 +1,7 @@
 
 //各種ページのインポート
 import {
-  Top, Login, Home,
+  Top, Login, Home, FrontendHome,
   InputSchool, Input_Tournament, InputMember, Sokuho_Input_Makegame,
   InputPlayGame, NotFound, Register, StartingMember,
   SokuhoSelectTournament,
@@ -31,6 +31,7 @@ const App = () => {
           <Route path={routeUrl + '/login'} element={<Login />} />
           <Route path={routeUrl + '/home/'} element={<Home />} />
           <Route path={routeUrl + '/j_R4_team_b/frontend/'} element={<Home />} />
+          <Route path={routeUrl + '/home/frontend_home'} element={<FrontendHome />} />
 
           {/* 事前入力 */}
           <Route path={routeUrl + '/home/pre_input/input_tournament/'} element={<Input_Tournament />} />

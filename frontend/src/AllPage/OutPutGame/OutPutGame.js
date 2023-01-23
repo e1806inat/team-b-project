@@ -620,7 +620,7 @@ export const OutPutGame = () => {
       var tmpNowDaseki = dasekiData.find(function(u){
         return u.inning === dinning;
       })
-      console.log(tmpNowDaseki)
+      //console.log(tmpNowDaseki)
       setNowDaseki(tmpNowDaseki);
       // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
       //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
@@ -814,7 +814,7 @@ export const OutPutGame = () => {
       setTotalScoreState1(sumScore(sendScore[0]));
       setTotalScoreState2(sumScore(sendScore[1]));
 
-      console.log(sendScore)
+      //console.log(sendScore)
       //console.log(dasekiData[nextBat])
       setBatterData(dasekiData[nextBat]);
       for (var pitcher of tournamentMember) {

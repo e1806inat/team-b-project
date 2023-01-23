@@ -76,6 +76,7 @@ const Home = () => {
                 <button class="btn" onClick={() => PageTransition('acount_register')}>アカウント登録</button>
                 <button class="btn" onClick={() => PageTransition("input_mode")}>過去データ参照</button>
                 <button class="btn" onClick={() => PageTransition("output_game")}>出力直遷移</button>
+                <button class="btn" onClick={() => PageTransition("frontend_home")}>出力ホーム画面</button>
             </div>
         </div>
     )

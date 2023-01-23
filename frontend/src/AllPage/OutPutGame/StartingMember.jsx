@@ -9,7 +9,7 @@ const StartingMember = ({startingMember}) => {
             <td width="30%"height="10vh" rowspan="2">{startingMember.player_name_kanji}</td>
             <td width="10%" height="10vh" rowspan="2">{startingMember.uniform_number}</td>
             <td className='position' width="18%" height="10vh" rowspan="2">{startingMember.position}</td>
-            <td width="16%" height="10vh" rowspan="2">{startingMember.BA}</td>
+            <td width="16%" height="10vh" rowspan="2">{startingMember.BA.toFixed(3).toString().substr(1,4)}</td>
         </tr>
     </table>
   )

@@ -55,7 +55,7 @@ const Daseki = ({ dasekiInfo , gameData, score, inningArray}) => {
             if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
                 return (
                     <div className="daseki">
-                        <div>【{Math.floor(dasekiInfo.inning / 10)}回表】</div>
+                        <div>【{Math.floor(dasekiInfo.inning / 10)}回表　{gameData[0]['school_name_1']}の攻撃】</div>
                         <span>{dasekiInfo.batting_order}番</span>
                         <span>　</span>
                         <span>{dasekiInfo.player_name_kanji}</span>
@@ -97,7 +97,7 @@ const Daseki = ({ dasekiInfo , gameData, score, inningArray}) => {
             if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
                 return (
                     <div className="daseki">
-                        <div>【{Math.floor(dasekiInfo.inning / 10)}回裏】</div>
+                        <div>【{Math.floor(dasekiInfo.inning / 10)}回裏　{gameData[0]['school_name_2']}の攻撃】</div>
                         <span>{dasekiInfo.batting_order}番</span>
                         <span>　</span>
                         <span>{dasekiInfo.player_name_kanji}</span>

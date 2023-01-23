@@ -257,7 +257,7 @@ export const OutPutGamePast = () => {
       })
       const GameData = await ResGameData.json();
 
-      //console.log(GameData)
+      console.log(GameData)
 
       setGameData(GameData)
       setGameYear(GameData[0]['game_ymd'].split('-')[0]);
@@ -507,16 +507,16 @@ export const OutPutGamePast = () => {
     gameStart();
   }, [autoUpdate, manualUpdate]);
 
-  useEffect(() => {
-    if(intervalRef.current === null){
-      intervalRef.current = setInterval(() => {
-        cntUpdate++;
-        // console.log(autoUpdateFlag);
-        // console.log(cntUpdate);
-        setAutoUpdate(cntUpdate);
-      }, 3000);
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(intervalRef.current === null){
+  //     intervalRef.current = setInterval(() => {
+  //       cntUpdate++;
+  //       // console.log(autoUpdateFlag);
+  //       // console.log(cntUpdate);
+  //       setAutoUpdate(cntUpdate);
+  //     }, 60000);
+  //   }
+  // }, [])
 
   //var cntUpdate = 0;
   //let intervalRef = 0;
@@ -615,6 +615,82 @@ export const OutPutGamePast = () => {
   //     console.log('staaaart');
   //   }
   // }
+
+  function skipDaseki(dinning){
+    //console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
+    console.log('aaaaa')
+    var tmpNowDaseki = dasekiData.find(function(u){
+      return u.inning === dinning;
+    })
+    //console.log(tmpNowDaseki)
+    setNowDaseki(tmpNowDaseki);
+    // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
+    //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
+    //console.log(nowDaseki[])
+    if (tmpNowDaseki['school_id'] === gameData[0]['school_id_1']) {
+      setNowSchoolName1(gameData[0]['school_name_1']);
+      setNowSchoolName2(gameData[0]['school_name_2']);
+    } else {
+      setNowSchoolName1(gameData[0]['school_name_2']);
+      setNowSchoolName2(gameData[0]['school_name_1']);
+    }
+    //現在第何打席(配列の添え字)かをnowBatで保持
+    var nowBat = tmpNowDaseki['at_bat_id'] - 1;
+    //console.log(beforeBat)
+
+    const InitialScore = [
+      [null, null, null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null, null, null]
+    ]
+
+    let sendScore = InitialScore;
+
+    dasekiData.slice(0, nowBat).map((u) => {
+      //null対策
+      if (sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] === null) sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = 0
+      //受け取ったスコアを配列に格納
+      sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] + u.score
+      //console.log(Math.floor(u.inning / 10) - 1)
+    })
+
+    var sumScore = function (scores) {
+      var tmpScore = 0;
+      //console.log(scores)
+      for (var score of scores) {
+        tmpScore += score;
+      }
+      return tmpScore;
+    }
+
+    setScoreState1(sendScore[0]);
+    setScoreState2(sendScore[1]);
+    setTotalScoreState1(sumScore(sendScore[0]));
+    setTotalScoreState2(sumScore(sendScore[1]));
+
+    //console.log(dasekiData[beforeBat])
+    setBatterData(dasekiData[nowBat]);
+    for (var pitcher of tournamentMember) {
+      if (pitcher['player_id'] === dasekiData[nowBat]['pitcher_id']) {
+        setPitcherData(pitcher);
+        break
+      }
+    }
+
+    //console.log(sendScore)
+
+    //現在の回数を算出
+    //仕様上の問題で回が変わる最初のinning以外をnullにしている
+    if (dasekiData[nowBat]['inning'] !== null) {
+      var stateArray = dasekiData[nowBat]['inning'].toString().split("");
+      //console.log(stateArray)
+      if (stateArray[stateArray.length - 1] === '1') {
+        setNowState(stateArray[0] + '回表');
+      } else {
+        setNowState(stateArray[0] + '回裏');
+      }
+    }
+    setNowDaseki(dasekiData[nowBat]);
+}
 
   function beforebatter() {
     //console.log('beforebatter')
@@ -740,7 +816,7 @@ export const OutPutGamePast = () => {
       setTotalScoreState1(sumScore(sendScore[0]));
       setTotalScoreState2(sumScore(sendScore[1]));
 
-      console.log(sendScore[1])
+      //console.log(sendScore[1])
       //console.log(dasekiData[nextBat])
       setBatterData(dasekiData[nextBat]);
       for (var pitcher of tournamentMember) {
@@ -795,29 +871,29 @@ export const OutPutGamePast = () => {
             <th style={thStyle}>計</th>
           </tr>
           <tr>
-            <td style={team1Style}>{schoolName1}</td>
-            <td style={tdStyle}>{scoreState1[0]}</td>
-            <td style={tdStyle}>{scoreState1[1]}</td>
-            <td style={tdStyle}>{scoreState1[2]}</td>
-            <td style={tdStyle}>{scoreState1[3]}</td>
-            <td style={tdStyle}>{scoreState1[4]}</td>
-            <td style={tdStyle}>{scoreState1[5]}</td>
-            <td style={tdStyle}>{scoreState1[6]}</td>
-            <td style={tdStyle}>{scoreState1[7]}</td>
-            <td style={tdStyle}>{scoreState1[8]}</td>
+          <td style={team1Style}>{schoolName1}</td>
+            <td onClick={skipDaseki.bind(this, 11)} style={tdStyle}>{scoreState1[0]}</td>
+            <td onClick={skipDaseki.bind(this, 21)} style={tdStyle}>{scoreState1[1]}</td>
+            <td onClick={skipDaseki.bind(this, 31)} style={tdStyle}>{scoreState1[2]}</td>
+            <td onClick={skipDaseki.bind(this, 41)} style={tdStyle}>{scoreState1[3]}</td>
+            <td onClick={skipDaseki.bind(this, 51)} style={tdStyle}>{scoreState1[4]}</td>
+            <td onClick={skipDaseki.bind(this, 61)} style={tdStyle}>{scoreState1[5]}</td>
+            <td onClick={skipDaseki.bind(this, 71)} style={tdStyle}>{scoreState1[6]}</td>
+            <td onClick={skipDaseki.bind(this, 81)} style={tdStyle}>{scoreState1[7]}</td>
+            <td onClick={skipDaseki.bind(this, 91)} style={tdStyle}>{scoreState1[8]}</td>
             <td style={tdStyle}>{totalScoreState1}</td>
           </tr>
           <tr>
-            <td style={team2Style}>{schoolName2}</td>
-            <td style={tdStyle}>{scoreState2[0]}</td>
-            <td style={tdStyle}>{scoreState2[1]}</td>
-            <td style={tdStyle}>{scoreState2[2]}</td>
-            <td style={tdStyle}>{scoreState2[3]}</td>
-            <td style={tdStyle}>{scoreState2[4]}</td>
-            <td style={tdStyle}>{scoreState2[5]}</td>
-            <td style={tdStyle}>{scoreState2[6]}</td>
-            <td style={tdStyle}>{scoreState2[7]}</td>
-            <td style={tdStyle}>{scoreState2[8]}</td>
+          <td style={team2Style}>{schoolName2}</td>
+            <td onClick={skipDaseki.bind(this, 12)} style={tdStyle}>{scoreState2[0]}</td>
+            <td onClick={skipDaseki.bind(this, 22)} style={tdStyle}>{scoreState2[1]}</td>
+            <td onClick={skipDaseki.bind(this, 32)} style={tdStyle}>{scoreState2[2]}</td>
+            <td onClick={skipDaseki.bind(this, 42)} style={tdStyle}>{scoreState2[3]}</td>
+            <td onClick={skipDaseki.bind(this, 52)} style={tdStyle}>{scoreState2[4]}</td>
+            <td onClick={skipDaseki.bind(this, 62)} style={tdStyle}>{scoreState2[5]}</td>
+            <td onClick={skipDaseki.bind(this, 72)} style={tdStyle}>{scoreState2[6]}</td>
+            <td onClick={skipDaseki.bind(this, 82)} style={tdStyle}>{scoreState2[7]}</td>
+            <td onClick={skipDaseki.bind(this, 92)} style={tdStyle}>{scoreState2[8]}</td>
             <td style={tdStyle}>{totalScoreState2}</td>
           </tr>
         </tbody>
@@ -882,6 +958,7 @@ export const OutPutGamePast = () => {
       <button onClick={nextbatter} style={logStyle}>次の打席</button><br></br>
       <div className="textSokuhou">
         <span class="box-title">テキスト速報</span>
+        <div>試合終了 【{schoolName1}】{gameData[0]['match_results'].split('-')[0]} - {gameData[0]['match_results'].split('-')[1]}【{schoolName2}】</div>
         <DasekiHistoryList dasekiesInfo={[...dasekiData].reverse()} gameData={gameData} score={scoreState} />
       </div>
       <div>

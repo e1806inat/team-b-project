@@ -1,32 +1,62 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 //各種ページのインポート
+
 import {
-  Home, OutPutHome, PastDataHome,
-} from './AllPages/pageIndex';
+  OutPutHome, GameList, Bulletin, SlcTournamentForT, SlcTournamentForP, RefSchool, RefTournamentSchool, NotFound
+} from "./AllPages/PageIndex"
+
+import { routeUrl } from './DB/communication';
+
+import { OutPutGame } from './AllPages/OutPutGame/OutPutGame'
+
+import React from 'react'
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
+import './App.css';
+
+//今回の開発で使えるサーバのurlを入力してください、「https: ~~~ ac.jp/ここのルートを指定する/」
+//package.jsonも編集すること
+
+// const routeUrl = "/j_R4_team_b/frontend"
+// const routeUrl = "/team-b-project/frontend"
+// const routeUrl = ""
 
 
 const App = () => {
+  // const routeUrl = require("./DB/communication")
+
   return (
-    <>
+    <div>
+      <BrowserRouter>
+        <Routes>
 
-      <div>
-        <BrowserRouter>
-          <Routes>
-            <Route path={'/'} element={<Home />} />
+          {/* 顧客用画面 */}
+          {/* <Route path={routeUrl + '/'} element={<OutPutHome />} /> */}
+          <Route path={routeUrl + '/home/output_game/'} element={<OutPutGame />} />
 
-            {/* 出力画面 */}
-            <Route path={'/OutPutHome/'} element={<OutPutHome />} />
+          <Route path={routeUrl + '/GameList'} element={<GameList />} />
+          <Route path={routeUrl + '/GameList/Bulletin'} element={<Bulletin />} />
 
-            {/* 過去データ参照 */}
-            <Route path={'/PastDataHome/'} element={<PastDataHome />} />
+          {/* 速報閲覧 */}
+          <Route path={routeUrl + '/'} element={<SlcTournamentForT />} />
 
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </>
+          <Route path={routeUrl + '/GameList'} element={<GameList />} />
 
+          <Route path={routeUrl + '/GameList/Bulletin'} element={<Bulletin />} />
+
+          {/* 過去データ参照（選手全体から探す） */}
+          <Route path={routeUrl + '/RefHistoricalData/RefSchool'} element={<RefSchool />} />
+
+          {/* 過去データ参照（大会から探す） */}
+          <Route path={routeUrl + '/GameList/RefTournamentSchool'} element={<RefTournamentSchool />} />
+
+
+          <Route path={'*'} element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+
+      {console.log(routeUrl)}
+    </div>
   );
-}
+};
 
 export default App;

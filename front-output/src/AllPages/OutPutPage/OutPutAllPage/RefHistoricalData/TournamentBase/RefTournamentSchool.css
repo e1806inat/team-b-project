@@ -1,0 +1,270 @@
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
+
+:root{
+    --color-main: #00afcc;
+    /* rgba(0, 175, 204, 1); */
+}
+
+*{
+    font-family: 'M PLUS 1p', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.headline_t{
+    margin: 7px;
+    font-weight: bold;
+    width: 100%;
+    margin: 50px auto;
+    padding: 0 10px 5px 10px;
+    border-bottom: 3px solid #0159ac;
+}
+
+.box_schoolName_t{
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    display: table;
+    width: 100%;
+}
+
+.box_option_t{
+    border-bottom: 1px solid #ccc;
+    display: table;
+    width: 100%;
+}
+
+.option_t{
+    font-size: large;
+    padding-left: 5px;
+    height: 30px;
+    display: table-cell;
+    background: #f2f2f2;
+    width: 7em;
+    padding: 10px 12px;
+}
+
+.schoolName_t{
+    font-size: large;
+    padding-left: 5px;
+    height: 30px;
+    display: table-cell;
+    background: #f2f2f2;
+    width: 7em;
+    padding: 10px 12px;
+}
+
+.search > dl dd{
+    display: table-cell;
+    padding: 10px 12px;
+    vertical-align: top;
+}
+
+.btn_In_tsch2{
+    display:block;
+    margin:10px auto;
+    padding: 7px 20px;
+    border: none;
+    box-shadow: 0 3px 0 #d27d00;
+    border-radius: 10px;
+    background: #FF9700;
+    color: #fff;
+    width: 200px;
+}
+
+.btn_In_tsch2:hover{
+    opacity: 0.5;
+}
+
+.schoolName_t2{
+    margin: 7px;
+    font-weight: bold;
+    width: 100%;
+    margin: 50px auto;
+    padding: 0 10px 5px 10px;
+    border-bottom: 3px solid #0159ac;
+}
+
+.membersExample_t{
+    border-collapse: collapse;
+    margin: auto;
+    text-align:center;
+    width: 95%;
+    border: 1px black solid;
+}
+
+.membersExample_t > tr > td{
+    background-color: #0159ac;
+    color: white;
+}
+
+.box_schools_t{
+    width: 100%;
+    margin: 50px auto;
+
+}
+
+.members_t{
+    border-collapse: collapse;
+    border-color: black;
+    margin: auto;
+    text-align:center;
+    width: 95%;
+    border-top: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+/*.box_grade_t {
+    margin: 2em 0;
+    background: #f1f1f1;
+    margin: 0px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.22);
+    width: 500px;
+}
+.box_grade_t .box-title {
+    font-size: 1.2em;
+    background: #228b22;
+    padding: 4px;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    text-align: center;
+    font-size: 24px;
+    letter-spacing: 0.05em;
+    display: inline-block;
+}
+p{
+    font-size: 24px;
+    display: inline-block;
+    margin: 5px auto;
+    white-space: nowrap;
+}  */
+
+/* .btn_In_tsch1{
+    font-size: 15px;
+    background-color: white;
+    color: #8ae871;
+    padding: 5px 0; /* ボタンの高さ */
+    /*width: 30vh;*/   /* ボタンの横幅 */
+    /* height: 12vh;
+    margin: 10px;/* 周りの余白 */
+    /* padding: 30px;
+    font-size: 28px;
+    border: solid 3px #8ae871;
+    border-radius: 20px;   
+    transition: background-color 0.5s;
+} */ 
+
+/* .btn_In_tsch1:hover{
+    opacity: 0.5;
+    color: #228b22;
+} */
+
+
+
+/* .box_option {
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    font-weight: bold;
+    border: solid 3px #000080;
+    display: inline-block;
+} */
+
+/* .box_option_t{
+    text-align: center;
+    margin: 10px auto;
+}
+.option_t{
+    font-size: 1.2em;
+    background: #228b22;
+    padding: 4px;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 0.05em;
+    display: inline-block;
+} 
+
+.box_schoolName_t {
+    text-align: center;
+    margin: 10px auto;
+} 
+
+.schoolName_t {
+    font-size: 1.2em;
+    background: #228b22;
+    padding: 4px;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 0.05em;
+    display: inline-block;
+}
+
+.schoolName_t2 {
+    font-size: 1.2em;
+    background: #228b22;
+    padding: 10px;
+    text-align: left;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 0.05em;
+    width: 800px;
+    margin: 20px auto;
+}
+
+.btn_In_tsch2{
+    border-radius: 5px;
+    text-align:"right"
+}
+.btn_In_tsch2:hover{
+    opacity: 0.5;
+}
+
+.box_schools_t{
+    margin: 50px auto;
+    background: #f1f1f1;
+    width:1200px;
+}
+
+.schools_t {
+    position:relative;
+    top: 10px;
+    background: #f1f1f1;
+    line-height: 70px;
+    font-weight: bold;
+    font-size: 32px;
+    margin: 50px auto;
+    width:1150px;
+    height:70px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.22);
+}
+
+.main-grid {
+    display: grid;
+    grid-template-areas:
+    "header header"
+    "left main"
+    "footer footer";
+    grid-template-columns: 52%  48%;
+    grid-gap: 0px;
+}
+aside {
+    grid-area: left;
+    
+}
+
+article {
+    grid-area: main;
+    
+} */

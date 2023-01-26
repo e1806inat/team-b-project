@@ -26,26 +26,34 @@ const mysqlOptions ={
 
 const sess = {
     secret: "otameshi",
-    cookie: {maxAge: 600000 },
+    cookie: {httpOnly:true, secure:false, maxAge: 60000000 },
     store: new MySQLStore(mysqlOptions),
     resave: false,
     saveUninitialized: false
 };
 
-sess.cookie.secure = true; //for production
+//sess.cookie.secure = false; //for production
 app.use(cookieParser());
 app.use(session(sess));
-// cors対策
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, PATCH, DELETE, OPTION"
-    );
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
-});
+// cors対策
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//     res.setHeader(
+//         "Access-Control-Allow-Methods",
+//         "GET, POST, PUT, PATCH, DELETE, OPTION"
+//     );
+//     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//     next();
+// });
+var cors = require('cors'); 
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true
+}
+//app.use(cors({credentials: true, origin: 'http://localhost:5000'}));
+app.use(cors(corsOptions));
 
 // const server = http.createServer(app);
 // server.listen(PORT, () => console.log(`server is running ${PORT}`));

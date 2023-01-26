@@ -135,9 +135,12 @@ router.post("/login", async (req, res, next) => {
                 //console.log('私の名前は森口翔太です。好きなものはせんとくんです。');
                 //console.log(rows);
                 //ユーザ情報をセッションに登録
+                console.log('asdfaasdfasdfasdfasdfasdfasdf')
                 console.log(req.session.user);
                 req.session.user = rows;
                 console.log(req.session.user);
+                console.log(req.sessionID);
+                console.log('asdfaasdfasdfasdfasdfasdfasdf')
                 //console.log(req.cookies);
 
                 //res.cookie('session_id', 'value1', req);
@@ -151,9 +154,9 @@ router.post("/login", async (req, res, next) => {
                 //res.setHeader('Set-Cookie', [`sessionID=${req.sessionID}`]);
 
                 //console.log(res.cookie(req.sessionID))
-                //res.json({
-                  //  'session_id': req.sessionID
-                //});
+                res.json({
+                   'session_id': req.sessionID
+                });
                 res.end('OK');
             }
         }
@@ -165,7 +168,9 @@ router.post("/login", async (req, res, next) => {
 });
 
 //ログアウト（運用者用webアプリ）
-router.get("/logout", (req, res, err) => {
+router.post("/logout",  async (req, res, err) => {
+
+    const { sessionID } = req.body;
     
     try{
         console.log("asdf");
@@ -176,6 +181,9 @@ router.get("/logout", (req, res, err) => {
             console.log('naidesu');
         }
         res.clearCookie('sessionID');
+
+        await executeQuery('delete from sessions where session_id = ?', [sessionID]);
+
         //sessionStore.close();
         //req.session.destroy();
         //console.log('test');
@@ -193,11 +201,18 @@ router.get("/logout", (req, res, err) => {
 });
 
 //セッションのチェック（運用者用webアプリ）
-router.get("/check_sess", async (req, res, next) => {
+router.post("/check_sess", async (req, res, next) => {
+
+    const { sessionID } = req.body;
+
     try {
-        console.log(req.cookies);
-        console.log(req.cookies.sessionID);
-        if (req.cookies.sessionID != undefined){
+        // console.log(req.cookies);
+        // console.log('morigutitest')
+        // console.log(req.cookies)
+        // console.log(req.cookies.sessionID);
+        // console.log(sessionID)
+        const rows = await executeQuery('select count(*) from sessions where session_id = ?', [sessionID]);
+        if (rows[0]['count(*)'] >= 1){
             return res.end('login');
         }
         else{

@@ -37,7 +37,7 @@ router.post("/school_register", async (req, res, next) => {
             await tran.query("insert into t_school values (0, ?)", [school_name]);
             await tran.commit();
             console.log("bakasyouta");
-            res.end("Ok");
+            res.end("OK");
         }
     } catch (err) {
         await tran.rollback();
@@ -156,10 +156,10 @@ router.post("/participants_edit", async (req, res, next) => {
 
 //学校情報を消すことができる（運用者用webアプリ）
 router.post("/school_delete", async (req, res, next) => {
-    const { school_id, school_name } = req.body;
+    const { school_id } = req.body;
 
     try{
-        await executeQuery('delete from t_school where school_name = ? and school_id = ?', [school_name, school_id]);
+        await executeQuery('delete from t_school where school_id = ?', [school_id]);
         res.end('OK');
     }
     catch(err){

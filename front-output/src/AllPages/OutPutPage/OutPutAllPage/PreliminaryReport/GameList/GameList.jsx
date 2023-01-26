@@ -40,6 +40,9 @@ const GoTobutton = (props) => {
     )
 }
 
+//
+
+
 
 //データベースから大会情報を読み出す
 const getGame = async (urlTournamentId, setGameList) => {

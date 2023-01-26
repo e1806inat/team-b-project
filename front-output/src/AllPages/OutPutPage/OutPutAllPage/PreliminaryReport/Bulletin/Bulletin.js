@@ -1,9 +1,11 @@
 import pic from "./field2.png"
-import "./App.css";
+import "./OutPutGame.css"
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DasekiHistoryList from "./DasekiHistoryList";
 import StartingMemberList from './StartingMemberList'
+import { Ground } from './Ground';
+import { battedBall } from './battedBall';
 
 import { useCookies } from "react-cookie";
 
@@ -219,6 +221,8 @@ export const Bulletin = () => {
   const [autoUpdate, setAutoUpdate] = useState('');
   //手動更新管理
   const [manualUpdate, setManualUpdate] = useState('');
+
+  const [flag, setFlag] = useState(2);
 
   useEffect(() => {
     //試合情報フェッチ
@@ -490,13 +494,109 @@ export const Bulletin = () => {
           break
         }
       }
+
+
+
+   //console.log("ここから追加");
+   console.log(daseki);
+   //ここから追加しました
+   const canvasSize = 2000;
+   
+   const homebase = 520;
+   const h = 70;
+   const l = -110;
+   const w = 0.03 * homebase;  //ベースの幅
+   const margin = 10;    //ベース位置調整用
+
+   const canvas = document.getElementById("canvas")
+   const canvasContext = canvas.getContext("2d")
+   var context=canvasContext
+   if (context !== null) {
+     Ground(context);
+   }
+
+   if (context !== null) {
+
+     //削除
+     context.clearRect(0, 0, canvasSize, canvasSize);
+
+     Ground(context);
+
+     console.log(daseki[0]['base']);
+     //ベースの色
+     let baseColor2 = [];
+     let runnerCountState=[];
+     for (let i = 0; i < 3; i++) {
+
+       runnerCountState[i]=daseki[0]['base']/(10**i)%10;
+       console.log(runnerCountState[i]);
+       if (runnerCountState[i]===1) {
+         baseColor2[i] = "blue";
+       }
+       else {
+         baseColor2[i] = "white";
+       }
+     }
+
+
+     context.strokeStyle = "black";
+
+     //３塁ベース
+     context.fillStyle = baseColor2[2];
+     context.beginPath();
+     context.moveTo(homebase * 3 / 4 + l, homebase * 3 / 4 - margin + h);
+     context.lineTo(homebase * 3 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+     context.lineTo(homebase * 3 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+     context.lineTo(homebase * 3 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+     context.closePath();
+     context.fill();
+     context.lineWidth = 1;
+     context.stroke();
+
+     //2塁ベース
+     context.fillStyle = baseColor2[1];
+     context.beginPath();
+     context.moveTo(homebase + l, homebase / 2 - margin + h);
+     context.lineTo(homebase - w + l, homebase / 2 + w - margin + h);
+     context.lineTo(homebase + l, homebase / 2 + w * 2 - margin + h);
+     context.lineTo(homebase + w + l, homebase / 2 + w - margin + h);
+     context.closePath();
+     context.fill();
+     context.stroke();
+
+     //1塁ベース
+     context.fillStyle = baseColor2[0];
+     context.beginPath();
+     context.moveTo(homebase * 5 / 4 + l, homebase * 3 / 4 - margin + h);
+     context.lineTo(homebase * 5 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+     context.lineTo(homebase * 5 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+     context.lineTo(homebase * 5 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+     context.closePath();
+     context.fill();
+     context.stroke();
+
+     console.log(daseki);
+     let X=daseki[0]['touched_coordinate'].split('_')[0];
+     let Y=daseki[0]['touched_coordinate'].split('_')[1];
+
+     // let X = 1;
+     // let Y = 1;
+     console.log(X);
+
+     battedBall(context, X, Y, flag);
+
+   }
+
+
+
+
       console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     }
     gameStart();
   }, [autoUpdate, manualUpdate]);
 
   useEffect(() => {
-    if(intervalRef.current === null){
+    if (intervalRef.current === null) {
       setAutoUpdateFlag(true);
       intervalRef.current = setInterval(() => {
         cntUpdate++;
@@ -589,7 +689,7 @@ export const Bulletin = () => {
 
   function autoUpdateButton() {
     setAutoUpdateFlag(true);
-    if(intervalRef.current === null){
+    if (intervalRef.current === null) {
       intervalRef.current = setInterval(() => {
         cntUpdate++;
         // console.log(autoUpdateFlag);
@@ -614,81 +714,81 @@ export const Bulletin = () => {
     }
   }
 
-  function skipDaseki(dinning){
-      //console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
-      console.log('aaaaa')
-      var tmpNowDaseki = dasekiData.find(function(u){
-        return u.inning === dinning;
-      })
-      //console.log(tmpNowDaseki)
-      setNowDaseki(tmpNowDaseki);
-      setPinchText(tmpNowDaseki["pinch"]);
-      // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
-      //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
-      //console.log(nowDaseki[])
-      if (tmpNowDaseki['school_id'] === gameData[0]['school_id_1']) {
-        setNowSchoolName1(gameData[0]['school_name_1']);
-        setNowSchoolName2(gameData[0]['school_name_2']);
+  function skipDaseki(dinning) {
+    //console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
+    console.log('aaaaa')
+    var tmpNowDaseki = dasekiData.find(function (u) {
+      return u.inning === dinning;
+    })
+    //console.log(tmpNowDaseki)
+    setNowDaseki(tmpNowDaseki);
+    setPinchText(tmpNowDaseki["pinch"]);
+    // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
+    //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
+    //console.log(nowDaseki[])
+    if (tmpNowDaseki['school_id'] === gameData[0]['school_id_1']) {
+      setNowSchoolName1(gameData[0]['school_name_1']);
+      setNowSchoolName2(gameData[0]['school_name_2']);
+    } else {
+      setNowSchoolName1(gameData[0]['school_name_2']);
+      setNowSchoolName2(gameData[0]['school_name_1']);
+    }
+    //現在第何打席(配列の添え字)かをnowBatで保持
+    var nowBat = tmpNowDaseki['at_bat_id'] - 1;
+    //console.log(beforeBat)
+
+    const InitialScore = [
+      [null, null, null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null, null, null]
+    ]
+
+    let sendScore = InitialScore;
+
+    dasekiData.slice(0, nowBat).map((u) => {
+      //null対策
+      if (sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] === null) sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = 0
+      //受け取ったスコアを配列に格納
+      sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] + u.score
+      //console.log(Math.floor(u.inning / 10) - 1)
+    })
+
+    var sumScore = function (scores) {
+      var tmpScore = 0;
+      //console.log(scores)
+      for (var score of scores) {
+        tmpScore += score;
+      }
+      return tmpScore;
+    }
+
+    setScoreState1(sendScore[0]);
+    setScoreState2(sendScore[1]);
+    setTotalScoreState1(sumScore(sendScore[0]));
+    setTotalScoreState2(sumScore(sendScore[1]));
+
+    //console.log(dasekiData[beforeBat])
+    setBatterData(dasekiData[nowBat]);
+    for (var pitcher of tournamentMember) {
+      if (pitcher['player_id'] === dasekiData[nowBat]['pitcher_id']) {
+        setPitcherData(pitcher);
+        break
+      }
+    }
+
+    //console.log(sendScore)
+
+    //現在の回数を算出
+    //仕様上の問題で回が変わる最初のinning以外をnullにしている
+    if (dasekiData[nowBat]['inning'] !== null) {
+      var stateArray = dasekiData[nowBat]['inning'].toString().split("");
+      //console.log(stateArray)
+      if (stateArray[stateArray.length - 1] === '1') {
+        setNowState(stateArray[0] + '回表');
       } else {
-        setNowSchoolName1(gameData[0]['school_name_2']);
-        setNowSchoolName2(gameData[0]['school_name_1']);
+        setNowState(stateArray[0] + '回裏');
       }
-      //現在第何打席(配列の添え字)かをnowBatで保持
-      var nowBat = tmpNowDaseki['at_bat_id'] - 1;
-      //console.log(beforeBat)
-
-      const InitialScore = [
-        [null, null, null, null, null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null, null, null, null, null]
-      ]
-
-      let sendScore = InitialScore;
-
-      dasekiData.slice(0, nowBat).map((u) => {
-        //null対策
-        if (sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] === null) sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = 0
-        //受け取ったスコアを配列に格納
-        sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] + u.score
-        //console.log(Math.floor(u.inning / 10) - 1)
-      })
-
-      var sumScore = function (scores) {
-        var tmpScore = 0;
-        //console.log(scores)
-        for (var score of scores) {
-          tmpScore += score;
-        }
-        return tmpScore;
-      }
-
-      setScoreState1(sendScore[0]);
-      setScoreState2(sendScore[1]);
-      setTotalScoreState1(sumScore(sendScore[0]));
-      setTotalScoreState2(sumScore(sendScore[1]));
-
-      //console.log(dasekiData[beforeBat])
-      setBatterData(dasekiData[nowBat]);
-      for (var pitcher of tournamentMember) {
-        if (pitcher['player_id'] === dasekiData[nowBat]['pitcher_id']) {
-          setPitcherData(pitcher);
-          break
-        }
-      }
-
-      //console.log(sendScore)
-
-      //現在の回数を算出
-      //仕様上の問題で回が変わる最初のinning以外をnullにしている
-      if (dasekiData[nowBat]['inning'] !== null) {
-        var stateArray = dasekiData[nowBat]['inning'].toString().split("");
-        //console.log(stateArray)
-        if (stateArray[stateArray.length - 1] === '1') {
-          setNowState(stateArray[0] + '回表');
-        } else {
-          setNowState(stateArray[0] + '回裏');
-        }
-      }
-      setNowDaseki(dasekiData[nowBat]);
+    }
+    setNowDaseki(dasekiData[nowBat]);
   }
 
   function beforebatter() {
@@ -854,77 +954,132 @@ export const Bulletin = () => {
 
 
   return (
-    <div style={pageStyle}>
-      <div style={infoStyle}>
-        <div style={borderStyle}>{gameYear}年{gameMonth}月{gameDay}日 {tournamentName} {venueName}</div>
+    <div>
+      <div>
+
+        {/* タイトル */}
+        <div className="titleName">{tournamentName}</div>
+        <div className="day">{gameMonth}月{gameDay}日</div>
+        <div className="gamePlace">{venueName}</div>
       </div>
-      <div style={group}>
+
+      {/* <div style={group}>
         <textarea style={resultStyle} readOnly defaultValue={nowState} />
         <div>{nowDaseki['text_inf']}</div>
-      </div><br></br>
-      <table style={tableStyle}>
+      </div><br></br> */}
+
+      <table className="scoreBoardTable" border={1}>
         <tbody>
-          <tr>
-            <th style={thStyle}></th>
-            <th style={thStyle}>1</th>
-            <th style={thStyle}>2</th>
-            <th style={thStyle}>3</th>
-            <th style={thStyle}>4</th>
-            <th style={thStyle}>5</th>
-            <th style={thStyle}>6</th>
-            <th style={thStyle}>7</th>
-            <th style={thStyle}>8</th>
-            <th style={thStyle}>9</th>
-            <th style={thStyle}>計</th>
+          <tr className="scoreBoardTr">
+            <th className="scoreBoardTh"></th>
+            <th className="scoreBoardTh">1</th>
+            <th className="scoreBoardTh">2</th>
+            <th className="scoreBoardTh">3</th>
+            <th className="scoreBoardTh">4</th>
+            <th className="scoreBoardTh">5</th>
+            <th className="scoreBoardTh">6</th>
+            <th className="scoreBoardTh">7</th>
+            <th className="scoreBoardTh">8</th>
+            <th className="scoreBoardTh">9</th>
+            <th className="scoreBoardTh">計</th>
           </tr>
-          <tr>
-            <td style={team1Style}>{schoolName1}</td>
-            <td onClick={skipDaseki.bind(this, 11)} style={tdStyle}>{scoreState1[0]}</td>
-            <td onClick={skipDaseki.bind(this, 21)} style={tdStyle}>{scoreState1[1]}</td>
-            <td onClick={skipDaseki.bind(this, 31)} style={tdStyle}>{scoreState1[2]}</td>
-            <td onClick={skipDaseki.bind(this, 41)} style={tdStyle}>{scoreState1[3]}</td>
-            <td onClick={skipDaseki.bind(this, 51)} style={tdStyle}>{scoreState1[4]}</td>
-            <td onClick={skipDaseki.bind(this, 61)} style={tdStyle}>{scoreState1[5]}</td>
-            <td onClick={skipDaseki.bind(this, 71)} style={tdStyle}>{scoreState1[6]}</td>
-            <td onClick={skipDaseki.bind(this, 81)} style={tdStyle}>{scoreState1[7]}</td>
-            <td onClick={skipDaseki.bind(this, 91)} style={tdStyle}>{scoreState1[8]}</td>
-            <td style={tdStyle}>{totalScoreState1}</td>
+          <tr className="scoreBoardTr2">
+            <td className="scoreBoardSchoolName">{schoolName1}</td>
+            <td onClick={skipDaseki.bind(this, 11)}>{scoreState1[0]}</td>
+            <td onClick={skipDaseki.bind(this, 21)}>{scoreState1[1]}</td>
+            <td onClick={skipDaseki.bind(this, 31)}>{scoreState1[2]}</td>
+            <td onClick={skipDaseki.bind(this, 41)}>{scoreState1[3]}</td>
+            <td onClick={skipDaseki.bind(this, 51)}>{scoreState1[4]}</td>
+            <td onClick={skipDaseki.bind(this, 61)}>{scoreState1[5]}</td>
+            <td onClick={skipDaseki.bind(this, 71)}>{scoreState1[6]}</td>
+            <td onClick={skipDaseki.bind(this, 81)}>{scoreState1[7]}</td>
+            <td onClick={skipDaseki.bind(this, 91)}>{scoreState1[8]}</td>
+            <td>計</td>
           </tr>
-          <tr>
-            <td style={team2Style}>{schoolName2}</td>
-            <td onClick={skipDaseki.bind(this, 12)} style={tdStyle}>{scoreState2[0]}</td>
-            <td onClick={skipDaseki.bind(this, 22)} style={tdStyle}>{scoreState2[1]}</td>
-            <td onClick={skipDaseki.bind(this, 32)} style={tdStyle}>{scoreState2[2]}</td>
-            <td onClick={skipDaseki.bind(this, 42)} style={tdStyle}>{scoreState2[3]}</td>
-            <td onClick={skipDaseki.bind(this, 52)} style={tdStyle}>{scoreState2[4]}</td>
-            <td onClick={skipDaseki.bind(this, 62)} style={tdStyle}>{scoreState2[5]}</td>
-            <td onClick={skipDaseki.bind(this, 72)} style={tdStyle}>{scoreState2[6]}</td>
-            <td onClick={skipDaseki.bind(this, 82)} style={tdStyle}>{scoreState2[7]}</td>
-            <td onClick={skipDaseki.bind(this, 92)} style={tdStyle}>{scoreState2[8]}</td>
-            <td style={tdStyle}>{totalScoreState2}</td>
+          <tr className="scoreBoardTr2">
+            <td className="scoreBoardSchoolName">{schoolName2}</td>
+            <td onClick={skipDaseki.bind(this, 12)}>{scoreState2[0]}</td>
+            <td onClick={skipDaseki.bind(this, 22)}>{scoreState2[1]}</td>
+            <td onClick={skipDaseki.bind(this, 32)}>{scoreState2[2]}</td>
+            <td onClick={skipDaseki.bind(this, 42)}>{scoreState2[3]}</td>
+            <td onClick={skipDaseki.bind(this, 52)}>{scoreState2[4]}</td>
+            <td onClick={skipDaseki.bind(this, 62)}>{scoreState2[5]}</td>
+            <td onClick={skipDaseki.bind(this, 72)}>{scoreState2[6]}</td>
+            <td onClick={skipDaseki.bind(this, 82)}>{scoreState2[7]}</td>
+            <td onClick={skipDaseki.bind(this, 92)}>{scoreState2[8]}</td>
+            <td>計</td>
           </tr>
         </tbody>
+      </table>
 
-      </table><br></br>
+      <div className="gameRound"> {nowState} </div>
+
+      <div className="gameDetail">
+        <div className="offense">
+          <div className="offenseTeam">{nowSchoolName1}</div>
+          <table className="batterArea">
+            <tr>
+              <td rowSpan={2} className="offenseTitle">打者</td>
+              <td className="batterNumber batter">4番</td>
+              <td className="batterName batter">{batterData['player_name_kanji']}</td>
+              <td className="batterInfo batter">3年　右</td>
+            </tr>
+            <tr>
+              <td colSpan={3} className="todayBatterRecord">三ゴロ、空三振、遊ゴロ、右安</td>
+            </tr>
+          </table>
+          {/* <table className="nextBatter">
+            <tr>
+              <td className="nextBatterNumber">5番</td>
+              <td className="nextBatterName">野村佑希</td>
+              <td className="nextBatterInfo">1年　右</td>
+            </tr>
+            <tr>
+              <td className="nextBatterNumber">6番</td>
+              <td className="nextBatterName">清水優心</td>
+              <td className="nextBatterInfo">2年　右</td>
+            </tr>
+          </table> */}
+        </div>
+
+        <div className="deffense">
+          <div className="deffenseTeam">{nowSchoolName2}</div>
+          <table className="pitcherArea">
+            <tr>
+              <td rowSpan={2} className="deffenseTitle">投手</td>
+              <td className="pitcherName pitcher">{pitcherData['player_name_kanji']}</td>
+              <td className="pitcherInfo pitcher">3年　右</td>
+            </tr>
+            <tr>
+              <td colSpan={2} className="todayPitcherRecord">投球数：8</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <br></br>
       <div style={group2}>
 
-        <table style={playertableStyle}>
+        {/* 打者情報 */}
+        {/* <table style={playertableStyle}>
           <tbody>
             <tr><th style={schoolStyle} colSpan="2">{nowSchoolName1}</th></tr>
             <tr><th style={batterStyle}>打者</th><th style={playerStyle}>{batterData['player_name_kanji']}</th></tr>
             {pinchText !== '' && <tr><th style={playerStyle} colSpan="2">{pinchText}</th></tr>}
           </tbody>
-        </table>
+        </table> */}
 
-        <table style={playertableStyle}>
+        {/* 投手情報 */}
+        {/* <table style={playertableStyle}>
           <tbody>
             <tr><th style={schoolStyle} colSpan="2">{nowSchoolName2}</th></tr>
             <tr><th style={pitcherStyle}>投手</th><th style={playerStyle}>{pitcherData['player_name_kanji']}</th></tr>
-            {/* <tr><th style={playerStyle} colSpan="2">投手の情報</th></tr> */}
           </tbody>
-        </table>
+        </table> */}
       </div><br></br>
-      <div style={group2}>
+
+      {/* 成績情報 */}
+      {/* <div style={group2}>
         <table style={playertableStyle}>
           <tbody>
             <tr><th style={playerresultStyle}>打者成績</th><th style={playerStyle}>代打または現在の打者の今日の成績</th></tr>
@@ -935,39 +1090,24 @@ export const Bulletin = () => {
             <tr><th style={playerresultStyle}>投手成績</th><th style={playerStyle}>投手交代または現在の投手の今日の成績</th></tr>
           </tbody>
         </table>
-      </div>
-      {/* <div>
-        <div align="center" className="out-result">
-
-          <div style={countStyle}> B </div>
-          <div id="ball1"></div>
-          <div id="ball2"></div>
-          <div id="ball3"></div>
-          <div id="ball4"></div>
-
-          <div style={countStyle}> S </div>
-          <div id="str1"></div>
-          <div id="str2"></div>
-          <div id="str3"></div>
-
-          <div style={countStyle}> O
-          </div>
-          <div id="out1"></div>
-          <div id="out2"></div>
-          <div id="out3"></div>
-        </div>
-        <button onClick={change_ball_count}>ボール</button>
-        <button onClick={change_str_count}>ストライク</button>
-        <button onClick={change_out_count}>アウト</button>
       </div> */}
+
+      {/* 更新選択ボタン */}
       <div>
         <button onClick={() => { autoUpdateButton() }} style={logStyle}>自動更新</button>
         <button onClick={() => { manualUpdateButton() }} style={logStyle}>手動更新</button>
         <button onClick={updateButton} style={logStyle}>更新↺</button>
       </div>
-      <div style={fieldStyle}><img src={pic} alt="field" style={imgsize} /></div><br></br>
+
+      {/* キャンバスエリア */}
+      {/* <div style={fieldStyle}><img src={pic} alt="field" style={imgsize} /></div><br></br> */}
+      <canvas width="800" height="650" id="canvas" className='diamondPng'></canvas>
+
+      {/* 前の打席と次の打席のボタン */}
       <button onClick={beforebatter} style={logStyle}>前の打席</button>
       <button onClick={nextbatter} style={logStyle}>次の打席</button><br></br>
+
+      {/* テキストエリア */}
       <div className="textSokuhou">
         <span class="box-title">テキスト速報</span>
         <DasekiHistoryList dasekiesInfo={[...dasekiData].reverse()} gameData={gameData} score={scoreState} />

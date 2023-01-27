@@ -1,4 +1,3 @@
-import pic from "./field2.png"
 import "./App.css"
 import "./OutPutGame.css"
 import React, { useState, useEffect, useRef } from "react";
@@ -104,12 +103,8 @@ export const Bulletin = () => {
     //試合情報フェッチ
     const gameStart = async () => {
       const CheckSess = await fetch("http://localhost:5000/auth/check_sess", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ sessionID: cookies.sessionID })
+        method: "POST", mode: "cors",
+        headers: { "Content-Type": "application/json", }, body: JSON.stringify({ sessionID: cookies.sessionID })
       })
       const sess = await CheckSess.text();
 
@@ -125,12 +120,7 @@ export const Bulletin = () => {
       // }
 
       const ResGameData = await fetch("http://localhost:5000/game/a_game_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ game_id: urlGameId })
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", }, body: JSON.stringify({ game_id: urlGameId })
       })
       const GameData = await ResGameData.json();
 
@@ -146,11 +136,7 @@ export const Bulletin = () => {
 
       //大会登録メンバー１フェッチ
       const ResTournamentMember1 = await fetch("http://localhost:5000/member/tournament_member_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ tournament_id: GameData[0]['tournament_id'], school_id: GameData[0]['school_id_1'] })
         //body: JSON.stringify({ tournament_id: "35", school_id: "1" })
       })
@@ -160,11 +146,7 @@ export const Bulletin = () => {
       setTournamentMember1(member1);
       //大会登録メンバー２フェッチ
       const ResTournamentMember2 = await fetch("http://localhost:5000/member/tournament_member_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ tournament_id: GameData[0]['tournament_id'], school_id: GameData[0]['school_id_2'] })
       })
       const member2 = await ResTournamentMember2.json();
@@ -177,11 +159,7 @@ export const Bulletin = () => {
 
       //スタメン１フェッチ
       const ResStartingMember1 = await fetch("http://localhost:5000/member/starting_member_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ game_id: urlGameId, school_id: GameData[0]['school_id_1'] })
       })
       const startMember1 = await ResStartingMember1.json();
@@ -193,11 +171,7 @@ export const Bulletin = () => {
 
       //スタメン２フェッチ
       const ResStartingMember2 = await fetch("http://localhost:5000/member/starting_member_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ game_id: urlGameId, school_id: GameData[0]['school_id_2'] })
       })
       const startMember2 = await ResStartingMember2.json();
@@ -212,11 +186,7 @@ export const Bulletin = () => {
       //setBattersData(startMember);
 
       const ResTableName = await fetch("http://localhost:5000/game/ref_table_name", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ game_id: urlGameId })
       })
       const tableName = await ResTableName.json();
@@ -224,11 +194,7 @@ export const Bulletin = () => {
       //console.log(tableName[0]['tmp_table_name'])
       //打席情報フェッチ
       const ResDasekiData = await fetch("http://localhost:5000/daseki/tmp_daseki_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
         body: JSON.stringify({ table_name: tableName[0]['tmp_table_name'], game_id: urlGameId })
       })
       let daseki = await ResDasekiData.json();
@@ -237,8 +203,6 @@ export const Bulletin = () => {
 
       //console.log(typeof (daseki[0]['school_id']))
       //console.log(typeof (gameData[0]['school_id_1']))
-
-      console.log(daseki)
 
       var dasekiInd = await daseki.length - 1;
 
@@ -373,98 +337,95 @@ export const Bulletin = () => {
 
 
 
-   //console.log("ここから追加");
-   console.log(daseki);
-   //ここから追加しました
-   const canvasSize = 2000;
-   
-   const homebase = 520;
-   const h = 70;
-   const l = -110;
-   const w = 0.03 * homebase;  //ベースの幅
-   const margin = 10;    //ベース位置調整用
+      //console.log("ここから追加");
+      console.log(daseki);
+      //ここから追加しました
+      const canvasSize = 2000;
 
-   const canvas = document.getElementById("canvas")
-   const canvasContext = canvas.getContext("2d")
-   var context=canvasContext
-   if (context !== null) {
-     Ground(context);
-   }
+      const homebase = 520;
+      const h = 70;
+      const l = -110;
+      const w = 0.03 * homebase;  //ベースの幅
+      const margin = 10;    //ベース位置調整用
 
-   if (context !== null) {
+      const canvas = document.getElementById("canvas")
+      const canvasContext = canvas.getContext("2d")
+      var context = canvasContext
+      if (context !== null) {
+        Ground(context);
+      }
 
-     //削除
-     context.clearRect(0, 0, canvasSize, canvasSize);
+      if (context !== null) {
 
-     Ground(context);
+        //削除
+        context.clearRect(0, 0, canvasSize, canvasSize);
 
-     console.log(daseki[0]['base']);
-     //ベースの色
-     let baseColor2 = [];
-     let runnerCountState=[];
-     for (let i = 0; i < 3; i++) {
+        Ground(context);
 
-       runnerCountState[i]=daseki[0]['base']/(10**i)%10;
-       console.log(runnerCountState[i]);
-       if (runnerCountState[i]===1) {
-         baseColor2[i] = "blue";
-       }
-       else {
-         baseColor2[i] = "white";
-       }
-     }
+        console.log(daseki[0]['base']);
+        //ベースの色
+        let baseColor2 = [];
+        let runnerCountState = [];
+        for (let i = 0; i < 3; i++) {
 
-
-     context.strokeStyle = "black";
-
-     //３塁ベース
-     context.fillStyle = baseColor2[2];
-     context.beginPath();
-     context.moveTo(homebase * 3 / 4 + l, homebase * 3 / 4 - margin + h);
-     context.lineTo(homebase * 3 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
-     context.lineTo(homebase * 3 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
-     context.lineTo(homebase * 3 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
-     context.closePath();
-     context.fill();
-     context.lineWidth = 1;
-     context.stroke();
-
-     //2塁ベース
-     context.fillStyle = baseColor2[1];
-     context.beginPath();
-     context.moveTo(homebase + l, homebase / 2 - margin + h);
-     context.lineTo(homebase - w + l, homebase / 2 + w - margin + h);
-     context.lineTo(homebase + l, homebase / 2 + w * 2 - margin + h);
-     context.lineTo(homebase + w + l, homebase / 2 + w - margin + h);
-     context.closePath();
-     context.fill();
-     context.stroke();
-
-     //1塁ベース
-     context.fillStyle = baseColor2[0];
-     context.beginPath();
-     context.moveTo(homebase * 5 / 4 + l, homebase * 3 / 4 - margin + h);
-     context.lineTo(homebase * 5 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
-     context.lineTo(homebase * 5 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
-     context.lineTo(homebase * 5 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
-     context.closePath();
-     context.fill();
-     context.stroke();
-
-     console.log(daseki);
-     let X=daseki[0]['touched_coordinate'].split('_')[0];
-     let Y=daseki[0]['touched_coordinate'].split('_')[1];
-
-     // let X = 1;
-     // let Y = 1;
-     console.log(X);
-
-     battedBall(context, X, Y, flag);
-
-   }
+          runnerCountState[i] = daseki[0]['base'] / (10 ** i) % 10;
+          console.log(runnerCountState[i]);
+          if (runnerCountState[i] === 1) {
+            baseColor2[i] = "blue";
+          }
+          else {
+            baseColor2[i] = "white";
+          }
+        }
 
 
+        context.strokeStyle = "black";
 
+        //３塁ベース
+        context.fillStyle = baseColor2[2];
+        context.beginPath();
+        context.moveTo(homebase * 3 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 3 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 3 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 3 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.lineWidth = 1;
+        context.stroke();
+
+        //2塁ベース
+        context.fillStyle = baseColor2[1];
+        context.beginPath();
+        context.moveTo(homebase + l, homebase / 2 - margin + h);
+        context.lineTo(homebase - w + l, homebase / 2 + w - margin + h);
+        context.lineTo(homebase + l, homebase / 2 + w * 2 - margin + h);
+        context.lineTo(homebase + w + l, homebase / 2 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //1塁ベース
+        context.fillStyle = baseColor2[0];
+        context.beginPath();
+        context.moveTo(homebase * 5 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 5 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 5 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 5 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        console.log(daseki);
+        let X = daseki[0]['touched_coordinate'].split('_')[0];
+        let Y = daseki[0]['touched_coordinate'].split('_')[1];
+
+        // let X = 1;
+        // let Y = 1;
+        console.log(X);
+
+        battedBall(context, X, Y, flag);
+
+      }
 
       console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     }
@@ -686,6 +647,10 @@ export const Bulletin = () => {
         setNowSchoolName1(gameData[0]['school_name_2']);
         setNowSchoolName2(gameData[0]['school_name_1']);
       }
+
+      setFlag(dasekiData[nowDaseki['at_bat_id'] - 2]['ball_kind'])
+      console.log(dasekiData[nowDaseki['at_bat_id'] - 2]['ball_kind'])
+
       //現在第何打席かをbeforeBatに保持する
       var beforeBat = nowDaseki['at_bat_id'] - 2;
       //console.log(beforeBat)
@@ -728,7 +693,9 @@ export const Bulletin = () => {
         }
       }
 
-      //console.log(sendScore)
+
+
+
 
       //現在の回数を算出
       //仕様上の問題で回が変わる最初のinning以外をnullにしている
@@ -741,6 +708,8 @@ export const Bulletin = () => {
           setNowState(stateArray[0] + '回裏');
         }
       }
+
+
       setNowDaseki(dasekiData[beforeBat]);
     }
   }
@@ -848,42 +817,55 @@ export const Bulletin = () => {
         <tbody>
           <tr className="scoreBoardTr">
             <th className="scoreBoardTh"></th>
-            <th className="scoreBoardTh">1</th>
-            <th className="scoreBoardTh">2</th>
-            <th className="scoreBoardTh">3</th>
-            <th className="scoreBoardTh">4</th>
-            <th className="scoreBoardTh">5</th>
-            <th className="scoreBoardTh">6</th>
-            <th className="scoreBoardTh">7</th>
-            <th className="scoreBoardTh">8</th>
-            <th className="scoreBoardTh">9</th>
+            {scoreState1.map((score, ind) => {
+              if (ind < 9) {
+                return (
+                  <th className="scoreBoardTh">{ind + 1}</th>
+                )
+              }
+              else if (score !== null) {
+                return (
+                  <th className="scoreBoardTh">{ind + 1}</th>
+                )
+              }
+            })}
             <th className="scoreBoardTh">計</th>
           </tr>
           <tr className="scoreBoardTr2">
             <td className="scoreBoardSchoolName">{schoolName1}</td>
-            <td onClick={skipDaseki.bind(this, 11)}>{scoreState1[0]}</td>
-            <td onClick={skipDaseki.bind(this, 21)}>{scoreState1[1]}</td>
-            <td onClick={skipDaseki.bind(this, 31)}>{scoreState1[2]}</td>
-            <td onClick={skipDaseki.bind(this, 41)}>{scoreState1[3]}</td>
-            <td onClick={skipDaseki.bind(this, 51)}>{scoreState1[4]}</td>
-            <td onClick={skipDaseki.bind(this, 61)}>{scoreState1[5]}</td>
-            <td onClick={skipDaseki.bind(this, 71)}>{scoreState1[6]}</td>
-            <td onClick={skipDaseki.bind(this, 81)}>{scoreState1[7]}</td>
-            <td onClick={skipDaseki.bind(this, 91)}>{scoreState1[8]}</td>
+            {scoreState1.map((score, ind) => {
+              if (ind < 9) {
+                return (
+                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                )
+              }
+              else if (score !== null) {
+                return (
+                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                )
+              }
+            })}
+
             <td>計</td>
           </tr>
           <tr className="scoreBoardTr2">
             <td className="scoreBoardSchoolName">{schoolName2}</td>
-            <td onClick={skipDaseki.bind(this, 12)}>{scoreState2[0]}</td>
-            <td onClick={skipDaseki.bind(this, 22)}>{scoreState2[1]}</td>
-            <td onClick={skipDaseki.bind(this, 32)}>{scoreState2[2]}</td>
-            <td onClick={skipDaseki.bind(this, 42)}>{scoreState2[3]}</td>
-            <td onClick={skipDaseki.bind(this, 52)}>{scoreState2[4]}</td>
-            <td onClick={skipDaseki.bind(this, 62)}>{scoreState2[5]}</td>
-            <td onClick={skipDaseki.bind(this, 72)}>{scoreState2[6]}</td>
-            <td onClick={skipDaseki.bind(this, 82)}>{scoreState2[7]}</td>
-            <td onClick={skipDaseki.bind(this, 92)}>{scoreState2[8]}</td>
+
+            {scoreState2.map((score, ind) => {
+              if (ind < 9) {
+                return (
+                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                )
+              }
+              else if (score !== null) {
+                return (
+                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                )
+              }
+              <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+            })}
             <td>計</td>
+
           </tr>
         </tbody>
       </table>
@@ -977,7 +959,10 @@ export const Bulletin = () => {
 
       {/* キャンバスエリア */}
       {/* <div style={fieldStyle}><img src={pic} alt="field" style={imgsize} /></div><br></br> */}
-      <canvas width="800" height="650" id="canvas" className='diamondPng'></canvas>
+      <div className="canvasArea">
+        <canvas width="800" height="650" id="canvas" className='diamondPng'></canvas>
+      </div>
+
 
       {/* 前の打席と次の打席のボタン */}
       <button onClick={beforebatter} style={logStyle}>前の打席</button>

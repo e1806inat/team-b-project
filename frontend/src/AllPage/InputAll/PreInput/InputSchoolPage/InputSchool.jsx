@@ -14,9 +14,20 @@ import './InputSchool.css';
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
-//次回追加ボタン押した後に、高校再表示させるのをやる
 
-//データを送る
+//送られた文字列がどれか空ならtrue
+const isEnpty = (strArray) => {
+  let flag = false
+  strArray.map((str) => {
+    if (!str) {
+      flag = true
+    }
+  })
+  return flag
+}
+
+
+//参加高校を登録
 const sendSchool = (useSchools, urlTournamentId, setUseSchools) => {
   let toSendSchool = []
   //チェックされているものだけの配列を作る
@@ -33,6 +44,7 @@ const sendSchool = (useSchools, urlTournamentId, setUseSchools) => {
 
   })
 
+  // データベース上の大会参加校を読み込む
   fetch(backendUrl + "/school/school_call_p", {
     method: "POST",
     mode: "cors",
@@ -44,6 +56,14 @@ const sendSchool = (useSchools, urlTournamentId, setUseSchools) => {
     .then((response) => response.json())
     .then((receivedResistered) => {
 
+      //今送ろうとしている参加高校リストにない、データベース上の大会参加校を削除
+      receivedResistered.map((v) => {
+        if (toSendSchool.some((u) => v.school_name === u.school_name)) { }
+        else {
+          DeleteParticipantsSchool(urlTournamentId, v.school_id)
+        }
+      })
+
       //既に登録されているものと被っていないかチェック
       let toSendSchool2 = []
       toSendSchool.map((v) => {
@@ -52,6 +72,8 @@ const sendSchool = (useSchools, urlTournamentId, setUseSchools) => {
         else { toSendSchool2 = [...toSendSchool2, v]; }
       })
       console.log(toSendSchool2)
+
+
 
       //空っぽの配列は送れないように対策
       if (toSendSchool2.length !== 0) {
@@ -76,6 +98,22 @@ const sendSchool = (useSchools, urlTournamentId, setUseSchools) => {
 }
 
 
+//参加高校を削除
+const DeleteParticipantsSchool = (urlTournamentId, school_id) => {
+  fetch(backendUrl + "/school/participants_delete", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    }, body: JSON.stringify({ tournament_id: urlTournamentId, school_id: school_id }),
+  })
+    .then((response) => response.text())
+    .then((receivedAllSchool) => {
+      console.log("school_id:" + school_id + "は削除しました")
+    })
+}
+
+
 //データベースから初期項目を読み出し
 const readSchool = (setUseSchools, urlTournamentId) => {
   fetch(backendUrl + "/school/school_call", {
@@ -96,7 +134,6 @@ const readSchool = (setUseSchools, urlTournamentId) => {
 
 //対象の大会の学校情報呼び出し
 const loadRegisteredSchool = (urlTournamentId, receivedAllSchool, setUseSchools) => {
-
 
   fetch(backendUrl + "/school/school_call_p", {
     method: "POST",
@@ -188,6 +225,8 @@ const EditSchool = (school_id, school_name, setUseSchools, urlTournamentId) => {
       }
     })
 
+
+    
   console.log(school_id)
   console.log(school_name)
   console.log(urlTournamentId)
@@ -238,8 +277,10 @@ export const InputSchool = () => {
   // const [receivedResistered, setReeceivedResistered] = useState([])
 
   const [isCheckBoxMode, setIsCheckBoxMode] = useState(!true)
-  const ref = useRef()
   const [useSchools, setUseSchools] = useState([])
+
+  //入力中の高校名を管理するステイト
+  const [schoolNameState, setSchoolNameState] = useState("")
 
   //編集削除モードかそうでないか
   const [isEditMode, setIsEditMode] = useState(false)
@@ -256,12 +297,6 @@ export const InputSchool = () => {
     //既に登録されている学校読み出し
     // loadRegisteredSchool(urlTournamentId)
   }, [])
-
-  const handleClick = () => {
-    setUseSchools([...useSchools,
-    { school_name: ref.current.value, school_id: null, IsCheck: true, seed: 0 }
-    ])
-  }
 
   const handleCheckBox = () => {
     setIsCheckBoxMode(!isCheckBoxMode)
@@ -289,8 +324,19 @@ export const InputSchool = () => {
         <h3>{urlTournamentName}</h3>
       </div>
       <div className="InputSchool">
-        学校・チーム名 <input ref={ref} ></input>
-        <button onClick={() => addSchool(setUseSchools, ref.current.value, urlTournamentId, useSchools)}>追加</button>
+        学校・チーム名 <input value={schoolNameState} onChange={(e) => { setSchoolNameState(e.target.value) }} ></input>
+
+        {isEnpty([schoolNameState]) &&
+          <button
+            onClick={() => { }}
+          >追加</button>
+        }
+
+        {!isEnpty([schoolNameState]) &&
+          <button
+            onClick={() => addSchool(setUseSchools, schoolNameState, urlTournamentId, useSchools)}
+          >追加</button>
+        }
       </div>
       <br />
 
@@ -321,7 +367,9 @@ export const InputSchool = () => {
 
           {/* 登録ボタン */}
           <div className="ButtonArea">
-            <button className="decisionButton" onClick={() => sendSchool(useSchools, urlTournamentId, setUseSchools)}>高校名登録</button>
+            <button className="decisionButton"
+              onClick={() => sendSchool(useSchools, urlTournamentId, setUseSchools)}>参加高校を登録
+            </button>
           </div>
         </>
       }

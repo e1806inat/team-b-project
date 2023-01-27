@@ -1,11 +1,24 @@
 import React from "react";
+import "./EditSchoolPopup.css";
+
+//送られた文字列がどれか空ならtrue
+const isEnpty = (strArray) => {
+    let flag = false
+    strArray.map((str) => {
+        if (!str) {
+            flag = true
+        }
+    })
+    return flag
+}
 
 //メインのDOMの中で配置するサブ部品のような要素
 class Popup extends React.Component {
+
     render() {
         return (
             <div className="popup_field">
-                <div className="popup_inner_field">
+                <div className="popup_in_field2">
                     <div className="title">{this.props.text}</div>
 
                     {/* 編集チェックボックス */}
@@ -17,7 +30,9 @@ class Popup extends React.Component {
                             //初期値を入れる
                             this.props.setEditingSchoolName(this.props.school.school_name)
                         }}
-                    ></input>大会を編集する<br></br>
+                    ></input>高校名を編集する<br></br>
+
+
 
                     名前の変更<br></br>
                     変更前：{this.props.school.school_name}<br></br>
@@ -34,50 +49,57 @@ class Popup extends React.Component {
                         onClick={() => {
                             this.props.setEorDCheckbox(false)
                             //警告をを入れる
-                            this.props.setEditingSchoolName("大会を削除します")
+                            this.props.setEditingSchoolName("高校を削除します")
                         }}
-                    ></input>大会を削除する<br></br>
-
-                    <p>情報が更新されますがよろしいでしょうか？</p>
-
-                    {/* いいえのボタン */}
-                    <button className="button_style"
-                        onClick={() => {
-                            this.props.closePopup()
-                            this.props.setEorDCheckbox(true)
-                        }}>いいえ</button>
-                    <nbsp></nbsp>
-
-                    {/* はいのボタン */}
-                    <button className="button_style"
-                        onClick={
-                            () => {
-                                if (this.props.EorDCheckbox) {
-                                    //編集を確定する
-                                    this.props.EditSchool(
-                                        this.props.school.school_id,
-                                        document.getElementById("changeId").value,
-                                        this.props.setUseSchools,
-                                        this.props.urlTournamentId
-                                    )
-                                }
-                                else {
-                                    //高校を削除する
-                                    this.props.DeleteSchool(
-                                        this.props.school.school_id,
-                                        this.props.school.school_name,
-                                        this.props.setUseSchools,
-                                        this.props.urlTournamentId,
-                                    )
-                                }
-
-                                // 高校を読み込む
-                                this.props.readSchool(this.props.setUseSchools, this.props.urlTournamentId)
-
-                                // ポップアップを閉じる
+                    ></input>高校名を削除する<br></br>
+                    <div classNAme='buttonarea'>
+                        {/* いいえのボタン */}
+                        <button className="button_style_3"
+                            onClick={() => {
                                 this.props.closePopup()
-                            }
-                        }>はい</button>
+                                this.props.setEorDCheckbox(true)
+                            }}>やめる</button>
+                        <nbsp></nbsp>
+
+
+                        {/* はいのボタン */}
+                        {!isEnpty([this.props.editingSchoolName]) &&
+                            <button className="button_style_3"
+                                onClick={
+                                    () => {
+                                        if (this.props.EorDCheckbox) {
+                                            //編集を確定する
+                                            this.props.EditSchool(
+                                                this.props.school.school_id,
+                                                document.getElementById("changeId").value,
+                                                this.props.setUseSchools,
+                                                this.props.urlTournamentId
+                                            )
+                                        }
+                                        else {
+                                            //高校を削除する
+                                            this.props.DeleteSchool(
+                                                this.props.school.school_id,
+                                                this.props.school.school_name,
+                                                this.props.setUseSchools,
+                                                this.props.urlTournamentId,
+                                            )
+                                        }
+
+                                        // 高校を読み込む
+                                        this.props.readSchool(this.props.setUseSchools, this.props.urlTournamentId)
+
+                                        // ポップアップを閉じる
+                                        this.props.closePopup()
+                                    }
+                                }>決定</button>
+                        }
+
+                        {isEnpty([this.props.editingSchoolName]) &&
+                            <button className="button_style_3">決定
+                            </button>
+                        }
+                    </div>
                 </div>
             </div>
         );

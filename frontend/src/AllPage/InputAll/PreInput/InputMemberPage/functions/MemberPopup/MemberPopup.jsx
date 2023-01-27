@@ -21,7 +21,7 @@ class Popup extends React.Component {
               this.props.uniformNumberArray,
               this.props.registeredMembers
             )
-            // this.props.PageTransition(-1)
+            this.props.PageTransition(-1)
           }
           }>はい</button>
         </div>

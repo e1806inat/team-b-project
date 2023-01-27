@@ -30,13 +30,20 @@ const GoTobutton = (props) => {
     }
 
     return (
-        <button onClick={() => {
-            PageTransition(
-                "RefTournamentSchool?" +
-                "urlTournamentId=" + props.tournament_id +
-                "&urlTournamentName=" + props.tournament_name
-            )
-        }}>選手情報</button>
+        <div className='goToRefMemberPageButton'>
+            <span
+                onClick={() => {
+                    PageTransition(
+                        "RefTournamentSchool?" +
+                        "urlTournamentId=" + props.tournament_id +
+                        "&urlTournamentName=" + props.tournament_name
+                    )
+                }}
+            >
+                {"　"}＞選手情報を見る
+            </span>
+        </div>
+
     )
 }
 
@@ -167,12 +174,11 @@ const GameList = () => {
                     2023年10月30日(日)
                 </div>
                 <div class='targetModules'>
-                    <div class='gameName'>{urlTournamentName}
-                        <GoTobutton
-                            tournament_id={urlTournamentId}
-                            tournament_name={urlTournamentName}
-                        />
-                    </div>
+                    <div class='gameName'>{urlTournamentName}</div>
+                    <GoTobutton
+                        tournament_id={urlTournamentId}
+                        tournament_name={urlTournamentName}
+                    /><br />
 
                     {/* 試合中 */}
                     {gameList.DuringG.map((game, ind) => {

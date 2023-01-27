@@ -9,6 +9,30 @@ import "./InputTournament.css"
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
+
+//送られた文字列がどれか空ならtrue
+const isEnpty = (strArray) => {
+  let flag = false
+  strArray.map((str) => {
+    if (!str) {
+      flag = true
+    }
+  })
+  return flag
+}
+
+//送る文字列が被っていればtrue
+const isDuplicate = (Array, key, id) => {
+  let flag = false
+  Array.map((u) => {
+    if (u[id] === key) {
+      flag = true
+    }
+  })
+  console.log(key)
+  return flag
+}
+
 //大会を読み込む
 const readTournament = (setTournamentData) => {
   fetch(backendUrl + "/tournament/tournament_call", {
@@ -25,7 +49,6 @@ const readTournament = (setTournamentData) => {
 
 //文字分割
 const dateSplit = (nowdate) => {
-  console.log(nowdate)
   if (nowdate !== null) {
     let dateArray = nowdate.split('-');
     dateArray = { "year": dateArray[0], "month": dateArray[1], "day": dateArray[2] }
@@ -236,13 +259,25 @@ export const Input_Tournament = () => {
           {makePulldown(2, dayArray, "day", nowOpeningDate, setNowOpeningDate)}日
         </label>
         <br />
-        <button
-          class="btn_In_to"
-          onClick={() => {
-            handleTournament(
-              setTournamentData, yearArray, monthArray, dayArray, nowOpeningDate, nowTournamentName, TournamentData
-            )
-          }}>追加</button>
+
+        {/* 追加ボタン */}
+        {isEnpty([nowTournamentName]) &&
+          <button
+            class="btn_In_to"
+            onClick={() => { }}>追加
+          </button>
+        }
+
+        {!isEnpty([nowTournamentName]) &&
+          <button
+            class="btn_In_to"
+            onClick={() => {
+              handleTournament(
+                setTournamentData, yearArray, monthArray, dayArray, nowOpeningDate, nowTournamentName, TournamentData
+              )
+            }}>追加
+          </button>
+        }
 
         {/* 編集・削除モードボタン */}
         <button
@@ -295,6 +330,7 @@ export const Input_Tournament = () => {
                             tournamentDelete={tournamentDelete}
                             readTournament={readTournament}
                             dateSplit={dateSplit}
+                            isDuplicate={isDuplicate}
                           />
                         </>
 

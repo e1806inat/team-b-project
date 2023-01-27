@@ -37,6 +37,9 @@ export const PullDown = (props) => {
     props.setcanvasX1(ballPositionDB[props.nowPosition - 1].ballPositionX)
     props.setcanvasY1(ballPositionDB[props.nowPosition - 1].ballPositionY)
 
+    // //アウトカウント増やす
+    // props.setNowOutCountState(props.nowOutCountState + 1)
+
     //打率計算のための記録
     props.setBatterResult(0)
 
@@ -234,7 +237,10 @@ export const PullDown = (props) => {
             TableRegister = {props.TableRegister}
             urlGameId={props.urlGameId}
             TmpTableDelete={props.TmpTableDelete}
+            DeleteDuringGame={props.DeleteDuringGame}
             CalculateBatAvg={props.CalculateBatAvg}
+            schoolId1={props.schoolId1}
+            schoolId2={props.schoolId2}
             />
             {/* <li><a href="#" onClick={() => handleGameEnd(props.GameEndPopup_field)}>試合終了</a></li> */}
           </ul>

@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-
-import { useCookies } from "react-cookie";
 
 import { TitleBar } from '../OtherPage/TitleBar/TitleBar'
 import './home.css'
@@ -11,32 +9,6 @@ const backendUrl = require("../../DB/communication").backendUrl;
 
 
 const Home = () => {
-
-    const [cookies, setCookie, removeCookie] = useCookies();
-
-    useEffect(() => {
-        const gameStart = async () => {
-            const CheckSess = await fetch("http://localhost:5000/auth/check_sess", {
-                method: "POST",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ sessionID : cookies.sessionID})
-            })
-            const sess = await CheckSess.text();
-
-            console.log(sess)
-
-            if (sess === 'logout') {
-                navigate("/login");
-                // return <Redirect to="http://localhost:3000/login"/>
-            }
-        }
-        gameStart();
-    }, [])
-
-   
 
     //ページ遷移用
     const navigate = useNavigate()
@@ -74,9 +46,7 @@ const Home = () => {
                 <button class="btn" onClick={() => PageTransition('pre_input/input_tournament')}>事前入力</button>
                 <button class="btn" onClick={() => PageTransition('sokuho/sokuho_select_tournament')}>速報入力</button>
                 <button class="btn" onClick={() => PageTransition('acount_register')}>アカウント登録</button>
-                <button class="btn" onClick={() => PageTransition("input_mode")}>過去データ参照</button>
-                <button class="btn" onClick={() => PageTransition("output_game")}>出力直遷移</button>
-                <button class="btn" onClick={() => PageTransition("frontend_home")}>出力ホーム画面</button>
+                <button class="btn" onClick={() => PageTransition("OutPutHome")}>出力直遷移</button>
             </div>
         </div>
     )

@@ -31,7 +31,10 @@ const handleKakutei = (
   batterResult,
   setBatterResult,
   isPinch,
-  setIsPinch
+  setIsPinch,
+  TmpDasekiCall,
+  trigger,
+  setTrigger
 
 ) => {
   //ポップアップを消す
@@ -54,7 +57,7 @@ const handleKakutei = (
   const battingOrderArray = [battingOrder, battingOrder2]
   let total_score = 0
   scoreState[nowIningState[1]].map((score) => {
-    total_score = score + total_score
+    if (score !== null) total_score = total_score + score
   })
   let runnerCount = ""
   runnerCountState.map((runner) => {
@@ -67,10 +70,7 @@ const handleKakutei = (
   else if (batterResult === 2) isFourball = 1
   else if (batterResult === 3) isDeadball = 1
 
-
-  console.log(batterResult)
-
-  //DBにデータを送る
+  //DBにデータを送る配列作成
   let sendInfo = {
     table_name: urlGameId,
     inning: (nowIningState[0] + 1) * 10 + (nowIningState[1] + 1),
@@ -89,11 +89,13 @@ const handleKakutei = (
     hit: isHit,
     foreball: isFourball,
     deadball: isDeadball,
-    pinch: isPinch
+    pinch: isPinch,
+    batting_order: nowPlayingMember[nowIningState[1]].batter
   }
 
   console.log(sendInfo)
-  DasekiRegister(sendInfo)
+  //実際に送信
+  // DasekiRegister(sendInfo,trigger,setTrigger)
 
   //値の初期化
   setAddScoreState(0)
@@ -101,7 +103,7 @@ const handleKakutei = (
   setcanvasX1(0)
   setcanvasY1(0)
   setBatterResult(0)
-  setIsPinch(0)
+  setIsPinch(null)
 
   //次のバッターへ
   let copyArray = nowPlayingMember.slice(0, nowPlayingMember.length);
@@ -159,6 +161,9 @@ class Popup extends React.Component {
                 this.props.setBatterResult,
                 this.props.isPinch,
                 this.props.setIsPinch,
+                this.props.TmpDasekiCall,
+                this.props.trigger,
+                this.props.setTrigger
               )
             }>はい
           </button>
@@ -223,6 +228,9 @@ class Popupfield extends React.Component {
             setBatterResult={this.props.setBatterResult}
             isPinch={this.props.isPinch}
             setIsPinch={this.props.setIsPinch}
+            TmpDasekiCall={this.props.TmpDasekiCall}
+            trigger={this.props.trigger}
+            setTrigger={this.props.setTrigger}
           />
         ) : null}
       </div>

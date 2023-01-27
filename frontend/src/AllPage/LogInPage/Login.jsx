@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useCookies } from "react-cookie";
 
 const Login = () => {
   //バックエンドのurlを取得
@@ -9,8 +8,6 @@ const Login = () => {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-
-  const [cookies, setCookie, removeCookie] = useCookies();
 
   const handleChande = (e) => {
     //console.log(e.target.value);
@@ -46,6 +43,9 @@ const Login = () => {
     return errors;
   };
 
+
+
+
   const handleLogin = () => {
 
     fetch(backendUrl + "/auth/login", {
@@ -56,12 +56,11 @@ const Login = () => {
       },
       body: JSON.stringify({ user_name: formValues.loginID, password: formValues.password }),
     })
-      .then((response) => response.json())
+      .then((response) => response.text())
       .then((data) => {
-        console.log(data['session_id'])
-        console.log(cookies)
-        if (data !== null) {
-          setCookie("sessionID", data['session_id']);
+        console.log(data)
+
+        if (data === "OK") {
           window.location.href = '/home'
         }
       })

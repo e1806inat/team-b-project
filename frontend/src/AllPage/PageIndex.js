@@ -1,7 +1,6 @@
 export {default as Top} from './TopPage/Top'
 export {default as Login} from './LogInPage/Login'
 export {default as Home} from './HomePage/Home'
-export {default as FrontendHome} from './OtherPage/FrontendHome'
 export {default as InputSchool} from './InputAll/PreInput/InputSchoolPage/InputSchool'
 export {default as Input_Tournament} from './InputAll/PreInput/InputTournamentPage/Input_Tournament'
 export {default as InputMember} from './InputAll/PreInput/InputMemberPage/InputMember'

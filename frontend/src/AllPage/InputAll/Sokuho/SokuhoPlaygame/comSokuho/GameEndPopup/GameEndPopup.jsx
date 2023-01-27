@@ -1,5 +1,15 @@
 import React from "react";
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../../../DB/communication").backendUrl;
+
+const gameSets = async (gameId, schoolId1, schoolId2) => {
+  const funcGL = await fetch(backendUrl + "/game/game_call", {
+    method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+    body: JSON.stringify({ game_id: gameId, school_id_1: schoolId1, school_id_2: schoolId2 }),
+  })
+}
+
 //メインのDOMの中で配置するサブ部品のような要素
 class GameEndPopup extends React.Component {
   render() {
@@ -12,10 +22,14 @@ class GameEndPopup extends React.Component {
           <nbsp></nbsp>
           <button className="button_style"
             onClick={() => {
+
+              gameSets(this.props.gameId, this.props.schoolId1, this.props.schoolId2)
+
               this.props.closePopup()
               this.props.TableRegister(this.props.urlGameId)
               this.props.CalculateBatAvg(this.props.urlGameId)
               this.props.TmpTableDelete(this.props.urlGameId)
+              this.props.RefDuringGame(this.props.RefDuringGame)
             }}>はい</button>
         </div>
       </div>
@@ -50,7 +64,10 @@ class GameEndPopup_field extends React.Component {
             TableRegister={this.props.TableRegister}
             urlGameId={this.props.urlGameId}
             TmpTableDelete={this.props.TmpTableDelete}
+            DeleteDuringGame={this.props.DeleteDuringGame}
             CalculateBatAvg={this.props.CalculateBatAvg}
+            schoolId1={this.props.schoolId1}
+            schoolId2={this.props.schoolId2}
           />
         ) : null}
       </>

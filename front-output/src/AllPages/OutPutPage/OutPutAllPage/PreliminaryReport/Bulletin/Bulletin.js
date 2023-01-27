@@ -1,4 +1,5 @@
 import pic from "./field2.png"
+import "./App.css"
 import "./OutPutGame.css"
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -9,139 +10,14 @@ import { battedBall } from './battedBall';
 
 import { useCookies } from "react-cookie";
 
-const pageStyle = {
-  background: 'white'
-}
 
-const borderStyle = {
-  display: "inline-block",
-  border: "solid 2px #707070",
-  background: '#191970',
-  color: 'white',
-  fontSize: "4vw"
-}
 
-const infoStyle = {
-  textAlign: "center",
-}
-
-const group = {
-  display: "flex",
-}
-
-const resultStyle = {
-  background: '#e3e3e3',
-  color: 'red',
-  fontSize: '5vw',
-  textAlign: 'center',
-  width: '70%',
-  resize: 'none',
-  margin: 'auto'
-}
-
-const tableStyle = {
-  border: '1px solid #707070',
-  borderCollapse: 'collapse',
-  textAlign: 'center',
-  margin: 'auto',
-  width: '70%'
-}
-
-const tdStyle = {
-  border: '2px solid #707070',
-  background: '#e3e3e3',
-  padding: '5px',
-  fontSize: '3vw'
-};
-
-const thStyle = {
-  border: '2px solid #707070',
-  background: '#3498DB',
-  color: 'white',
-  padding: '2px',
-  fontSize: '3vw'
-};
-
-const team1Style = {
-  border: '2px solid #707070',
-  background: '#e3e3e3',
-  color: 'red',
-  padding: '2px',
-  fontSize: '3vw'
-}
-
-const team2Style = {
-  border: '2px solid #707070',
-  background: '#e3e3e3',
-  color: 'black',
-  padding: '2px',
-  fontSize: '3vw'
-}
-
-const batterStyle = {
-  background: 'red',
-  color: 'white',
-  fontSize: '2vw',
-  padding: '1px',
-  width: "15%"
-}
-
-const pitcherStyle = {
-  background: 'blue',
-  color: 'white',
-  fontSize: '2vw',
-  padding: '1px',
-  width: "15%"
-}
 
 const group2 = {
   display: "flex",
   justifyContent: 'space-around',
 }
 
-const playertableStyle = {
-  border: '2px solid #707070',
-  borderCollapse: 'collapse',
-  textAlign: 'center',
-  margin: 'auto',
-  width: '48%'
-}
-
-const schoolStyle = {
-  border: '2px solid #707070',
-  background: '#e3e3e3',
-  fontSize: '3vw',
-  padding: '1px',
-};
-
-const playerStyle = {
-  border: '2px solid #707070',
-  background: '#e3e3e3',
-  fontSize: '2vw',
-  padding: '2px'
-}
-
-const playerresultStyle = {
-  border: '2px solid #707070',
-  background: '#e3e3e3',
-  fontSize: '2vw',
-  padding: '1px',
-  width: '15%'
-}
-
-const fieldStyle = {
-  textAlign: 'center',
-}
-
-const imgsize = {
-  width: '80%',
-  height: 'auto'
-}
-
-const countStyle = {
-  fontSize: '6vw',
-  margin: 'auto'
-}
 
 export const Bulletin = () => {
 

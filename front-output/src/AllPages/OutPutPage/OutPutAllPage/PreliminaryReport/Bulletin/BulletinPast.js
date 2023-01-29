@@ -11,6 +11,7 @@ import { useCookies } from "react-cookie";
 import OutPutGame from "../../../../OutPutGame/OutPutGame";
 
 import smoothscroll from 'smoothscroll-polyfill';
+//import { BulletinPast } from "../../../../pageIndex";
 smoothscroll.polyfill();
 
 //import "./App.css";
@@ -149,7 +150,7 @@ const countStyle = {
   margin: 'auto'
 }
 
-export const Bulletin = () => {
+export const BulletinPast = () => {
 
   const intervalRef = useRef(null);
 
@@ -493,9 +494,13 @@ export const Bulletin = () => {
       //バッター情報を登録
       setBatterData(daseki[dasekiInd]);
 
+      console.log(daseki[dasekiInd])
+      console.log(tournamentMember)
+
       //投手IDと一致する名前の検索
       for (var pitcher of member) {
         if (pitcher['player_id'] === daseki[dasekiInd]['pitcher_id']) {
+          console.log(pitcher)
           setPitcherData(pitcher);
           break
         }
@@ -598,17 +603,17 @@ export const Bulletin = () => {
     gameStart();
   }, [autoUpdate, manualUpdate]);
 
-  useEffect(() => {
-    if (intervalRef.current === null) {
-      setAutoUpdateFlag(true);
-      intervalRef.current = setInterval(() => {
-        cntUpdate++;
-        // console.log(autoUpdateFlag);
-        // console.log(cntUpdate);
-        setAutoUpdate(cntUpdate);
-      }, 60000);
-    }
-  }, [])
+//   useEffect(() => {
+//     if (intervalRef.current === null) {
+//       setAutoUpdateFlag(true);
+//       intervalRef.current = setInterval(() => {
+//         cntUpdate++;
+//         // console.log(autoUpdateFlag);
+//         // console.log(cntUpdate);
+//         setAutoUpdate(cntUpdate);
+//       }, 60000);
+//     }
+//   }, [])
 
   var cntUpdate = 0;
   //console.log(scoreState[0][0])
@@ -690,32 +695,32 @@ export const Bulletin = () => {
     }
   }
 
-  function autoUpdateButton() {
-    setAutoUpdateFlag(true);
-    if (intervalRef.current === null) {
-      intervalRef.current = setInterval(() => {
-        cntUpdate++;
-        // console.log(autoUpdateFlag);
-        // console.log(cntUpdate);
-        setAutoUpdate(cntUpdate)
-      }, 60000);
-    }
-    //setAutoUpdate(cntUpdate);
-  }
+//   function autoUpdateButton() {
+//     setAutoUpdateFlag(true);
+//     if (intervalRef.current === null) {
+//       intervalRef.current = setInterval(() => {
+//         cntUpdate++;
+//         // console.log(autoUpdateFlag);
+//         // console.log(cntUpdate);
+//         setAutoUpdate(cntUpdate)
+//       }, 60000);
+//     }
+//     //setAutoUpdate(cntUpdate);
+//   }
 
-  function manualUpdateButton() {
-    setAutoUpdateFlag(false);
-    console.log(intervalRef.current)
-    clearInterval(intervalRef.current);
-    intervalRef.current = null;
-    cntUpdate = 0;
-  }
+//   function manualUpdateButton() {
+//     setAutoUpdateFlag(false);
+//     console.log(intervalRef.current)
+//     clearInterval(intervalRef.current);
+//     intervalRef.current = null;
+//     cntUpdate = 0;
+//   }
 
-  function updateButton() {
-    if (autoUpdateFlag === false) {
-      setManualUpdate(manualUpdate + 1);
-    }
-  }
+//   function updateButton() {
+//     if (autoUpdateFlag === false) {
+//       setManualUpdate(manualUpdate + 1);
+//     }
+//   }
 
   function skipDaseki(dinning) {
     if (dinning > dasekiData[dasekiData.length - 1]['inning']) {
@@ -1261,8 +1266,8 @@ export const Bulletin = () => {
               <td className="batterInfo batter">{batterData['grade']}年　{batterData['handed_hit']}</td>
             </tr>
             <tr>
-              {pinchText === '' && <td colSpan={3} className="todayBatterRecord"></td>} 
-              {pinchText !== '' && <td colSpan={3} className="todayBatterRecord">{pinchText}</td>}
+            {pinchText === '' && <td colSpan={3} className="todayBatterRecord"></td>} 
+            {pinchText !== '' && <td colSpan={3} className="todayBatterRecord">{pinchText}</td>}
             </tr>
           </table>
           {/* <table className="nextBatter">
@@ -1284,8 +1289,10 @@ export const Bulletin = () => {
           <table className="pitcherArea">
             <tr>
               <td rowSpan={2} className="deffenseTitle">投手</td>
-              <td className="pitcherName pitcher">{pitcherData['player_name_kanji']}</td>
-              <td className="pitcherInfo pitcher">{pitcherData['grade']}年　{pitcherData['handed_throw']}</td>
+              {pitcherData['player_name_kanji'] !== '' && <td className="pitcherName pitcher">{pitcherData['player_name_kanji']}</td>}
+              {pitcherData['player_name_kanji'] !== '' && <td className="pitcherInfo pitcher">{pitcherData['grade']}年　{pitcherData['handed_throw']}</td>}
+              {pitcherData['player_name_kanji'] === '' && <td className="pitcherName pitcher"></td>}
+              {pitcherData['player_name_kanji'] === '' && <td className="pitcherInfo pitcher"></td>}
             </tr>
             <tr>
             </tr>
@@ -1329,11 +1336,11 @@ export const Bulletin = () => {
       </div> */}
 
       {/* 更新選択ボタン */}
-      <div>
+      {/* <div>
         <button onClick={() => { autoUpdateButton() }} style={logStyle}>自動更新</button>
         <button onClick={() => { manualUpdateButton() }} style={logStyle}>手動更新</button>
         <button onClick={updateButton} style={logStyle}>更新↺</button>
-      </div>
+      </div> */}
 
       {/* キャンバスエリア */}
       {/* <div style={fieldStyle}><img src={pic} alt="field" style={imgsize} /></div><br></br> */}
@@ -1394,4 +1401,4 @@ export const Bulletin = () => {
     </div>
   )
 }
-export default Bulletin;
+export default BulletinPast;

@@ -15,6 +15,10 @@ const goToPage = (PageTransition, gameId) => {
     PageTransition("Bulletin?urlGameId=" + gameId)
 }
 
+const goToPagePast = (PageTransition, gameId) => {
+    console.log(gameId)
+    PageTransition("BulletinPast?urlGameId=" + gameId)
+}
 
 const GameComponent = {
     first_rear_1: "", first_rear_2: "", game_id: 0, game_ymd: "", match_num: "", match_results: null,
@@ -153,7 +157,7 @@ const GameList = () => {
                 method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
                 body: JSON.stringify({ tournament_id: urlTournamentId }),
             })
-            const receivedGS = await gamesState.json()
+            const receivedGS = await gamesState.json();
 
             //console.log(receivedGS)
 
@@ -179,7 +183,7 @@ const GameList = () => {
             <div class="whole">
                 <div class="date">
                     {/* <!-- <input type="date" name="today" id="today"> --> */}
-                    2023年10月30日(日)
+                    {urlTournamentOpening[0]}年{urlTournamentOpening[1]}月{urlTournamentOpening[2]}日
                 </div>
                 <div class='targetModules'>
                     <div class='gameName'>{urlTournamentName}
@@ -202,7 +206,6 @@ const GameList = () => {
                             //console.log(gameInning[0][game.game_id.toString()])
                             //console.log(gameInning[1]['score1'])
                             if(duringGameState !== [] && gameInning !== undefined && gameInning[1]['start'] === true){
-                                console.log('aaaaaa')
                                 return (
                                     <>
                                         <span>
@@ -228,7 +231,6 @@ const GameList = () => {
                                     </>
                                 )
                             }else{
-                                console.log('vvvvvvvvvvvvvvvvvvv')
                                 return (
                                     <>
                                         <span>
@@ -290,15 +292,15 @@ const GameList = () => {
                                 <>
                                     試合終了<br />
                                     {ymd[0]}年{ymd[1]}月{ymd[2]}日
-                                    <div class="displayGames" onClick={() => { goToPage(PageTransition, game.game_id) }}>
+                                    <div class="displayGames" onClick={() => { goToPagePast(PageTransition, game.game_id) }}>
                                         <div class='gameDetaile'>
                                             <div class='gameRound'>{game.match_num}回戦</div>
                                             <div class='gameCard'>
                                                 <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
                                                 <div class='gameScore'>
-                                                    <div class='firstAttackTeamScore'>1</div>
-                                                    <div class='gameState'>5回裏</div>
-                                                    <div class='secondAttackTeamScore'>3</div>
+                                                    <div class='firstAttackTeamScore'>{game.match_results.split('-')[0]}</div>
+                                                    <div class='gameState'>試合終了</div>
+                                                    <div class='secondAttackTeamScore'>{game.match_results.split('-')[1]}</div>
                                                 </div>
                                                 <div class='secondAttackTeam, teamName'>{game.school_name_2}</div>
                                             </div>

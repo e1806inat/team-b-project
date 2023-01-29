@@ -2,7 +2,7 @@
 //各種ページのインポート
 
 import {
-  OutPutHome, GameList, Bulletin, SlcTournamentForT, SlcTournamentForP, RefSchool, RefTournamentSchool, NotFound
+  OutPutHome, GameList, Bulletin, BulletinPast, SlcTournamentForT, SlcTournamentForP, RefSchool, RefTournamentSchool, NotFound
 } from "./AllPages/pageIndex"
 
 import { routeUrl } from './DB/communication';
@@ -35,6 +35,7 @@ const App = () => {
 
           <Route path={routeUrl + '/GameList'} element={<GameList />} />
           <Route path={routeUrl + '/GameList/Bulletin'} element={<Bulletin />} />
+          <Route path={routeUrl + '/GameList/BulletinPast'} element={<BulletinPast />} />
 
           {/* 速報閲覧 */}
           <Route path={routeUrl + '/'} element={<SlcTournamentForT />} />

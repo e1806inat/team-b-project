@@ -34,15 +34,61 @@
   margin: 0;
 }
 
-.gameRound {
+.Round {
+  /* position: relative;
+  width: 100%; 
+  display: flex;
+  height: 2.5vh;
+  color: red; */
+  width: 22%;
+  /* 横幅 */
+  padding: 1%;
+  /* 内側の余白 */
+  /* border: 5px solid green; */
+  /* 枠線 */
+  /* border-radius: 9px; */
+  /* 枠線の角丸 */
+  background-color: #191970;
+  /* 背景色 */
+  margin: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: auto;
+}
+
+.Round p {
+  width: 100%;  /* 横幅(親ボックスの横幅に合わせる) */
+  /* padding: 5px;  内側の余白 */
+  /* border: 5px solid #ccaa80;   */
+  /* background-color: #ffcc55;   */
+  font-size: 100%;
+  color: white;
   text-align: center;
-  margin-bottom: 10px;
-  font-size: large;
-  font-weight: bold;
-  background-color: #CCDDEE;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.textinfo {
+  background: white;
+  text-align: center;
+  color: black;
+  margin: 1vh;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3vh;
+  width: 90%;
+  height: 8vh;
+  border: solid 0.15vh black;
+}
+
+.info {
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .count {
@@ -56,9 +102,17 @@
   text-align: center;
   width: 90%;
   table-layout: fixed;
+  width: 100%;
+  height: 10%;
   /* border: 1.5px #7e7e7e solid; */
   margin: auto;
   border: none;
+  padding-bottom: 1vh;
+}
+
+.scoreBoardTable td {
+  border: none;
+  width:15%;
 }
 
 .scoreBoardTr {
@@ -95,10 +149,9 @@
   margin: auto
 }
 
-table,
+/* table,
 table td {
-  border: none;
-}
+} */
 
 .scoreBoardTr2 {
   background-color: #016435;
@@ -393,3 +446,271 @@ textarea {
     background-color: #0f1616;
   }
 } */
+
+.out-result {
+  display: flex;
+  align-items: center;
+}
+
+/* 信号機の光（緑） */
+#out1 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  /* color: red; */
+}
+
+/* 信号機の光（黄色） */
+#out2 {
+  background-color: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  /* color: red; */
+  /* animation-delay: 3s; */
+}
+
+.light.out2::after {
+  /* animation-delay: 3s; */
+}
+
+/* 信号機の光（赤） */
+#out3 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  /* color:red; */
+  /* animation-delay: 6s; */
+}
+
+#ball1 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#ball2 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#ball3 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#ball4 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#str1 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#str2 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+
+}
+
+#str3 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+.light.out3::after {
+  /* animation-delay: 6s; */
+}
+
+.startingMemberTag {
+  background: #016435;
+  color: white;
+  text-align: center;
+  font-size: 3vh;
+  width: 70%;
+  height: 5vh;
+  margin: auto;
+}
+
+
+.startingMember {
+  margin: auto;
+  text-align: center;
+  width: 84%;
+  /* padding-top: 2vh; */
+  padding-bottom: 2vh;
+}
+
+.startingMembers {
+  margin: auto;
+  text-align: center;
+  font-size: 2vh;
+  width: 95%;
+  height: 4vh;
+  border: 1;
+}
+
+/* .schoolBox {
+  background: black;
+  color: white;
+  margin: 3vh;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vh;
+  width: 55%;
+  height: 5vh;
+}
+.schoolBox p{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+} */
+.schoolBox {
+  width: 55%;
+  padding: 1vh;
+  /* margin: 3vh; */
+  background-color: white;
+  margin: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.schoolBox p{
+  width: 100%; 
+  font-size: 2vh;
+  color: white;
+  background-color: black;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.members {
+  color: white;
+  margin: auto;
+  font-size: 1.5vh;
+  width: 84%;
+  height: 4vh;
+  padding-top: 2vh;
+  /* border:2; */
+}
+
+.members td {
+  background: #191970;
+
+}
+
+.textSokuhou {
+  position: relative;
+  /* margin: 2em 0; */
+  margin-left: 3vh;
+  margin-right: 3vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  padding: 2vh 1vh 1vh;
+  border: solid 0.5vh rgb(229, 239, 234);
+}
+
+.textSokuhou .box-title {
+  position: absolute;
+  display: inline-block;
+  top: -0.5vh;
+  left: -0.5vh;
+  padding: 0 2vh;
+  height: 2vh;
+  line-height: 2vh;
+  font-size: 1vh;
+  background: rgb(229, 239, 234);
+  color: #016435;
+  font-weight: bold;
+}
+
+/* tr:nth-child(even) {
+  background: #d9d9d9;
+ } */
+
+.textSokuhou .startingMembers {
+  margin: 0;
+  padding: 0;
+}
+
+.daseki {
+  font-size: 1.5vh;
+}
+
+.position {
+  font-size: 1.3vh;
+}
+
+.tdstyle:hover {
+  opacity: 0.5;
+}
+
+/* ボタンのスタイル */
+.page-top {
+  /* buttonタグのリセットCSS */
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+
+  /* ボタンの装飾 */
+  position: fixed;
+  right: 3%;
+  bottom: 3%;
+  z-index: 100;
+  width: 5vw;
+  height: 5vh;
+  border-radius: 10%;
+  background-color: #115582;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+/* 矢印のスタイル */
+.page-top::before {
+  content: "";
+  width: 1vh;
+  height: 1vh;
+  margin-bottom: -1vh;
+  border-top: solid 0.5vh #fff;
+  border-right: solid 0.5vh #fff;
+  transform: rotate(-45deg);
+}
+
+/* ホバー時のスタイル */
+.page-top:hover {
+  transform: scale(1.1);
+}

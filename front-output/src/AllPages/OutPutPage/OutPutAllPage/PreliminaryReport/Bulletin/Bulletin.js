@@ -8,6 +8,12 @@ import { Ground } from './Ground';
 import { battedBall } from './battedBall';
 
 import { useCookies } from "react-cookie";
+import OutPutGame from "../../../../OutPutGame/OutPutGame";
+
+import smoothscroll from 'smoothscroll-polyfill';
+smoothscroll.polyfill();
+
+//import "./App.css";
 
 
 
@@ -328,7 +334,7 @@ export const Bulletin = () => {
       setBatterData(daseki[dasekiInd]);
 
       //投手IDと一致する名前の検索
-      for (var pitcher of tournamentMember) {
+      for (var pitcher of member) {
         if (pitcher['player_id'] === daseki[dasekiInd]['pitcher_id']) {
           setPitcherData(pitcher);
           break
@@ -363,19 +369,20 @@ export const Bulletin = () => {
         Ground(context);
 
         console.log(daseki[0]['base']);
+        console.log(typeof (daseki[0]['base']));
         //ベースの色
-        let baseColor2 = [];
-        let runnerCountState = [];
-        for (let i = 0; i < 3; i++) {
-
-          runnerCountState[i] = daseki[0]['base'] / (10 ** i) % 10;
-          console.log(runnerCountState[i]);
-          if (runnerCountState[i] === 1) {
-            baseColor2[i] = "blue";
-          }
-          else {
-            baseColor2[i] = "white";
-          }
+        let baseColor2 = new Array(3).fill("white");
+        //let runnerCountState = [];
+        console.log(daseki[0]['base']);
+        let base = daseki[0]['base'].split('');
+        if (base[0] === '1') {
+          baseColor2[2] = "blue";
+        }
+        if (base[1] === '1') {
+          baseColor2[1] = "blue";
+        }
+        if (base[2] === '1') {
+          baseColor2[0] = "blue";
         }
 
 
@@ -416,17 +423,16 @@ export const Bulletin = () => {
         context.stroke();
 
         console.log(daseki);
-        let X = daseki[0]['touched_coordinate'].split('_')[0];
-        let Y = daseki[0]['touched_coordinate'].split('_')[1];
+        let X = Number(daseki[0]['touched_coordinate'].split('_')[0]);
+        let Y = Number(daseki[0]['touched_coordinate'].split('_')[1]);
 
         // let X = 1;
         // let Y = 1;
         console.log(X);
 
-        battedBall(context, X, Y, flag);
+        battedBall(context, X, Y, Number(daseki[0]['ball_kind']));
 
       }
-
       console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     }
     gameStart();
@@ -552,80 +558,84 @@ export const Bulletin = () => {
   }
 
   function skipDaseki(dinning) {
-    //console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
-    console.log('aaaaa')
-    var tmpNowDaseki = dasekiData.find(function (u) {
-      return u.inning === dinning;
-    })
-    //console.log(tmpNowDaseki)
-    setNowDaseki(tmpNowDaseki);
-    setPinchText(tmpNowDaseki["pinch"]);
-    // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
-    //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
-    //console.log(nowDaseki[])
-    if (tmpNowDaseki['school_id'] === gameData[0]['school_id_1']) {
-      setNowSchoolName1(gameData[0]['school_name_1']);
-      setNowSchoolName2(gameData[0]['school_name_2']);
+    if (dinning > dasekiData[dasekiData.length - 1]['inning']) {
+      return;
     } else {
-      setNowSchoolName1(gameData[0]['school_name_2']);
-      setNowSchoolName2(gameData[0]['school_name_1']);
-    }
-    //現在第何打席(配列の添え字)かをnowBatで保持
-    var nowBat = tmpNowDaseki['at_bat_id'] - 1;
-    //console.log(beforeBat)
-
-    const InitialScore = [
-      [null, null, null, null, null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null, null, null, null, null]
-    ]
-
-    let sendScore = InitialScore;
-
-    dasekiData.slice(0, nowBat).map((u) => {
-      //null対策
-      if (sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] === null) sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = 0
-      //受け取ったスコアを配列に格納
-      sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] + u.score
-      //console.log(Math.floor(u.inning / 10) - 1)
-    })
-
-    var sumScore = function (scores) {
-      var tmpScore = 0;
-      //console.log(scores)
-      for (var score of scores) {
-        tmpScore += score;
-      }
-      return tmpScore;
-    }
-
-    setScoreState1(sendScore[0]);
-    setScoreState2(sendScore[1]);
-    setTotalScoreState1(sumScore(sendScore[0]));
-    setTotalScoreState2(sumScore(sendScore[1]));
-
-    //console.log(dasekiData[beforeBat])
-    setBatterData(dasekiData[nowBat]);
-    for (var pitcher of tournamentMember) {
-      if (pitcher['player_id'] === dasekiData[nowBat]['pitcher_id']) {
-        setPitcherData(pitcher);
-        break
-      }
-    }
-
-    //console.log(sendScore)
-
-    //現在の回数を算出
-    //仕様上の問題で回が変わる最初のinning以外をnullにしている
-    if (dasekiData[nowBat]['inning'] !== null) {
-      var stateArray = dasekiData[nowBat]['inning'].toString().split("");
-      //console.log(stateArray)
-      if (stateArray[stateArray.length - 1] === '1') {
-        setNowState(stateArray[0] + '回表');
+      //console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
+      console.log('aaaaa')
+      var tmpNowDaseki = dasekiData.find(function (u) {
+        return u.inning === dinning;
+      })
+      //console.log(tmpNowDaseki)
+      setNowDaseki(tmpNowDaseki);
+      setPinchText(tmpNowDaseki["pinch"]);
+      // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
+      //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
+      //console.log(nowDaseki[])
+      if (tmpNowDaseki['school_id'] === gameData[0]['school_id_1']) {
+        setNowSchoolName1(gameData[0]['school_name_1']);
+        setNowSchoolName2(gameData[0]['school_name_2']);
       } else {
-        setNowState(stateArray[0] + '回裏');
+        setNowSchoolName1(gameData[0]['school_name_2']);
+        setNowSchoolName2(gameData[0]['school_name_1']);
       }
+      //現在第何打席(配列の添え字)かをnowBatで保持
+      var nowBat = tmpNowDaseki['at_bat_id'] - 1;
+      //console.log(beforeBat)
+
+      const InitialScore = [
+        [null, null, null, null, null, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, null, null, null, null]
+      ]
+
+      let sendScore = InitialScore;
+
+      dasekiData.slice(0, nowBat).map((u) => {
+        //null対策
+        if (sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] === null) sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = 0
+        //受け取ったスコアを配列に格納
+        sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] = sendScore[u.inning % 10 - 1][Math.floor(u.inning / 10) - 1] + u.score
+        //console.log(Math.floor(u.inning / 10) - 1)
+      })
+
+      var sumScore = function (scores) {
+        var tmpScore = 0;
+        //console.log(scores)
+        for (var score of scores) {
+          tmpScore += score;
+        }
+        return tmpScore;
+      }
+
+      setScoreState1(sendScore[0]);
+      setScoreState2(sendScore[1]);
+      setTotalScoreState1(sumScore(sendScore[0]));
+      setTotalScoreState2(sumScore(sendScore[1]));
+
+      //console.log(dasekiData[beforeBat])
+      setBatterData(dasekiData[nowBat]);
+      for (var pitcher of tournamentMember) {
+        if (pitcher['player_id'] === dasekiData[nowBat]['pitcher_id']) {
+          setPitcherData(pitcher);
+          break
+        }
+      }
+
+      //console.log(sendScore)
+
+      //現在の回数を算出
+      //仕様上の問題で回が変わる最初のinning以外をnullにしている
+      if (dasekiData[nowBat]['inning'] !== null) {
+        var stateArray = dasekiData[nowBat]['inning'].toString().split("");
+        //console.log(stateArray)
+        if (stateArray[stateArray.length - 1] === '1') {
+          setNowState(stateArray[0] + '回表');
+        } else {
+          setNowState(stateArray[0] + '回裏');
+        }
+      }
+      setNowDaseki(dasekiData[nowBat]);
     }
-    setNowDaseki(dasekiData[nowBat]);
   }
 
   function beforebatter() {
@@ -711,6 +721,114 @@ export const Bulletin = () => {
 
 
       setNowDaseki(dasekiData[beforeBat]);
+
+      //console.log("ここから追加");
+      //console.log(daseki);
+      //ここから追加しました
+      const canvasSize = 2000;
+
+      const homebase = 520;
+      const h = 70;
+      const l = -110;
+      const w = 0.03 * homebase;  //ベースの幅
+      const margin = 10;    //ベース位置調整用
+
+      const canvas = document.getElementById("canvas")
+      const canvasContext = canvas.getContext("2d")
+      var context = canvasContext
+      if (context !== null) {
+        Ground(context);
+      }
+
+      if (context !== null) {
+
+        //削除
+        context.clearRect(0, 0, canvasSize, canvasSize);
+
+        Ground(context);
+
+        //dasekiData[nowDaseki['at_bat_id'] - 2]
+
+        //console.log(daseki[0]['base']);
+        //ベースの色
+        let baseColor2 = new Array(3).fill("white");
+        let runnerCountState = [];
+        console.log(dasekiData[nowDaseki['at_bat_id'] - 2]['base']);
+        let base = dasekiData[nowDaseki['at_bat_id'] - 2]['base'].split('');
+        console.log(base);
+        if (base[0] === '1') {
+          baseColor2[2] = "blue";
+        }
+        if (base[1] === '1') {
+          baseColor2[1] = "blue";
+        }
+        if (base[2] === '1') {
+          baseColor2[0] = "blue";
+        }
+        // for (let i = 0; i < 3; i++) {
+        //   runnerCountState[i] = Number(dasekiData[nowDaseki['at_bat_id'] - 2]['base']) / (10 ** i) % 10;
+        //   console.log(runnerCountState[i]);
+        //   if (runnerCountState[i] === 1) {
+        //     baseColor2[i] = "blue";
+        //   }
+        //   else {
+        //     baseColor2[i] = "white";
+        //   }
+        // }
+        console.log(baseColor2)
+
+
+        context.strokeStyle = "black";
+
+        //３塁ベース
+        context.fillStyle = baseColor2[2];
+        context.beginPath();
+        context.moveTo(homebase * 3 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 3 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 3 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 3 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.lineWidth = 1;
+        context.stroke();
+
+        //2塁ベース
+        context.fillStyle = baseColor2[1];
+        context.beginPath();
+        context.moveTo(homebase + l, homebase / 2 - margin + h);
+        context.lineTo(homebase - w + l, homebase / 2 + w - margin + h);
+        context.lineTo(homebase + l, homebase / 2 + w * 2 - margin + h);
+        context.lineTo(homebase + w + l, homebase / 2 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //1塁ベース
+        context.fillStyle = baseColor2[0];
+        context.beginPath();
+        context.moveTo(homebase * 5 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 5 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 5 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 5 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //console.log(daseki);
+        let X = Number(dasekiData[nowDaseki['at_bat_id'] - 2]['touched_coordinate'].split('_')[0]);
+        let Y = Number(dasekiData[nowDaseki['at_bat_id'] - 2]['touched_coordinate'].split('_')[1]);
+
+        // let X = 1;
+        // let Y = 1;
+        // console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
+        // console.log(typeof (X));
+        // console.log(Y);
+        // console.log(context);
+        // console.log(dasekiData[nowDaseki['at_bat_id'] - 2]['ball_kind']);
+        // console.log(dasekiData[nowDaseki['at_bat_id'] - 2]['base'])
+
+        battedBall(context, X, Y, Number(dasekiData[nowDaseki['at_bat_id'] - 2]['ball_kind']));
+      }
     }
   }
 
@@ -783,6 +901,110 @@ export const Bulletin = () => {
         }
       }
       setNowDaseki(dasekiData[nextBat]);
+
+      //console.log("ここから追加");
+      //console.log(daseki);
+      //ここから追加しました
+      const canvasSize = 2000;
+
+      const homebase = 520;
+      const h = 70;
+      const l = -110;
+      const w = 0.03 * homebase;  //ベースの幅
+      const margin = 10;    //ベース位置調整用
+
+      const canvas = document.getElementById("canvas")
+      const canvasContext = canvas.getContext("2d")
+      var context = canvasContext
+      if (context !== null) {
+        Ground(context);
+      }
+
+      if (context !== null) {
+
+        //削除
+        context.clearRect(0, 0, canvasSize, canvasSize);
+
+        Ground(context);
+
+        //dasekiData[nowDaseki['at_bat_id'] - 2]
+
+        //console.log(daseki[0]['base']);
+        //ベースの色
+        // let baseColor2 = [];
+        // let runnerCountState = [];
+        // for (let i = 0; i < 3; i++) {
+        //   runnerCountState[i] = Number(dasekiData[nowDaseki['at_bat_id']]['base']) / (10 ** i) % 10;
+        //   console.log(runnerCountState[i]);
+        //   if (runnerCountState[i] === 1) {
+        //     baseColor2[i] = "blue";
+        //   }
+        //   else {
+        //     baseColor2[i] = "white";
+        //   }
+        // }
+        let baseColor2 = new Array(3).fill("white");
+        let runnerCountState = [];
+        console.log(dasekiData[nowDaseki['at_bat_id']]['base']);
+        let base = dasekiData[nowDaseki['at_bat_id']]['base'].split('');
+        console.log(base);
+        if (base[0] === '1') {
+          baseColor2[2] = "blue";
+        }
+        if (base[1] === '1') {
+          baseColor2[1] = "blue";
+        }
+        if (base[2] === '1') {
+          baseColor2[0] = "blue";
+        }
+        console.log(baseColor2)
+
+        context.strokeStyle = "black";
+
+        //３塁ベース
+        context.fillStyle = baseColor2[2];
+        context.beginPath();
+        context.moveTo(homebase * 3 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 3 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 3 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 3 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.lineWidth = 1;
+        context.stroke();
+
+        //2塁ベース
+        context.fillStyle = baseColor2[1];
+        context.beginPath();
+        context.moveTo(homebase + l, homebase / 2 - margin + h);
+        context.lineTo(homebase - w + l, homebase / 2 + w - margin + h);
+        context.lineTo(homebase + l, homebase / 2 + w * 2 - margin + h);
+        context.lineTo(homebase + w + l, homebase / 2 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //1塁ベース
+        context.fillStyle = baseColor2[0];
+        context.beginPath();
+        context.moveTo(homebase * 5 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 5 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 5 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 5 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //console.log(daseki);
+        let X = Number(dasekiData[nowDaseki['at_bat_id']]['touched_coordinate'].split('_')[0]);
+        let Y = Number(dasekiData[nowDaseki['at_bat_id']]['touched_coordinate'].split('_')[1]);
+
+        // let X = 1;
+        // let Y = 1;
+        console.log(X);
+
+        battedBall(context, X, Y, Number(dasekiData[nowDaseki['at_bat_id']]['ball_kind']));
+      }
     }
   }
 
@@ -792,14 +1014,17 @@ export const Bulletin = () => {
     fontSize: "3vw"
   }
 
+
+
   //const tournamentName = gameData[0]['tournament_name'];
   //const venueName = gameData[0]['venue_name'];
 
   // const beforebatter = () => {};
 
+  const canvasborder = { border: "solid 2px #000" }
 
   return (
-    <div>
+    <div className="main">
       <div>
 
         {/* タイトル */}
@@ -845,7 +1070,7 @@ export const Bulletin = () => {
                 )
               }
             })}
-            <td className="scoreBoardTd">計</td>
+            <td className="scoreBoardTd">{totalScoreState1}</td>
 
           </tr>
           <tr className="scoreBoardTr2">
@@ -863,13 +1088,27 @@ export const Bulletin = () => {
               }
               <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
             })}
-            <td className="scoreBoardTd">計</td>
+            <td className="scoreBoardTd">{totalScoreState2}</td>
 
           </tr>
         </tbody>
       </table>
 
-      <div className="gameRound"> {nowState} </div>
+      {/* <div className="Round">
+        <div className="gameRound">
+          {nowState}
+        </div>
+      </div> */}
+
+      <div className="Round">
+        <p>{nowState}</p>
+      </div>
+
+      <div className="info">
+        <div className="textinfo">
+          {nowDaseki['text_inf']}
+        </div>
+      </div>
 
       <div className="gameDetail">
         <div className="offense">
@@ -877,12 +1116,13 @@ export const Bulletin = () => {
           <table className="batterArea">
             <tr>
               <td rowSpan={2} className="offenseTitle">打者</td>
-              <td className="batterNumber batter">4番</td>
+              <td className="batterNumber batter">{batterData['uniform_number']}番</td>
               <td className="batterName batter">{batterData['player_name_kanji']}</td>
-              <td className="batterInfo batter">3年　右</td>
+              <td className="batterInfo batter">{batterData['grade']}年　{batterData['handed_hit']}</td>
             </tr>
             <tr>
-              <td colSpan={3} className="todayBatterRecord">三ゴロ、空三振、遊ゴロ、右安</td>
+              {pinchText === '' && <td colSpan={3} className="todayBatterRecord"></td>} 
+              {pinchText !== '' && <td colSpan={3} className="todayBatterRecord">{pinchText}</td>}
             </tr>
           </table>
           {/* <table className="nextBatter">
@@ -905,10 +1145,9 @@ export const Bulletin = () => {
             <tr>
               <td rowSpan={2} className="deffenseTitle">投手</td>
               <td className="pitcherName pitcher">{pitcherData['player_name_kanji']}</td>
-              <td className="pitcherInfo pitcher">3年　右</td>
+              <td className="pitcherInfo pitcher">{pitcherData['grade']}年　{pitcherData['handed_throw']}</td>
             </tr>
             <tr>
-              <td colSpan={2} className="todayPitcherRecord">投球数：8</td>
             </tr>
           </table>
         </div>
@@ -972,35 +1211,47 @@ export const Bulletin = () => {
         <span class="box-title">テキスト速報</span>
         <DasekiHistoryList dasekiesInfo={[...dasekiData].reverse()} gameData={gameData} score={scoreState} />
       </div>
-      <div>
+      <>
         <div className="startingMemberTag">先発メンバー</div>
         <div className="startingMember">
-          <div className="schoolBox">{schoolName1}</div>
+          <div className="schoolBox">
+            <p>{schoolName1}</p>
+          </div>
           <table border="1" className="members">
             <tr>
-              <td width="8%" height="50" rowspan="2" bgcolor="#228b22">打順</td>
-              <td width="30%" height="50" bgcolor="#228b22">名前</td>
-              <td width="10%" height="50" rowspan="2" bgcolor="#228b22">背番号</td>
-              <td width="18%" height="50" rowspan="2" bgcolor="#228b22">ポジション</td>
-              <td width="16%" height="50" rowspan="2" bgcolor="#228b22">打率</td>
+              <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
+              <td width="30%" height="10vh" bgcolor="#228b22">名前</td>
+              <td width="10%" height="10vh" rowspan="2" bgcolor="#228b22">背番号</td>
+              <td width="18%" height="10vh" rowspan="2" bgcolor="#228b22">ポジション</td>
+              <td width="16%" height="10vh" rowspan="2" bgcolor="#228b22">打率</td>
             </tr>
           </table>
           <StartingMemberList startingMembers={startingMember1} />
 
-
-          <div className="schoolBox">{schoolName2}</div>
+          <div className="schoolBox">
+            <p>{schoolName2}</p>
+          </div>
           <table border="1" className="members">
             <tr>
-              <td width="8%" height="50" rowspan="2" bgcolor="#228b22">打順</td>
-              <td width="30%" height="50" bgcolor="#228b22">名前</td>
-              <td width="10%" height="50" rowspan="2" bgcolor="#228b22">背番号</td>
-              <td width="18%" height="50" rowspan="2" bgcolor="#228b22">ポジション</td>
-              <td width="16%" height="50" rowspan="2" bgcolor="#228b22">打率</td>
+              <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
+              <td width="30%" height="10vh" bgcolor="#228b22">名前</td>
+              <td width="10%" height="10vh" rowspan="2" bgcolor="#228b22">背番号</td>
+              <td width="18%" height="10vh" rowspan="2" bgcolor="#228b22">ポジション</td>
+              <td width="16%" height="10vh" rowspan="2" bgcolor="#228b22">打率</td>
             </tr>
           </table>
           <StartingMemberList startingMembers={startingMember2} />
         </div>
-      </div>
+      </>
+      <button id="page-top" class="page-top" onClick={() => {
+        const pagetopBtn = document.querySelector('#page-top');
+        pagetopBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        });
+      }}></button>
     </div>
   )
 }

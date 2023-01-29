@@ -855,6 +855,8 @@ export const OutPutGamePast = () => {
         <textarea style={resultStyle} readOnly defaultValue={nowState} />
         <div>{nowDaseki['text_inf']}</div>
       </div><br></br>
+     
+     
       <table style={tableStyle}>
         <tbody>
           <tr>
@@ -899,6 +901,8 @@ export const OutPutGamePast = () => {
         </tbody>
 
       </table><br></br>
+     
+     
       <div style={group2}>
 
         <table style={playertableStyle}>

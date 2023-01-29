@@ -15,6 +15,10 @@ const goToPage = (PageTransition, gameId) => {
     PageTransition("Bulletin?urlGameId=" + gameId)
 }
 
+const goToPagePast = (PageTransition, gameId) => {
+    console.log(gameId)
+    PageTransition("BulletinPast?urlGameId=" + gameId)
+}
 
 const GameComponent = {
     first_rear_1: "", first_rear_2: "", game_id: 0, game_ymd: "", match_num: "", match_results: null,
@@ -130,6 +134,9 @@ const GameList = () => {
     //大会情報を管理するステイト
     const [rgsTournament, setRgsTournament] = useState([])
 
+    const [duringGameState, setDuringGameState] = useState([]);
+    //const []
+
     const initialGL = {
         BeforeG: [GameComponent],
         DuringG: [GameComponent],
@@ -147,11 +154,23 @@ const GameList = () => {
         const handleUseEffect = async () => {
             await getGame(urlTournamentId, setGameList)
             getAllGame()
-            // await RefDuringGame()
+            // await RefDuringGame(
+
+            const gamesState = await fetch(backendUrl + "/daseki/tmp_daseki_state", {
+                method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+                body: JSON.stringify({ tournament_id: urlTournamentId }),
+            })
+            const receivedGS = await gamesState.json();
+
+            //console.log(receivedGS)
+
+            setDuringGameState(receivedGS);
+
         }
 
         //useEffectの内部を実行
-        handleUseEffect()
+        // getGameState();
+        handleUseEffect();
     }, [])
 
 
@@ -167,7 +186,7 @@ const GameList = () => {
             <div class="whole">
                 <div class="date">
                     {/* <!-- <input type="date" name="today" id="today"> --> */}
-                    2023年10月30日(日)
+                    {urlTournamentOpening[0]}年{urlTournamentOpening[1]}月{urlTournamentOpening[2]}日
                 </div>
                 <div class='targetModules'>
                     <div class='gameName'>{urlTournamentName}</div>
@@ -180,33 +199,65 @@ const GameList = () => {
                     {gameList.DuringG.map((game, ind) => {
                         let ymd = game.game_ymd.split("-")
                         if (game.school_id_1 !== 0) {
-                            return (
-                                <>
-                                    <span>
-                                        現在試合中<br />
-                                        {ymd[0]}年{ymd[1]}月{ymd[2]}日
-                                        <div class="displayGames" onClick={() => { goToPage(PageTransition, game.game_id) }}>
-                                            <div class='gameDetaile'>
-                                                <div class='gameRound'>{game.match_num}回戦</div>
-                                                <div class='gameCard'>
-
-                                                    <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
-                                                    <div class='gameScore'>
-                                                        <div class='firstAttackTeamScore'>1</div>
-                                                        <div class='gameState'>5回裏</div>
-                                                        <div class='secondAttackTeamScore'>3</div>
-                                                    </div>
-                                                    <div class='secondAttackTeam, teamName'>{game.school_name_2}</div>
-                                                </div>
-                                                <div class="gamePlace">{game.venue_name}</div>
-                                            </div>
-                                            <p></p>
-
-                                        </div>
-                                    </span>
-
-                                </>
+                            console.log(duringGameState)
+                            var gameInning = duringGameState.find((u) =>
+                                Number(Object.keys(u[0])) === game.game_id
                             )
+                           // button.disabled = gameInning[1]['start'];
+                            //console.log(duringGameState)
+                            //console.log(gameInning[0][game.game_id.toString()])
+                            //console.log(gameInning[1]['score1'])
+                            if(duringGameState !== [] && gameInning !== undefined && gameInning[1]['start'] === true){
+                                return (
+                                    <>
+                                        <span>
+                                            現在試合中<br />
+                                            {ymd[0]}年{ymd[1]}月{ymd[2]}日
+                                            <div  class="displayGames" onClick={() => { console.log('morimori'); goToPage(PageTransition, game.game_id) }}>
+                                                <div class='gameDetaile'>
+                                                    <div class='gameRound'>{game.match_num}回戦</div>
+                                                    <div class='gameCard'>
+                                                        <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
+                                                        <div class='gameScore'>
+                                                            <div class='firstAttackTeamScore'>{duringGameState !== [] && gameInning !== undefined && gameInning[1]['score1']}</div>
+                                                            <div class='gameState'>{duringGameState !== [] && gameInning !== undefined && gameInning[0][game.game_id]}</div>
+                                                            <div class='secondAttackTeamScore'>{duringGameState !== [] && gameInning !== undefined && gameInning[1]['score2']}</div>
+                                                        </div>
+                                                        <div class='secondAttackTeam, teamName'>{game.school_name_2}</div>
+                                                    </div>
+                                                    <div class="gamePlace">{game.venue_name}</div>
+                                                </div>
+                                                <p></p>
+                                            </div>
+                                        </span>
+                                    </>
+                                )
+                            }else{
+                                return (
+                                    <>
+                                        <span>
+                                            現在試合中<br />
+                                            {ymd[0]}年{ymd[1]}月{ymd[2]}日
+                                            <div class="displayGames">
+                                                <div class='gameDetaile'>
+                                                    <div class='gameRound'>{game.match_num}回戦</div>
+                                                    <div class='gameCard'>
+                                                        <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
+                                                        <div class='gameScore'>
+                                                            <div class='firstAttackTeamScore'>{duringGameState !== [] && gameInning !== undefined && gameInning[1]['score1']}</div>
+                                                            <div class='gameState'>{duringGameState !== [] && gameInning !== undefined && gameInning[0][game.game_id]}</div>
+                                                            <div class='secondAttackTeamScore'>{duringGameState !== [] && gameInning !== undefined && gameInning[1]['score2']}</div>
+                                                        </div>
+                                                        <div class='secondAttackTeam, teamName'>{game.school_name_2}</div>
+                                                    </div>
+                                                    <div class="gamePlace">{game.venue_name}</div>
+                                                </div>
+                                                <p></p>
+                                            </div>
+                                        </span>
+                                    </>
+                                )
+                            }
                         }
                     })}
 
@@ -243,15 +294,15 @@ const GameList = () => {
                                 <>
                                     試合終了<br />
                                     {ymd[0]}年{ymd[1]}月{ymd[2]}日
-                                    <div class="displayGames" onClick={() => { goToPage(PageTransition, game.game_id) }}>
+                                    <div class="displayGames" onClick={() => { goToPagePast(PageTransition, game.game_id) }}>
                                         <div class='gameDetaile'>
                                             <div class='gameRound'>{game.match_num}回戦</div>
                                             <div class='gameCard'>
                                                 <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
                                                 <div class='gameScore'>
-                                                    <div class='firstAttackTeamScore'>1</div>
-                                                    <div class='gameState'>5回裏</div>
-                                                    <div class='secondAttackTeamScore'>3</div>
+                                                    <div class='firstAttackTeamScore'>{game.match_results.split('-')[0]}</div>
+                                                    <div class='gameState'>試合終了</div>
+                                                    <div class='secondAttackTeamScore'>{game.match_results.split('-')[1]}</div>
                                                 </div>
                                                 <div class='secondAttackTeam, teamName'>{game.school_name_2}</div>
                                             </div>

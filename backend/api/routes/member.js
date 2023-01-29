@@ -109,21 +109,21 @@ router.post("/ref_member_call", async (req, res, next) => {
         //選手テーブルから選手情報を呼び出す。in(?)で学年の指定ができる例えばin(1,2)なら２年生以下、in(2,4)なら２年生と卒業生のような感じ
         //optionは並び替えの基準例えば、gradeなら学年順、BAなら打率順
         //ascは昇順か降順かasc==1ならば昇順、じゃなければ降順
-        var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by player_name_hira`, [grades, school_id]);
+        var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? and player_name_kanji is not null order by player_name_hira`, [grades, school_id]);
         if (option=="grade"){
-            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by grade`, [grades, school_id]);
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? and player_name_kanji is not null order by grade`, [grades, school_id]);
         } 
         else if (option=="player_name_hira"){
-            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by player_name_hira`, [grades, school_id]);
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? and player_name_kanji is not null order by player_name_hira`, [grades, school_id]);
         }
         else if (option=="BA"){
-            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by BA desc`, [grades, school_id]);
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? and player_name_kanji is not null order by BA desc`, [grades, school_id]);
         }
         else if (option=="hit_num"){
-            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by hit_num desc`, [grades, school_id]);
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? and player_name_kanji is not null order by hit_num desc`, [grades, school_id]);
         }
         else if (option=="bat_num"){
-            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? order by bat_num desc`, [grades, school_id]);
+            var rows = await executeQuery(`select * from t_player where grade in (?) and school_id = ? and player_name_kanji is not null order by bat_num desc`, [grades, school_id]);
         }
         //console.log(rows)    
         return res.json(rows);
@@ -140,21 +140,21 @@ router.post("/ref_tournament_member_call", async (req, res, next) => {
 
     try {
         //大会に登録された選手を閲覧可能、optionは並び替えの基準
-        var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by player_name_hira', [school_id, tournament_id, option]);
+        var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? and player_name_kanji is not null order by player_name_hira', [school_id, tournament_id, option]);
         if (option=="grade"){
-            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by grade', [school_id, tournament_id, option]);
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? and player_name_kanji is not null order by grade', [school_id, tournament_id, option]);
         } 
         else if (option=="player_name_hira"){
-            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by player_name_hira', [school_id, tournament_id, option]);
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? and player_name_kanji is not null order by player_name_hira', [school_id, tournament_id, option]);
         }
         else if (option=="BA"){
-            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by  BA desc', [school_id, tournament_id, option]);
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? and player_name_kanji is not null order by  BA desc', [school_id, tournament_id, option]);
         }
         else if (option=="hit_num"){
-            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by hit_num desc', [school_id, tournament_id, option]);
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? and player_name_kanji is not null order by hit_num desc', [school_id, tournament_id, option]);
         }
         else if (option=="bat_num"){
-            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? order by bat_num desc', [school_id, tournament_id, option]);
+            var rows = await executeQuery('select * from t_registered_player as a join (select player_id, player_name_kanji, player_name_hira from t_player where school_id = ?) as b using(player_id) where tournament_id = ? and player_name_kanji is not null order by bat_num desc', [school_id, tournament_id, option]);
         }
         return res.json(rows);
     }

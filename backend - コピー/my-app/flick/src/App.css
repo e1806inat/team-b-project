@@ -1,0 +1,126 @@
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  touch-action: none;
+  background-color:green;
+}
+.key_u {
+  font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+}
+
+.key_d {
+  font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+}
+
+.key_l {
+  font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+}
+
+.key_r {
+  font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+}
+
+.transparent {
+  opacity: 0;
+  visibility: collapse;
+}
+
+.key_shadow {
+  position: absolute;
+  pointer-events: none;
+}
+
+.key_u_back{
+  background-color: rgba(255,255,255,0.5);
+  height: 50px;
+  width: 50px;
+  border-radius: 2px;
+  border-width: 50px 50px 0 0;
+  border-top-left-radius: 50px;
+  transform: rotate(45deg);
+}
+.key_d_back{
+  background-color: rgba(255,255,255,0.5);
+  height: 50px;
+  width: 50px;
+  border-radius: 2px;
+  border-width: 50px 50px;
+  border-top-left-radius: 50px;
+  transform: rotate(-135deg);
+}
+.key_l_back{
+  background-color: rgba(255,255,255,0.5);
+  height: 50px;
+  width: 50px;
+  border-radius: 2px;
+  border-width: 50px 50px 0 0;
+  border-top-left-radius: 50px;
+  transform: rotate(-45deg);
+}
+.key_r_back{
+  background-color: rgba(255,255,255,0.5);
+  height: 50px;
+  width: 50px;
+  border-radius: 2px;
+  font-size: 5px;
+  border-width: 50px 50px 0 0;
+  border-top-left-radius: 50px;
+  transform: rotate(135deg);
+}
+#content1 {
+  height: 50px;
+  width: 50px;
+  background-color: red;
+  font-size:5px;
+}
+#content2 {
+  height: 50px;
+  width: 50px;
+  background-color: blue;
+  font-size:5px;
+}
+#content3 {
+  height: 50px;
+  width: 50px;
+  background-color: yellow;
+  font-size:5px;
+}
+
+.box {
+  text-align: center;
+  width: 50px;
+  line-height: 50px;
+  background-color: aquamarine;
+  transition: 1.0s;
+}
+ 
+.box:hover {
+  transform: rotate(45deg);
+}

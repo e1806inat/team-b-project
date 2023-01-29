@@ -1,6 +1,7 @@
 export {default as OutPutHome} from './OutPutPage/HomePage/Home'
 export {default as GameList} from './OutPutPage/OutPutAllPage/PreliminaryReport/GameList/GameList'
 export {default as Bulletin} from './OutPutPage/OutPutAllPage/PreliminaryReport/Bulletin/Bulletin'
+export {default as BulletinPast} from './OutPutPage/OutPutAllPage/PreliminaryReport/Bulletin/BulletinPast'
 export {default as SlcTournamentForT} from './OutPutPage/OutPutAllPage/PreliminaryReport/TournamentList/SelectTournament'
 export {default as SlcTournamentForP} from './OutPutPage/OutPutAllPage/RefHistoricalData/TournamentBase/TournamentList/SelectTournament'
 export {default as RefSchool} from "./OutPutPage/OutPutAllPage/RefHistoricalData/WholePlayer/RefSchool"

@@ -3,7 +3,7 @@
 
 import {
   OutPutHome, GameList, Bulletin, SlcTournamentForT, SlcTournamentForP, RefSchool, RefTournamentSchool, NotFound
-} from "./AllPages/PageIndex"
+} from "./AllPages/pageIndex"
 
 import { routeUrl } from './DB/communication';
 

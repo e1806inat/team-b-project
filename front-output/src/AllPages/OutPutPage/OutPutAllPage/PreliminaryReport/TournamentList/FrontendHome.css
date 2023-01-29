@@ -15,7 +15,36 @@
 .tournamentBtn {
     border-bottom: 2px dotted #CCCCCC;
     width: 30vh;
+   
 }
+
+.tournamentBtn p{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* .schoolBox {
+    width: 55%;
+    padding: 1vh;
+    /* margin: 3vh; 
+    background-color: white;
+    margin: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  .schoolBox p{
+    width: 100%; 
+    font-size: 2vh;
+    color: white;
+    background-color: black;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  } */
+
 
 .tournamentTable{
     Margin:auto;

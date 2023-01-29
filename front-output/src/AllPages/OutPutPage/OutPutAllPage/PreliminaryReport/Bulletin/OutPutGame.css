@@ -1,23 +1,28 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
 
-:root{
-    --color-main: #0159ac;
-    /* rgba(1, 89, 172) */
+:root {
+  --color-main: #0159ac;
+  /* rgba(1, 89, 172) */
 }
 
-*{
-    font-family: 'M PLUS 1p', sans-serif;
-    margin: 0;
-    padding: 0;
+* {
+  font-family: 'M PLUS 1p', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-.day{
+.main{
+  width: 100%;
+  margin: auto;
+}
+
+.day {
   font-size: 25px;
   padding: 5px 10px;
   text-align: center;
 }
 
-.titleName{
+.titleName {
   background-color: #191970;
   color: white;
   font-size: 15px;
@@ -27,26 +32,71 @@
   text-align: center;
 }
 
-.gamePlace{
+.gamePlace {
   text-align: center;
   font-size: 15px;
   padding: 0px 0px;
   margin: 0;
 }
 
-.gameRound{
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: large;
-  font-weight: bold;
+.Round {
+  /* position: relative;
+  width: 100%; 
+  display: flex;
+  height: 2.5vh;
+  color: red; */
+  width: 22%;
+  /* 横幅 */
+  padding: 1%;
+  /* 内側の余白 */
+  /* border: 5px solid green; */
+  /* 枠線 */
+  /* border-radius: 9px; */
+  /* 枠線の角丸 */
   background-color: #191970;
-  color: white;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
+  /* 背景色 */
+  margin: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: auto;
 }
 
-.count{
+.Round p {
+  width: 100%;  /* 横幅(親ボックスの横幅に合わせる) */
+  /* padding: 5px;  内側の余白 */
+  /* border: 5px solid #ccaa80;   */
+  /* background-color: #ffcc55;   */
+  font-size: 100%;
+  color: white;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.textinfo {
+  background: white;
+  text-align: center;
+  color: black;
+  margin: 1vh;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3vh;
+  width: 90%;
+  height: 8vh;
+  border: solid 0.15vh black;
+}
+
+.info {
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.count {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -55,25 +105,33 @@
 /*スコアボード*/
 .scoreBoardTable {
   text-align: center;
-  width: 100%;
   table-layout: fixed;
+  width: 100%;
+  height: 10%;
   /* border: 1.5px #7e7e7e solid; */
   margin: auto;
   border: none;
+  padding-bottom: 1vh;
+}
+
+.scoreBoardTable td {
+  border: none;
+  width:15%;
 }
 
 .scoreBoardTr {
   background: var(--color-main);
+  width:30%;
 }
 
 .scoreBoardSchoolName {
-  width: 350%;
+  width:30%;
   table-layout: fixed;
   /* border: 1.5px #7e7e7e solid; */
 }
 
 .scoreBoardTh {
-  width: 80%;
+  
   color: white;
 }
 
@@ -83,32 +141,31 @@
   margin: auto
 }
 
-table,
+/* table,
 table td {
-  border: none;
-}
+} */
 
-.scoreBoardTr2 td{
+.scoreBoardTr2 td {
   background-color: rgba(232, 235, 235, 0.4);
 }
 
 /* 投手・打者情報 */
-.gameDetail{
+.gameDetail {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
 
-.offense{
+.offense {
   width: 45%;
 }
 
-.deffense{
+.deffense {
   width: 45%;
 }
 
-.offenseTeam{
+.offenseTeam {
   text-align: center;
   font-weight: bold;
   font-size: larger;
@@ -116,7 +173,7 @@ table td {
   color: white;
 }
 
-.deffenseTeam{
+.deffenseTeam {
   text-align: center;
   font-weight: bold;
   font-size: larger;
@@ -124,46 +181,46 @@ table td {
   color: white;
 }
 
-.batterArea{
+.batterArea {
   width: 100%;
   border-collapse: collapse;
   margin-top: 5px;
 }
 
-.pitcherArea{
+.pitcherArea {
   width: 100%;
   border-collapse: collapse;
   margin-top: 5px;
 }
 
-.batterName{
+.batterName {
   font-weight: 750;
   font-size: large;
   margin: 0;
   padding-left: 10px;
 }
 
-.pitcherName{
+.pitcherName {
   font-weight: 750;
   font-size: large;
   margin: 0;
   padding-left: 5px;
 }
 
-.batterNumber{
+.batterNumber {
   width: 2.5em;
   padding: 0 5px;
 }
 
-.batter{
+.batter {
   background-color: rgba(232, 235, 235, 0.4);
 }
 
-.pitcher{
+.pitcher {
   background-color: rgba(232, 235, 235, 0.4);
 }
 
-.deffenseTitle{
+.deffenseTitle {
   /* writing-mode: vertical-rl; */
   width: 20%;
   text-align: center;
@@ -171,7 +228,7 @@ table td {
   color: white;
 }
 
-.offenseTitle{
+.offenseTitle {
   /* writing-mode: vertical-rl; */
   width: 20%;
   text-align: center;
@@ -179,24 +236,24 @@ table td {
   color: white;
 }
 
-.todayBatterRecord{
+.todayBatterRecord {
   font-size: smaller;
   padding-left: 5px;
 }
 
-.todayPitcherRecord{
+.todayPitcherRecord {
   font-size: smaller;
   padding-left: 5px;
 }
 
-.nextBatter{
+.nextBatter {
   margin-left: auto;
   margin-top: 5px;
   width: 70%;
   background-color: rgba(232, 235, 235, 0.2);
 }
 
-.nextBatterNumber{
+.nextBatterNumber {
   padding: 0 2px;
   font-size: small;
   position: relative;
@@ -206,59 +263,59 @@ table td {
   text-align: center;
 }
 
-.nextBatterNumber::after{
+.nextBatterNumber::after {
   display: block;
   content: "";
   width: 0px;
   height: 0px;
   position: absolute;
-  top:calc(50% - 10px);
-  right:-10px;
+  top: calc(50% - 10px);
+  right: -10px;
   border-left: 10px solid rgba(1, 89, 172, 0.6);
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
 }
 
-.nextBatterName{
+.nextBatterName {
   text-align: left;
   text-align: center;
   /* background-color: rgba(232, 235, 235, 0.4); */
   padding: 3px 10px 3px 10px;
 }
 
-.nextBatterInfo{
+.nextBatterInfo {
   /* background-color: rgba(232, 235, 235, 0.4); */
   font-size: small;
-} 
+}
 
 /* 自由記述 */
-.freeWrite{
+.freeWrite {
   display: flex;
   justify-content: center;
 }
 
-textarea{
+textarea {
   margin: 10px auto 0 auto;
   width: 70%;
   height: 50px;
 }
 
 /* 画像 */
-.pic{
+.pic {
   width: 80%;
   height: auto;
   margin-top: 5px;
   text-align: center;
 }
 
-.imageArea{
+.imageArea {
   text-align: center;
 }
 
 
 /* 信号機の光（緑） */
 #out1 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -268,7 +325,7 @@ textarea{
 
 /* 信号機の光（黄色） */
 #out2 {
-  background-color:black;
+  background-color: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -291,15 +348,15 @@ textarea{
 }
 
 #ball1 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
   border-radius: 50%;
 }
 
-#ball2{
-  background:black;
+#ball2 {
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -307,7 +364,7 @@ textarea{
 }
 
 #ball3 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -315,7 +372,7 @@ textarea{
 }
 
 #ball4 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -323,7 +380,7 @@ textarea{
 }
 
 #str1 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -331,16 +388,16 @@ textarea{
 }
 
 #str2 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
   border-radius: 50%;
- 
+
 }
 
 #str3 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -379,3 +436,232 @@ textarea{
     background-color: #0f1616;
   }
 } */
+
+.out-result {
+  display: flex;
+  align-items: center;
+}
+
+/* 信号機の光（緑） */
+#out1 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  /* color: red; */
+}
+
+/* 信号機の光（黄色） */
+#out2 {
+  background-color: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  /* color: red; */
+  /* animation-delay: 3s; */
+}
+
+.light.out2::after {
+  /* animation-delay: 3s; */
+}
+
+/* 信号機の光（赤） */
+#out3 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+  /* color:red; */
+  /* animation-delay: 6s; */
+}
+
+#ball1 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#ball2 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#ball3 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#ball4 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#str1 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+#str2 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+
+}
+
+#str3 {
+  background: black;
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+  border-radius: 50%;
+}
+
+.light.out3::after {
+  /* animation-delay: 6s; */
+}
+
+.startingMemberTag {
+  background: #016435;
+  color: white;
+  text-align: center;
+  font-size: 3vh;
+  width: 70%;
+  height: 5vh;
+  margin: auto;
+}
+
+
+.startingMember {
+  margin: auto;
+  text-align: center;
+  width: 84%;
+  /* padding-top: 2vh; */
+  padding-bottom: 2vh;
+}
+
+.startingMembers {
+  margin: auto;
+  text-align: center;
+  font-size: 2vh;
+  width: 95%;
+  height: 4vh;
+  border: 1;
+}
+
+/* .schoolBox {
+  background: black;
+  color: white;
+  margin: 3vh;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vh;
+  width: 55%;
+  height: 5vh;
+}
+.schoolBox p{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+} */
+.schoolBox {
+  width: 55%;
+  padding: 1vh;
+  /* margin: 3vh; */
+  background-color: white;
+  margin: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.schoolBox p{
+  width: 100%; 
+  font-size: 2vh;
+  color: white;
+  background-color: black;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.members {
+  color: white;
+  margin: auto;
+  font-size: 1.5vh;
+  width: 84%;
+  height: 4vh;
+  padding-top: 2vh;
+  /* border:2; */
+}
+
+.members td {
+  background: #191970;
+
+}
+
+.textSokuhou {
+  position: relative;
+  /* margin: 2em 0; */
+  margin-left: 3vh;
+  margin-right: 3vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  padding: 2vh 1vh 1vh;
+  border: solid 0.5vh rgb(229, 239, 234);
+}
+
+.textSokuhou .box-title {
+  position: absolute;
+  display: inline-block;
+  top: -0.5vh;
+  left: -0.5vh;
+  padding: 0 2vh;
+  height: 2vh;
+  line-height: 2vh;
+  font-size: 1vh;
+  background: rgb(229, 239, 234);
+  color: #016435;
+  font-weight: bold;
+}
+
+/* tr:nth-child(even) {
+  background: #d9d9d9;
+ } */
+
+.textSokuhou .startingMembers {
+  margin: 0;
+  padding: 0;
+}
+
+.daseki {
+  font-size: 1.5vh;
+}
+
+.position {
+  font-size: 1.3vh;
+}
+
+.tdstyle:hover {
+  opacity: 0.5;
+}
+

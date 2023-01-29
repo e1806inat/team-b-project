@@ -34,7 +34,9 @@ const handleKakutei = (
   setIsPinch,
   TmpDasekiCall,
   trigger,
-  setTrigger
+  setTrigger,
+  isPass,
+  setIsPass
 
 ) => {
   //ポップアップを消す
@@ -83,7 +85,7 @@ const handleKakutei = (
     outcount: nowOutCountState,
     base: runnerCount,
     text_inf: freeWriteState,
-    pass: 0,
+    pass: isPass,
     touched_coordinate: canvasX1 + "_" + canvasY1,
     ball_kind: flag,
     hit: isHit,
@@ -95,7 +97,7 @@ const handleKakutei = (
 
   console.log(sendInfo)
   //実際に送信
-  // DasekiRegister(sendInfo,trigger,setTrigger)
+  DasekiRegister(sendInfo,trigger,setTrigger)
 
   //値の初期化
   setAddScoreState(0)
@@ -104,6 +106,8 @@ const handleKakutei = (
   setcanvasY1(0)
   setBatterResult(0)
   setIsPinch(null)
+  setIsPass(0)
+  
 
   //次のバッターへ
   let copyArray = nowPlayingMember.slice(0, nowPlayingMember.length);
@@ -163,7 +167,9 @@ class Popup extends React.Component {
                 this.props.setIsPinch,
                 this.props.TmpDasekiCall,
                 this.props.trigger,
-                this.props.setTrigger
+                this.props.setTrigger,
+                this.props.isPass,
+                this.props.setIsPass
               )
             }>はい
           </button>
@@ -231,6 +237,8 @@ class Popupfield extends React.Component {
             TmpDasekiCall={this.props.TmpDasekiCall}
             trigger={this.props.trigger}
             setTrigger={this.props.setTrigger}
+            isPass = {this.props.isPass}
+            setIsPass={this.props.setIsPass} 
           />
         ) : null}
       </div>

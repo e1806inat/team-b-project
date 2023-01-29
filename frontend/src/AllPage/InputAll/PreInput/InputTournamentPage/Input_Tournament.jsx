@@ -47,6 +47,8 @@ const readTournament = (setTournamentData) => {
 }
 
 
+
+
 //文字分割
 const dateSplit = (nowdate) => {
   if (nowdate !== null) {
@@ -131,10 +133,27 @@ const handleTournament = (
           dayArray[nowOpeningDate[2]].day
       }),
     })
-      .then(() => readTournament(setTournamentData))
+      .then(() => readTournament1(TournamentData, setTournamentData))
   }
+}
 
+//大会を読み込む
+const readTournament1 = (TournamentData, setTournamentData) => {
+  fetch(
+    backendUrl + "/tournament/tournament_call", {
+    method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+  })
+    .then((response) => response.json())
+    .then((data) => {
 
+      let count = 0
+      data.map((u) => {
+        if (TournamentData.some((v) => u.tournament_name === v.tournament_name)) count++
+
+        console.log(TournamentData.some((v) => u.tournament_name === v.tournament_name))
+      })
+      if (count !== data.length) { setTournamentData(data); console.log("aaiiuu") }
+    })
 }
 
 //大会の情報を修正する
@@ -150,12 +169,12 @@ const editTournament = (urlTournamentId, newTournamentName, openingDate, Tournam
       body: JSON.stringify({ tournament_id: urlTournamentId, tournament_name: newTournamentName, opening: openingDate }),
     })
       .then((response) => response.text())
-      .then((data) => readTournament(setTournamentData))
+      .then((data) => readTournament1([], setTournamentData))
   }
 }
 
 //削除
-const tournamentDelete = (tournamentId) => {
+const tournamentDelete = (tournamentId, setTournamentData) => {
   fetch(backendUrl + "/tournament/tournament_edit", {
     method: "POST",
     mode: "cors",
@@ -163,7 +182,7 @@ const tournamentDelete = (tournamentId) => {
     body: JSON.stringify({ tournament_id: tournamentId }),
   })
     .then((response) => response.text())
-    .then((data) => { if (data === "OK") console.log("削除しました") })
+    .then((data) => { if (data === "OK") { console.log("削除しました"); readTournament1([], setTournamentData) } })
 
   // console.log(tournamentId + "削除しました")
 }
@@ -228,9 +247,11 @@ export const Input_Tournament = () => {
   }
 
 
+
   useEffect(() => {
-    readTournament(setTournamentData);
-  }, []);
+    readTournament1(TournamentData, setTournamentData)
+    console.log("aa")
+  }, [TournamentData])
 
   return (
     <div>
@@ -305,11 +326,6 @@ export const Input_Tournament = () => {
                     <div className="tournamentName">
                       {isDeleteMode &&
                         <>
-                          {/* <button
-                      className="btn_In_to1"
-                      onClick={() => editTournament(EditTournamentPopup)}>
-                      {Tournament.tournament_name}
-                    </button> */}
                           <EditTournamentPopup
                             sendClassName="btn_In_to1"
                             Tournament={Tournament}

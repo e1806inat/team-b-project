@@ -200,18 +200,18 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
 
 
 //試合中の試合の情報を登録する
-const RegisterDuringGame = async (urlGameId) => {
-    await fetch(backendUrl + "/game/during_game_register", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ game_id: urlGameId, tmp_table_name: String(urlGameId) }),
-    })
-        .then((response) => response.text())
-        .then((data) => { console.log(data) })
-}
+// const RegisterDuringGame = async (urlGameId) => {
+//     await fetch(backendUrl + "/game/during_game_register", {
+//         method: "POST",
+//         mode: "cors",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ game_id: urlGameId, tmp_table_name: String(urlGameId) }),
+//     })
+//         .then((response) => response.text())
+//         .then((data) => { console.log(data) })
+// }
 
 
 //試合中の試合の情報を削除する
@@ -228,73 +228,50 @@ const DeleteDuringGame = async (urlGameId) => {
         .then((data) => { console.log(data) })
 }
 
-//試合中の試合の情報を参照する
-const RefDuringGame = async (urlGameId, setIsDuringGame) => {
-    fetch(backendUrl + "/game/ref_during_game", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.some((v) => String(v.game_id) === urlGameId)) {
-                setIsDuringGame(true)
-            }
-        })
-}
 
 //一時打席情報登録用のテーブル作成
-const TmpTableCreate = async (urlGameId) => {
+// const TmpTableCreate = async (urlGameId) => {
 
-    await fetch(backendUrl + "/daseki/tmp_table_create", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ table_name: urlGameId }),
-    })
-        .then((response) => response.text())
-        .then((data) => { console.log(data) })
-}
+//     await fetch(backendUrl + "/daseki/tmp_table_create", {
+//         method: "POST",
+//         mode: "cors",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({ table_name: urlGameId }),
+//     })
+//         .then((response) => response.text())
+//         .then((data) => { console.log(data) })
+// }
 
 //テーブル存在確認
-const TmpTableCheck = (urlGameId, setIsExistTmpTable, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
-    setNowIningState, setScoreState, setNowOutCountState,
-    setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2
+// const TmpTableCheck = (urlGameId, setIsExistTmpTable, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
+//     setNowIningState, setScoreState, setNowOutCountState,
+//     setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2
 
-) => {
+// ) => {
 
-    fetch(backendUrl + "/daseki/tmp_table_check", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ table_name: urlGameId }),
-    })
-        .then((response) => response.text())
-        .then((data) => {
+//     fetch(backendUrl + "/daseki/tmp_table_check", {
+//         method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+//         body: JSON.stringify({ table_name: urlGameId }),
+//     })
+//         .then((response) => response.text())
+//         .then((data) => {
 
-            //テーブルが存在しないとき
-            if (data === "not exist") {
-                setIsExistTmpTable(false)
-            }
+//             //テーブルが存在しないとき
+//             if (data === "not exist") {
+//                 setIsExistTmpTable(false)
+//             }
 
-            //テーブルが存在するとき
-            else if (data === "exist") {
-                console.log(data)
-                console.log("DBからデータを読み出します")
-                setIsExistTmpTable(true)
-                TmpDasekiCall(urlGameId, urlSchoolId, urlSchoolId2, urlTournamentId,
-                    setNowIningState, setScoreState, setNowOutCountState,
-                    setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2
-                )
-            }
-        })
-}
+//             //テーブルが存在するとき
+//             else if (data === "exist") {
+//                 TmpDasekiCall(urlGameId, urlSchoolId, urlSchoolId2, urlTournamentId,
+//                     setNowIningState, setScoreState, setNowOutCountState,
+//                     setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2
+//                 )
+//             }
+//         })
+// }
 
 ////試合情報受け取り（速報用）
 const TmpDasekiCall = (urlGameId, urlSchoolId, urlSchoolId2, urlTournamentId,
@@ -873,9 +850,6 @@ const InputPlayGame = () => {
     //試合の一時テーブルが存在するかどうかを管理するステイト
     const [isExistTmpTable, setIsExistTmpTable] = useState(false)
 
-    //試合中かどうかを管理するステイト
-    const [isDuringGame, setIsDuringGame] = useState(false)
-
     //Score記録 左が裏表、右が回数 イニングとは逆
     const { Score } = require("../../../../DB/Score")
     const [scoreState, setScoreState] = useState(Score)
@@ -937,6 +911,9 @@ const InputPlayGame = () => {
 
     //代打で変更される前の打順を記録するステイト
     const [latestBatOrder, setLatestBatOrder] = useState({ dasekiNum: 0, order: [] })
+
+    //パスボタンのステイトを定義 0か1か
+    const [isPass, setIsPass] = useState(0)
 
     //データを読み込みを行うトリガー
     const [trigger, setTrigger] = useState(true)
@@ -1075,15 +1052,11 @@ const InputPlayGame = () => {
         //チーム2の選手登録情報を読み出す
         loadRegisteredMember(setRegisteredMember2, urlTournamentId, urlSchoolId2)
 
-
-
-        RefDuringGame(urlGameId, setIsDuringGame)
-
     }, [])
 
     useEffect(() => {
         //テーブル存在確認
-        TmpTableCheck(urlGameId, setIsExistTmpTable, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
+        TmpDasekiCall(urlGameId, urlSchoolId, urlSchoolId2, urlTournamentId,
             setNowIningState, setScoreState, setNowOutCountState,
             setNowPlayingMember, setRunnerCountState, setDasekiAll, setBattingOrder, setBattingOrder2
         )
@@ -1096,35 +1069,13 @@ const InputPlayGame = () => {
             <TitleBar
                 TitleText={"速報入力画面"}
                 PageTransition={PageTransition}
-                valueUrl={-1}
+                valueUrl={-2}
             />
 
             <OptionButton />
 
-
-            {(!isExistTmpTable ||
-                !isDuringGame) &&
-                <div>
-                    <button
-                        style={{ height: 100 + "px", width: 30 + "%", fontSize: 30 + "px" }}
-                        onClick={async () => {
-                            await TmpTableCreate(urlGameId)
-                            await RegisterDuringGame(urlGameId)
-                            await TmpTableCheck
-                                (urlGameId, setIsExistTmpTable, TmpDasekiCall, urlTournamentId, urlSchoolId, urlSchoolId2,
-                                    setNowIningState, setScoreState, setNowOutCountState,
-                                    setNowPlayingMember, battingOrder, setBattingOrder, battingOrder2, setBattingOrder2, setRunnerCountState, setDasekiAll
-                                )
-                        }}
-                    >試合を開始する
-                    </button>
-                </div>
-            }
-
             <div className="parts">
-                {(isExistTmpTable &&
-                    isDuringGame
-                ) &&
+                {
                     <>
                         <div className="scoreBoard">
                             {scoreBoard(scoreState, nowIningState, urlSchoolName, urlSchoolName2)}
@@ -1132,6 +1083,14 @@ const InputPlayGame = () => {
                         <div className="optionButtons">
                         </div>
                         <div className="outCountsAndRunnerCounts">
+                            <div className="passButton">
+                                {isPass === 1 &&
+                                    <button className="passButtonFalse" onClick={() => setIsPass(0)}>パスを解除</button>
+                                }
+                                {isPass === 0 &&
+                                    <button className='passButtonTrue' onClick={() => { setIsPass(1) }}>パス</button>
+                                }
+                            </div>
                             <div className='outCount'>
                                 <div className="outCountDisplay">o</div>
                                 {outCount(nowOutCountState, setNowOutCountState)}
@@ -1232,7 +1191,8 @@ const InputPlayGame = () => {
                                     TmpDasekiCall={TmpDasekiCall}
                                     trigger={trigger}
                                     setTrigger={setTrigger}
-
+                                    isPass={isPass}
+                                    setIsPass={setIsPass}
                                 />
                             </div>
                         </>

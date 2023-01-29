@@ -71,25 +71,21 @@ const getGame = async (urlTournamentId, setGameList) => {
     let BeforeG = [GameComponent]; let DuringG = [GameComponent]; let PastG = [GameComponent];
     receivedGL.map((u) => {
 
-        // if (receivedDG.some((v) => v.game_id === u.game_id)) {
-        //     DuringG = [...DuringG, u]
-        // }
-        // else {
-        //     if (u.match_results === null) {
-        //         BeforeG = [...BeforeG, u]
-        //     }
-        //     else { PastG = [...PastG, u] }
-        // }
-
-        if (u.match_results !== null) {
-            PastG = [...PastG, u]
-        }
-        else {
+        if (u.match_results === null || u.match_results === "NULL") {
             if (receivedDG.some((v) => v.game_id === u.game_id)) {
                 DuringG = [...DuringG, u]
             }
             else { BeforeG = [...BeforeG, u] }
         }
+        else { PastG = [...PastG, u] }
+
+        // if (u.match_results !== null) { PastG = [...PastG, u] }
+        // else {
+        //     if (receivedDG.some((v) => v.game_id === u.game_id)) {
+        //         DuringG = [...DuringG, u]
+        //     }
+        //     else { BeforeG = [...BeforeG, u] }
+        // }
     })
     console.log({ BeforeG: BeforeG, DuringG: DuringG, PastG: PastG })
     setGameList({ BeforeG: BeforeG, DuringG: DuringG, PastG: PastG })

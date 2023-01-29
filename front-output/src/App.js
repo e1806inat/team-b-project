@@ -43,6 +43,9 @@ const App = () => {
 
           <Route path={routeUrl + '/GameList/Bulletin'} element={<Bulletin />} />
 
+          {/* 過去の速報閲覧 */}
+          <Route path={routeUrl + '/GameList/Bulletin'} element={<Bulletin />} />
+
           {/* 過去データ参照（選手全体から探す） */}
           <Route path={routeUrl + '/RefHistoricalData/RefSchool'} element={<RefSchool />} />
 

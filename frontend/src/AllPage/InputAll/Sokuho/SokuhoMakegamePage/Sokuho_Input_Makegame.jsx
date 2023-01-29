@@ -29,7 +29,7 @@ const loadGame = async (setGameInfoState, urlTournamentId) => {
         body: JSON.stringify({ tournament_id: urlTournamentId }),
     })
         .then((response) => response.json())
-        .then((data) => {setGameInfoState(data);console.log(data)})
+        .then((data) => { setGameInfoState(data); console.log(data) })
 }
 
 
@@ -54,19 +54,22 @@ const loadSchool = (setSchools, urlTournamentId) => {
 const loadVenue = (setVenues) => {
 
     return fetch(backendUrl + "/venue/venue_call", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ tournament_id: 1 }),
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", }
     })
         .then((response) => response.json())
-        .then((data) => { setVenues(data); console.log(data) })
+        .then((venuesArray) => {
+            let remakeArray = []
+            venuesArray.map((venue) => {
+                if (venue.venue_name !== null) {
+                    remakeArray = [...remakeArray, venue]
+                }
+            })
+            setVenues(remakeArray)
+        })
 }
 
 //試合追加
-const handleAddGame = async(urlTournamentId, nowSelected, iningList, Schools, Venues, nowSelectedYmd, YearList, MonthList, DayList, setGameInfoState) => {
+const handleAddGame = async (urlTournamentId, nowSelected, iningList, Schools, Venues, nowSelectedYmd, YearList, MonthList, DayList, setGameInfoState) => {
 
     let gameData = {
         tournament_id: urlTournamentId,

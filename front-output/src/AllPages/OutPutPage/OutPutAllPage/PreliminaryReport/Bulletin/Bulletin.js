@@ -816,7 +816,7 @@ export const Bulletin = () => {
       <table className="scoreBoardTable" border={1}>
         <tbody>
           <tr className="scoreBoardTr">
-            <th className="scoreBoardTh"></th>
+            <th className="scoreBoardSchoolNameTh"></th>
             {scoreState1.map((score, ind) => {
               if (ind < 9) {
                 return (
@@ -836,35 +836,34 @@ export const Bulletin = () => {
             {scoreState1.map((score, ind) => {
               if (ind < 9) {
                 return (
-                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
                 )
               }
               else if (score !== null) {
                 return (
-                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
                 )
               }
             })}
+            <td className="scoreBoardTd">計</td>
 
-            <td>計</td>
           </tr>
           <tr className="scoreBoardTr2">
             <td className="scoreBoardSchoolName">{schoolName2}</td>
-
             {scoreState2.map((score, ind) => {
               if (ind < 9) {
                 return (
-                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
                 )
               }
               else if (score !== null) {
                 return (
-                  <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
                 )
               }
-              <td onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+              <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
             })}
-            <td>計</td>
+            <td className="scoreBoardTd">計</td>
 
           </tr>
         </tbody>

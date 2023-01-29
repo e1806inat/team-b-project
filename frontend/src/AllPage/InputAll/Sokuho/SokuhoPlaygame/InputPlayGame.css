@@ -17,6 +17,15 @@
     justify-content: center;
 }
 
+.passButtonFalse{
+    background-color: black;
+    color: white;
+}
+
+.passButtonTrue{
+    background-color: rgb(240, 224, 0);
+}
+
 .outCountsAndRunnerCounts .outCount{
     display: flex;
 }

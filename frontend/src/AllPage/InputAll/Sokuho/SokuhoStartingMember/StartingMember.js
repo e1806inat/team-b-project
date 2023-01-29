@@ -140,6 +140,7 @@ const sendSelectedMember = async (
     loadStartingMember
 ) => {
 
+    let returnValue = 1
     let toSendArray = await []
 
     for (let i = 0; i < 9; i++) {
@@ -162,14 +163,15 @@ const sendSelectedMember = async (
 
     await deleteStartingMember(urlGameId, urlSchoolId)
 
-    await fetch(backendUrl + "/member/starting_member_register", {
+    const fetch1 = await fetch(backendUrl + "/member/starting_member_register", {
         method: "POST",
         mode: "cors",
         headers: { "Content-Type": "application/json", }, body: JSON.stringify(toSendArray),
     })
-        .then(async (response) => await response.text())
-        .then(async (data) => { await console.log(data) })
-        .then(loadStartingMember(urlGameId, urlSchoolId, setRegisteredSM))
+    const fetch1Result = await fetch1.text()
+    await loadStartingMember(urlGameId, urlSchoolId, setRegisteredSM)
+
+    return returnValue
 }
 
 
@@ -261,6 +263,9 @@ const StartingMember = () => {
     //既に登録されている後攻チームの選手情報を管理するステイト
     const [registeredSM2, setRegisteredSM2] = useState([])
 
+    //データを再読み込みするためのステイト
+    const [useEffectFlag, setUseEffectFlag] = useState(false)
+
 
     //map関数を使うための空配列作成
     let enptyArray = []
@@ -296,14 +301,16 @@ const StartingMember = () => {
     const [registeredMember1, setRegisteredMember1] = useState(initialComponent)
     const [registeredMember2, setRegisteredMember2] = useState(initialComponent)
 
+    useEffect(() => {
+        loadRegisteredMember(urlTournamentId, urlSchoolId, setRegisteredMember1, isEmptyFlag, setIsEmptyFlag)
+        loadRegisteredMember(urlTournamentId, urlSchoolId2, setRegisteredMember2, isEmptyFlag, setIsEmptyFlag)
+    }, [])
 
     useEffect(() => {
         // console.log(loadStartingMemberAsync(urlGameId, urlSchoolId))
         loadStartingMember(urlGameId, urlSchoolId, setRegisteredSM1)
         loadStartingMember(urlGameId, urlSchoolId2, setRegisteredSM2)
-        loadRegisteredMember(urlTournamentId, urlSchoolId, setRegisteredMember1, isEmptyFlag, setIsEmptyFlag)
-        loadRegisteredMember(urlTournamentId, urlSchoolId2, setRegisteredMember2, isEmptyFlag, setIsEmptyFlag)
-    }, [])
+    }, [useEffectFlag])
 
     return (
         <div align='center'>
@@ -448,9 +455,9 @@ const StartingMember = () => {
 
 
             {!isDuplicate(nowSelected) &&
-                <button onClick={() => {
+                <button onClick={async () => {
 
-                    sendSelectedMember(
+                    var a = await sendSelectedMember(
                         nowSelected,
                         PositionDB,
                         registeredMember1,
@@ -460,7 +467,7 @@ const StartingMember = () => {
                         loadStartingMember
                     )
 
-                    sendSelectedMember(
+                    var b = await sendSelectedMember(
                         nowSelected2,
                         PositionDB,
                         registeredMember2,
@@ -469,6 +476,11 @@ const StartingMember = () => {
                         setRegisteredSM2,
                         loadStartingMember
                     )
+                    // .then(setUseEffectFlag(!useEffectFlag))
+                    if (a + b === 2) {
+                       setUseEffectFlag(a + b)
+                    }
+
                 }}>登録</button>
             }
 
@@ -490,7 +502,7 @@ const StartingMember = () => {
                 (registeredSM2 !== undefined) &&
                 registeredSM2.length === 9 &&
                 <button onClick={() => PageTransition(
-                    "InputPlayGame?urlTournamentId=" +
+                    "SokuhoGameStart?urlTournamentId=" +
                     urlTournamentId +
                     "&urlTournamentName=" +
                     urlTournamentName +

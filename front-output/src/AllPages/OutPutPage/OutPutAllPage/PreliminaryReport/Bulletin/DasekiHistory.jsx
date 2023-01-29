@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Daseki = ({ dasekiInfo , gameData, score, inningArray}) => {
+const Daseki = ({ dasekiInfo, gameData, score, inningArray }) => {
 
     // const handleTodoClick = () => {
     //     toggleTodo(todo.id);
@@ -56,7 +56,7 @@ const Daseki = ({ dasekiInfo , gameData, score, inningArray}) => {
                 return (
                     <div className="daseki">
                         <div>【{Math.floor(dasekiInfo.inning / 10)}回表　{gameData[0]['school_name_1']}の攻撃】</div>
-                        <span>{dasekiInfo.batting_order}番</span>
+                        <span>{dasekiInfo.batting_order + 1}番</span>
                         <span>　</span>
                         <span>{dasekiInfo.player_name_kanji}</span>
                         <span>　</span>
@@ -75,7 +75,7 @@ const Daseki = ({ dasekiInfo , gameData, score, inningArray}) => {
             } else {
                 return (
                     <div className="daseki">
-                        <span>{dasekiInfo.batting_order}番</span>
+                        <span>{dasekiInfo.batting_order + 1}番</span>
                         <span>　</span>
                         <span>{dasekiInfo.player_name_kanji}</span>
                         <span>　</span>
@@ -93,7 +93,7 @@ const Daseki = ({ dasekiInfo , gameData, score, inningArray}) => {
                 )
             }
         } else {
-             //n回裏の出力
+            //n回裏の出力
             if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
                 return (
                     <div className="daseki">

@@ -13,7 +13,7 @@ export const PullDown = (props) => {
   //ヒット時の結果
   const setHit = (value) => {
     //座標指定
-    props.setFlag(2)
+    props.setFlag(4)
     props.setcanvasX1(ballPositionDB[props.nowPosition - 1].ballPositionX)
     props.setcanvasY1(ballPositionDB[props.nowPosition - 1].ballPositionY)
 
@@ -106,7 +106,7 @@ export const PullDown = (props) => {
   //バントの結果
   const handleBunt = (value) => {
     //座標指定
-    props.setFlag(2)
+    props.setFlag(3)
     props.setcanvasX1(0)
     props.setcanvasY1(0)
 

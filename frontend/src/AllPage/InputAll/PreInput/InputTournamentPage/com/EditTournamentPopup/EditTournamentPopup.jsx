@@ -81,15 +81,14 @@ class Popup extends React.Component {
                         this.props.TournamentData,
                         this.props.setTournamentData
                       )
-
-                      // 大会を読み込む
-                      await this.props.readTournament(this.props.setTournamentData)
                     }
                     else {
                       //大会を削除する
-                      await this.props.tournamentDelete(this.props.Tournament.tournament_id)
-                      // 大会を読み込む
-                      await this.props.readTournament(this.props.setTournamentData)
+                      await this.props.tournamentDelete(
+                        this.props.Tournament.tournament_id,
+                        this.props.setTournamentData
+                        )
+                        this.props.setEorDcheckBox(true)
                     }
 
                     // ポップアップを閉じる

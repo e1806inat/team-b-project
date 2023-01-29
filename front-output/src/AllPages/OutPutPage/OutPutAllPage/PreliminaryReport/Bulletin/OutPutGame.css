@@ -1,23 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@100;400&display=swap");
 
-:root{
-    --color-main: #0159ac;
-    /* rgba(1, 89, 172) */
+:root {
+  --color-main: #0159ac;
+  /* rgba(1, 89, 172) */
 }
 
-*{
-    font-family: 'M PLUS 1p', sans-serif;
-    margin: 0;
-    padding: 0;
+* {
+  font-family: 'M PLUS 1p', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-.day{
+.day {
   font-size: 25px;
   padding: 5px 10px;
   text-align: center;
 }
 
-.titleName{
+.titleName {
   background-color: #191970;
   color: white;
   font-size: 15px;
@@ -27,26 +27,25 @@
   text-align: center;
 }
 
-.gamePlace{
+.gamePlace {
   text-align: center;
   font-size: 15px;
   padding: 0px 0px;
   margin: 0;
 }
 
-.gameRound{
+.gameRound {
   text-align: center;
   margin-bottom: 10px;
   font-size: large;
   font-weight: bold;
-  background-color: #191970;
-  color: white;
+  background-color: #CCDDEE;
   width: 50%;
   margin-left: auto;
   margin-right: auto;
 }
 
-.count{
+.count {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -55,7 +54,7 @@
 /*スコアボード*/
 .scoreBoardTable {
   text-align: center;
-  width: 100%;
+  width: 90%;
   table-layout: fixed;
   /* border: 1.5px #7e7e7e solid; */
   margin: auto;
@@ -63,19 +62,32 @@
 }
 
 .scoreBoardTr {
-  background: var(--color-main);
+  background-color: #016435;
 }
 
 .scoreBoardSchoolName {
-  width: 350%;
+  width: 200%;
+  font-size: 3.5vw;
   table-layout: fixed;
+  color: #FFFFFF;
   /* border: 1.5px #7e7e7e solid; */
 }
 
-.scoreBoardTh {
+.scoreBoardSchoolNameTh {
   width: 80%;
-  color: white;
 }
+
+.scoreBoardTh {
+  width: 20%;
+  color: white;
+  font-size: 3.5vw;
+}
+
+.scoreBoardTd {
+  background-color: rgb(229, 239, 234);
+  font-size: 3.5vw;
+}
+
 
 .diamondPng {
   width: 80%;
@@ -88,115 +100,117 @@ table td {
   border: none;
 }
 
-.scoreBoardTr2 td{
-  background-color: rgba(232, 235, 235, 0.4);
+.scoreBoardTr2 {
+  background-color: #016435;
 }
 
 /* 投手・打者情報 */
-.gameDetail{
+.gameDetail {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
 
-.offense{
+.offense {
   width: 45%;
 }
 
-.deffense{
+.deffense {
   width: 45%;
 }
 
-.offenseTeam{
+.offenseTeam {
   text-align: center;
   font-weight: bold;
   font-size: larger;
-  background-color: var(--color-main);
+  background-color: #016435;
   color: white;
 }
 
-.deffenseTeam{
+.deffenseTeam {
   text-align: center;
   font-weight: bold;
   font-size: larger;
-  background-color: var(--color-main);
+  background-color: #016435;
   color: white;
 }
 
-.batterArea{
+.batterArea {
   width: 100%;
   border-collapse: collapse;
   margin-top: 5px;
 }
 
-.pitcherArea{
+.pitcherArea {
   width: 100%;
   border-collapse: collapse;
   margin-top: 5px;
 }
 
-.batterName{
+.batterName {
   font-weight: 750;
   font-size: large;
   margin: 0;
   padding-left: 10px;
 }
 
-.pitcherName{
+.pitcherName {
   font-weight: 750;
   font-size: large;
   margin: 0;
   padding-left: 5px;
 }
 
-.batterNumber{
+.batterNumber {
   width: 2.5em;
   padding: 0 5px;
 }
 
-.batter{
-  background-color: rgba(232, 235, 235, 0.4);
+.batter {
+  background-color: rgba(229, 239, 234);
 }
 
-.pitcher{
-  background-color: rgba(232, 235, 235, 0.4);
+.pitcher {
+  background-color: rgba(229, 239, 234);
 }
 
-.deffenseTitle{
+.offenseTitle {
   /* writing-mode: vertical-rl; */
   width: 20%;
   text-align: center;
-  background-color: rgba(1, 89, 172, 0.8);
+  background-color: #016435;
   color: white;
 }
 
-.offenseTitle{
+.deffenseTitle {
   /* writing-mode: vertical-rl; */
   width: 20%;
   text-align: center;
-  background-color: rgba(1, 89, 172, 0.8);
+  background-color: #016435;
   color: white;
 }
 
-.todayBatterRecord{
+
+
+.todayBatterRecord {
   font-size: smaller;
   padding-left: 5px;
 }
 
-.todayPitcherRecord{
+.todayPitcherRecord {
   font-size: smaller;
   padding-left: 5px;
 }
 
-.nextBatter{
+.nextBatter {
   margin-left: auto;
   margin-top: 5px;
   width: 70%;
   background-color: rgba(232, 235, 235, 0.2);
 }
 
-.nextBatterNumber{
+.nextBatterNumber {
   padding: 0 2px;
   font-size: small;
   position: relative;
@@ -206,59 +220,59 @@ table td {
   text-align: center;
 }
 
-.nextBatterNumber::after{
+.nextBatterNumber::after {
   display: block;
   content: "";
   width: 0px;
   height: 0px;
   position: absolute;
-  top:calc(50% - 10px);
-  right:-10px;
+  top: calc(50% - 10px);
+  right: -10px;
   border-left: 10px solid rgba(1, 89, 172, 0.6);
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
 }
 
-.nextBatterName{
+.nextBatterName {
   text-align: left;
   text-align: center;
   /* background-color: rgba(232, 235, 235, 0.4); */
   padding: 3px 10px 3px 10px;
 }
 
-.nextBatterInfo{
+.nextBatterInfo {
   /* background-color: rgba(232, 235, 235, 0.4); */
   font-size: small;
-} 
+}
 
 /* 自由記述 */
-.freeWrite{
+.freeWrite {
   display: flex;
   justify-content: center;
 }
 
-textarea{
+textarea {
   margin: 10px auto 0 auto;
   width: 70%;
   height: 50px;
 }
 
 /* 画像 */
-.pic{
+.pic {
   width: 80%;
   height: auto;
   margin-top: 5px;
   text-align: center;
 }
 
-.canvasArea{
+.canvasArea {
   text-align: center;
 }
 
 
 /* 信号機の光（緑） */
 #out1 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -268,7 +282,7 @@ textarea{
 
 /* 信号機の光（黄色） */
 #out2 {
-  background-color:black;
+  background-color: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -291,15 +305,15 @@ textarea{
 }
 
 #ball1 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
   border-radius: 50%;
 }
 
-#ball2{
-  background:black;
+#ball2 {
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -307,7 +321,7 @@ textarea{
 }
 
 #ball3 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -315,7 +329,7 @@ textarea{
 }
 
 #ball4 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -323,7 +337,7 @@ textarea{
 }
 
 #str1 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
@@ -331,16 +345,16 @@ textarea{
 }
 
 #str2 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;
   border-radius: 50%;
- 
+
 }
 
 #str3 {
-  background:black;
+  background: black;
   position: relative;
   width: 5vw;
   height: 5vw;

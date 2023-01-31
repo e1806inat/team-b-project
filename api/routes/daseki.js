@@ -179,7 +179,7 @@ router.post("/tmp_daseki_call", async (req, res, next) => {
     try {
         //試合情報の取得と送信(速報用)
         const rows1 = await executeQuery('select * from t_game where game_id = ?', [game_id]);
-        const rows2 = await executeQuery(`select * from ((select * from ${tmp_table_name}) as a` + 'left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) order by at_bat_id', [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
+        const rows2 = await executeQuery(`select * from ((select * from ${tmp_table_name}) as a` + 'left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) where pass = 0 order by at_bat_id', [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
         // console.log(rows1[0]['tournament_id'])
         // const rows2 = await executeQuery(`select at_bat_id, inning, game_id, school_id, daseki.player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, batting_order, grade, uniform_number, player_name_kanji, handed_hit from ${tmp_table_name} as daseki, (select a.player_id, grade, uniform_num`+
         //     `ber, player_name_kanji, handed_hit from (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as a, (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as b where a.player_id = b.player_id) as c where daseki.player_id = c.player_id order by at_bat_id`,  [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
@@ -226,7 +226,7 @@ router.post("/daseki_transmission", async (req, res, next) => {
         //試合情報の取得と送信
         //テスト用
         const rows1 = await executeQuery('select * from t_game where game_id = ?', [game_id]);
-        const rows2 = await executeQuery('select * from ((select * from t_at_bat where game_id = ?) as a left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) order by at_bat_id', [game_id, rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
+        const rows2 = await executeQuery('select * from ((select * from t_at_bat where game_id = ?) as a left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) where pass = 0 order by at_bat_id', [game_id, rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
         //const rows2 = await executeQuery(`select * from t_at_bat as bat join (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as player using(player_id) where game_id = ?`, [rows1[0]['school_id_1'], rows1[0]['school_id_2'], game_id]);
         // const rows2 = await executeQuery('select at_bat_id, inning, game_id, school_id, daseki.player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, batting_order, grade, uniform_number, player_name_kanji, handed_hit from t_at_bat as daseki, (select a.player_id, grade, uniform_num'+
         // 'ber, player_name_kanji, handed_hit from (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as a, (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as b where a.player_id = b.player_id) as c where daseki.player_id = c.player_id order by at_bat_id', [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
@@ -281,13 +281,13 @@ router.post("/tmp_daseki_update", async (req, res, next) => {
 
 //過去の試合情報更新（編集）（運用者用webアプリ）
 router.post("/registered_daseki_update", async (req, res, next) => {
-    const { at_bat_id, game_id, school_id, player_id, pitcher_id, score, total_score, batting_order, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
+    const { at_bat_id, game_id, player_id, pitcher_id, score, total_score, batting_order, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch } = req.body;
 
     //const tran = await beginTran();
 
     try {
         //試合情報の編集
-        await executeQuery(`update t_at_bat set score = ?, total_score = ?, batting_order = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ?, hit = ?, foreball = ?, deadball = ?, pinch = ? where at_bat_id = ? and game_id = ?`, [school_id, player_id, pitcher_id, score, total_score, batting_order, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, at_bat_id, game_id]);
+        await executeQuery(`update t_at_bat set player_id = ?, pitcher_id = ?, score = ?, total_score = ?, batting_order = ?, outcount = ?, base = ?, text_inf = ?, pass = ?, touched_coordinate = ?, ball_kind = ?, hit = ?, foreball = ?, deadball = ?, pinch = ? where at_bat_id = ? and game_id = ?`, [player_id, pitcher_id, score, total_score, batting_order, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, at_bat_id, game_id]);
         res.end("OK");
     }
     catch (err) {

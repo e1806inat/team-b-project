@@ -1,4 +1,4 @@
-export const battedBall = (context, canvasX1, canvasY1, flag) => {
+export const battedBall = (context, canvasX1, canvasY1, flag, deleteball, setDeleteBall) => {
 
     const homebase = 520;
     const h = 70;
@@ -13,7 +13,8 @@ export const battedBall = (context, canvasX1, canvasY1, flag) => {
 
 
     //１が直線、２がフライ、3がゴロ、４がヒット
-    if (flag === 1) {
+    if (canvasX1 === 0 && canvasY1 === 0) setDeleteBall(!deleteball)
+    else if (flag === 1) {
         console.log("flag1")
         context.lineTo(canvasX1, canvasY1)
     }
@@ -78,7 +79,7 @@ export const battedBall = (context, canvasX1, canvasY1, flag) => {
     context.lineWidth = 5;
     context.stroke();
 
-    
+
 
     // 波線描画
     // 0度状態でキャンバス中心〜マウス座標までの距離分の波線を描画して、マウス座標との角度分、回転する

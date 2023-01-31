@@ -2,18 +2,12 @@
 //各種ページのインポート
 import {
   Top, Login, Home,
-  InputSchool, Input_Tournament, InputMember, Sokuho_Input_Makegame, SokuhoGameStart, InputPlayGame, 
+  InputSchool, Input_Tournament, InputMember, Sokuho_Input_Makegame, SokuhoGameStart, InputPlayGame, InputPastGame, 
   NotFound, Register, StartingMember, RegisterVenue,
   SokuhoSelectTournament,
 } from './AllPage/PageIndex';
 
-import {
-  OutPutHome, GameList, Bulletin, SlcTournamentForT, SlcTournamentForP, RefSchool
-} from "./AllPage/OutPutPage/PageIndex"
-
 import { routeUrl } from './DB/communication';
-
-import { OutPutGame } from './AllPage/OutPutGame/OutPutGame'
 
 import React from 'react'
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
@@ -50,6 +44,8 @@ const App = () => {
           <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member'} element={<StartingMember />} />
           <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member/SokuhoGameStart/'} element={<SokuhoGameStart />} />
           <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member/SokuhoGameStart/InputPlayGame/'} element={<InputPlayGame />} />
+          <Route path={routeUrl + '/home/sokuho/sokuho_select_tournament/sokuho_input_makegame/starting_member/SokuhoGameStart/InputPastGame/'} element={<InputPastGame />} />
+
           <Route path={routeUrl + '/home/InputPlayGame/'} element={<InputPlayGame />} />
 
           {/* アカウント登録 */}
@@ -57,23 +53,6 @@ const App = () => {
 
           {/* 会場登録&編集 */}
           <Route path={routeUrl + '/home/RegisterVenue/'} element={< RegisterVenue />} />
-
-          {/* 顧客用画面 */}
-          <Route path={routeUrl + '/home/output_game/'} element={<OutPutGame />} />
-          <Route path={routeUrl + '/home/OutputHome/'} element={<OutPutHome />} />
-          <Route path={routeUrl + '/home/OutputHome/GameList'} element={<GameList />} />
-          <Route path={routeUrl + '/home/OutputHome/GameList/Bulletin'} element={<Bulletin />} />
-
-          {/* 速報閲覧 */}
-          <Route path={routeUrl + '/home/OutputHome/SelectTournament'} element={<SlcTournamentForT />} />
-          <Route path={routeUrl + '/home/OutputHome/SelectTournament/GameList'} element={<GameList />} />
-
-          {/* 過去データ参照（選手全体から探す） */}
-          <Route path={routeUrl + '/home/OutputHome/RefHistoricalData/RefSchool'} element={<RefSchool />} />
-
-          {/* 過去データ参照（大会から探す） */}
-          <Route path={routeUrl + '/home/OutputHome/RefHistoricalData/SelectTournament'} element={<SlcTournamentForP />} />
-
 
           <Route path={'*'} element={<NotFound />} />
         </Routes>

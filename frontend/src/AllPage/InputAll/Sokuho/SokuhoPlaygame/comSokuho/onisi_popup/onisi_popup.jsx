@@ -1,6 +1,12 @@
 import React from "react";
 import './onisi_popup.css'
 
+const change0and1 = (value) => {
+  if (value === 0) value = 1
+  else value = 0
+  return value
+}
+
 const handleKakutei = (
 
   closePopup,
@@ -79,7 +85,7 @@ const handleKakutei = (
     game_id: urlGameId,
     school_id: schoolIdArray[nowIningState[1]],
     player_id: battingOrderArray[nowIningState[1]][nowPlayingMember[nowIningState[1]].batter].player_id,
-    pitcher_id: battingOrder2[nowPlayingMember[nowIningState[1]].pitcher].player_id,
+    pitcher_id: battingOrderArray[change0and1(nowIningState[1])][nowPlayingMember[nowIningState[1]].pitcher].player_id,
     score: addScoreState,
     total_score: total_score,
     outcount: nowOutCountState,
@@ -94,10 +100,10 @@ const handleKakutei = (
     pinch: isPinch,
     batting_order: nowPlayingMember[nowIningState[1]].batter
   }
-
+ 
   console.log(sendInfo)
   //実際に送信
-  DasekiRegister(sendInfo,trigger,setTrigger)
+  DasekiRegister(sendInfo, trigger, setTrigger)
 
   //値の初期化
   setAddScoreState(0)
@@ -107,7 +113,7 @@ const handleKakutei = (
   setBatterResult(0)
   setIsPinch(null)
   setIsPass(0)
-  
+
 
   //次のバッターへ
   let copyArray = nowPlayingMember.slice(0, nowPlayingMember.length);
@@ -237,8 +243,8 @@ class Popupfield extends React.Component {
             TmpDasekiCall={this.props.TmpDasekiCall}
             trigger={this.props.trigger}
             setTrigger={this.props.setTrigger}
-            isPass = {this.props.isPass}
-            setIsPass={this.props.setIsPass} 
+            isPass={this.props.isPass}
+            setIsPass={this.props.setIsPass}
           />
         ) : null}
       </div>

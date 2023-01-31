@@ -12,6 +12,8 @@ import OptionButton from '../../../OtherPage/optionFunc/OptionButton';
 
 //css
 import "./InputPlayGame.css"
+import './comSokuho/CSS/passButton.css'
+import './comSokuho/CSS/editButton.css'
 
 import { TitleBar } from '../../../OtherPage/TitleBar/TitleBar';
 
@@ -48,7 +50,8 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
 
     return (
         <>
-            <select id="tekitouni"
+            <select className='editButton'
+                id="tekitouni"
                 onChange={(e) => {
                     //ステイトが変化すると再描画させるための文、これがないと再描画されない
                     //なお、消すと再描画はされないが内部は変化する
@@ -656,7 +659,7 @@ const TableRegister = (urlGameId) => {
         body: JSON.stringify({ game_id: urlGameId, table_name: urlGameId }),
     })
         .then((response) => response.text())
-        .then((data) => { console.log(data) })
+        .then((data) => { console.log("TableRegister=" + data) })
 }
 
 //一時打席情報を削除
@@ -673,7 +676,7 @@ const TmpTableDelete = (urlGameId) => {
         body: JSON.stringify({ game_id: urlGameId, table_name: urlGameId }),
     })
         .then((response) => response.text())
-        .then((data) => { console.log(data) })
+        .then((data) => { console.log("TmpTableDelete=" + data) })
 }
 
 //打率計算
@@ -690,7 +693,7 @@ const CalculateBatAvg = (urlGameId) => {
         body: JSON.stringify({ game_id: urlGameId, table_name: urlGameId }),
     })
         .then((response) => response.text())
-        .then((data) => { console.log(data) })
+        .then((data) => { console.log("CalculateBatAvg=" + data) })
 }
 
 //一時打席情報登録用のテーブルに打席情報登録（UPSERTを使うかも）
@@ -746,6 +749,8 @@ const sendEdit = (
     flag,
     batterResult,
     isPinch,
+    trigger, 
+    setTrigger
 ) => {
     console.log(dasekiAll[nowSelected])
     //DBに送るための準備
@@ -816,6 +821,7 @@ const sendEdit = (
         .then((response) => response.text())
         .then((data) => {
             console.log(data)
+            setTrigger(!trigger)
         })
 
 
@@ -929,6 +935,9 @@ const InputPlayGame = () => {
     // contextを状態として持つ
     const [context, setContext] = useState(null)
 
+    //打球を消すためのステイト
+    const [deleteball, setDeleteBall] = useState(false)
+
 
     const [canvasX1, setcanvasX1] = useState(0)
     const [canvasY1, setcanvasY1] = useState(0)
@@ -1037,10 +1046,84 @@ const InputPlayGame = () => {
             context.fill();
             context.stroke();
 
-            battedBall(context, canvasX1, canvasY1, flag);
+            battedBall(context, canvasX1, canvasY1, flag, deleteball, setDeleteBall);
 
         }
     }, [canvasX1, canvasY1, flag, runnerCountState])
+
+
+
+    //変更開始
+
+
+
+    const delball = () => {
+        setDeleteBall(!deleteball);
+        setcanvasX1(0)
+        setcanvasY1(0)
+    }
+
+    useEffect(() => {
+        if (context !== null) {
+
+            //削除
+            context.clearRect(0, 0, canvasSize, canvasSize);
+
+            Ground(context);
+
+            //ベースの色
+            let baseColor2 = [];
+            for (let i = 0; i < 3; i++) {
+                if (runnerCountState[i]) {
+                    baseColor2[i] = "blue";
+                    console.log(baseColor2[i]);
+                }
+                else {
+                    baseColor2[i] = "white";
+                }
+            }
+
+
+            context.strokeStyle = "black";
+
+            //３塁ベース
+            context.fillStyle = baseColor2[0];
+            context.beginPath();
+            context.moveTo(homebase * 3 / 4 + l, homebase * 3 / 4 - margin + h);
+            context.lineTo(homebase * 3 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+            context.lineTo(homebase * 3 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+            context.lineTo(homebase * 3 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+            context.closePath();
+            context.fill();
+            context.lineWidth = 1;
+            context.stroke();
+
+            //2塁ベース
+            context.fillStyle = baseColor2[1];
+            context.beginPath();
+            context.moveTo(homebase + l, homebase / 2 - margin + h);
+            context.lineTo(homebase - w + l, homebase / 2 + w - margin + h);
+            context.lineTo(homebase + l, homebase / 2 + w * 2 - margin + h);
+            context.lineTo(homebase + w + l, homebase / 2 + w - margin + h);
+            context.closePath();
+            context.fill();
+            context.stroke();
+
+            //1塁ベース
+            context.fillStyle = baseColor2[2];
+            context.beginPath();
+            context.moveTo(homebase * 5 / 4 + l, homebase * 3 / 4 - margin + h);
+            context.lineTo(homebase * 5 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+            context.lineTo(homebase * 5 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+            context.lineTo(homebase * 5 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+            context.closePath();
+            context.fill();
+            context.stroke();
+        }
+    }, [deleteball])
+
+    //変更終了
+
 
     useEffect(() => {
         //データベースからデータをもらうために呼び出す
@@ -1148,7 +1231,7 @@ const InputPlayGame = () => {
 
                 {/* キャンバスについて */}
                 <div className="diamond">
-                    <canvas width="800" height="800" id="canvas" className='diamondPng'></canvas>
+                    <canvas width="800" height="610" id="canvas" className='diamondPng'></canvas>
                 </div>
 
                 <div className="Buttons">
@@ -1210,30 +1293,32 @@ const InputPlayGame = () => {
 
                 {/* 修正モード */}
                 {!isEditMode &&
-                    <button onClick={() => {
-                        setIsEditMode(true);
-                        editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
-                            setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-                            setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
-                            battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
-                        )
-                    }}>修正モード
+                    <button className='editButton'
+                        onClick={() => {
+                            setIsEditMode(true);
+                            editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
+                                setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
+                                setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+                                battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
+                            )
+                        }}>修正モード
                     </button>
                 }
                 {isEditMode &&
-                    <button onClick={() => {
-                        setIsEditMode(false)
-                        loardNowDaseki(setNowOutCountState, setNowIningState, setRunnerCountState, setScoreState,
-                            setNowPlayingMember, setFreeWriteState,
-                            dasekiAll, battingOrder, battingOrder2)
-                        setNowSelected([0])
-                    }}>速報入力に戻る
+                    <button className='editButton'
+                        onClick={() => {
+                            setIsEditMode(false)
+                            loardNowDaseki(setNowOutCountState, setNowIningState, setRunnerCountState, setScoreState,
+                                setNowPlayingMember, setFreeWriteState,
+                                dasekiAll, battingOrder, battingOrder2)
+                            setNowSelected([0])
+                        }}>速報入力に戻る
                     </button>
                 }
 
 
                 {isEditMode &&
-                    <button
+                    <button className='editButton'
                         onClick={() =>
                             sendEdit(
                                 urlGameId,
@@ -1253,8 +1338,11 @@ const InputPlayGame = () => {
                                 flag,
                                 batterResult,
                                 isPinch,
+                                trigger,
+                                setTrigger
                             )}
                     >修正確定</button>}
+                {<button className='editButton' onClick={() => delball()}>打球削除</button>}
             </div>
 
         </div >

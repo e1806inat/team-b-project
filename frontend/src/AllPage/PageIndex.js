@@ -10,5 +10,6 @@ export {default as SokuhoSelectTournament} from './InputAll/Sokuho/SokuhoSelectT
 export {default as StartingMember} from './InputAll/Sokuho/SokuhoStartingMember/StartingMember'
 export {default as SokuhoGameStart} from './InputAll/Sokuho/SokuhoGameStartPage/SokuhoGameStartPage'
 export {default as InputPlayGame} from './InputAll/Sokuho/SokuhoPlaygame/InputPlayGame'
+export {default as InputPastGame} from './InputAll/Sokuho/SokuhoPlaygame/InputPastGame'
 export {default as Register} from './RegisterPage/Register'
 export {default as NotFound} from './OtherPage/NotFound'

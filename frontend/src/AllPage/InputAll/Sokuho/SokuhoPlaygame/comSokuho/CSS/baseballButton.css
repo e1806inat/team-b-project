@@ -27,3 +27,15 @@
     border: none;
     background-color: white;
 }
+
+.fa-square-plus{
+    font-size: 10vw;
+}
+
+.fa-square-minus{
+    font-size: 10vw;
+}
+
+.addPointButton{
+    font-size: 3vw;
+}

@@ -498,9 +498,9 @@ const StartingMember = () => {
             {/* ページ遷移ボタン */}
             {
                 (registeredSM1 !== undefined) &&
-                registeredSM1.length === 9 &&
+                registeredSM1.length >= 9 &&
                 (registeredSM2 !== undefined) &&
-                registeredSM2.length === 9 &&
+                registeredSM2.length >= 9 &&
                 <button onClick={() => PageTransition(
                     "SokuhoGameStart?urlTournamentId=" +
                     urlTournamentId +

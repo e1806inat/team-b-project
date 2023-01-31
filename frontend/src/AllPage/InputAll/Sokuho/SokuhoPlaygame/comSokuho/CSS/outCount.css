@@ -86,6 +86,16 @@
   .light.red3::after {
     /* animation-delay: 6s; */
   }
+
+  .outCountOn{
+    font-size: 5vw;
+  }
+
+  .outCountOff{
+    font-size: 5vw;
+  }
+
+
   
   /* 信号機の光の影の部分のアニメーション */
   /* @keyframes shadow {

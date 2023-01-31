@@ -4,10 +4,12 @@ import React from "react";
 const backendUrl = require("../../../../../../DB/communication").backendUrl;
 
 const gameSets = async (gameId, schoolId1, schoolId2) => {
-  const funcGL = await fetch(backendUrl + "/game/game_call", {
+  const funcGL = await fetch(backendUrl + "/game/game_sets", {
     method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
     body: JSON.stringify({ game_id: gameId, school_id_1: schoolId1, school_id_2: schoolId2 }),
   })
+  const resultValue = await funcGL.text()
+  await console.log("gameSets=" + resultValue)
 }
 
 //メインのDOMの中で配置するサブ部品のような要素
@@ -23,13 +25,12 @@ class GameEndPopup extends React.Component {
           <button className="button_style"
             onClick={() => {
 
-              gameSets(this.props.gameId, this.props.schoolId1, this.props.schoolId2)
+              gameSets(parseInt(this.props.urlGameId), parseInt(this.props.schoolId1), parseInt(this.props.schoolId2))
 
               this.props.closePopup()
-              this.props.TableRegister(this.props.urlGameId)
-              this.props.CalculateBatAvg(this.props.urlGameId)
-              this.props.TmpTableDelete(this.props.urlGameId)
-              this.props.RefDuringGame(this.props.RefDuringGame)
+              this.props.TableRegister(parseInt(this.props.urlGameId))
+              this.props.CalculateBatAvg(parseInt(this.props.urlGameId))
+              this.props.TmpTableDelete(parseInt(this.props.urlGameId))
             }}>はい</button>
         </div>
       </div>

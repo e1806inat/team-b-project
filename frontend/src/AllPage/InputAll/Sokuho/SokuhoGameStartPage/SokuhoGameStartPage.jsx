@@ -8,14 +8,12 @@ const backendUrl = require("../../../../DB/communication").backendUrl;
 
 //試合中の試合の情報を登録する
 const RegisterDuringGame = async (urlGameId, useEffectFlag, setUseEffectFlag) => {
-    await fetch(backendUrl + "/game/during_game_register", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ game_id: urlGameId, tmp_table_name: String(urlGameId) }),
-    })
+    await fetch(backendUrl + "/game/during_game_register",
+        {
+            method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({ game_id: urlGameId, tmp_table_name: String(urlGameId) }),
+        }
+    )
         .then((response) => response.text())
         .then((data) => { setUseEffectFlag(!useEffectFlag) })
 }
@@ -23,14 +21,12 @@ const RegisterDuringGame = async (urlGameId, useEffectFlag, setUseEffectFlag) =>
 //一時打席情報登録用のテーブル作成
 const TmpTableCreate = async (urlGameId) => {
 
-    await fetch(backendUrl + "/daseki/tmp_table_create", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ table_name: urlGameId }),
-    })
+    await fetch(backendUrl + "/daseki/tmp_table_create",
+        {
+            method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({ table_name: urlGameId }),
+        }
+    )
         .then((response) => response.text())
         .then((data) => { console.log(data) })
 }
@@ -38,14 +34,12 @@ const TmpTableCreate = async (urlGameId) => {
 //テーブル存在確認
 const TmpTableCheck = (urlGameId, setIsExistTmpTable) => {
 
-    fetch(backendUrl + "/daseki/tmp_table_check", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ table_name: urlGameId }),
-    })
+    fetch(backendUrl + "/daseki/tmp_table_check",
+        {
+            method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({ table_name: urlGameId }),
+        }
+    )
         .then((response) => response.text())
         .then((data) => {
 
@@ -62,15 +56,28 @@ const TmpTableCheck = (urlGameId, setIsExistTmpTable) => {
         })
 }
 
+//１つの試合の情報を受け取る
+const CallAGame = (urlGameId, setIsMatchResult) => {
+    fetch(backendUrl + "/game/a_game_call",
+        {
+            method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({ game_id: urlGameId }),
+        }
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data[0])
+            if (data[0].match_results === null) { }
+            else if (data[0].match_results === "NULL") { }
+            else { setIsMatchResult(true) }
+        })
+}
+
 //試合中の試合の情報を参照する
 const RefDuringGame = async (urlGameId, setIsDuringGame) => {
-    fetch(backendUrl + "/game/ref_during_game", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
+    fetch(backendUrl + "/game/ref_during_game",
+        { method: "POST", mode: "cors", headers: { "Content-Type": "application/json", } }
+    )
         .then((response) => response.json())
         .then((data) => {
             if (data.some((v) => String(v.game_id) === urlGameId)) {
@@ -101,14 +108,34 @@ const SokuhoGameStartPage = () => {
     const [isExistTmpTable, setIsExistTmpTable] = useState(false)
     const [useEffectFlag, setUseEffectFlag] = useState(false)
     const [isDuringGame, setIsDuringGame] = useState(false)
+    const [isMatchResult, setIsMatchResult] = useState(false)
 
     useEffect(() => {
+        CallAGame(urlGameId, setIsMatchResult)
         TmpTableCheck(urlGameId, setIsExistTmpTable)
         RefDuringGame(urlGameId, setIsDuringGame)
     }, [useEffectFlag])
 
-
-    if (isExistTmpTable === false || isDuringGame === false) {
+    if (isMatchResult) {
+        console.log("Pastに遷移します")
+        PageTransition(
+            "InputPastGame?urlTournamentId=" +
+            urlTournamentId +
+            "&urlTournamentName=" +
+            urlTournamentName +
+            "&urlSchoolId=" +
+            urlSchoolId +
+            "&urlSchoolName=" +
+            urlSchoolName +
+            "&urlSchoolId2=" +
+            urlSchoolId2 +
+            "&urlSchoolName2=" +
+            urlSchoolName2 +
+            "&urlGameId=" +
+            urlGameId
+        )
+    }
+    else if (isExistTmpTable === false || isDuringGame === false) {
         return (
             <>
                 <button
@@ -124,6 +151,7 @@ const SokuhoGameStartPage = () => {
     }
 
     else {
+        console.log("Playに遷移します")
         PageTransition(
             "InputPlayGame?urlTournamentId=" +
             urlTournamentId +

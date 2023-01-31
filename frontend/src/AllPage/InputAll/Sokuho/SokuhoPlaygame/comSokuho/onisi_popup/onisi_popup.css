@@ -59,3 +59,8 @@ p{
   background: #696969;
   color:#ffffff;
 }
+
+.updatebutton {
+  font-size: 10vw;
+      color: rgb(231, 54, 64);
+  }

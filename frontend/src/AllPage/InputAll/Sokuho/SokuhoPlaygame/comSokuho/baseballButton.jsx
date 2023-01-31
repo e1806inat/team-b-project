@@ -14,7 +14,7 @@ export const BaseballButton = (addScoreState, setAddScoreState) => {
 
   return (
     <div>
-      <button>得点:{addScoreState}</button>
+      <button className="addPointButton">追加点:{addScoreState}</button>
       <i
         className="fa-regular fa-square-plus"
         onClick={() => pushPlus(addScoreState, setAddScoreState)}

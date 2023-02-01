@@ -125,8 +125,6 @@ const readSchool = (setUseSchools, urlTournamentId) => {
   })
     .then((response) => response.json())
     .then((receivedAllSchool) => {
-
-      // enchantCheck(receivedAllSchool, setUseSchools);
       loadRegisteredSchool(urlTournamentId, receivedAllSchool, setUseSchools)
     })
 }
@@ -189,14 +187,11 @@ const enchantCheck = (receivedAllSchool, setUseSchools, data) => {
 const addSchool = (setUseSchools, addSchoolName, urlTournamentId, useSchools) => {
   if (useSchools.some((v) => v.school_name === addSchoolName)) console.log("高校名がかぶっています")
   else {
-    fetch(backendUrl + "/school/school_register", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ school_name: addSchoolName }),
-    })
+    fetch(backendUrl + "/school/school_register",
+      {
+        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({ school_name: addSchoolName }),
+      })
       .then((response) => response.text())
       .then((data) => {
         if (data === "OK") {
@@ -226,7 +221,7 @@ const EditSchool = (school_id, school_name, setUseSchools, urlTournamentId) => {
     })
 
 
-    
+
   console.log(school_id)
   console.log(school_name)
   console.log(urlTournamentId)

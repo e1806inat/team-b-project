@@ -240,7 +240,7 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     const DayList = makeDay()
 
     //回戦の値を適当に定義
-    const iningList = [{ ining: 1 }, { ining: 2 }, { ining: 3 }, { ining: 4 }, { ining: 5 }, { ining: "準決勝" }, { ining: "決勝" }]
+    const iningList = [{ ining: "１回戦" }, { ining: "２回戦" }, { ining: "３回戦" }, { ining: "４回戦" }, { ining: "５回戦" }, { ining: "準決勝" }, { ining: "決勝" }]
 
     //urlから値を読み出す
     const [searchParams] = useSearchParams();

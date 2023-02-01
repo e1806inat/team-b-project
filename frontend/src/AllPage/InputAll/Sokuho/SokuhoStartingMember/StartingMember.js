@@ -62,7 +62,7 @@ const loadRegisteredMember = (urlTournamentId, urlSchoolId, setRegisteredMember,
 
 
 //自作プルダウン
-const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected) => {
+const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected, isInitial1, setIsInitial1) => {
     return (
         <>
             <select id="tekitouni"
@@ -74,6 +74,12 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
                     nowSelected[pulldownId] = e.target.value
                     setNowSelected(nowSelected)
                     console.log(nowSelected)
+
+                    let array2 = isInitial1.slice(0, isInitial1.length);
+                    array2[pulldownId] = false
+                    setIsInitial1(array2)
+
+
                 }}>
                 <option hidden>選択してください</option>
                 {ArrayList.map((component, ind) => (
@@ -246,13 +252,19 @@ const StartingMember = () => {
 
     //プルダウンのための初期値作成
     let initialPulldown = []
+    let initialTorF = []
     for (let i = 0; i < 18; i++) {
         initialPulldown = [...initialPulldown, "0"]
+        initialTorF = [...initialTorF, true]
     }
 
     //今選択しているものの内容を監視
     const [nowSelected, setNowSelected] = useState(initialPulldown) //チーム1
     const [nowSelected2, setNowSelected2] = useState(initialPulldown) //チーム2
+
+    //プルダウンで今初期値かどうかを監視
+    const [isInitial1, setIsInitial1] = useState(initialTorF)
+    const [isInitial2, setIsInitial2] = useState(initialTorF)
 
     //受け取った配列が空でないかを監視
     const [isEmptyFlag, setIsEmptyFlag] = useState(false)
@@ -362,11 +374,20 @@ const StartingMember = () => {
                                 <td style={tdStyle} rowspan="2">{ind + 1}</td>
                                 <td style={tdStyle} rowspan="2">
 
-                                    {makePulldown(ind, PositionDB, "kata", nowSelected, setNowSelected)}
+                                    {makePulldown(ind, PositionDB, "kata", nowSelected, setNowSelected, isInitial1, setIsInitial1)}
                                 </td>
-                                <td style={tdStyle}><div id="player_name_hira1">{registeredMember1[nowSelected[ind + 9]].player_name_hira}</div></td>
-                                <td style={tdStyle} rowspan="2"><div id="uniform_number1">{registeredMember1[nowSelected[ind + 9]].uniform_number}</div></td>
-                                <td style={tdStyle} rowspan="2"><div id="grade1">{registeredMember1[nowSelected[ind + 9]].grade}</div></td>
+                                <td style={tdStyle}><div id="player_name_hira1">
+                                    {!isInitial1[ind + 9] && registeredMember1[nowSelected[ind + 9]].player_name_hira}
+                                    {isInitial1[ind + 9] && "　"}
+                                </div></td>
+                                <td style={tdStyle} rowspan="2"><div id="uniform_number1">
+                                    {!isInitial1[ind + 9] && registeredMember1[nowSelected[ind + 9]].uniform_number}
+                                    {isInitial1[ind + 9] && "　"}
+                                    </div></td>
+                                <td style={tdStyle} rowspan="2"><div id="grade1">
+                                    {!isInitial1[ind + 9] && registeredMember1[nowSelected[ind + 9]].grade}
+                                    {isInitial1[ind + 9] && "　"}
+                                    </div></td>
                                 <td style={tdStyle} rowspan="2">
                                     {/* 既登録の選手情報 */}
                                     <div >
@@ -385,7 +406,7 @@ const StartingMember = () => {
                             </tr>
                             <tr>
                                 <td style={tdStyle}>
-                                    {makePulldown(ind + 9, registeredMember1, "player_name_kanji", nowSelected, setNowSelected)}
+                                    {makePulldown(ind + 9, registeredMember1, "player_name_kanji", nowSelected, setNowSelected, isInitial1, setIsInitial1)}
                                 </td>
                             </tr>
                         </>
@@ -418,11 +439,20 @@ const StartingMember = () => {
                                 <td style={tdStyle2} rowspan="2">{ind + 1}</td>
                                 <td style={tdStyle2} rowspan="2">
 
-                                    {makePulldown(ind, PositionDB, "kata", nowSelected2, setNowSelected2)}
+                                    {makePulldown(ind, PositionDB, "kata", nowSelected2, setNowSelected2, isInitial2, setIsInitial2)}
                                 </td>
-                                <td style={tdStyle2}><div id="player_name_hira1">{registeredMember2[nowSelected2[ind + 9]].player_name_hira}</div></td>
-                                <td style={tdStyle2} rowspan="2"><div id="uniform_number1">{registeredMember2[nowSelected2[ind + 9]].uniform_number}</div></td>
-                                <td style={tdStyle2} rowspan="2"><div id="grade1">{registeredMember2[nowSelected2[ind + 9]].grade}</div></td>
+                                <td style={tdStyle2}><div id="player_name_hira1">
+                                    {!isInitial2[ind + 9] && registeredMember2[nowSelected2[ind + 9]].player_name_hira}
+                                    {isInitial2[ind + 9] && "　"}
+                                </div></td>
+                                <td style={tdStyle2} rowspan="2"><div id="uniform_number1">
+                                    {!isInitial2[ind + 9] && registeredMember2[nowSelected2[ind + 9]].uniform_number}
+                                    {isInitial2[ind + 9] && "　"}
+                                </div></td>
+                                <td style={tdStyle2} rowspan="2"><div id="grade1">
+                                    {!isInitial2[ind + 9] && registeredMember2[nowSelected2[ind + 9]].grade}
+                                    {isInitial2[ind + 9] && "　"}
+                                </div></td>
                                 <td style={tdStyle2} rowspan="2">
 
                                     {/* 既登録の選手情報 */}
@@ -443,7 +473,7 @@ const StartingMember = () => {
                             </tr>
                             <tr>
                                 <td style={tdStyle2}>
-                                    {makePulldown(ind + 9, registeredMember2, "player_name_kanji", nowSelected2, setNowSelected2)}
+                                    {makePulldown(ind + 9, registeredMember2, "player_name_kanji", nowSelected2, setNowSelected2, isInitial2, setIsInitial2)}
                                 </td>
                             </tr>
                         </>
@@ -478,7 +508,7 @@ const StartingMember = () => {
                     )
                     // .then(setUseEffectFlag(!useEffectFlag))
                     if (a + b === 2) {
-                       setUseEffectFlag(a + b)
+                        setUseEffectFlag(a + b)
                     }
 
                 }}>登録</button>

@@ -107,13 +107,11 @@ router.post("/game_sets", async (req, res, next) => {
     const tran = await beginTran();
 
     try {
-        const table_name = await executeQuery('select * from t_during_game where game_id = ?', [game_id]);
-        const tmp_table_name = `test_pbl.` + table_name[0]['tmp_table_name'];
+
         //学校ID１の試合結果を打席情報記録テーブルからjoin
-        const school_1_results = await tran.query(`select * from ${tmp_table_name} where school_id = ? order by at_bat_id desc limit 1`, [school_id_1]);
+        const school_1_results = await tran.query(`select school_id, school_name, total_score, inning from t_at_bat join t_school using(school_id) where school_id = ? order by at_bat_id desc limit 1`, [school_id_1]);
         //学校ID２の試合結果を打席情報記録テーブルからjoin
-        const school_2_results = await tran.query(`select * from ${tmp_table_name} where school_id = ? order by at_bat_id desc limit 1`, [school_id_2]);
-        
+        const school_2_results = await tran.query(`select school_id, school_name, total_score, inning from t_at_bat join t_school using(school_id) where school_id = ? order by at_bat_id desc limit 1`, [school_id_2]);
 
         console.log(school_1_results);
         console.log(school_2_results);

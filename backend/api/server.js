@@ -17,19 +17,19 @@ const session = require('express-session');
 const { errorHandler } = require("./error");
 const MySQLStore = require('express-mysql-session')(session); //追加分
 
-const mysqlOptions ={
-    host: "133.71.101.108",
-    user: "test_user",
-    password: "v2V!%Nwc", 
-    database: "test_pbl"
-  };
+const mysqlOptions = {
+  host: "133.71.101.108",
+  user: "test_user",
+  password: "v2V!%Nwc",
+  database: "test_pbl"
+};
 
 const sess = {
-    secret: "otameshi",
-    cookie: {httpOnly:true, secure:false, maxAge: 60000000 },
-    store: new MySQLStore(mysqlOptions),
-    resave: false,
-    saveUninitialized: false
+  secret: "otameshi",
+  cookie: { httpOnly: true, secure: false, maxAge: 60000000 },
+  store: new MySQLStore(mysqlOptions),
+  resave: false,
+  saveUninitialized: false
 };
 
 //sess.cookie.secure = false; //for production
@@ -38,15 +38,15 @@ app.use(session(sess));
 
 // cors対策
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, PATCH, DELETE, OPTION"
-    );
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTION"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
-var cors = require('cors'); 
+var cors = require('cors');
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -59,14 +59,14 @@ app.use(cors(corsOptions));
 // server.listen(PORT, () => console.log(`server is running ${PORT}`));
 
 //sessのテスト後で別ファイルに分けるべし
-var loginCheck = function(req, res, next) {
-  if(req.session.user) {
+var loginCheck = function (req, res, next) {
+  if (req.session.user) {
     next();
   } else {
     res.redirect('/auth');
   }
 };
-    
+
 app.use(express.json());
 
 app.get("/", loginCheck);
@@ -79,11 +79,11 @@ app.get("/", (req, res) => {
 //app.use(errorHandler);
 app.use("/auth", auth);
 app.use("/daseki", daseki);
-app.use("/member",  member);
-app.use("/school",  school);
-app.use("/tournament",  tournament);
-app.use("/venue",  venue);
-app.use("/game",  game);
+app.use("/member", member);
+app.use("/school", school);
+app.use("/tournament", tournament);
+app.use("/venue", venue);
+app.use("/game", game);
 app.use(errorHandler);
 
 /*
@@ -93,5 +93,5 @@ app.post("/", (req, res) => {
 });*/
 
 app.listen(PORT, () => {
-    console.log("サーバー起動中・・・");
+  console.log("サーバー起動中・・・");
 });

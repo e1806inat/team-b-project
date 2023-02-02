@@ -62,7 +62,7 @@ h1{
   border-radius: 5px;
   padding: 10px 30px;
   color: white;
-  font-size: 15px;
+  font-size: 3vw;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -75,6 +75,7 @@ button:hover{
   color: red;
   margin: 0;
   align-self: flex-start;
+  font-size: 2vw;
 }
 
 .MsgOk{

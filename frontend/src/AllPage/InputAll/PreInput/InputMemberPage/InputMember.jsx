@@ -154,7 +154,7 @@ const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
     }
     return (
         <>
-            <select id="fruit"
+            <select id="fruit" className="IMpulldown"
                 onChange={(e) => {
                     console.log(e.target.value + "_" + ind)
                     let copyUniformNumberArray = uniformNumberArray
@@ -162,7 +162,7 @@ const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
                     copyUniformNumberArray[ind] = e.target.value
                     setUniformNumberArray(copyUniformNumberArray)
                 }}>
-                <option value={0}>背番号を変更する</option>
+                <option value={0} >背番号を変更する</option>
                 {nullArray.map((component, ind) => (
                     <option value={ind + 1}>{ind + 1}</option>
                 ))
@@ -618,7 +618,7 @@ export const InputMember = () => {
             <OptionButton />
 
 
-            <div className="IMtitle">出場選手選択画面</div>
+            {/* <div className="IMtitle">出場選手選択画面</div> */}
             <div className="subject">
                 <h3>{urlTournamentName}</h3>
                 <h4>編集中:{urlSchoolName}</h4>
@@ -632,27 +632,35 @@ export const InputMember = () => {
                     </div>
 
                     <div className="inputName">
-
-                        氏（漢字）　　<input onChange={(e) => setNameKanji({ famiryName: e.target.value, firstName: nameKanji.firstName })} ></input>
-                        名（漢字）　　<input onChange={(e) => setNameKanji({ famiryName: nameKanji.famiryName, firstName: e.target.value })} ></input>
-
-
-                        <br />
-                        氏（ひらがな）<input
-                            value={nameHira.famiryName}
-                            onChange={
-                                (e) => {
-                                    setNameHira({ famiryName: e.target.value, firstName: nameHira.firstName })
-                                }
-                            }></input>
-                        名（ひらがな）<input
-                            // onChange={(e) => setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })
-                            value={nameHira.firstName}
-                            onChange={
-                                (e) => {
-                                    setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })
-                                }
-                            }></input>
+                        <div className="inputKanji">
+                            <div className="inputFamiryKanji">
+                                氏（漢字）　　<input className="inputArea" onChange={(e) => setNameKanji({ famiryName: e.target.value, firstName: nameKanji.firstName })} ></input>
+                            </div>
+                            <div className="inputFirstKanji">
+                                名（漢字）　　<input className="inputArea" onChange={(e) => setNameKanji({ famiryName: nameKanji.famiryName, firstName: e.target.value })} ></input>
+                            </div>
+                        </div>
+                        <div className="inputHira">
+                            <div className="inputFamiryHira">
+                                氏（ひらがな）<input className="inputArea"
+                                    value={nameHira.famiryName}
+                                    onChange={
+                                        (e) => {
+                                            setNameHira({ famiryName: e.target.value, firstName: nameHira.firstName })
+                                        }
+                                    }></input>
+                            </div>
+                            <div className="inputFirstHira">
+                                名（ひらがな）<input className="inputArea"
+                                    // onChange={(e) => setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })
+                                    value={nameHira.firstName}
+                                    onChange={
+                                        (e) => {
+                                            setNameHira({ famiryName: nameHira.famiryName, firstName: e.target.value })
+                                        }
+                                    }></input>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="selectDominant">
@@ -700,9 +708,11 @@ export const InputMember = () => {
                         <>ひらがなを入力してください</>}
                     </div>
 
-                    現在の選手選択数:{cntSelectedMemberNum(selectedMember)}<br />
+                    <div className="selectNum">
+                        現在の選手選択数:{cntSelectedMemberNum(selectedMember)}<br />
+                    </div>
 
-                    <button
+                    <button className="editModeButton"
                         onClick={() => { setisEditMode(!isEditMode) }}
                     >{isEditMode && "選手登録情報編集中"}{!isEditMode && "選手登録情報編集モード"}</button>
 

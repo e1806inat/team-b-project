@@ -32,14 +32,14 @@ const makeBarCom = (menu, PageTransition) => {
 
         if (com.text === "InputMember") {
             madeUrl =
-                "/home/pre_input/input_tournament/inputschool/InputMember?" +
+                routeUrl + "/home/pre_input/input_tournament/inputschool/InputMember?" +
                 "urlTournamentId=" + com.urlTournamentId + "&urlTournamentName=" + com.urlTournamentName +
                 "&urlSchoolId=" + com.urlSchoolId + "&urlSchoolName=" + com.urlSchoolName
         }
 
         if (com.text === "InputSchool") {
             madeUrl =
-                "/home/pre_input/input_tournament/inputschool?" +
+            routeUrl + "/home/pre_input/input_tournament/inputschool?" +
                 "urlTournamentId=" + com.urlTournamentId + "&urlTournamentName=" + com.urlTournamentName
         }
 

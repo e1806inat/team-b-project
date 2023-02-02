@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
 
+  // エラーメッセージ
+  const errorMsgText = "ユーザ名またはパスワードが異なります"
+
+
   //ページ遷移用
   const navigate = useNavigate()
   const PageTransition = (url) => {
@@ -16,7 +20,9 @@ const Login = () => {
   //フロントの階層urlを表示
   const routeUrl = require("../../DB/communication").routeUrl;
 
-  const initialValues = { loginID: "test", password: "123456789" };
+  // const initialValues = { loginID: "test", password: "123456789" };
+  const initialValues = { loginID: "", password: "" };
+
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
@@ -48,11 +54,11 @@ const Login = () => {
     if (!values.password) {
       errors.password = "パスワードを入力してください。";
     }
-    else if (values.password.length < 4) {
-      errors.password = "4文字以上15文字以下のパスワードを入力してください";
+    else if (values.password.length < 8) {
+      errors.password = "8文字以上20文字以下のパスワードを入力してください";
     }
-    else if (values.password.length > 15) {
-      errors.password = "4文字以上15文字以下のパスワードを入力してください";
+    else if (values.password.length > 20) {
+      errors.password = "8文字以上20文字以下のパスワードを入力してください";
     }
     return errors;
   };
@@ -73,13 +79,20 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
 
-        console.log(data)
+        console.log(data[0])
 
-        if (data !== null) {
-          console.log(data["session_id"])
+        if (data[0]!==undefined && data[0].message === "そのユーザは存在しません") {
+          if (formErrors.length === undefined) setFormErrors({ loginID: "", password: errorMsgText })
+        }
+        else if (data[0]!==undefined && data[0].message === "パスワードが異なります") {
+          if (formErrors.length === undefined) setFormErrors({ loginID: "", password: errorMsgText })
+        }
+        else {
+          console.log(data)
           setCookie("sessionID", data["session_id"])
           PageTransition(routeUrl + "/home")
         }
+
       })
   }
 

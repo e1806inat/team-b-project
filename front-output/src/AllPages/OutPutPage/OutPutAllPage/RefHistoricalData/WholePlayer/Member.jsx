@@ -17,7 +17,7 @@ const Member = ({member}) => {
             <td width="5%" rowspan="2">{member.handed_throw}</td>
             <td width="8%" rowspan="2">{member.hit_num}</td>
             <td width="8%" rowspan="2">{member.bat_num}</td>
-            <td width="8%" rowspan="2">{member.BA}</td>
+            <td width="8%" rowspan="2">{member.BA.toFixed(3).toString().subStr(1, 4)}</td>
         </tr>
         <tr>
             <td width="30%" rowspan="2">{member.player_name_kanji}</td>

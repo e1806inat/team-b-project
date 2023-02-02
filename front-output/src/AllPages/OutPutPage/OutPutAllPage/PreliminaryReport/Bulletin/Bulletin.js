@@ -215,12 +215,25 @@ export const Bulletin = () => {
       const tableName = await ResTableName.json();
 
       //console.log(tableName[0]['tmp_table_name'])
+
       //打席情報フェッチ
-      const ResDasekiData = await fetch(backendUrl + "/daseki/tmp_daseki_call", {
-        method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
-        body: JSON.stringify({ table_name: tableName[0]['tmp_table_name'], game_id: urlGameId })
-      })
-      let daseki = await ResDasekiData.json();
+      if (GameData[0]['match_results'] === null) {
+        const ResDasekiData = await fetch(backendUrl + "/daseki/tmp_daseki_call", {
+          method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({ table_name: tableName[0]['tmp_table_name'], game_id: urlGameId })
+        })
+        var daseki = await ResDasekiData.json();
+      } else {
+        const ResDasekiData = await fetch(backendUrl + "/daseki/daseki_transmission", {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ game_id: urlGameId })
+        })
+        var daseki = await ResDasekiData.json();
+      }
 
       setVenueName(GameData[0]['venue_name']);
 
@@ -1183,16 +1196,8 @@ export const Bulletin = () => {
           <tr className="scoreBoardTr">
             <th className="scoreBoardSchoolNameTh"></th>
             {scoreState1.map((score, ind) => {
-              if (ind < 9) {
-                return (
-                  <th className="scoreBoardTh">{ind + 1}</th>
-                )
-              }
-              else if (score !== null) {
-                return (
-                  <th className="scoreBoardTh">{ind + 1}</th>
-                )
-              }
+              if (ind < 9) { return (<th className="scoreBoardTh">{ind + 1}</th>) }
+              else if (score !== null) { return (<th className="scoreBoardTh">{ind + 1}</th>) }
             })}
             <th className="scoreBoardTh">計</th>
           </tr>
@@ -1212,9 +1217,17 @@ export const Bulletin = () => {
                 }
               }
               else if (score !== null) {
-                return (
-                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
-                )
+                if (nowState.split("回")[0] === (ind + 1).toString() && nowState.split("回")[1] === "表") {
+                  return (
+                    <td className="scoreBoardTdRed" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                  )
+                }
+                else {
+                  return (
+                    <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                  )
+                }
+
               }
             })}
             <td className="scoreBoardTd">{totalScoreState1}</td>
@@ -1235,9 +1248,16 @@ export const Bulletin = () => {
                 }
               }
               else if (score !== null) {
-                return (
-                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
-                )
+                if (nowState.split("回")[0] === (ind + 1).toString() && nowState.split("回")[1] === "裏") {
+                  return (
+                    <td className="scoreBoardTdRed" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                  )
+                }
+                else {
+                  return (
+                    <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                  )
+                }
               }
               <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
             })}

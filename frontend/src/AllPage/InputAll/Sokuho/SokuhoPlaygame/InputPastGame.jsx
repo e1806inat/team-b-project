@@ -36,7 +36,7 @@ const routeUrl = require("../../../../DB/communication").routeUrl;
 //自作プルダウン　改造あり
 const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected, urlSchoolName, urlSchoolName2,
     dasekiAll, setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag, setIsPass,
     battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
 ) => {
 
@@ -62,7 +62,7 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
 
                     editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
                         setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag, setIsPass,
                         battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
                     )
                 }
@@ -81,7 +81,7 @@ const makePulldown = (pulldownId, ArrayList, idText, nowSelected, setNowSelected
 //打席編集
 const editBattersBox = (battersBox, battersBoxAll, nowSelected,
     setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+    setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag, setIsPass,
     battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2) => {
 
     console.log(battersBox)
@@ -164,6 +164,8 @@ const editBattersBox = (battersBox, battersBoxAll, nowSelected,
     setcanvasX1(parseFloat(touchedCoordinate[0]))
     setcanvasY1(parseFloat(touchedCoordinate[1]))
     setAddScoreState(battersBox.score)
+    if (battersBox.pass === 1) setIsPass(1)
+    else setIsPass(0)
 
     if (battersBox.inning % 10 === 1) {
         let sendMember1 = [{
@@ -751,7 +753,8 @@ const sendEdit = (
     batterResult,
     isPinch,
     trigger,
-    setTrigger
+    setTrigger,
+    isPass
 ) => {
     console.log(dasekiAll[nowSelected])
     //DBに送るための準備
@@ -802,7 +805,7 @@ const sendEdit = (
         outcount: nowOutCountState,
         base: runnerCount,
         text_inf: freeWriteState,
-        pass: 0,
+        pass: isPass,
         touched_coordinate: canvasX1 + "_" + canvasY1,
         ball_kind: flag,
         hit: isHit,
@@ -1257,7 +1260,12 @@ const InputPastGame = () => {
 
                 <div className="Buttons">
                     <div className="baseballButtons">
-                        {BaseballButton(addScoreState, setAddScoreState)}
+                        {
+                            BaseballButton(
+                                addScoreState, setAddScoreState,
+                                setFlag, setcanvasX1, setcanvasY1, setFreeWriteState, setBatterResult
+                            )
+                        }
                     </div>
                     {!isEditMode &&
                         <>
@@ -1307,7 +1315,7 @@ const InputPastGame = () => {
                 {isEditMode &&
                     makePulldown(0, dasekiAll, "at_bat_id", nowSelected, setNowSelected, urlSchoolName, urlSchoolName2,
                         dasekiAll, setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+                        setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag, setIsPass,
                         battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
                     )
                 }
@@ -1319,7 +1327,7 @@ const InputPastGame = () => {
                             setIsEditMode(true);
                             editBattersBox(dasekiAll[nowSelected], dasekiAll, nowSelected,
                                 setNowIningState, setNowOutCountState, setRunnerCountState, setNowPlayingMember,
-                                setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag,
+                                setFreeWriteState, setcanvasX1, setcanvasY1, setAddScoreState, setFlag, setIsPass,
                                 battingOrder, battingOrder2, registeredMember1, registeredMember2, setBattingOrder, setBattingOrder2
                             )
                         }}>修正モード
@@ -1360,7 +1368,8 @@ const InputPastGame = () => {
                                 batterResult,
                                 isPinch,
                                 trigger,
-                                setTrigger
+                                setTrigger,
+                                isPass
                             )}
                     >修正確定</button>
                 }

@@ -13,6 +13,5 @@ export const TitleBar = (props) => {
                 </div>
             </header>
         </>
-
     )
 }

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Hyoji } from './comInputSchool/Hyoji';
 import { CheckBoxList } from './comInputSchool/CheckBoxList1';
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
@@ -337,9 +337,9 @@ export const InputSchool = () => {
       />
       <OptionButton />
 
-      <div className="top">
+      {/* <div className="top">
         <button className="BackButton"><Link to={'/home/input_mode/'} className="BackButton">＜戻る</Link> </button>
-      </div>
+      </div> */}
 
       <div className="tournamentName">
         <h3>{urlTournamentName}</h3>
@@ -387,11 +387,14 @@ export const InputSchool = () => {
           {isCheckBoxMode && CheckBoxList(useSchools, setUseSchools)}<br />
 
           {/* 登録ボタン */}
-          <div className="ButtonArea">
-            <button className="decisionButton"
-              onClick={() => sendSchool(useSchools, urlTournamentId, setUseSchools)}>参加高校を登録
-            </button>
-          </div>
+          {!isCheckBoxMode &&
+            <div className="ButtonArea">
+              <button className="decisionButton"
+                onClick={() => sendSchool(useSchools, urlTournamentId, setUseSchools)}>参加高校を登録
+              </button>
+            </div>
+          }
+
         </>
       }
 

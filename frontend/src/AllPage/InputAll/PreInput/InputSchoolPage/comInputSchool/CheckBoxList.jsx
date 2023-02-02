@@ -1,3 +1,10 @@
+// 使っていません
+
+
+
+
+
+
 import React, { useState, useEffect } from "react"
 //const { Schools } = require("../DB/Schools"); //分割代入
 

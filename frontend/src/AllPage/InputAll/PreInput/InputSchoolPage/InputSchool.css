@@ -166,3 +166,46 @@ button:hover{
     background-color: var(--color-main);
 }
 
+.inputKanji{
+    display: flex;
+}
+
+.inputHira{
+    display: flex;
+}
+
+.inputName{
+    font-size: 2.2vw;
+}
+.inputArea{
+    width: 60%;
+}
+
+.selectNum{
+    font-size: 2.2vw;
+}
+
+.editModeButton{
+    width: 60%;
+    font-size: 2.2vw;
+}
+
+.selectName{
+    font-size: 2.2vw;
+}
+
+.Dominant{
+    font-size: 2.2vw;
+}
+
+.selectdiv{
+font-size: 2.2vw;
+}
+
+.IMpulldown{
+    font-size: 2.2vw;
+}
+
+.subject{
+    font-size: 2.8vw;
+}

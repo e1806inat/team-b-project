@@ -40,11 +40,11 @@ function Register() {
     if (!values.password) {
       errors.password = "パスワードを入力してください。";
     }
-    else if (values.password.length < 4) {
-      errors.password = "4文字以上15文字以下のパスワードを入力してください";
+    else if (values.password.length < 8) {
+      errors.password = "8文字以上20文字以下のパスワードを入力してください";
     }
-    else if (values.password.length > 15) {
-      errors.password = "4文字以上15文字以下のパスワードを入力してください";
+    else if (values.password.length > 20) {
+      errors.password = "8文字以上20文字以下のパスワードを入力してください";
     }
     return errors;
   };
@@ -57,7 +57,7 @@ function Register() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: formValues.loginID, password: formValues.password }),
+      body: JSON.stringify({ user_name: formValues.loginID, password: formValues.password }),
     })
       .then((response) => response.json())
       .then((data) => console.log(data))
@@ -80,7 +80,7 @@ function Register() {
               <p className="errorMsg">{formErrors.loginID}</p>
             </div>
             <div className="formField">
-              <input type="text"
+              <input type="password"
                 placeholder="パスワード"
                 name="password"
                 onChange={(e) => handleChande(e)}

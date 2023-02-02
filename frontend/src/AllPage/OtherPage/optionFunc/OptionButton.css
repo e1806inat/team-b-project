@@ -77,10 +77,10 @@ label #hambargerBtn{
 
 label #cancelBtn{
     z-index: 10;
-    right: -195px;
-    top: 17px;
+    right: 0;
+    top: 25px;
     font-size: 30px;
-    color: white;
+    color: rgb(255, 0, 0, 0);
     padding: 4px 9px;
     transition: all 0.5s;
 }
@@ -96,7 +96,8 @@ label #cancelBtn{
 }
 
 #check:checked ~ label #cancelBtn{
-    right: 15px;
+    right: 24px;
+    color: #000000;
 }
 
 #check:checked ~ .bg{

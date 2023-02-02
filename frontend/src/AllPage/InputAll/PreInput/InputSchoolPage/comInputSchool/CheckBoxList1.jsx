@@ -50,7 +50,7 @@ export const CheckBoxList = (useSchools, setUseSchools) => {
                 </div>
 
                 {/* checkedがない場合には送信ボタンを表示させない */}
-                {<button >決定</button>}
+                {/* {<button >決定</button>} */}
             </form>
 
         </>

@@ -1482,7 +1482,7 @@ export const BulletinPast = () => {
           <div className="schoolBox">
             <p>{schoolName1}</p>
           </div>
-          <table border="1" className="members">
+          <table border="1" className="startMembers">
             <tr>
               <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
               <td width="30%" height="10vh" bgcolor="#228b22">名前</td>
@@ -1496,7 +1496,7 @@ export const BulletinPast = () => {
           <div className="schoolBox">
             <p>{schoolName2}</p>
           </div>
-          <table border="1" className="members">
+          <table border="1" className="startMembers">
             <tr>
               <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
               <td width="30%" height="10vh" bgcolor="#228b22">名前</td>

@@ -609,7 +609,7 @@ textarea {
 .startingMember {
   margin: auto;
   text-align: center;
-  width: 84%;
+  width: 95%;
   /* padding-top: 2vh; */
   padding-bottom: 2vh;
 }
@@ -661,19 +661,27 @@ textarea {
   box-sizing: border-box;
 }
 
-.members {
+.startMembers {
   color: white;
   margin: auto;
   font-size: 1.5%;
-  width: 84%;
-  height: 4%;
-  padding-top: 2%;
+  width: 95%;
+  height: 4vh;
+  /* padding-top: 2%; */
+  background: #191970;
   /* border:2; */
 }
 
-.members td {
+.startMembers td {
   background: #191970;
+  height: 4vh;
+  font-size: 1.5vh;
+}
 
+.startMembers td:nth-of-type(3) {
+  background: #191970;
+  height: 4vh;
+  font-size: 1vh;
 }
 
 .textSokuhou {

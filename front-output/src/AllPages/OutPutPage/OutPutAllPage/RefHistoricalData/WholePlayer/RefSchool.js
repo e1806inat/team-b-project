@@ -97,7 +97,7 @@ const RefSchool = () => {
   //閲覧したい学年の情報をチェックボックスで保持する
   const [grades, setGrades] = useState([{ grade: 1, completed: true }, { grade: 2, completed: true }, { grade: 3, completed: true }, { grade: 4, completed: false }]);
   //バックエンドに送れる形(配列)に編集した学年情報を保持する
-  const [gradesArray, setGradesArray] = useState([1, 2, 3, 4]);
+  const [gradesArray, setGradesArray] = useState([1, 2, 3]);
 
   const toggleGrade = (grade) => {
     const newGrades = [...grades];

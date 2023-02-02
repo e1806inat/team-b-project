@@ -60,6 +60,7 @@ export const Bulletin = () => {
   const [startingMember2, setStartingMember2] = useState([]);
   //回戦情報
   const [nowState, setNowState] = useState('');
+  const [matchNum, setMatchNum] = useState('');
   //開催年
   const [gameYear, setGameYear] = useState('');
   //開催月
@@ -146,6 +147,7 @@ export const Bulletin = () => {
       setTournamentName(GameData[0]['tournament_name']);
       setSchoolName1(GameData[0]['school_name_1']);
       setSchoolName2(GameData[0]['school_name_2']);
+      setMatchNum(GameData[0]['match_num']);
       //setGameSet(GameData[0]['match_results']);
       if (GameData[0]['match_results'] !== '' && GameData[0]['match_results'] !== null) {
         setResultScore1(GameData[0]['match_results'].split('-')[0]);
@@ -219,6 +221,8 @@ export const Bulletin = () => {
       let daseki = await ResDasekiData.json();
 
       setVenueName(GameData[0]['venue_name']);
+
+      console.log(daseki)
 
       //console.log(typeof (daseki[0]['school_id']))
       //console.log(typeof (gameData[0]['school_id_1']))
@@ -1164,7 +1168,7 @@ export const Bulletin = () => {
         {/* タイトル */}
         <div className="titleName">{tournamentName}</div>
         {/* <div className="day">{gameMonth}月{gameDay}日</div> */}
-        <div className="gamePlace">{venueName}</div>
+        <div className="gamePlace">{matchNum}　{venueName}　{gameYear}年{gameMonth}月{gameDay}日</div>
       </div>
 
       {/* <div style={group}>
@@ -1344,13 +1348,13 @@ export const Bulletin = () => {
           <div className="schoolBox">
             <p>{schoolName1}</p>
           </div>
-          <table border="1" className="members">
+          <table border="1" className="startMembers">
             <tr>
-              <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
-              <td width="30%" height="10vh" bgcolor="#228b22">名前</td>
-              <td width="10%" height="10vh" rowspan="2" bgcolor="#228b22">背番号</td>
-              <td width="18%" height="10vh" rowspan="2" bgcolor="#228b22">ポジション</td>
-              <td width="16%" height="10vh" rowspan="2" bgcolor="#228b22">打率</td>
+              <td width="8%" height="15vh" rowspan="2" >打順</td>
+              <td width="30%" height="10vh" >名前</td>
+              <td width="10%" height="10vh" rowspan="2" >背番号</td>
+              <td width="18%" height="10vh" rowspan="2">ポジション</td>
+              <td width="16%" height="10vh" rowspan="2">打率</td>
             </tr>
           </table>
           <StartingMemberList startingMembers={startingMember1} />
@@ -1358,13 +1362,13 @@ export const Bulletin = () => {
           <div className="schoolBox">
             <p>{schoolName2}</p>
           </div>
-          <table border="1" className="members">
+          <table border="1" className="startMembers">
             <tr>
-              <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
-              <td width="30%" height="10vh" bgcolor="#228b22">名前</td>
-              <td width="10%" height="10vh" rowspan="2" bgcolor="#228b22">背番号</td>
-              <td width="18%" height="10vh" rowspan="2" bgcolor="#228b22">ポジション</td>
-              <td width="16%" height="10vh" rowspan="2" bgcolor="#228b22">打率</td>
+              <td width="8%" height="15vh" rowspan="2">打順</td>
+              <td width="30%" height="10vh">名前</td>
+              <td width="10%" height="10vh" rowspan="2">背番号</td>
+              <td width="18%" height="10vh" rowspan="2">ポジション</td>
+              <td width="16%" height="10vh" rowspan="2">打率</td>
             </tr>
           </table>
           <StartingMemberList startingMembers={startingMember2} />

@@ -17,7 +17,7 @@ export const SelectTournament = () => {
   const [tournamentsData, setTournamentsData] = useState([]);
 
   const readTournamnents = () => {
-    fetch("http://localhost:5000/tournament/tournament_call", {
+    fetch(backendUrl +"/tournament/tournament_call", {
       method: "POST",
       mode: "cors",
       headers: {

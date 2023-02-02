@@ -13,6 +13,8 @@ export const battedBall = (context, canvasX1, canvasY1, flag, deleteball, setDel
 
 
     //１が直線、２がフライ、3がゴロ、４がヒット
+    console.log("deleteball="+deleteball)
+    console.log(setDeleteBall)
     if (canvasX1 === 0 && canvasY1 === 0) setDeleteBall(!deleteball)
     else if (flag === 1) {
         console.log("flag1")

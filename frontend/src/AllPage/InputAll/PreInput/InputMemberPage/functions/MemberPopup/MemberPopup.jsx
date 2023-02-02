@@ -8,12 +8,14 @@ class Popup extends React.Component {
         <div className="popup_inner_field">
           <div className="title">{this.props.text}</div>
           <p>情報が更新されますがよろしいでしょうか？</p>
-          <button className="button_style" onClick={this.props.closePopup}>いいえ</button>
+          <button className="button_style" onClick={() => {
+            this.props.closePopup()
+            console.log(this.props.copyMember)
+          }
+          }>いいえ</button>
           <nbsp></nbsp>
           <button className="button_style" onClick={() => {
             // this.props.closePopup()
-            
-
             this.props.handleSousin(
               this.props.copyMember,
               this.props.selectedMember,
@@ -47,6 +49,7 @@ class MemberPopup extends React.Component {
   }
   //renderの中に設置したいメインのDOM(部品）を記述していく
   render() {
+    console.log(this.props.copyMember)
     return (
       <div>
 
@@ -63,10 +66,10 @@ class MemberPopup extends React.Component {
             copyMember={this.props.copyMember}
             selectedMember={this.props.selectedMember}
             urlTournamentId={this.props.urlTournamentId}
-            uniformNumberArray={this.props.uniformNumberArray} 
-            PageTransition = {this.props.PageTransition}
-            registeredMembers = {this.props.registeredMembers}
-            />
+            uniformNumberArray={this.props.uniformNumberArray}
+            PageTransition={this.props.PageTransition}
+            registeredMembers={this.props.registeredMembers}
+          />
         ) : null}
       </div>
     );

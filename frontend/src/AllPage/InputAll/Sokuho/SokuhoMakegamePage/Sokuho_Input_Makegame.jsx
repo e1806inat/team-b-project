@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { useCookies } from 'react-cookie'
+
 import './Sokuho_Input_Makegame.css'
 
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
@@ -14,6 +16,9 @@ import EditMakegamePopup from "./EditMakeGamePopup/EditMakegamePopup"
 
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
+
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 
 //データベースとのやりとり
@@ -222,6 +227,9 @@ const DeleteGame = (sendInfo) => {
 
 export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
 
+    //クッキー関連
+    const [cookies, setCookie, removeCookie] = useCookies();
+
     //ページ遷移用
     const navigate = useNavigate()
     const PageTransition = (url) => {
@@ -270,6 +278,24 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
     useEffect(() => {
         loadGame(setGameInfoState, urlTournamentId);
     }, [Schools, Venues])
+
+    //セッション関連
+    useEffect(() => {
+        const gameStart = async () => {
+            const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+                {
+                    method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+                    body: JSON.stringify({ sessionID: cookies.sessionID })
+                })
+            const sess = await CheckSess.text();
+            console.log(sess)
+            console.log(cookies.sessionID)
+            if (sess === 'logout') {
+                PageTransition(routeUrl + "/login");
+            }
+        }
+        gameStart()
+    }, [])
 
     return (
         <>
@@ -321,10 +347,6 @@ export const Sokuho_Input_Makegame = (useSchools, setUseSchools) => {
                         <button className="btn_So_Make" onClick={() => { }}>追加
                         </button>
                     }
-
-
-
-
                 </div>
             </div>
 

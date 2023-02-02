@@ -26,9 +26,13 @@
     background-color: rgb(240, 224, 0);
 }
 
-.outCountsAndRunnerCounts .outCount{
-    display: flex;
+.outCountsAndRunnerCounts{
+    /* display: flex; */
 }
+
+/* .outCountsAndRunnerCounts .outCount{
+    display: flex;
+} */
 
 .outCountDisplay{
     font-size: 1.5em;

@@ -1,24 +1,25 @@
 import './OptionButton.css'
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { useCookies } from 'react-cookie'
+
 //バックエンドのurlを取得
 const backendUrl = require("../../../DB/communication").backendUrl;
 
-//フロントエンドのurlを取得
-const frontendUrl = require("../../../DB/communication").routeUrl
+//フロントの階層urlを取得
+const routeUrl = require("../../../DB/communication").routeUrl;
 
 
 //ログアウトボタンを押したときに実行
-const logOut = () => {
-    fetch(backendUrl + "/auth/check_sess", {
-        method: "GET",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-        },
+const logOut = (PageTransition, cookies) => {
+    fetch(backendUrl + "/auth/logout", {
+        method: "POST", mode: "cors",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({ sessionID: cookies.sessionID })
     })
         .then((response) => response.text())
         .then((data) => { console.log(data) })
+    PageTransition(routeUrl + "/login")
 }
 
 
@@ -113,6 +114,8 @@ export const MenuBar = (props) => {
         navigate(url)
     }
 
+    const [cookies, setCookie, removeCookie] = useCookies();
+
 
 
     return (
@@ -138,7 +141,7 @@ export const MenuBar = (props) => {
                             ))
                         }
 
-                        <li onClick={logOut}>
+                        <li onClick={() => { logOut(PageTransition, cookies,) }}>
                             <a href="#"><i class="fas fa-coffee"></i>ログアウト</a>
                         </li>
                     </ul>

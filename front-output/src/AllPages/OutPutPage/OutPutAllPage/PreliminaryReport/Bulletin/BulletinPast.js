@@ -7,6 +7,8 @@ import StartingMemberList from './StartingMemberList'
 import { Ground } from './Ground';
 import { battedBall } from './battedBall';
 
+import { outCount } from './outCount'
+
 import { useCookies } from "react-cookie";
 import OutPutGame from "../../../../OutPutGame/OutPutGame";
 
@@ -15,6 +17,9 @@ import smoothscroll from 'smoothscroll-polyfill';
 smoothscroll.polyfill();
 
 //import "./App.css";
+
+//バックエンドのurlを取得
+const backendUrl = require("../../../../../DB/communication").backendUrl;
 
 const pageStyle = {
   background: 'white'
@@ -172,6 +177,7 @@ export const BulletinPast = () => {
   const [nowDaseki, setNowDaseki] = useState([]);
   //試合情報
   const [gameData, setGameData] = useState([]);
+  const [gameSet, setGameSet] = useState('');
   //大会登録選手school1
   const [tournamentMember1, setTournamentMember1] = useState([]);
   //大会登録選手school2
@@ -204,8 +210,13 @@ export const BulletinPast = () => {
   const [nowSchoolName2, setNowSchoolName2] = useState('');
   //トータルスコア１
   const [totalScore1, setTotalScore1] = useState(0);
+  const [resultScore1, setResultScore1] = useState(0);
   //トータルスコア２
   const [totalScore2, setTotalScore2] = useState(0);
+  const [resultScore2, setResultScore2] = useState(0);
+
+  //アウトカウント    
+  const [nowOutCountState, setNowOutCountState] = useState(0)
 
   const [dasekiScore, setDasekiScore] = useState([]);
   //交代情報
@@ -231,10 +242,12 @@ export const BulletinPast = () => {
 
   const [flag, setFlag] = useState(2);
 
+  const [matchNum, setMatchNum] = useState("")
+
   useEffect(() => {
     //試合情報フェッチ
     const gameStart = async () => {
-      const CheckSess = await fetch("http://localhost:5000/auth/check_sess", {
+      const CheckSess = await fetch(backendUrl + "/auth/check_sess", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -255,7 +268,7 @@ export const BulletinPast = () => {
       //   // return <Redirect to="http://localhost:3000/login"/>
       // }
 
-      const ResGameData = await fetch("http://localhost:5000/game/a_game_call", {
+      const ResGameData = await fetch(backendUrl + "/game/a_game_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -265,7 +278,7 @@ export const BulletinPast = () => {
       })
       const GameData = await ResGameData.json();
 
-      //console.log(GameData)
+      console.log(GameData)
 
       setGameData(GameData)
       setGameYear(GameData[0]['game_ymd'].split('-')[0]);
@@ -274,9 +287,13 @@ export const BulletinPast = () => {
       setTournamentName(GameData[0]['tournament_name']);
       setSchoolName1(GameData[0]['school_name_1']);
       setSchoolName2(GameData[0]['school_name_2']);
+      setGameSet(GameData[0]['match_results']);
+      setResultScore1(GameData[0]['match_results'].split('-')[0]);
+      setResultScore2(GameData[0]['match_results'].split('-')[1]);
+      setMatchNum(GameData[0]["match_num"]);
 
       //大会登録メンバー１フェッチ
-      const ResTournamentMember1 = await fetch("http://localhost:5000/member/tournament_member_call", {
+      const ResTournamentMember1 = await fetch(backendUrl + "/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -290,7 +307,7 @@ export const BulletinPast = () => {
       //console.log(member1);
       setTournamentMember1(member1);
       //大会登録メンバー２フェッチ
-      const ResTournamentMember2 = await fetch("http://localhost:5000/member/tournament_member_call", {
+      const ResTournamentMember2 = await fetch(backendUrl + "/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -307,7 +324,7 @@ export const BulletinPast = () => {
       //console.log('aasdfasdfasdfasdfasfsdfasd')
 
       //スタメン１フェッチ
-      const ResStartingMember1 = await fetch("http://localhost:5000/member/starting_member_call", {
+      const ResStartingMember1 = await fetch(backendUrl + "/member/starting_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -323,7 +340,7 @@ export const BulletinPast = () => {
       setStartingMember1(startMember1);
 
       //スタメン２フェッチ
-      const ResStartingMember2 = await fetch("http://localhost:5000/member/starting_member_call", {
+      const ResStartingMember2 = await fetch(backendUrl + "/member/starting_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -342,7 +359,7 @@ export const BulletinPast = () => {
 
       //setBattersData(startMember);
 
-      const ResTableName = await fetch("http://localhost:5000/game/ref_table_name", {
+      const ResTableName = await fetch(backendUrl + "/game/ref_table_name", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -352,15 +369,15 @@ export const BulletinPast = () => {
       })
       const tableName = await ResTableName.json();
 
-      //console.log(tableName[0]['tmp_table_name'])
+      console.log(tableName)
       //打席情報フェッチ
-      const ResDasekiData = await fetch("http://localhost:5000/daseki/tmp_daseki_call", {
+      const ResDasekiData = await fetch(backendUrl + "/daseki/daseki_transmission", {
         method: "POST",
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ table_name: tableName[0]['tmp_table_name'], game_id: urlGameId })
+        body: JSON.stringify({ game_id: urlGameId })
       })
       let daseki = await ResDasekiData.json();
 
@@ -373,9 +390,10 @@ export const BulletinPast = () => {
 
       var dasekiInd = await daseki.length - 1;
 
-      //console.log(dasekiInd)
+      console.log(daseki[dasekiInd])
 
       setNowDaseki(daseki[dasekiInd]);
+      setNowOutCountState(daseki[dasekiInd]['outcount']);
 
       if (daseki[dasekiInd]['school_id'] === GameData[0]['school_id_1']) {
         //console.log('inatukidesu')
@@ -588,8 +606,8 @@ export const BulletinPast = () => {
         context.stroke();
 
         console.log(daseki);
-        let X = Number(daseki[0]['touched_coordinate'].split('_')[0]);
-        let Y = Number(daseki[0]['touched_coordinate'].split('_')[1]);
+        let X = Number(daseki[dasekiInd]['touched_coordinate'].split('_')[0]);
+        let Y = Number(daseki[dasekiInd]['touched_coordinate'].split('_')[1]);
 
         // let X = 1;
         // let Y = 1;
@@ -603,17 +621,17 @@ export const BulletinPast = () => {
     gameStart();
   }, [autoUpdate, manualUpdate]);
 
-//   useEffect(() => {
-//     if (intervalRef.current === null) {
-//       setAutoUpdateFlag(true);
-//       intervalRef.current = setInterval(() => {
-//         cntUpdate++;
-//         // console.log(autoUpdateFlag);
-//         // console.log(cntUpdate);
-//         setAutoUpdate(cntUpdate);
-//       }, 60000);
-//     }
-//   }, [])
+  //   useEffect(() => {
+  //     if (intervalRef.current === null) {
+  //       setAutoUpdateFlag(true);
+  //       intervalRef.current = setInterval(() => {
+  //         cntUpdate++;
+  //         // console.log(autoUpdateFlag);
+  //         // console.log(cntUpdate);
+  //         setAutoUpdate(cntUpdate);
+  //       }, 60000);
+  //     }
+  //   }, [])
 
   var cntUpdate = 0;
   //console.log(scoreState[0][0])
@@ -695,32 +713,32 @@ export const BulletinPast = () => {
     }
   }
 
-//   function autoUpdateButton() {
-//     setAutoUpdateFlag(true);
-//     if (intervalRef.current === null) {
-//       intervalRef.current = setInterval(() => {
-//         cntUpdate++;
-//         // console.log(autoUpdateFlag);
-//         // console.log(cntUpdate);
-//         setAutoUpdate(cntUpdate)
-//       }, 60000);
-//     }
-//     //setAutoUpdate(cntUpdate);
-//   }
+  //   function autoUpdateButton() {
+  //     setAutoUpdateFlag(true);
+  //     if (intervalRef.current === null) {
+  //       intervalRef.current = setInterval(() => {
+  //         cntUpdate++;
+  //         // console.log(autoUpdateFlag);
+  //         // console.log(cntUpdate);
+  //         setAutoUpdate(cntUpdate)
+  //       }, 60000);
+  //     }
+  //     //setAutoUpdate(cntUpdate);
+  //   }
 
-//   function manualUpdateButton() {
-//     setAutoUpdateFlag(false);
-//     console.log(intervalRef.current)
-//     clearInterval(intervalRef.current);
-//     intervalRef.current = null;
-//     cntUpdate = 0;
-//   }
+  //   function manualUpdateButton() {
+  //     setAutoUpdateFlag(false);
+  //     console.log(intervalRef.current)
+  //     clearInterval(intervalRef.current);
+  //     intervalRef.current = null;
+  //     cntUpdate = 0;
+  //   }
 
-//   function updateButton() {
-//     if (autoUpdateFlag === false) {
-//       setManualUpdate(manualUpdate + 1);
-//     }
-//   }
+  //   function updateButton() {
+  //     if (autoUpdateFlag === false) {
+  //       setManualUpdate(manualUpdate + 1);
+  //     }
+  //   }
 
   function skipDaseki(dinning) {
     if (dinning > dasekiData[dasekiData.length - 1]['inning']) {
@@ -800,6 +818,113 @@ export const BulletinPast = () => {
         }
       }
       setNowDaseki(dasekiData[nowBat]);
+      setNowOutCountState(dasekiData[nowBat]['outcount']);
+
+      //ここから追加しました
+      const canvasSize = 2000;
+
+      const homebase = 520;
+      const h = 70;
+      const l = -110;
+      const w = 0.03 * homebase;  //ベースの幅
+      const margin = 10;    //ベース位置調整用
+
+      const canvas = document.getElementById("canvas")
+      const canvasContext = canvas.getContext("2d")
+      var context = canvasContext
+      if (context !== null) {
+        Ground(context);
+      }
+
+      if (context !== null) {
+
+        //削除
+        context.clearRect(0, 0, canvasSize, canvasSize);
+
+        Ground(context);
+
+        //dasekiData[nowDaseki['at_bat_id'] - 2]
+
+        //console.log(daseki[0]['base']);
+        //ベースの色
+        let baseColor2 = new Array(3).fill("white");
+        let runnerCountState = [];
+        console.log(dasekiData[nowDaseki['at_bat_id'] - 2]['base']);
+        let base = tmpNowDaseki['base'].split('');
+        console.log(base);
+        if (base[0] === '1') {
+          baseColor2[2] = "blue";
+        }
+        if (base[1] === '1') {
+          baseColor2[1] = "blue";
+        }
+        if (base[2] === '1') {
+          baseColor2[0] = "blue";
+        }
+        // for (let i = 0; i < 3; i++) {
+        //   runnerCountState[i] = Number(dasekiData[nowDaseki['at_bat_id'] - 2]['base']) / (10 ** i) % 10;
+        //   console.log(runnerCountState[i]);
+        //   if (runnerCountState[i] === 1) {
+        //     baseColor2[i] = "blue";
+        //   }
+        //   else {
+        //     baseColor2[i] = "white";
+        //   }
+        // }
+        console.log(baseColor2)
+
+
+        context.strokeStyle = "black";
+
+        //３塁ベース
+        context.fillStyle = baseColor2[2];
+        context.beginPath();
+        context.moveTo(homebase * 3 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 3 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 3 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 3 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.lineWidth = 1;
+        context.stroke();
+
+        //2塁ベース
+        context.fillStyle = baseColor2[1];
+        context.beginPath();
+        context.moveTo(homebase + l, homebase / 2 - margin + h);
+        context.lineTo(homebase - w + l, homebase / 2 + w - margin + h);
+        context.lineTo(homebase + l, homebase / 2 + w * 2 - margin + h);
+        context.lineTo(homebase + w + l, homebase / 2 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //1塁ベース
+        context.fillStyle = baseColor2[0];
+        context.beginPath();
+        context.moveTo(homebase * 5 / 4 + l, homebase * 3 / 4 - margin + h);
+        context.lineTo(homebase * 5 / 4 - w + l, homebase * 3 / 4 + w - margin + h);
+        context.lineTo(homebase * 5 / 4 + l, homebase * 3 / 4 + w * 2 - margin + h);
+        context.lineTo(homebase * 5 / 4 + w + l, homebase * 3 / 4 + w - margin + h);
+        context.closePath();
+        context.fill();
+        context.stroke();
+
+        //console.log(daseki);
+        let X = Number(tmpNowDaseki['touched_coordinate'].split('_')[0]);
+        let Y = Number(tmpNowDaseki['touched_coordinate'].split('_')[1]);
+
+        // let X = 1;
+        // let Y = 1;
+        // console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
+        // console.log(typeof (X));
+        // console.log(Y);
+        // console.log(context);
+        // console.log(dasekiData[nowDaseki['at_bat_id'] - 2]['ball_kind']);
+        // console.log(dasekiData[nowDaseki['at_bat_id'] - 2]['base'])
+
+        battedBall(context, X, Y, Number(tmpNowDaseki['ball_kind']));
+      }
     }
   }
 
@@ -808,6 +933,7 @@ export const BulletinPast = () => {
     //前に打席データがあるかを判定
     //あれば前の打席データを表示しなければreturn
     if (nowDaseki['at_bat_id'] - 1 <= 0) {
+      console.log('aaaa')
       return;
     } else {
       console.log(dasekiData[nowDaseki['at_bat_id'] - 2])
@@ -878,6 +1004,7 @@ export const BulletinPast = () => {
         }
       }
       setNowDaseki(dasekiData[beforeBat]);
+      setNowOutCountState(dasekiData[beforeBat]['outcount']);
 
       //console.log("ここから追加");
       //console.log(daseki);
@@ -1058,6 +1185,7 @@ export const BulletinPast = () => {
         }
       }
       setNowDaseki(dasekiData[nextBat]);
+      setNowOutCountState(dasekiData[nextBat]['outcount']);
 
       //console.log("ここから追加");
       //console.log(daseki);
@@ -1186,8 +1314,8 @@ export const BulletinPast = () => {
 
         {/* タイトル */}
         <div className="titleName">{tournamentName}</div>
-        <div className="day">{gameMonth}月{gameDay}日</div>
-        <div className="gamePlace">{venueName}</div>
+        {/* <div className="day">{gameMonth}月{gameDay}日</div> */}
+        <div className="gamePlace">{matchNum}　{venueName}　{gameYear}年{gameMonth}月{gameDay}日</div>
       </div>
 
       {/* <div style={group}>
@@ -1195,7 +1323,8 @@ export const BulletinPast = () => {
         <div>{nowDaseki['text_inf']}</div>
       </div><br></br> */}
 
-<table className="scoreBoardTable" border={1}>
+      {/* スコアボード */}
+      <table className="scoreBoardTable" border={1}>
         <tbody>
           <tr className="scoreBoardTr">
             <th className="scoreBoardSchoolNameTh"></th>
@@ -1217,10 +1346,18 @@ export const BulletinPast = () => {
             <td className="scoreBoardSchoolName">{schoolName1}</td>
             {scoreState1.map((score, ind) => {
               if (ind < 9) {
-                return (
-                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
-                )
+                if (nowState.split("回")[0] === (ind + 1).toString() && nowState.split("回")[1] === "表") {
+                  return (
+                    <td className="scoreBoardTdRed" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                  )
+                }
+                else {
+                  return (
+                    <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
+                  )
+                }
               }
+
               else if (score !== null) {
                 return (
                   <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 1))}>{score}</td>
@@ -1234,10 +1371,18 @@ export const BulletinPast = () => {
             <td className="scoreBoardSchoolName">{schoolName2}</td>
             {scoreState2.map((score, ind) => {
               if (ind < 9) {
-                return (
-                  <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
-                )
+                if (nowState.split("回")[0] === (ind + 1).toString() && nowState.split("回")[1] === "裏") {
+                  return (
+                    <td className="scoreBoardTdRed" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                  )
+                }
+                else {
+                  return (
+                    <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
+                  )
+                }
               }
+
               else if (score !== null) {
                 return (
                   <td className="scoreBoardTd" onClick={skipDaseki.bind(this, ((ind + 1) * 10 + 2))}>{score}</td>
@@ -1260,6 +1405,9 @@ export const BulletinPast = () => {
       <div className="Round">
         <p>{nowState}</p>
       </div>
+      <span>
+        {outCount(nowOutCountState, setNowOutCountState)}
+      </span>
 
       <div className="info">
         <div className="textinfo">
@@ -1278,8 +1426,8 @@ export const BulletinPast = () => {
               <td className="batterInfo batter">{batterData['grade']}年　{batterData['handed_hit']}</td>
             </tr>
             <tr>
-            {pinchText === '' && <td colSpan={3} className="todayBatterRecord"></td>} 
-            {pinchText !== '' && <td colSpan={3} className="todayBatterRecord">{pinchText}</td>}
+              {pinchText === '' && <td colSpan={3} className="todayBatterRecord"></td>}
+              {pinchText !== '' && <td colSpan={3} className="todayBatterRecord">{pinchText}</td>}
             </tr>
           </table>
           {/* <table className="nextBatter">
@@ -1313,26 +1461,6 @@ export const BulletinPast = () => {
       </div>
 
       <br></br>
-      <div style={group2}>
-
-        {/* 打者情報 */}
-        {/* <table style={playertableStyle}>
-          <tbody>
-            <tr><th style={schoolStyle} colSpan="2">{nowSchoolName1}</th></tr>
-            <tr><th style={batterStyle}>打者</th><th style={playerStyle}>{batterData['player_name_kanji']}</th></tr>
-            {pinchText !== '' && <tr><th style={playerStyle} colSpan="2">{pinchText}</th></tr>}
-          </tbody>
-        </table> */}
-
-        {/* 投手情報 */}
-        {/* <table style={playertableStyle}>
-          <tbody>
-            <tr><th style={schoolStyle} colSpan="2">{nowSchoolName2}</th></tr>
-            <tr><th style={pitcherStyle}>投手</th><th style={playerStyle}>{pitcherData['player_name_kanji']}</th></tr>
-          </tbody>
-        </table> */}
-      </div><br></br>
-
       {/* 成績情報 */}
       {/* <div style={group2}>
         <table style={playertableStyle}>
@@ -1357,16 +1485,19 @@ export const BulletinPast = () => {
       {/* キャンバスエリア */}
       {/* <div style={fieldStyle}><img src={pic} alt="field" style={imgsize} /></div><br></br> */}
       <div className="canvasArea">
-        <canvas width="800" height="650" id="canvas" className='diamondPng' style={canvasborder}></canvas>
+        <canvas width="800" height="610" id="canvas" className='diamondPng' style={canvasborder}></canvas>
       </div>
 
       {/* 前の打席と次の打席のボタン */}
-      <button onClick={beforebatter} style={logStyle}>前の打席</button>
-      <button onClick={nextbatter} style={logStyle}>次の打席</button><br></br>
+      <button className="beforeBatter" onClick={beforebatter} style={logStyle}>前の打席</button>
+      <button className="nextBatter" onClick={nextbatter} style={logStyle}>次の打席</button><br></br>
 
       {/* テキストエリア */}
       <div className="textSokuhou">
         <span class="box-title">テキスト速報</span>
+        <br />
+        <div className="textGameSet">試合終了　【{schoolName1}】{resultScore1} - {resultScore2}【{schoolName2}】</div>
+        <br />
         <DasekiHistoryList dasekiesInfo={[...dasekiData].reverse()} gameData={gameData} score={scoreState} />
       </div>
       <>
@@ -1375,7 +1506,7 @@ export const BulletinPast = () => {
           <div className="schoolBox">
             <p>{schoolName1}</p>
           </div>
-          <table border="1" className="members">
+          <table border="1" className="startMembers">
             <tr>
               <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
               <td width="30%" height="10vh" bgcolor="#228b22">名前</td>
@@ -1389,7 +1520,7 @@ export const BulletinPast = () => {
           <div className="schoolBox">
             <p>{schoolName2}</p>
           </div>
-          <table border="1" className="members">
+          <table border="1" className="startMembers">
             <tr>
               <td width="8%" height="15vh" rowspan="2" bgcolor="#228b22">打順</td>
               <td width="30%" height="10vh" bgcolor="#228b22">名前</td>

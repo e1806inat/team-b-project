@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { useCookies } from 'react-cookie'
+
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { MenuBar } from "../../../OtherPage/optionFunc/MenuBar"
 
+
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
+
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 const { Member } = require("../../../../DB/Member");
 const { PositionDB } = require("../../../../DB/Position9DB")
@@ -244,6 +250,9 @@ const isDuplicate = (nowSelected) => {
 
 const StartingMember = () => {
 
+    //クッキー関連
+    const [cookies, setCookie, removeCookie] = useCookies();
+
     //ページ遷移用
     const navigate = useNavigate()
     const PageTransition = (url) => {
@@ -324,6 +333,25 @@ const StartingMember = () => {
         loadStartingMember(urlGameId, urlSchoolId2, setRegisteredSM2)
     }, [useEffectFlag])
 
+
+    //セッション関連
+    useEffect(() => {
+        const gameStart = async () => {
+            const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+                {
+                    method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+                    body: JSON.stringify({ sessionID: cookies.sessionID })
+                })
+            const sess = await CheckSess.text();
+            console.log(sess)
+            console.log(cookies.sessionID)
+            if (sess === 'logout') {
+                PageTransition(routeUrl + "/login");
+            }
+        }
+        gameStart()
+    }, [])
+
     return (
         <div align='center'>
             <TitleBar
@@ -383,11 +411,11 @@ const StartingMember = () => {
                                 <td style={tdStyle} rowspan="2"><div id="uniform_number1">
                                     {!isInitial1[ind + 9] && registeredMember1[nowSelected[ind + 9]].uniform_number}
                                     {isInitial1[ind + 9] && "　"}
-                                    </div></td>
+                                </div></td>
                                 <td style={tdStyle} rowspan="2"><div id="grade1">
                                     {!isInitial1[ind + 9] && registeredMember1[nowSelected[ind + 9]].grade}
                                     {isInitial1[ind + 9] && "　"}
-                                    </div></td>
+                                </div></td>
                                 <td style={tdStyle} rowspan="2">
                                     {/* 既登録の選手情報 */}
                                     <div >

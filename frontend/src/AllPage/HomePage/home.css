@@ -11,8 +11,11 @@
     font-family: 'M PLUS 1p', sans-serif;
 }
 
+body{
+    margin: 0;
+}
 
-.homeHeader{
+header{
     background-color: rgb(220, 220, 220, 0.1);
     align-items: center;
     width: 100%;
@@ -57,10 +60,10 @@ header .logout{
 
 .btn{
     font-size: 15px;
-    background-color: rgb(255, 255, 255);
+    background-color: white;
     color: black;
     padding: 10px 0;
-    width: 50vh;
+    width: 70%;
     margin: 10px;
     border: solid 0.5px gray; 
     border-radius: 5px;   

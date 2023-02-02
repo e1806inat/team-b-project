@@ -1,17 +1,24 @@
-import { useState } from 'react'; 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Register.css';
 
 
 function Register() {
-  const initialValues = {loginID: "", password: ""};
+  const initialValues = { loginID: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
+    //ページ遷移用
+    const navigate = useNavigate()
+    const PageTransition = (url) => {
+      navigate(url)
+    }
+
   const handleChande = (e) => {
     //console.log(e.target.value);
     const { name, value } = e.target;
-    setFormValues({...formValues, [name]: value });
+    setFormValues({ ...formValues, [name]: value });
     //console.log(formValues);
   };
 
@@ -27,16 +34,16 @@ function Register() {
   const validate = (values) => {
     const errors = {};
 
-    if(!values.loginID){
+    if (!values.loginID) {
       errors.loginID = "ログイン名を入力してください。";
     }
-    if(!values.password){
+    if (!values.password) {
       errors.password = "パスワードを入力してください。";
     }
-    else if (values.password.length < 4){
+    else if (values.password.length < 4) {
       errors.password = "4文字以上15文字以下のパスワードを入力してください";
     }
-    else if (values.password.length > 15){
+    else if (values.password.length > 15) {
       errors.password = "4文字以上15文字以下のパスワードを入力してください";
     }
     return errors;
@@ -55,38 +62,39 @@ function Register() {
       .then((response) => response.json())
       .then((data) => console.log(data))
   }
-  
+
 
   return (
     <div className="formContainer">
-     <form onSubmit={(e) => handleSubmit(e)}>
-      <h1>アカウント登録</h1>
+      <form onSubmit={(e) => handleSubmit(e)}>
+        <h1>アカウント登録</h1>
 
-      <div className="uiform">
-        <div className="form">
-          <div className="formField">
-            <input type="text" 
-              placeholder="ログイン名" 
-              name="loginID" 
-              onChange={(e) => handleChande(e)}
-            />
-            <p className="errorMsg">{formErrors.loginID}</p>
+        <div className="uiform">
+          <div className="form">
+            <div className="formField">
+              <input type="text"
+                placeholder="ログイン名"
+                name="loginID"
+                onChange={(e) => handleChande(e)}
+              />
+              <p className="errorMsg">{formErrors.loginID}</p>
+            </div>
+            <div className="formField">
+              <input type="text"
+                placeholder="パスワード"
+                name="password"
+                onChange={(e) => handleChande(e)}
+              />
+              <p className="errorMsg">{formErrors.password}</p>
+            </div>
           </div>
-          <div className="formField">
-            <input type="text" 
-              placeholder="パスワード" 
-              name="password" 
-              onChange={(e) => handleChande(e)}
-            />
-            <p className="errorMsg">{formErrors.password}</p>
-          </div>
+          <button className="submitButton" onClick={handleRegister}>アカウント情報を送信</button>
+          {Object.keys(formErrors).length === 0 && isSubmit && (
+            <div className="MsgOk">登録しました</div>
+          )}
         </div>
-        <button className="submitButton" onClick={handleRegister}>アカウント情報を送信</button>
-        {Object.keys(formErrors).length === 0 && isSubmit && (
-          <div className="MsgOk">登録しました</div>
-        )}
-      </div>
-     </form>
+        <div className='returnButton'><button onClick={()=> {PageTransition(-1)}}>HOMEにもどる</button></div>
+      </form>
     </div>
   );
 }

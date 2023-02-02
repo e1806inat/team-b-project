@@ -1,21 +1,34 @@
+import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom'
 import './OptionButton.css'
 
 //バックエンドのurlを取得
 const backendUrl = require("../../../DB/communication").backendUrl;
 
+//フロントの階層urlを取得
+const routeUrl = require("../../../DB/communication").routeUrl;
+
+const logOut = (PageTransition, cookies) => {
+    fetch(backendUrl + "/auth/logout", {
+        method: "POST", mode: "cors",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({ sessionID: cookies.sessionID })
+    })
+        .then((response) => response.text())
+        .then((data) => { console.log(data) })
+    PageTransition(routeUrl + "/login")
+}
+
 export const OptionButton = () => {
 
-    const logOut = () => {
-        fetch(backendUrl + "/auth/check_sess", {
-            method: "GET",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.text())
-            .then((data) => { console.log(data) })
+    const [cookies, setCookie, removeCookie] = useCookies();
+
+    //ページ遷移用
+    const navigate = useNavigate()
+    const PageTransition = (url) => {
+        navigate(url)
     }
+
 
     return (
         <>
@@ -31,10 +44,7 @@ export const OptionButton = () => {
                 <div class="sidebar">
                     <div className="menuHeader">menu</div>
                     <ul>
-                        <li >
-                            <a href="#"><i class="fas fa-qrcode"></i>ダッシュボード</a>
-                        </li>
-                        <li onClick={logOut}>
+                        <li onClick={() => { logOut(PageTransition, cookies) }}>
                             <a href="#"><i class="fas fa-coffee"></i>ログアウト</a>
                         </li>
                     </ul>

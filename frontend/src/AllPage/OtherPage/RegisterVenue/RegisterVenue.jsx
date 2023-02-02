@@ -107,7 +107,7 @@ export const RegisterVenue = () => {
   return (
     <div>
       <TitleBar
-        TitleText={"大会入力選択画面"}
+        TitleText={"会場登録画面"}
         PageTransition={PageTransition}
         valueUrl={-1}
       />

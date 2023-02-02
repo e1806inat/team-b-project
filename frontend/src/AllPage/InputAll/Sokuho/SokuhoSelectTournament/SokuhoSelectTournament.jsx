@@ -2,9 +2,13 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
 import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
+import { useCookies } from 'react-cookie'
 
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
+
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 const readTournament = (setTournamentData) => {
   fetch(backendUrl + "/tournament/tournament_call", {
@@ -33,6 +37,9 @@ const dateSplit = (nowdate) => {
 
 export const Input_Tournament = () => {
 
+    //クッキー関連
+    const [cookies, setCookie, removeCookie] = useCookies();
+
   const InitialYear = 2020
   const InitialMonth = 1
 
@@ -54,14 +61,27 @@ export const Input_Tournament = () => {
     navigate(url)
   }
 
-
-
-
-
-
   useEffect(() => {
     readTournament(setTournamentData);
   }, []);
+
+    //セッション関連
+    useEffect(() => {
+      const gameStart = async () => {
+        const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+          {
+            method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({ sessionID: cookies.sessionID })
+          })
+        const sess = await CheckSess.text();
+        console.log(sess)
+        console.log(cookies.sessionID)
+        if (sess === 'logout') {
+          PageTransition(routeUrl + "/login");
+        }
+      }
+      gameStart()
+    }, [])
 
   return (
     <div>

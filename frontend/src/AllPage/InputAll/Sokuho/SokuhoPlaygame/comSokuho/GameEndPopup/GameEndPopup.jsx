@@ -10,6 +10,7 @@ const gameSets = async (gameId, schoolId1, schoolId2) => {
   })
   const resultValue = await funcGL.text()
   await console.log("gameSets=" + resultValue)
+  await console.log({ game_id: gameId, school_id_1: schoolId1, school_id_2: schoolId2 })
 }
 
 //メインのDOMの中で配置するサブ部品のような要素
@@ -23,14 +24,16 @@ class GameEndPopup extends React.Component {
           <button className="button_style" onClick={this.props.closePopup}>いいえ</button>
           <nbsp></nbsp>
           <button className="button_style"
-            onClick={() => {
+            onClick={async() => {
 
-              gameSets(parseInt(this.props.urlGameId), parseInt(this.props.schoolId1), parseInt(this.props.schoolId2))
+              await gameSets(parseInt(this.props.urlGameId), parseInt(this.props.schoolId1), parseInt(this.props.schoolId2))
 
-              this.props.closePopup()
-              this.props.TableRegister(parseInt(this.props.urlGameId))
-              this.props.CalculateBatAvg(parseInt(this.props.urlGameId))
-              this.props.TmpTableDelete(parseInt(this.props.urlGameId))
+              await this.props.closePopup()
+              // await this.props.TableRegister(parseInt(this.props.urlGameId))
+              await this.props.CalculateBatAvg(parseInt(this.props.urlGameId))
+              await this.props.TmpTableDelete(parseInt(this.props.urlGameId))
+
+
             }}>はい</button>
         </div>
       </div>

@@ -20,7 +20,7 @@ export const PullDownMember = (props) => {
                         {console.log(props.nowPlayingMember)}
                         <li><a href="#">{props.battingOrder[props.nowPlayingMember[0].batter].player_name_kanji}</a>
                             <ul>
-                                <li><a href="#">{"代打"}</a>
+                                <li><a href="#">{"選手交代"}</a>
                                     <ul>
                                         {props.registeredMember1.map((regiMember1, ind) => {
 

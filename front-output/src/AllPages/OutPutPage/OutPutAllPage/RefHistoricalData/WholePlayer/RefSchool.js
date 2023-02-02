@@ -6,7 +6,7 @@ import "./RefSchoolData.css"
 
 const RefSchool = () => {
 
-  // const backendUrl = require("../../../../DB/communication").backendUrl;
+  const backendUrl = require("../../../../../DB/communication").backendUrl;
 
   //school_callで読み込んだ学校のデータを保持する
   const [schoolsData, setSchoolsData] = useState([]);
@@ -25,7 +25,7 @@ const RefSchool = () => {
   //school_callをフェッチし学校のデータを取得する
   const readSchools = (setSchoolsData) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
-    fetch("http://localhost:5000/school/school_call", {
+    fetch(backendUrl +"/school/school_call", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -43,7 +43,7 @@ const RefSchool = () => {
   //ref_member_callをフェッチし選択された条件にそって選手の一覧を取得する
   const readMemebers = (setMembersData, schoolId, selectedGrades, option) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
-    fetch("http://localhost:5000/member/ref_member_call", {
+    fetch(backendUrl +"/member/ref_member_call", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -97,7 +97,7 @@ const RefSchool = () => {
   //閲覧したい学年の情報をチェックボックスで保持する
   const [grades, setGrades] = useState([{ grade: 1, completed: true }, { grade: 2, completed: true }, { grade: 3, completed: true }, { grade: 4, completed: false }]);
   //バックエンドに送れる形(配列)に編集した学年情報を保持する
-  const [gradesArray, setGradesArray] = useState([1, 2, 3, 4]);
+  const [gradesArray, setGradesArray] = useState([1, 2, 3]);
 
   const toggleGrade = (grade) => {
     const newGrades = [...grades];

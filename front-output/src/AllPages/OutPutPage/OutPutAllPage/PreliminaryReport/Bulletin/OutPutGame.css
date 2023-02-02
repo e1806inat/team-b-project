@@ -40,15 +40,21 @@
   display: flex;
   height: 2.5vh;
   color: red; */
-  width: 22%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  width: 100%;
   /* 横幅 */
-  padding: 1%;
+  /* padding: 2%; */
   /* 内側の余白 */
   /* border: 5px solid green; */
   /* 枠線 */
   /* border-radius: 9px; */
   /* 枠線の角丸 */
   background-color: #191970;
+  color: white;
   /* 背景色 */
   margin: auto;
   -webkit-box-sizing: border-box;
@@ -58,12 +64,54 @@
 }
 
 .Round p {
-  width: 100%;  /* 横幅(親ボックスの横幅に合わせる) */
+  width: 100%;
+  /* 横幅(親ボックスの横幅に合わせる) */
+  padding: 5px;
+  /* border: 5px solid #ccaa80;   */
+  /* background-color: #ffcc55;   */
+  background-color: #191970;
+  font-size: 100%;
+  color: white;
+  text-align: center;
+
+
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.gameSet {
+  /* position: relative;
+  width: 100%; 
+  display: flex;
+  height: 2.5vh;
+  color: red; */
+  width: 30%;
+  /* 横幅 */
+  padding: 1%;
+  /* 内側の余白 */
+  /* border: 5px solid green; */
+  /* 枠線 */
+  /* border-radius: 9px; */
+  /* 枠線の角丸 */
+  background-color: white;
+  /* 背景色 */
+  margin: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: auto;
+}
+
+.gameSet p {
+  width: 100%;
+  /* 横幅(親ボックスの横幅に合わせる) */
   /* padding: 5px;  内側の余白 */
   /* border: 5px solid #ccaa80;   */
   /* background-color: #ffcc55;   */
-  font-size: 100%;
-  color: white;
+  font-size: 150%;
+  color: black;
   text-align: center;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -112,7 +160,7 @@
 
 .scoreBoardTable td {
   border: none;
-  width:15%;
+  width: 15%;
 }
 
 .scoreBoardTr {
@@ -139,6 +187,11 @@
 
 .scoreBoardTd {
   background-color: rgb(229, 239, 234);
+  font-size: 3.5vw;
+}
+
+.scoreBoardTdRed {
+  background-color: #CCDDEE;
   font-size: 3.5vw;
 }
 
@@ -563,7 +616,7 @@ textarea {
 .startingMember {
   margin: auto;
   text-align: center;
-  width: 84%;
+  width: 95%;
   /* padding-top: 2vh; */
   padding-bottom: 2vh;
 }
@@ -593,9 +646,10 @@ textarea {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 } */
+
 .schoolBox {
   width: 55%;
-  padding: 1vh;
+  padding: 0.1%;
   /* margin: 3vh; */
   background-color: white;
   margin: auto;
@@ -603,9 +657,10 @@ textarea {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.schoolBox p{
-  width: 100%; 
-  font-size: 2vh;
+
+.schoolBox p {
+  width: 100%;
+  font-size: 1.5vh;
   color: white;
   background-color: black;
   text-align: center;
@@ -614,19 +669,27 @@ textarea {
   box-sizing: border-box;
 }
 
-.members {
+.startMembers {
   color: white;
   margin: auto;
-  font-size: 1.5vh;
-  width: 84%;
+  font-size: 1.5%;
+  width: 95%;
   height: 4vh;
-  padding-top: 2vh;
+  /* padding-top: 2%; */
+  background: #191970;
   /* border:2; */
 }
 
-.members td {
+.startMembers td {
   background: #191970;
+  height: 4vh;
+  font-size: 1.5vh;
+}
 
+.startMembers td:nth-of-type(3) {
+  background: #191970;
+  height: 4vh;
+  font-size: 1vh;
 }
 
 .textSokuhou {
@@ -661,6 +724,10 @@ textarea {
 .textSokuhou .startingMembers {
   margin: 0;
   padding: 0;
+}
+
+.textGameSet {
+  font-size: 1vh;
 }
 
 .daseki {
@@ -713,4 +780,67 @@ textarea {
 /* ホバー時のスタイル */
 .page-top:hover {
   transform: scale(1.1);
+}
+
+.updateArea {
+  width: 90%;
+  padding-top: 0vh;
+  margin: 1em auto 1em auto;
+  /* background-color: rgba(143, 150, 156, 0.1); */
+}
+
+.updateButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 1vh;
+  margin-top: 1em;
+}
+
+
+
+.on {
+  border-radius: 5px;
+  width: 45%;
+  padding: 1vh;
+  text-align: center;
+  background-color: white;
+  color: #0159ac;
+  border: #0159ac 1px solid;
+}
+
+.off {
+  border-radius: 5px;
+  width: 45%;
+  padding: 1vh;
+  text-align: center;
+  background-color: #0159ac;
+  color: white;
+  border: #0159ac 1px solid;
+}
+
+.beforeBatter {
+  background: #0159ac;
+  position: relative;
+  margin: 0 auto;
+  max-width: 45%;
+  height: 3rem !important;
+  font-size: 1.3rem !important;
+  text-align: center;
+  color: white;
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+  border: none;
+}
+
+.nextBatter {
+  background: #0159ac;
+  position: relative;
+  margin: 0 5%;
+  max-width: 45%;
+  height: 3rem !important;
+  font-size: 1.3rem !important;
+  text-align: center;
+  color: white;
+  clip-path: polygon(0% 0%, 80% 0%, 100% 100%, 0% 100%);
+  border: none;
 }

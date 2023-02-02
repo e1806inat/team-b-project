@@ -31,5 +31,13 @@
     margin: auto;
     text-align:center;
     width: 95%;
+    color: black;
 }
 
+.members td{
+    background-color: white;
+}
+
+/* .refMemberData{
+    background-color: white;
+} */

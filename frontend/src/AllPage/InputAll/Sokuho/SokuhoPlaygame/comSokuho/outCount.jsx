@@ -49,12 +49,17 @@ const outThree = (setOutCountState) => {
 export const outCount = (outCountState, setOutCountState) => {
 
     return (
-        <div className="outCount">
-            {outCountState === 0 && outZero(setOutCountState)}
-            {outCountState === 1 && outOne(setOutCountState)}
-            {outCountState === 2 && outTwo(setOutCountState)}
-            {outCountState === 3 && outThree(setOutCountState)}
-        </div>
+        <>
+            <div className="outCountText">アウトカウント</div>
+            <div className="outCount">
+
+                {outCountState === 0 && outZero(setOutCountState)}
+                {outCountState === 1 && outOne(setOutCountState)}
+                {outCountState === 2 && outTwo(setOutCountState)}
+                {outCountState === 3 && outThree(setOutCountState)}
+            </div>
+        </>
+
     )
 
 }
@@ -96,7 +101,7 @@ export const outCount = (outCountState, setOutCountState) => {
 //       <div id="red2"></div>
 //       <div id="red3"></div>
 //     </div>
-//     <button onClick={change_out_count}>色の変更</button>  
+//     <button onClick={change_out_count}>色の変更</button>
 //   </div>
 // );
 // }

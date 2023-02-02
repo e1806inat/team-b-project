@@ -1,9 +1,18 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie'
+
+import "./SokuhoGameStartPage.css"
+
+import { TitleBar } from '../../../OtherPage/TitleBar/TitleBar';
+import { MenuBar } from "../../../OtherPage/optionFunc/MenuBar"
 
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
+
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 
 //試合中の試合の情報を登録する
@@ -89,6 +98,9 @@ const RefDuringGame = async (urlGameId, setIsDuringGame) => {
 
 const SokuhoGameStartPage = () => {
 
+    //クッキー関連
+    const [cookies, setCookie, removeCookie] = useCookies();
+
     //ページ遷移用
     const navigate = useNavigate()
     const PageTransition = (url) => {
@@ -116,6 +128,24 @@ const SokuhoGameStartPage = () => {
         RefDuringGame(urlGameId, setIsDuringGame)
     }, [useEffectFlag])
 
+    //セッション関連
+    useEffect(() => {
+        const gameStart = async () => {
+            const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+                {
+                    method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+                    body: JSON.stringify({ sessionID: cookies.sessionID })
+                })
+            const sess = await CheckSess.text();
+            console.log(sess)
+            console.log(cookies.sessionID)
+            if (sess === 'logout') {
+                PageTransition(routeUrl + "/login");
+            }
+        }
+        gameStart()
+    }, [])
+
     if (isMatchResult) {
         console.log("Pastに遷移します")
         PageTransition(
@@ -138,14 +168,28 @@ const SokuhoGameStartPage = () => {
     else if (isExistTmpTable === false || isDuringGame === false) {
         return (
             <>
-                <button
-                    style={{ height: 100 + "px", width: 30 + "%", fontSize: 30 + "px" }}
-                    onClick={async () => {
-                        await TmpTableCreate(urlGameId)
-                        await RegisterDuringGame(urlGameId, useEffectFlag, setUseEffectFlag)
-                    }}
-                >試合を開始する
-                </button>
+                <div className="startGame">
+
+                    <TitleBar
+                        TitleText={"速報開始画面"}
+                        PageTransition={PageTransition}
+                        valueUrl={-1}
+                    />
+
+                    <MenuBar
+                        menuArray={[]}
+                    />
+
+                    <button className='startGameButton'
+                        style={{ height: 100 + "px", width: 30 + "%", fontSize: 30 + "px" }}
+                        onClick={async () => {
+                            await TmpTableCreate(urlGameId)
+                            await RegisterDuringGame(urlGameId, useEffectFlag, setUseEffectFlag)
+                        }}
+                    >試合を開始する
+                    </button>
+                </div>
+
             </>
         )
     }
@@ -169,8 +213,6 @@ const SokuhoGameStartPage = () => {
             urlGameId
         )
     }
-
-
 }
 
 

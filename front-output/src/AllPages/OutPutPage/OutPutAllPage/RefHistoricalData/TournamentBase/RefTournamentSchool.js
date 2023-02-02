@@ -15,7 +15,7 @@ const RefTournamentSchool = () => {
   //urlTournamentは必要だったので入力しているが本番はurlから入力を受け取るようにする
   // const urlTournamentId = 1;
 
-  // const backendUrl = require("../../../../DB/communication").backendUrl;
+  const backendUrl = require("../../../../../DB/communication").backendUrl;
 
   //大会を読み込む
 
@@ -29,7 +29,7 @@ const RefTournamentSchool = () => {
 
   const readSchools = (setSchoolsData) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
-    fetch("http://localhost:5000/school/school_call_p", {
+    fetch(backendUrl +"/school/school_call_p", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -47,7 +47,7 @@ const RefTournamentSchool = () => {
   const readTournamentMemebers = (setTournamentMembersData, urlSchoolId, urlTournamentId, urlOption) => {
     // fetch(backendUrl + "/tournament/tournament_call", {
 
-    fetch("http://localhost:5000/member/ref_tournament_member_call", {
+    fetch(backendUrl +"/member/ref_tournament_member_call", {
       method: "POST",
       mode: "cors",
       headers: {

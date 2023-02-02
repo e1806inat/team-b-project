@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react';
 import Popupfield from "./comSokuho/onisi_popup/onisi_popup";
 import GameEndPopup from "./comSokuho/GameEndPopup/GameEndPopup"
 import EditPoint from "./comSokuho/scoreCorrection/EditPoint"
-import OptionButton from '../../../OtherPage/optionFunc/OptionButton';
+import { MenuBar } from "../../../OtherPage/optionFunc/MenuBar"
+
+import { useCookies } from 'react-cookie'
 
 //css
 import "./InputPlayGame.css"
@@ -29,6 +31,8 @@ import { battedBall } from './comSokuho/comCanvas/battedBall';
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 
 
@@ -749,7 +753,7 @@ const sendEdit = (
     flag,
     batterResult,
     isPinch,
-    trigger, 
+    trigger,
     setTrigger
 ) => {
     console.log(dasekiAll[nowSelected])
@@ -836,6 +840,9 @@ const canvasSize = 1000;
 const homebase = 400;
 
 const InputPlayGame = () => {
+
+    //クッキー関連
+    const [cookies, setCookie, removeCookie] = useCookies();
 
     //ページ遷移用
     const navigate = useNavigate()
@@ -1145,6 +1152,24 @@ const InputPlayGame = () => {
         )
     }, [trigger])
 
+    //セッション関連
+    useEffect(() => {
+        const gameStart = async () => {
+            const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+                {
+                    method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+                    body: JSON.stringify({ sessionID: cookies.sessionID })
+                })
+            const sess = await CheckSess.text();
+            console.log(sess)
+            console.log(cookies.sessionID)
+            if (sess === 'logout') {
+                PageTransition(routeUrl + "/login");
+            }
+        }
+        gameStart()
+    }, [])
+
 
 
     return (
@@ -1155,7 +1180,9 @@ const InputPlayGame = () => {
                 valueUrl={-2}
             />
 
-            <OptionButton />
+            <MenuBar
+                menuArray={[]}
+            />
 
             <div className="parts">
                 {

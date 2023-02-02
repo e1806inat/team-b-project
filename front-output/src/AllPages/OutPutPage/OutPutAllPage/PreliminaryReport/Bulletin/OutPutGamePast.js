@@ -7,6 +7,9 @@ import StartingMemberList from './StartingMemberList'
 
 import { useCookies } from "react-cookie";
 
+//バックエンドのurlを取得
+const backendUrl = require("../../../../../DB/communication").backendUrl;
+
 const pageStyle = {
   background: 'white'
 }
@@ -226,7 +229,7 @@ export const OutPutGamePast = () => {
   useEffect(() => {
     //試合情報フェッチ
     const gameStart = async () => {
-      const CheckSess = await fetch("http://localhost:5000/auth/check_sess", {
+      const CheckSess = await fetch(backendUrl + "/auth/check_sess", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -247,7 +250,7 @@ export const OutPutGamePast = () => {
       //   // return <Redirect to="http://localhost:3000/login"/>
       // }
 
-      const ResGameData = await fetch("http://localhost:5000/game/a_game_call", {
+      const ResGameData = await fetch(backendUrl + "/game/a_game_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -268,7 +271,7 @@ export const OutPutGamePast = () => {
       setSchoolName2(GameData[0]['school_name_2']);
 
       //大会登録メンバー１フェッチ
-      const ResTournamentMember1 = await fetch("http://localhost:5000/member/tournament_member_call", {
+      const ResTournamentMember1 = await fetch(backendUrl + "/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -282,7 +285,7 @@ export const OutPutGamePast = () => {
       //console.log(member1);
       setTournamentMember1(member1);
       //大会登録メンバー２フェッチ
-      const ResTournamentMember2 = await fetch("http://localhost:5000/member/tournament_member_call", {
+      const ResTournamentMember2 = await fetch(backendUrl + "/member/tournament_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -299,7 +302,7 @@ export const OutPutGamePast = () => {
       //console.log('aasdfasdfasdfasdfasfsdfasd')
 
       //スタメン１フェッチ
-      const ResStartingMember1 = await fetch("http://localhost:5000/member/starting_member_call", {
+      const ResStartingMember1 = await fetch(backendUrl + "/member/starting_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -315,7 +318,7 @@ export const OutPutGamePast = () => {
       setStartingMember1(startMember1);
 
       //スタメン２フェッチ
-      const ResStartingMember2 = await fetch("http://localhost:5000/member/starting_member_call", {
+      const ResStartingMember2 = await fetch(backendUrl + "/member/starting_member_call", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -334,7 +337,7 @@ export const OutPutGamePast = () => {
 
       //setBattersData(startMember);
 
-      // const ResTableName = await fetch("http://localhost:5000/game/ref_table_name", {
+      // const ResTableName = await fetch(backendUrl + "/game/ref_table_name", {
       //   method: "POST",
       //   mode: "cors",
       //   headers: {
@@ -347,7 +350,7 @@ export const OutPutGamePast = () => {
       //console.log(tableName[0]['tmp_table_name'])
 
       //打席情報フェッチ
-      const ResDasekiData = await fetch("http://localhost:5000/daseki/daseki_transmission", {
+      const ResDasekiData = await fetch(backendUrl + "/daseki/daseki_transmission", {
         method: "POST",
         mode: "cors",
         headers: {

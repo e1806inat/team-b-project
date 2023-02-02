@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
-import { OptionButton } from '../../../OtherPage/optionFunc/OptionButton'
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
+import { MenuBar } from "../../../OtherPage/optionFunc/MenuBar"
 import EditTournamentPopup from "./com/EditTournamentPopup/EditTournamentPopup";
+import { useCookies } from 'react-cookie'
 
 import "./InputTournament.css"
 
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
+
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 
 //送られた文字列がどれか空ならtrue
@@ -192,6 +196,9 @@ const tournamentDelete = (tournamentId, setTournamentData) => {
 
 export const Input_Tournament = () => {
 
+  //クッキー関連
+  const [cookies, setCookie, removeCookie] = useCookies();
+
   //プルダウンの選択肢の値
   const initialYear = 2020
   const endYear = 2040
@@ -250,8 +257,26 @@ export const Input_Tournament = () => {
 
   useEffect(() => {
     readTournament1(TournamentData, setTournamentData)
-    console.log("aa")
   }, [TournamentData])
+
+
+  //セッション関連
+  useEffect(() => {
+    const gameStart = async () => {
+      const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+        {
+          method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({ sessionID: cookies.sessionID })
+        })
+      const sess = await CheckSess.text();
+      console.log(sess)
+      console.log(cookies.sessionID)
+      if (sess === 'logout') {
+        PageTransition(routeUrl + "/login");
+      }
+    }
+    gameStart()
+  }, [])
 
   return (
     <div>
@@ -261,7 +286,9 @@ export const Input_Tournament = () => {
         valueUrl={-1}
       />
 
-      <OptionButton />
+      <MenuBar
+        menuArray={[]}
+      />
 
 
       <div class="headline">大会作成</div>

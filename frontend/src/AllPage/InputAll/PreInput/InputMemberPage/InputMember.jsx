@@ -7,9 +7,13 @@ import EditMemberPopup from "./functions/EditMemberPopup/EditMemberPopup";
 import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 
+import { useCookies } from 'react-cookie'
+
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
 
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 //ひらがなチェック
 const isHiragana = (str) => {
@@ -44,8 +48,8 @@ const loadMember = (uniformNumberArray, setUniformNumberArray, urlTournamentId, 
     })
         .then((response) => response.json())
         .then((allUnder3MemberData) => {
-            setCopyMember(allUnder3MemberData);
             console.log(allUnder3MemberData)
+            setCopyMember(allUnder3MemberData);
 
             //初回レンダリング時のみ実行
             if (isInitial === true) {
@@ -133,13 +137,13 @@ const setCheck = (copyMember, selectedMember, setSelectedMember) => {
 }
 
 //背番号
-const setBacknumber = (copyMember, setCopyMember) => {
-    for (let i = 0; i < copyMember.length; i++) {
-        copyMember[i].uniform_number = 1
-    }
-    setCopyMember(copyMember)
+// const setBacknumber = (copyMember, setCopyMember) => {
+//     for (let i = 0; i < copyMember.length; i++) {
+//         copyMember[i].uniform_number = 1
+//     }
+//     setCopyMember(copyMember)
 
-}
+// }
 
 const makePulldownBN = (ind, uniformNumberArray, setUniformNumberArray) => {
 
@@ -264,14 +268,15 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
 
     let sendArray = copyMember
 
-
     for (let i = 0; i < sendArray.length; i++) {
-        delete sendArray[i].hit_num
-        delete sendArray[i].bat_num
+        // いらない
+        // delete sendArray[i].hit_num
+        // delete sendArray[i].bat_num
         sendArray[i].tournament_id = urlTournamentId
         sendArray[i].uniform_number = uniformNumberArray[i]
-
     }
+
+    console.log(sendArray)
 
     //選択したものだけの配列を作る
     let sendArray2 = []
@@ -290,8 +295,6 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
 
     // console.log(sendArray3)
 
-    console.log(registeredMembers)
-    console.log(sendArray2)
     registeredMembers.map((v) => {
         fetch(backendUrl + "/member/tournament_member_delete", {
             method: "POST",
@@ -305,7 +308,7 @@ const handleSousin = (copyMember, selectedMember, urlTournamentId, uniformNumber
     })
 
 
-    //バックエンドに送信
+    // //バックエンドに送信
     fetch(backendUrl + "/member/tournament_member_register", {
         method: "POST",
         mode: "cors",
@@ -428,6 +431,9 @@ const cntSelectedMemberNum = (selectedMember) => {
 
 
 export const InputMember = () => {
+
+    //クッキー関連
+    const [cookies, setCookie, removeCookie] = useCookies();
 
     //ページ遷移用
     const navigate = useNavigate()
@@ -582,7 +588,23 @@ export const InputMember = () => {
     }
 
 
-
+    //セッション関連
+    useEffect(() => {
+        const gameStart = async () => {
+            const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+                {
+                    method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+                    body: JSON.stringify({ sessionID: cookies.sessionID })
+                })
+            const sess = await CheckSess.text();
+            console.log(sess)
+            console.log(cookies.sessionID)
+            if (sess === 'logout') {
+                PageTransition(routeUrl + "/login");
+            }
+        }
+        gameStart()
+    }, [])
 
 
 
@@ -653,20 +675,23 @@ export const InputMember = () => {
                         nameKanji.famiryName !== "" && nameKanji.firstName !== "") &&
                         <button
                             className="addButton"
-                            onClick={() => handleMembers(
-                                urlSchoolId,
-                                numberRef,
-                                iningRef,
-                                handedHitState,
-                                handedThrowState,
-                                copyMember,
-                                uniformNumberArray,
-                                setUniformNumberArray,
-                                nameKanji,
-                                nameHira,
-                                trigger,
-                                setTrigger
-                            )}
+                            onClick={() => {
+                                handleMembers(
+                                    urlSchoolId,
+                                    numberRef,
+                                    iningRef,
+                                    handedHitState,
+                                    handedThrowState,
+                                    copyMember,
+                                    uniformNumberArray,
+                                    setUniformNumberArray,
+                                    nameKanji,
+                                    nameHira,
+                                    trigger,
+                                    setTrigger
+                                )
+                            }
+                            }
                         >追加</button>
                     }
 
@@ -679,7 +704,7 @@ export const InputMember = () => {
 
                     <button
                         onClick={() => { setisEditMode(!isEditMode) }}
-                    >{isEditMode && "大会編集中"}{!isEditMode && "大会編集モード"}</button>
+                    >{isEditMode && "選手登録情報編集中"}{!isEditMode && "選手登録情報編集モード"}</button>
 
                 </div>
             </div>

@@ -1,13 +1,27 @@
 import React, { useState } from 'react';
+import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+
+  //ページ遷移用
+  const navigate = useNavigate()
+  const PageTransition = (url) => {
+    navigate(url)
+  }
+
   //バックエンドのurlを取得
   const backendUrl = require("../../DB/communication").backendUrl;
+
+  //フロントの階層urlを表示
+  const routeUrl = require("../../DB/communication").routeUrl;
 
   const initialValues = { loginID: "test", password: "123456789" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies();
+
 
   const handleChande = (e) => {
     //console.log(e.target.value);
@@ -56,12 +70,15 @@ const Login = () => {
       },
       body: JSON.stringify({ user_name: formValues.loginID, password: formValues.password }),
     })
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((data) => {
+
         console.log(data)
 
-        if (data === "OK") {
-          window.location.href = '/home'
+        if (data !== null) {
+          console.log(data["session_id"])
+          setCookie("sessionID", data["session_id"])
+          PageTransition(routeUrl + "/home")
         }
       })
   }
@@ -85,7 +102,7 @@ const Login = () => {
                 <p className="errorMsg">{formErrors.loginID}</p>
               </div>
               <div className="formField">
-                <input type="text"
+                <input type="password"
                   placeholder="パスワード"
                   name="password"
                   onChange={(e) => handleChande(e)}

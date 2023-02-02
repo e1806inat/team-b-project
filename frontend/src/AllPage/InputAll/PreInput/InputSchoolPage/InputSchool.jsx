@@ -8,11 +8,15 @@ import { TitleBar } from "../../../OtherPage/TitleBar/TitleBar";
 import { OptionButton } from "../../../OtherPage/optionFunc/OptionButton"
 
 import EditSchoolPopup from "./comInputSchool/EditSchoolPopup/EditSchoolPopup"
+import { useCookies } from 'react-cookie'
 
 import './InputSchool.css';
 
 //バックエンドのurlを取得
 const backendUrl = require("../../../../DB/communication").backendUrl;
+
+//フロントの階層urlを取得
+const routeUrl = require("../../../../DB/communication").routeUrl;
 
 
 //送られた文字列がどれか空ならtrue
@@ -256,6 +260,9 @@ const DeleteSchool = (school_id, school_name, setUseSchools, urlTournamentId) =>
 
 export const InputSchool = () => {
 
+  //クッキー関連
+  const [cookies, setCookie, removeCookie] = useCookies();
+
   const [searchParams] = useSearchParams();
   const urlTournamentName = searchParams.get("urlTournamentName")
   const urlTournamentId = searchParams.get("urlTournamentId")
@@ -299,6 +306,25 @@ export const InputSchool = () => {
       <button>aa</button>
     )
   }
+
+
+  //セッション関連
+  useEffect(() => {
+    const gameStart = async () => {
+      const CheckSess = await fetch(backendUrl + "/auth/check_sess",
+        {
+          method: "POST", mode: "cors", headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({ sessionID: cookies.sessionID })
+        })
+      const sess = await CheckSess.text();
+      console.log(sess)
+      console.log(cookies.sessionID)
+      if (sess === 'logout') {
+        PageTransition(routeUrl + "/login");
+      }
+    }
+    gameStart()
+  }, [])
 
 
 

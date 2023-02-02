@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "front-output",
   "version": "0.1.0",
-  "homepage": "/team-b-project/frontend/",
+  "homepage": "/team-b-project/front-output/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

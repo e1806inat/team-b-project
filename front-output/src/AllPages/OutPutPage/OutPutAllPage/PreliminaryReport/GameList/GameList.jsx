@@ -215,7 +215,7 @@ const GameList = () => {
                                             {ymd[0]}年{ymd[1]}月{ymd[2]}日
                                             <div  class="displayGames" onClick={() => { console.log('morimori'); goToPage(PageTransition, game.game_id) }}>
                                                 <div class='gameDetaile'>
-                                                    <div class='gameRound'>{game.match_num}回戦</div>
+                                                    <div class='gameRound'>{game.match_num}</div>
                                                     <div class='gameCard'>
                                                         <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
                                                         <div class='gameScore'>
@@ -240,7 +240,7 @@ const GameList = () => {
                                             {ymd[0]}年{ymd[1]}月{ymd[2]}日
                                             <div class="displayGames">
                                                 <div class='gameDetaile'>
-                                                    <div class='gameRound'>{game.match_num}回戦</div>
+                                                    <div class='gameRound'>{game.match_num}</div>
                                                     <div class='gameCard'>
                                                         <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
                                                         <div class='gameScore'>
@@ -270,7 +270,7 @@ const GameList = () => {
                                     {ymd[0]}年{ymd[1]}月{ymd[2]}日
                                     <div class="displayGames" >
                                         <div class='gameDetaile'>
-                                            <div class='gameRound'>{game.match_num}回戦</div>
+                                            <div class='gameRound'>{game.match_num}</div>
                                             <div class='gameCard'>
                                                 <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
                                                 試合前
@@ -296,7 +296,7 @@ const GameList = () => {
                                     {ymd[0]}年{ymd[1]}月{ymd[2]}日
                                     <div class="displayGames" onClick={() => { goToPagePast(PageTransition, game.game_id) }}>
                                         <div class='gameDetaile'>
-                                            <div class='gameRound'>{game.match_num}回戦</div>
+                                            <div class='gameRound'>{game.match_num}</div>
                                             <div class='gameCard'>
                                                 <div class='firstAttackTeam, teamName'>{game.school_name_1}</div>
                                                 <div class='gameScore'>

@@ -45,95 +45,96 @@ const Daseki = ({ dasekiInfo, gameData, score, inningArray }) => {
     }
 
     //打席登録がパスされたら何も出力しない
-    if (dasekiInfo.pass === 1) {
-        return (
-            <div></div>
-        )
-    } else {
-        //n回表の出力
-        if (dasekiInfo.inning % 10 === 1) {
-            if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
-                return (
-                    <div className="daseki">
-                        <div>【{Math.floor(dasekiInfo.inning / 10)}回表　{gameData[0]['school_name_1']}の攻撃】</div>
-                        <span>{dasekiInfo.batting_order + 1}番</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.player_name_kanji}</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.text_inf}</span>
-                        {outFlag && <span>　</span>}
-                        {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
-                        {baseFlag && <span>　</span>}
-                        {baseFlag && <span>{baseState}</span>}
-                        {dasekiInfo.pinch !== null && <span>　</span>}
-                        {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
-                        {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
-                    </div>
-                )
-            } else {
-                return (
-                    <div className="daseki">
-                        <span>{dasekiInfo.batting_order + 1}番</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.player_name_kanji}</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.text_inf}</span>
-                        {outFlag && <span>　</span>}
-                        {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
-                        {baseFlag && <span>　</span>}
-                        {baseFlag && <span>{baseState}</span>}
-                        {dasekiInfo.pinch !== null && <span>　</span>}
-                        {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
-                        {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
-                    </div>
-                )
-            }
+    // if(dasekiInfo.text_inf === '盗塁'){
+
+    // }
+    //n回表の出力
+    if (dasekiInfo.inning % 10 === 1) {
+        if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
+            return (
+                <div className="daseki">
+                    <div>【{Math.floor(dasekiInfo.inning / 10)}回表　{gameData[0]['school_name_1']}の攻撃】</div>
+                    {dasekiInfo.batting_order !== null && <span>{dasekiInfo.batting_order + 1}番</span>}
+                    {dasekiInfo.batting_order !== null && <span>　</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>{dasekiInfo.player_name_kanji}</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>　</span>}
+                    {dasekiInfo.pass === 0 && <span>{dasekiInfo.text_inf}</span>}
+                    {dasekiInfo.pass === 1 && <span>{dasekiInfo.text_inf}</span>}
+                    {outFlag && <span>　</span>}
+                    {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
+                    {baseFlag && <span>　</span>}
+                    {baseFlag && <span>{baseState}</span>}
+                    {dasekiInfo.pinch !== null && <span>　</span>}
+                    {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                    {dasekiInfo.score !== 0 && <span>　</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
+                </div>
+            )
         } else {
-            //n回裏の出力
-            if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
-                return (
-                    <div className="daseki">
-                        <div>【{Math.floor(dasekiInfo.inning / 10)}回裏　{gameData[0]['school_name_2']}の攻撃】</div>
-                        <span>{dasekiInfo.batting_order + 1}番</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.player_name_kanji}</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.text_inf}</span>
-                        {outFlag && <span>　</span>}
-                        {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
-                        {baseFlag && <span>　</span>}
-                        {baseFlag && <span>{baseState}</span>}
-                        {dasekiInfo.pinch !== null && <span>　</span>}
-                        {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
-                        {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
-                    </div>
-                )
-            } else {
-                return (
-                    <div className="daseki">
-                        <span>{dasekiInfo.batting_order + 1}番</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.player_name_kanji}</span>
-                        <span>　</span>
-                        <span>{dasekiInfo.text_inf}</span>
-                        {outFlag && <span>　</span>}
-                        {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
-                        {baseFlag && <span>　</span>}
-                        {baseFlag && <span>{baseState}</span>}
-                        {dasekiInfo.pinch !== null && <span>　</span>}
-                        {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
-                        {dasekiInfo.score !== 0 && <span>　</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
-                        {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
-                    </div>
-                )
-            }
+            return (
+                <div className="daseki">
+                    {dasekiInfo.batting_order !== null && <span>{dasekiInfo.batting_order + 1}番</span>}
+                    {dasekiInfo.batting_order !== null && <span>　</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>{dasekiInfo.player_name_kanji}</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>　</span>}
+                    {dasekiInfo.pass === 0 && <span>{dasekiInfo.text_inf}</span>}
+                    {dasekiInfo.pass === 1 && <span>{dasekiInfo.text_inf}</span>}
+                    {outFlag && <span>　</span>}
+                    {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
+                    {baseFlag && <span>　</span>}
+                    {baseFlag && <span>{baseState}</span>}
+                    {dasekiInfo.pinch !== null && <span>　</span>}
+                    {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                    {dasekiInfo.score !== 0 && <span>　</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
+                </div>
+            )
+        }
+    } else {
+        //n回裏の出力
+        if (inningArray[dasekiInfo.at_bat_id - 1] !== null) {
+            return (
+                <div className="daseki">
+                    <div>【{Math.floor(dasekiInfo.inning / 10)}回裏　{gameData[0]['school_name_2']}の攻撃】</div>
+                    {dasekiInfo.batting_order !== null && <span>{dasekiInfo.batting_order + 1}番</span>}
+                    {dasekiInfo.batting_order !== null && <span>　</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>{dasekiInfo.player_name_kanji}</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>　</span>}
+                    {dasekiInfo.pass === 0 && <span>{dasekiInfo.text_inf}</span>}
+                    {dasekiInfo.pass === 1 && <span>{dasekiInfo.text_inf}</span>}
+                    {outFlag && <span>　</span>}
+                    {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
+                    {baseFlag && <span>　</span>}
+                    {baseFlag && <span>{baseState}</span>}
+                    {dasekiInfo.pinch !== null && <span>　</span>}
+                    {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                    {dasekiInfo.score !== 0 && <span>　</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
+                </div>
+            )
+        } else {
+            return (
+                <div className="daseki">
+                    {dasekiInfo.batting_order !== null && <span>{dasekiInfo.batting_order + 1}番</span>}
+                    {dasekiInfo.batting_order !== null && <span>　</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>{dasekiInfo.player_name_kanji}</span>}
+                    {dasekiInfo.player_name_kanji !== null && <span>　</span>}
+                    {dasekiInfo.pass === 0 && <span>{dasekiInfo.text_inf}</span>}
+                    {dasekiInfo.pass === 1 && <span>{dasekiInfo.text_inf}</span>}
+                    {outFlag && <span>　</span>}
+                    {outFlag && <span>{dasekiInfo.outcount}アウト</span>}
+                    {baseFlag && <span>　</span>}
+                    {baseFlag && <span>{baseState}</span>}
+                    {dasekiInfo.pinch !== null && <span>　</span>}
+                    {dasekiInfo.pinch !== null && <span>{dasekiInfo.pinch}</span>}
+                    {dasekiInfo.score !== 0 && <span>　</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_1'] && <span>【{gameData[0]['school_name_1']}】{dasekiInfo.total_score} - {score[1][dasekiInfo.at_bat_id - 1]} 【{gameData[0]['school_name_2']}】</span>}
+                    {dasekiInfo.score !== 0 && dasekiInfo.school_id === gameData[0]['school_id_2'] && <span>【{gameData[0]['school_name_1']}】 {score[0][dasekiInfo.at_bat_id - 1]} - {dasekiInfo.total_score} 【{gameData[0]['school_name_2']}】</span>}
+                </div>
+            )
         }
     }
 }

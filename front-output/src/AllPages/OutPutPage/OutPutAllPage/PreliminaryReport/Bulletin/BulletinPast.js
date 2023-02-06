@@ -216,7 +216,8 @@ export const BulletinPast = () => {
   const [resultScore2, setResultScore2] = useState(0);
 
   //アウトカウント    
-  const [nowOutCountState, setNowOutCountState] = useState(0)
+  const [nowOutCountState, setNowOutCountState] = useState(0);
+  const [changeState, setChangeState] = useState(false);
 
   const [dasekiScore, setDasekiScore] = useState([]);
   //交代情報
@@ -500,6 +501,11 @@ export const BulletinPast = () => {
       // var sumScore2 = sumScore(sendScore[1]);
 
       //console.log(sendScore[0]);
+      if(daseki[dasekiInd - 1]['at_bat_id'] !== undefined && daseki[dasekiInd - 1]['inning'] !== daseki[dasekiInd]['inning']){
+        setChangeState(true);
+      }else{
+        setChangeState(false);
+      }
 
       //現在の回数を算出
       var stateArray = daseki[dasekiInd]['inning'].toString().split("");
@@ -752,6 +758,9 @@ export const BulletinPast = () => {
       //console.log(tmpNowDaseki)
       setNowDaseki(tmpNowDaseki);
       setPinchText(tmpNowDaseki["pinch"]);
+      if(tmpNowDaseki["at_bat_id"] !== 1){
+        setChangeState(true);
+      }
       // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
       //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
       //console.log(nowDaseki[])
@@ -992,6 +1001,12 @@ export const BulletinPast = () => {
 
       //console.log(sendScore)
 
+      if(dasekiData[nowDaseki['at_bat_id'] - 3]['at_bat_id'] !== undefined && dasekiData[nowDaseki['at_bat_id'] - 3]['inning'] !== dasekiData[nowDaseki['at_bat_id'] - 2]['inning']){
+        setChangeState(true);
+      }else{
+        setChangeState(false);
+      }
+
       //現在の回数を算出
       //仕様上の問題で回が変わる最初のinning以外をnullにしている
       if (dasekiData[beforeBat]['inning'] !== null) {
@@ -1172,6 +1187,12 @@ export const BulletinPast = () => {
           setPitcherData(pitcher);
           break
         }
+      }
+
+      if(dasekiData[nowDaseki['at_bat_id'] - 1]['at_bat_id'] !== undefined && dasekiData[nowDaseki['at_bat_id'] - 1]['inning'] !== dasekiData[nowDaseki['at_bat_id']]['inning']){
+        setChangeState(true);
+      }else{
+        setChangeState(false);
       }
 
       //現在の回数を算出
@@ -1403,7 +1424,10 @@ export const BulletinPast = () => {
       </div> */}
 
       <div className="Round">
-        <p>{nowState}</p>
+        <p>
+          {changeState && <span>チェンジ</span>}
+          {nowState}
+        </p>
       </div>
       <span>
         {outCount(nowOutCountState, setNowOutCountState)}

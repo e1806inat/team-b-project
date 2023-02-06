@@ -90,6 +90,7 @@ export const Bulletin = () => {
 
   //アウトカウント    
   const [nowOutCountState, setNowOutCountState] = useState(0);
+  const [changeState, setChangeState] = useState(false);
 
   const [dasekiScore, setDasekiScore] = useState([]);
   //交代情報
@@ -153,7 +154,7 @@ export const Bulletin = () => {
       //setGameSet(GameData[0]['match_results']);
       if (GameData[0]['match_results'] !== '' && GameData[0]['match_results'] !== null) {
         setResultScore1(GameData[0]['match_results'].split('-')[0]);
-        setResultScore1(GameData[1]['match_results'].split('-')[1]);
+        setResultScore1(GameData[0]['match_results'].split('-')[1]);
       }
 
 
@@ -355,6 +356,13 @@ export const Bulletin = () => {
       // var sumScore2 = sumScore(sendScore[1]);
 
       //console.log(sendScore[0]);
+
+      
+      if (daseki[dasekiInd - 1]['at_bat_id'] !== undefined && daseki[dasekiInd - 1]['inning'] !== daseki[dasekiInd]['inning']) {
+        setChangeState(true);
+      } else {
+        setChangeState(false);
+      }
 
       //現在の回数を算出
       var stateArray = daseki[dasekiInd]['inning'].toString().split("");
@@ -603,6 +611,9 @@ export const Bulletin = () => {
       //console.log(tmpNowDaseki)
       setNowDaseki(tmpNowDaseki);
       setPinchText(tmpNowDaseki["pinch"]);
+      if (tmpNowDaseki["at_bat_id"] !== 1) {
+        setChangeState(true);
+      }
       // setNowDaseki(dasekiData[nowDaseki['at_bat_id'] - 2]);
       //var tmpNowDaseki = dasekiData[nowDaseki['at_bat_id'] - 1];
       //console.log(nowDaseki[])
@@ -844,6 +855,12 @@ export const Bulletin = () => {
           setPitcherData(pitcher);
           break
         }
+      }
+
+      if (dasekiData[nowDaseki['at_bat_id'] - 3]['at_bat_id'] !== undefined && dasekiData[nowDaseki['at_bat_id'] - 3]['inning'] !== dasekiData[nowDaseki['at_bat_id'] - 2]['inning']) {
+        setChangeState(true);
+      } else {
+        setChangeState(false);
       }
 
       //現在の回数を算出
@@ -1276,7 +1293,10 @@ export const Bulletin = () => {
       {resultScore1 !== 'default' && resultScore2 !== 'default' && <div className="gameSet"><p>試合終了</p></div>}
 
       <div className="Round">
-        <p>{nowState}</p>
+        <p>
+          {changeState && <span>チェンジ</span>}
+          {nowState}
+        </p>
       </div>
       <span>
         {outCount(nowOutCountState, setNowOutCountState)}

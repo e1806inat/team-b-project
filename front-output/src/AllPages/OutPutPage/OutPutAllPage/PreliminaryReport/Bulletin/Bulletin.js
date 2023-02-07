@@ -91,6 +91,7 @@ export const Bulletin = () => {
   //アウトカウント    
   const [nowOutCountState, setNowOutCountState] = useState(0);
   const [changeState, setChangeState] = useState(false);
+  const [gameSetFlag, setGameSetFlag] = useState(false);
 
   const [dasekiScore, setDasekiScore] = useState([]);
   //交代情報
@@ -155,6 +156,7 @@ export const Bulletin = () => {
       if (GameData[0]['match_results'] !== '' && GameData[0]['match_results'] !== null) {
         setResultScore1(GameData[0]['match_results'].split('-')[0]);
         setResultScore1(GameData[0]['match_results'].split('-')[1]);
+        setGameSetFlag(true);
       }
 
 
@@ -1294,6 +1296,7 @@ export const Bulletin = () => {
 
       <div className="Round">
         <p>
+          {gameSetFlag && <span>試合終了</span>}  
           {changeState && <span>チェンジ</span>}
           {nowState}
         </p>

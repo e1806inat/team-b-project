@@ -81,8 +81,14 @@ router.post("/tmp_table_delete", async (req, res, next) => {
 
     try {
         //一時テーブルの情報が蓄積テーブルに登録されているか確認
+        //一時打席情報記録テーブルの内容を打席情報記録テーブルに登録
+        await tran.query(`insert into t_at_bat select * from ${tmp_table_name}`);
+        //さきほど打席情報記録テーブルに登録した情報の行数を抜き出し
         const count_of_bat = await tran.query('select count(*) from t_at_bat where game_id = ?', [game_id]);
+        //一時打席情報記録テーブルの行数を抜き出し
         const count_of_tmp = await tran.query(`select count(*) from ${tmp_table_name}`);
+        // const count_of_bat = await tran.query('select count(*) from t_at_bat where game_id = ?', [game_id]);
+        // const count_of_tmp = await tran.query(`select count(*) from ${tmp_table_name}`);
 
         if (count_of_bat[0]['count(*)'] >= 1 && count_of_bat[0]['count(*)'] == count_of_tmp[0]['count(*)']) {
             await tran.query(`drop table ${tmp_table_name}`);
@@ -179,7 +185,9 @@ router.post("/tmp_daseki_call", async (req, res, next) => {
     try {
         //試合情報の取得と送信(速報用)
         const rows1 = await executeQuery('select * from t_game where game_id = ?', [game_id]);
-        const rows2 = await executeQuery(`select * from ((select * from ${tmp_table_name}) as a` + 'left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) where pass = 0 order by at_bat_id', [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
+        console.log(rows1)
+        const rows2 = await executeQuery(`select * from ((select * from ${tmp_table_name}) as a left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) order by at_bat_id`, [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
+        console.log(rows2)
         // console.log(rows1[0]['tournament_id'])
         // const rows2 = await executeQuery(`select at_bat_id, inning, game_id, school_id, daseki.player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, batting_order, grade, uniform_number, player_name_kanji, handed_hit from ${tmp_table_name} as daseki, (select a.player_id, grade, uniform_num`+
         //     `ber, player_name_kanji, handed_hit from (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as a, (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as b where a.player_id = b.player_id) as c where daseki.player_id = c.player_id order by at_bat_id`,  [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
@@ -226,7 +234,7 @@ router.post("/daseki_transmission", async (req, res, next) => {
         //試合情報の取得と送信
         //テスト用
         const rows1 = await executeQuery('select * from t_game where game_id = ?', [game_id]);
-        const rows2 = await executeQuery('select * from ((select * from t_at_bat where game_id = ?) as a left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) where pass = 0 order by at_bat_id', [game_id, rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
+        const rows2 = await executeQuery('select * from ((select * from t_at_bat where game_id = ?) as a left join (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as b using(player_id) left join (select * from t_player where school_id = ? or school_id = ?) as c using(player_id)) order by at_bat_id', [game_id, rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
         //const rows2 = await executeQuery(`select * from t_at_bat as bat join (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as player using(player_id) where game_id = ?`, [rows1[0]['school_id_1'], rows1[0]['school_id_2'], game_id]);
         // const rows2 = await executeQuery('select at_bat_id, inning, game_id, school_id, daseki.player_id, pitcher_id, score, total_score, outcount, base, text_inf, pass, touched_coordinate, ball_kind, hit, foreball, deadball, pinch, batting_order, grade, uniform_number, player_name_kanji, handed_hit from t_at_bat as daseki, (select a.player_id, grade, uniform_num'+
         // 'ber, player_name_kanji, handed_hit from (select player_id, grade, uniform_number, handed_hit from t_registered_player where tournament_id = ?) as a, (select player_id, player_name_kanji from t_player where school_id = ? or school_id = ?) as b where a.player_id = b.player_id) as c where daseki.player_id = c.player_id order by at_bat_id', [rows1[0]['tournament_id'], rows1[0]['school_id_1'], rows1[0]['school_id_2']]);
@@ -305,11 +313,11 @@ router.post("/tmp_daseki_state", async (req, res, next) => {
         const game_ids = await executeQuery('select game_id from t_game where tournament_id = ?  and school_id_1 is not null and school_id_2 is not null', [tournament_id]);
         //速報中の試合テーブル一覧からgame_idが一致するテーブル名を出力
         for (var game of game_ids) {
-            let gameIdArray = [{},{}]
+            let gameIdArray = [{}, {}]
             let Inning = {};
-            let score = {'start':true}
+            let score = { 'start': true }
             let table_name = await executeQuery('select * from t_during_game where game_id = ?', [game['game_id']]);
-            let gameInfo = await executeQuery('select * from t_game where game_id = ?', [game['game_id']]); 
+            let gameInfo = await executeQuery('select * from t_game where game_id = ?', [game['game_id']]);
             //console.log(table_name)
             if (table_name != 0 && table_name != false) {
                 let tmp_table_name = `test_pbl.` + table_name[0]['tmp_table_name'];
@@ -330,20 +338,20 @@ router.post("/tmp_daseki_state", async (req, res, next) => {
                     }
                     Inning[game['game_id'].toString()] = inning;
                 }
-                if(score1 == 0 && score1 == false){
+                if (score1 == 0 && score1 == false) {
                     score['score1'] = 0;
-                }else{
+                } else {
                     score['score1'] = score1[0]['total_score'];
                 }
-                
-                if(score2 == 0 && score2 == false){
+
+                if (score2 == 0 && score2 == false) {
                     score['score2'] = 0
                     score2 = 0;
-                }else{
+                } else {
                     score['score2'] = score2[0]['total_score'];
-                } 
-                
-                if(during[0]['count(*)'] == 0){
+                }
+
+                if (during[0]['count(*)'] == 0) {
                     score['start'] = false;
                 }
                 gameIdArray[0] = Inning;

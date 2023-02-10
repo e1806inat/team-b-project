@@ -18,7 +18,14 @@ router.get("/", (req, res) => {
 });
 
 //ユーザの登録のAPI（運用者用webアプリ）
-router.post("/user_register", body("password").isLength({ min: 6 }), async (req, res, next) => {
+router.post("/user_register", body("password").isLength({ min: 8 }).not()
+.isLowercase()
+.not()
+.isUppercase()
+.not()
+.isNumeric()
+.not()
+.isAlpha(), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;
 
@@ -49,9 +56,9 @@ router.post("/user_register", body("password").isLength({ min: 6 }), async (req,
             try {
                 console.log("4");
                 //ユーザ登録
-                await tran.query(`insert into t_login values ("0", ?, ?)`, [user_name, hashedPassword]);
+                await tran.query(`insert into t_login values ("0", ?, ?, NULL)`, [user_name, hashedPassword]);
                 await tran.commit();
-                res.end("OK");
+                return res.json({ok:"ok"});
                 console.log("5")
             }
             catch (err) {
@@ -92,7 +99,7 @@ router.post("/user_delete", async (req, res, next) => {
                 //ユーザ削除
                 await tran.query(`delete from t_login where user_name = ?`, [user_name]);
                 await tran.commit();
-                res.end("OK");
+                return res.json({ok:"ok"});
                 console.log("5")
             }
             catch (err) {
@@ -157,7 +164,7 @@ router.post("/login", async (req, res, next) => {
                 res.json({
                    'session_id': req.sessionID
                 });
-                res.end('OK');
+                return res.json({ok:"ok"});
             }
         }
     } catch (err) {
@@ -192,7 +199,7 @@ router.post("/logout",  async (req, res, err) => {
         // }
         //console.log(req.cookies);
         //res.redirect("/auth");
-        res.end("OK");
+        return res.json({ok:"ok"});
     }
     catch(err){
         console.log(err);
@@ -222,7 +229,7 @@ router.post("/check_sess", async (req, res, next) => {
         //     const rows = await executeQuery('select count(*) from sessions where session_id = ?', [value]);
         //     if (rows[0]['count(*)'] >= 1){
         //         console.log('a');
-        //          return res.end('login');
+        //          return res.end({ok:"ok"});('login');
         //     }
         // }
         
@@ -230,9 +237,9 @@ router.post("/check_sess", async (req, res, next) => {
         // console.log(req.sessionID);
         // const rows = await executeQuery(`select count(*) from sessions where session_id = ?`, [req.sessionID]);
         // if (rows[0]['count(*)'] >= 1){
-        //     res.end("Login");
+        //     res.end({ok:"ok"});("Login");
         // } else {
-        //     res.end("logout");
+        //     res.end({ok:"ok"});("logout");
         // }
     }
     catch (err) {
@@ -241,8 +248,40 @@ router.post("/check_sess", async (req, res, next) => {
     }
 });
 
+//セッションのチェック（運用者用webアプリ）
+router.post("/check_auth", async (req, res, next) => {
+
+    // const { sessionID } = req.body;
+
+    try {
+        // const rows = await executeQuery('select count(*) from sessions where session_id = ?', [sessionID]);
+        // console.log(rows[0]['user'][0]['authority']);
+        const rows = await executeQuery('select * from sessions');
+        console.log(rows[0]['data']['user']);
+        return res.json({ok:"ok"});
+        // if (rows[0]['count(*)'] >= 1){
+        //     return res.end({ok:"ok"});('login');
+        // }
+        // else{
+        //     return res.end({ok:"ok"});('logout');
+        // }
+        //console.log()
+    }
+    catch (err) {
+        console.log(err);
+        next(err);
+    }
+});
+
 //ユーザ編集(パスワード編集)のAPI（運用者用webアプリ）
-router.post("/user_update", body("password").isLength({ min: 6 }), async (req, res, next) => {
+router.post("/user_update", body("password").isLength({ min: 8 }).not()
+.isLowercase()
+.not()
+.isUppercase()
+.not()
+.isNumeric()
+.not()
+.isAlpha(), async (req, res, next) => {
     const user_name = req.body.user_name;
     const password = req.body.password;
 
@@ -272,7 +311,7 @@ router.post("/user_update", body("password").isLength({ min: 6 }), async (req, r
                 //ユーザ編集
                 await tran.query(`update t_login set password = ? where user_name = ?`, [hashedPassword, user_name]);
                 await tran.commit();
-                res.end("OK");
+                return res.json({ok:"ok"});
                 console.log("5")
             }
             catch (err) {

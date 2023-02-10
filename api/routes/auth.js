@@ -251,14 +251,22 @@ router.post("/check_sess", async (req, res, next) => {
 //セッションのチェック（運用者用webアプリ）
 router.post("/check_auth", async (req, res, next) => {
 
-    // const { sessionID } = req.body;
+    const { sessionID } = req.body;
 
     try {
         // const rows = await executeQuery('select count(*) from sessions where session_id = ?', [sessionID]);
         // console.log(rows[0]['user'][0]['authority']);
-        const rows = await executeQuery('select * from sessions');
-        console.log(rows[0]['data']['user']);
-        return res.json({ok:"ok"});
+        const rows = await executeQuery('select * from sessions where session_id = ?', [sessionID]);
+        console.log(rows)
+        console.log(rows[0]['data'].includes('admin'));
+        if(!rows[0]['data'].includes('admin')){
+            return res.end("Ok");
+        }else{
+            return res.end("No");
+        }
+        // console.log(rows[0]['data']);
+        // console.log(typeof rows[0]['data']);
+        
         // if (rows[0]['count(*)'] >= 1){
         //     return res.end({ok:"ok"});('login');
         // }

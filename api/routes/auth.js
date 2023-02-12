@@ -164,7 +164,8 @@ router.post("/login", async (req, res, next) => {
                 res.json({
                    'session_id': req.sessionID
                 });
-                return res.json({ok:"ok"});
+                console.log('aaaaaa')
+                return res.end('aaa');
             }
         }
     } catch (err) {
@@ -258,11 +259,12 @@ router.post("/check_auth", async (req, res, next) => {
         // console.log(rows[0]['user'][0]['authority']);
         const rows = await executeQuery('select * from sessions where session_id = ?', [sessionID]);
         console.log(rows)
+        console.log('authauth')
         console.log(rows[0]['data'].includes('admin'));
         if(!rows[0]['data'].includes('admin')){
-            return res.end("Ok");
+            res.end("Ok");
         }else{
-            return res.end("No");
+            res.end("No");
         }
         // console.log(rows[0]['data']);
         // console.log(typeof rows[0]['data']);

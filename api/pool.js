@@ -1,24 +1,33 @@
 const { promisify } = require("util");
-const { host, user, password, database } = require('./mysqlConnection/config');
+const config = require('./mysqlConnection/config');
 const mysql = require("mysql2");
 //const config = require("./mysqlConnection/config");
 
 //const cofObj = config.serverConf;
-const cofObj = {
-    host,
-    //port,
-    user,
-    password,
-    database
-}
-
+// const cofObj = {
+//     host,
+//     //port,
+//     user,
+//     password,
+//     database
+// }
+// console.log('ddddddddddddddddddddddddd')
+// console.log(HOST)
+// console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa')
 //Poolインスタンス
 //const pool = mysql.createPool({ ...cofObj, connectionLimit: 10 });
+// const pool = mysql.createPool({
+//     host: "133.71.101.108",
+//     user: "test_user",
+//     password: "v2V!%Nwc",
+//     database: "test_pbl",
+// });
 const pool = mysql.createPool({
-    host: "133.71.101.108",
-    user: "test_user",
-    password: "v2V!%Nwc",
-    database: "test_pbl",
+  host: config.HOST,
+  //port: config.PORT,
+  user: config.USERNAME,
+  password: config.PASSWORD,
+  database: config.DATABASE
 });
 //pool.getConnectionプロミス化
 const getConnection = promisify(pool.getConnection).bind(pool);

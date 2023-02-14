@@ -127,7 +127,6 @@ router.post("/school_call", async (req, res, next) => {
     }
 });
 
-//参加学校情報を消すことができる（運用者用webアプリ）
 router.post("/participants_delete", async (req, res, next) => {
     const { tournament_id, school_id } = req.body;
 
@@ -140,7 +139,6 @@ router.post("/participants_delete", async (req, res, next) => {
     }
 });
 
-//参加学校情報を編集できる(シード値と学校順の変更)（運用者用webアプリ）
 router.post("/participants_edit", async (req, res, next) => {
     const { tournament_id, school_id, school_order, seed } = req.body;
 
@@ -149,12 +147,10 @@ router.post("/participants_edit", async (req, res, next) => {
         res.end('OK');
     }
     catch(err){
-        console.log(err);
         next(err);
     }
 });
 
-//学校情報を消すことができる（運用者用webアプリ）
 router.post("/school_delete", async (req, res, next) => {
     const { school_id } = req.body;
 

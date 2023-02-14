@@ -6,6 +6,13 @@ const mysql = require("mysql2");
 
 console.log(config);
 
+// const con = mysql.createConnection({
+//   host: config.HOST,
+//   //port: config.PORT,
+//   user: config.USERNAME,
+//   password: config.PASSWORD,
+//   database: config.DATABASE
+// });
 const con = mysql.createConnection({
   host: config.HOST,
   //port: config.PORT,

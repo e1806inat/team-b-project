@@ -9,56 +9,39 @@ const tournament = require("./routes/tournament");
 const venue = require("./routes/venue");
 const game = require("./routes/game");
 
-//const http = require("http");
+const config = require('./mysqlConnection/config');
 
 const cookieParser = require("cookie-parser");
 
 const session = require('express-session');
 const { errorHandler } = require("./error");
-const MySQLStore = require('express-mysql-session')(session); //追加分
+const MySQLStore = require('express-mysql-session')(session); 
 
 const mysqlOptions ={
-    host: "133.71.101.108",
-    user: "test_user",
-    password: "v2V!%Nwc", 
-    database: "test_pbl"
-  };
+  host: config.HOST,
+  user: config.USERNAME,
+  password: config.PASSWORD,
+  database: config.DATABASE
+};
 
 const sess = {
     secret: "otameshi",
-    cookie: {httpOnly:true, secure:false, maxAge: 60000000 },
+    cookie: {httpOnly:true, secure:false, maxAge: 86400000 },
     store: new MySQLStore(mysqlOptions),
     resave: false,
     saveUninitialized: false
 };
 
-//sess.cookie.secure = false; //for production
 app.use(cookieParser());
 app.use(session(sess));
 
-// cors対策
-// app.use((req, res, next) => {
-//     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-//     res.setHeader(
-//         "Access-Control-Allow-Methods",
-//         "GET, POST, PUT, PATCH, DELETE, OPTION"
-//     );
-//     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//     next();
-// });
 var cors = require('cors'); 
 
 const corsOptions = {
-  origin: "http://localhost:3000",
   credentials: true
 }
-//app.use(cors({credentials: true, origin: 'http://localhost:5000'}));
 app.use(cors(corsOptions));
 
-// const server = http.createServer(app);
-// server.listen(PORT, () => console.log(`server is running ${PORT}`));
-
-//sessのテスト後で別ファイルに分けるべし
 var loginCheck = function(req, res, next) {
   if(req.session.user) {
     next();
@@ -75,8 +58,6 @@ app.get("/", (req, res) => {
   res.send("Hello Express");
 });
 
-//app.use(require('./loginout'));
-//app.use(errorHandler);
 app.use("/auth", auth);
 app.use("/daseki", daseki);
 app.use("/member",  member);
@@ -86,12 +67,5 @@ app.use("/venue",  venue);
 app.use("/game",  game);
 app.use(errorHandler);
 
-/*
-app.post("/", (req, res) => {
-    let message = req.body.message
-    req.session.message = message
-});*/
-
 app.listen(PORT, () => {
-    console.log("サーバー起動中・・・");
 });
